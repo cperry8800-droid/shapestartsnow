@@ -3,171 +3,214 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape — Personal Trainers & Nutritionists</title>
+  <title>Shape</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Flowing gradient background */
+    .bg-flow {
+      position: fixed; inset: 0; z-index: 0;
+    }
+
+    .bg-flow canvas {
+      width: 100%; height: 100%;
+    }
+
+    /* Grain overlay */
+    .grain {
+      position: fixed; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Content */
+    .intro-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 100vh; width: 100%;
+      text-align: center;
+    }
+
+    .intro-logo {
+      height: 140px; width: auto;
+      margin-bottom: 48px;
+      filter: brightness(0) invert(1);
+      opacity: 0;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+
+    .intro-tagline {
+      font-size: clamp(0.85rem, 1.2vw, 1rem);
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 64px;
+      opacity: 0;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    }
+
+    .enter-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 18px 64px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      opacity: 0;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #2DD4BF, #14B8A6);
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+
+    .enter-btn:hover {
+      border-color: rgba(45, 212, 191, 0.6);
+      transform: scale(1.02);
+    }
+
+    .enter-btn:hover::before { opacity: 0.15; }
+
+    .enter-btn span { position: relative; z-index: 1; }
+
+    /* Fade-out transition */
+    .intro-content.leaving {
+      animation: fadeOut 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(1.02); }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Navigation -->
-  <nav class="navbar" id="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <img src="logo.png" alt="Shape" class="logo-img">
-      </a>
-      <div class="nav-links" id="navLinks">
-        <a href="ai-trainer.html">AI Trainer</a>
-        <a href="trainers.html">Trainers</a>
-        <a href="nutritionists.html">Nutritionists</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
-        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
-      </div>
-      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </nav>
+  <div class="bg-flow">
+    <canvas id="flowCanvas"></canvas>
+  </div>
+  <div class="grain"></div>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <h1>Your body.<br>Your <span class="gradient-text">Shape</span>.</h1>
-      <p class="hero-sub">Subscribe to world-class personal trainers and nutritionists. Get custom workouts, meal plans, and 1-on-1 guidance — all in one place.</p>
-      <div class="hero-actions">
-        <a href="trainers.html" class="btn btn-primary btn-lg">Browse Trainers</a>
-        <a href="pricing.html" class="btn btn-outline btn-lg">See How It Works</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat"><strong>200+</strong><span>Expert Trainers</span></div>
-        <div class="stat"><strong>50+</strong><span>Nutritionists</span></div>
-        <div class="stat"><strong>10k+</strong><span>Active Members</span></div>
-      </div>
-    </div>
-  </section>
+  <div class="intro-content" id="introContent">
+    <img src="logo.png" alt="Shape" class="intro-logo">
+    <p class="intro-tagline">Your body. Your shape.</p>
+    <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
+      <span>Enter</span>
+    </a>
+  </div>
 
-  <!-- Feature Highlights -->
-  <section class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <span class="tag">Why Shape</span>
-        <h2>Everything you need to transform</h2>
-        <p>One platform for training, nutrition, and accountability — built around the pros who know best.</p>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">01</div>
-          <h3>AI-Powered Workouts</h3>
-          <p>Generate personalized workouts instantly with our AI trainer. Choose your goal, equipment, and time.</p>
-          <a href="ai-trainer.html" class="step-link">Try AI Trainer &#8594;</a>
-        </div>
-        <div class="step">
-          <div class="step-number">02</div>
-          <h3>Expert Trainers</h3>
-          <p>Subscribe to certified personal trainers. Get custom programs, progress tracking, and 1-on-1 messaging.</p>
-          <a href="trainers.html" class="step-link">Browse Trainers &#8594;</a>
-        </div>
-        <div class="step">
-          <div class="step-number">03</div>
-          <h3>Nutrition Plans</h3>
-          <p>Work with certified nutritionists for personalized meal plans, macro coaching, and ongoing support.</p>
-          <a href="nutritionists.html" class="step-link">Browse Nutritionists &#8594;</a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <script>
+    // Flowing mesh gradient animation
+    const canvas = document.getElementById('flowCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, time = 0;
 
-  <!-- Testimonials -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="tag">Testimonials</span>
-        <h2>Real results from real people</h2>
-      </div>
-      <div class="testimonials">
-        <div class="testimonial">
-          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"I subscribed to Coach Marcus for strength training and Sarah for nutrition. Down 30 lbs in 4 months. Shape made it so easy to find pros who actually care."</p>
-          <div class="testimonial-author">
-            <div class="avatar avatar-sm">JR</div>
-            <div><strong>Jake R.</strong><span>Member since 2025</span></div>
-          </div>
-        </div>
-        <div class="testimonial">
-          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"The ability to try different trainers without long-term contracts is a game changer. I found my perfect HIIT coach in the first week."</p>
-          <div class="testimonial-author">
-            <div class="avatar avatar-sm">AL</div>
-            <div><strong>Aisha L.</strong><span>Member since 2024</span></div>
-          </div>
-        </div>
-        <div class="testimonial">
-          <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"As a nutritionist on Shape, I've been able to reach clients worldwide. The platform handles everything so I can focus on helping people eat better."</p>
-          <div class="testimonial-author">
-            <div class="avatar avatar-sm">DM</div>
-            <div><strong>Dr. Maria D.</strong><span>Nutritionist</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
 
-  <!-- CTA -->
-  <section class="cta-section">
-    <div class="container">
-      <h2>Ready to get in <span class="gradient-text">Shape</span>?</h2>
-      <p>Join thousands of members transforming their bodies and lives.</p>
-      <a href="landing.html" class="btn btn-primary btn-lg">Get Started — It's Free</a>
-    </div>
-  </section>
+    // Gradient orbs
+    const orbs = [
+      { x: 0.3, y: 0.3, r: 0.4, vx: 0.0003, vy: 0.0002, color: [45, 212, 191] },
+      { x: 0.7, y: 0.6, r: 0.35, vx: -0.0002, vy: 0.0003, color: [20, 184, 166] },
+      { x: 0.5, y: 0.8, r: 0.3, vx: 0.0004, vy: -0.0002, color: [59, 130, 246] },
+      { x: 0.2, y: 0.6, r: 0.25, vx: -0.0003, vy: -0.0001, color: [139, 92, 246] },
+      { x: 0.8, y: 0.2, r: 0.3, vx: 0.0001, vy: 0.0004, color: [45, 212, 191] },
+    ];
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <a href="index.html" class="logo">
-            <img src="logo.png" alt="Shape" class="logo-img">
-          </a>
-          <p class="footer-desc">Your body. Your Shape. Subscribe to expert trainers and nutritionists, on your terms.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Platform</h4>
-          <a href="ai-trainer.html">AI Trainer</a>
-          <a href="trainers.html">Trainers</a>
-          <a href="nutritionists.html">Nutritionists</a>
-          <a href="pricing.html">Pricing</a>
-        </div>
-        <div class="footer-col">
-          <h4>Get Started</h4>
-          <a href="signup-client.html">Sign Up as Client</a>
-          <a href="signup-trainer.html">Apply as Trainer</a>
-          <a href="signup-nutritionist.html">Apply as Nutritionist</a>
-          <a href="signup-gym.html">Partner as Gym</a>
-          <a href="progress.html">My Progress</a>
-          <a href="nutrition-schedule.html">Nutrition Schedule</a>
-          <a href="trainer-dashboard.html">Trainer Dashboard</a>
-        </div>
-        <div class="footer-col">
-          <h4>Support</h4>
-          <a href="#">Help Center</a>
-          <a href="#">Contact</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 Shape. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    function draw() {
+      time++;
+      ctx.fillStyle = '#0a0a0a';
+      ctx.fillRect(0, 0, w, h);
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+      orbs.forEach((orb, i) => {
+        // Organic movement
+        orb.x += orb.vx + Math.sin(time * 0.001 + i * 1.5) * 0.0002;
+        orb.y += orb.vy + Math.cos(time * 0.0012 + i * 2) * 0.0002;
 
-  <script src="app.js"></script>
+        // Wrap around
+        if (orb.x < -0.2) orb.x = 1.2;
+        if (orb.x > 1.2) orb.x = -0.2;
+        if (orb.y < -0.2) orb.y = 1.2;
+        if (orb.y > 1.2) orb.y = -0.2;
+
+        const cx = orb.x * w;
+        const cy = orb.y * h;
+        const radius = orb.r * Math.min(w, h);
+
+        const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+        const [r, g, b] = orb.color;
+        const pulse = 0.06 + Math.sin(time * 0.002 + i) * 0.02;
+        gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${pulse})`);
+        gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${pulse * 0.4})`);
+        gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+      });
+
+      // Flowing lines
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        const startY = (h / 8) * i + Math.sin(time * 0.003 + i) * 40;
+        ctx.moveTo(0, startY);
+        for (let x = 0; x <= w; x += 20) {
+          const y = startY + Math.sin(x * 0.003 + time * 0.002 + i) * 60 + Math.cos(x * 0.001 + time * 0.001) * 30;
+          ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+
+    // Enter transition
+    function enterSite(e) {
+      e.preventDefault();
+      document.getElementById('introContent').classList.add('leaving');
+      setTimeout(() => {
+        window.location.href = 'home.html';
+      }, 700);
+    }
+  </script>
+
 </body>
 </html>
