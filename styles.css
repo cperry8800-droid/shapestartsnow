@@ -113,7 +113,7 @@ ul { list-style: none; }
 .hero-bg { position: absolute; inset: 0; background: transparent; }
 .hero-content { position: relative; text-align: left; max-width: 100%; margin: 0; }
 .hero h1 {
-  font-size: clamp(3rem, 6.5vw, 6.5rem); font-weight: 300; line-height: 1.1;
+  font-size: clamp(2.2rem, 4.5vw, 4rem); font-weight: 300; line-height: 1.1;
   margin-bottom: 24px; letter-spacing: -0.03em;
 }
 .hero-logo { display: inline-block; height: 1em; width: auto; vertical-align: baseline; margin: 0 4px; }
