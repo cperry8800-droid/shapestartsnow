@@ -166,7 +166,7 @@ ul { list-style: none; }
 /* ===== Cards ===== */
 .card-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 32px;
+  gap: 32px; justify-items: start;
 }
 .card {
   background: var(--bg-card); border: 1px solid var(--border); border-radius: 0;
