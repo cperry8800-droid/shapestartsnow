@@ -169,6 +169,11 @@
       .meal-log-entry { flex-wrap: wrap; }
     }
   </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1A1A1A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
 </head>
 <body>
 
@@ -404,5 +409,6 @@
 
   <script src="app.js"></script>
   <script src="nutrition-schedule.js"></script>
+  <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
