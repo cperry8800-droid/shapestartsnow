@@ -128,12 +128,12 @@
     }
 
     @keyframes triFloatA {
-      0%, 100% { transform: translateY(0px); filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.3)); }
-      50%       { transform: translateY(-9px); filter: drop-shadow(0 0 14px rgba(45, 212, 191, 0.7)); }
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-9px); }
     }
     @keyframes triFloatB {
-      0%, 100% { transform: translateY(0px); opacity: 0.85; }
-      50%       { transform: translateY(-6px); opacity: 1; }
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
     }
 
     .intro-tagline {
@@ -275,12 +275,12 @@
   <!-- Loading Screen -->
   <div class="loader-overlay" id="loaderOverlay">
     <div class="loader-box">
-      <svg class="loader-logo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape">
-        <polygon class="tri-a" points="72,38 72,82 105,60" fill="#2DD4BF"/>
-        <polygon class="tri-b" points="128,18 128,62 95,40" fill="rgba(255,255,255,0.5)"/>
+      <svg class="loader-logo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape" style="opacity:0.4">
+        <polygon class="tri-a" points="72,38 72,82 105,60" fill="white"/>
+        <polygon class="tri-b" points="128,18 128,62 95,40" fill="white"/>
         <text x="100" y="110" text-anchor="middle"
           font-family="Inter, Helvetica, Arial, sans-serif"
-          font-size="22" font-weight="300" letter-spacing="8" fill="rgba(255,255,255,0.3)">SHAPE</text>
+          font-size="22" font-weight="300" letter-spacing="8" fill="white">SHAPE</text>
       </svg>
       <div class="loader-track">
         <div class="loader-fill" id="loaderFill"></div>
@@ -298,14 +298,11 @@
 
   <div class="intro-content" id="introContent">
     <svg class="intro-logo" id="introLogo" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg" aria-label="Shape">
-      <!-- Teal triangle — points right, floats higher -->
-      <polygon class="tri-a" points="72,38 72,82 105,60" fill="#2DD4BF"/>
-      <!-- White triangle — points left, floats gently -->
-      <polygon class="tri-b" points="128,18 128,62 95,40" fill="rgba(255,255,255,0.9)"/>
-      <!-- Wordmark -->
+      <polygon class="tri-a" points="72,38 72,82 105,60" fill="white"/>
+      <polygon class="tri-b" points="128,18 128,62 95,40" fill="white"/>
       <text x="100" y="110" text-anchor="middle"
         font-family="Inter, Helvetica, Arial, sans-serif"
-        font-size="22" font-weight="300" letter-spacing="8" fill="rgba(255,255,255,0.85)">SHAPE</text>
+        font-size="22" font-weight="300" letter-spacing="8" fill="white">SHAPE</text>
     </svg>
     <p class="intro-tagline" id="introTagline">Your body. Your shape.</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
