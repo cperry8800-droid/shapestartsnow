@@ -66,20 +66,6 @@
     }
     .number-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 400; text-transform: uppercase; letter-spacing: 0.08em; }
 
-    .about-values { padding: 80px 0; }
-    .values-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
-    }
-    .value-card {
-      background: var(--bg-card); border: 1px solid var(--border);
-      padding: 36px; display: flex; gap: 20px;
-    }
-    .value-number {
-      font-size: 2rem; font-weight: 900; color: var(--accent); flex-shrink: 0; line-height: 1;
-    }
-    .value-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
-    .value-card p { font-size: 0.88rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
-
     .about-for-trainers { padding: 80px 0; }
     .for-trainers-split {
       display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
@@ -100,7 +86,6 @@
     @media (max-width: 900px) {
       .difference-grid { grid-template-columns: 1fr; }
       .numbers-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-      .values-grid { grid-template-columns: 1fr; }
       .for-trainers-split { grid-template-columns: 1fr; }
     }
   </style>
@@ -170,33 +155,23 @@
       <div class="difference-grid">
         <div class="difference-card">
           <div class="difference-icon">01</div>
-          <h3>No Middlemen, No Markup</h3>
-          <p>Trainers set their own prices. You pay them directly. Shape charges a flat $10/month platform fee — that's it. No percentage cuts, no hidden charges, no surprise fees.</p>
+          <h3>Cancel Anytime, No Contracts</h3>
+          <p>Subscribe to a trainer this month, try a different one next month. No lock-in periods, no cancellation fees. Your fitness journey should be flexible.</p>
         </div>
         <div class="difference-card">
           <div class="difference-icon">02</div>
-          <h3>Cancel Anytime, No Contracts</h3>
-          <p>Subscribe to a trainer this month, try a different one next month. There are no lock-in periods, no cancellation fees, and no guilt trips. Your fitness journey should be flexible.</p>
+          <h3>Real Pros, Verified Credentials</h3>
+          <p>Every trainer and nutritionist on Shape is vetted and certified. We only accept professionals who are serious about helping clients.</p>
         </div>
         <div class="difference-card">
           <div class="difference-icon">03</div>
-          <h3>Real Pros, Verified Credentials</h3>
-          <p>Every trainer and nutritionist on Shape is vetted and certified. We verify credentials, review track records, and only accept professionals who are serious about helping clients.</p>
+          <h3>AI + Human Expertise</h3>
+          <p>Our AI Trainer generates workouts instantly. When you want real coaching and accountability — that's what our human trainers are for.</p>
         </div>
         <div class="difference-card">
           <div class="difference-icon">04</div>
-          <h3>Gym or At Home — Your Choice</h3>
-          <p>Every workout on Shape is tagged with a location so you know exactly what you need. Train at the gym with full equipment or crush it at home with bodyweight and bands.</p>
-        </div>
-        <div class="difference-card">
-          <div class="difference-icon">05</div>
-          <h3>AI + Human Expertise</h3>
-          <p>Our AI Trainer generates workouts instantly when you need something quick. But when you want real coaching, real accountability, and real programming — that's what our human trainers are for.</p>
-        </div>
-        <div class="difference-card">
-          <div class="difference-icon">06</div>
           <h3>Community Built In</h3>
-          <p>Shape isn't just a marketplace. It's a community of people working toward the same goal. Chat with other members, share workouts, follow friends, and stay accountable together.</p>
+          <p>Chat with other members, share workouts, follow friends, and stay accountable together. Shape is more than a marketplace.</p>
         </div>
       </div>
     </div>
@@ -241,96 +216,17 @@
         <div class="how-step">
           <div class="how-step-dot"></div>
           <h3>Sign up for Shape — $10/month</h3>
-          <p>Your membership includes full platform access, AI Trainer, progress tracking, nutrition scheduling, community chat, and Shape Radio with ad-free workout music.</p>
+          <p>Get full platform access including AI Trainer, progress tracking, community chat, and Shape Radio.</p>
         </div>
         <div class="how-step">
           <div class="how-step-dot"></div>
-          <h3>Browse trainers and nutritionists</h3>
-          <p>Explore profiles, read reviews, preview workouts, and find the pros that match your goals. Filter by specialty — strength, HIIT, cardio, functional, at home, and more.</p>
-        </div>
-        <div class="how-step">
-          <div class="how-step-dot"></div>
-          <h3>Subscribe or buy individual plans</h3>
-          <p>Each pro sets their own pricing. Subscribe monthly for ongoing access to their full library, or purchase individual workout and meal plans one at a time.</p>
+          <h3>Subscribe to trainers & nutritionists</h3>
+          <p>Browse profiles, filter by specialty, and subscribe monthly or buy individual plans. Each pro sets their own pricing.</p>
         </div>
         <div class="how-step">
           <div class="how-step-dot"></div>
           <h3>Train, track, and transform</h3>
-          <p>Follow your workouts, log your progress, track your nutrition, message your trainer directly, and connect with the community. Everything lives in one place.</p>
-        </div>
-        <div class="how-step">
-          <div class="how-step-dot"></div>
-          <h3>Switch it up whenever you want</h3>
-          <p>Cancel a trainer subscription, try someone new, mix and match — Shape is built for flexibility. Your fitness journey evolves, and your platform should too.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Benefits -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <span class="tag">Benefits</span>
-        <h2>Everything included with Shape</h2>
-        <p>One membership. No add-ons. No upsells.</p>
-      </div>
-      <div class="values-grid">
-        <div class="value-card">
-          <div class="value-number">1</div>
-          <div>
-            <h3>Full Trainer & Nutritionist Marketplace</h3>
-            <p>Browse every trainer and nutritionist on the platform. Read reviews, compare specialties, preview workouts, and subscribe to as many as you want.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">2</div>
-          <div>
-            <h3>AI Trainer</h3>
-            <p>Generate custom workouts instantly. Choose your goal, available equipment, time, and difficulty — and get a personalized session in seconds.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">3</div>
-          <div>
-            <h3>Progress Tracking & Analytics</h3>
-            <p>Log workouts, track your streak, monitor calories burned, and see your monthly progress charts. Your weekly schedule keeps you on track.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">4</div>
-          <div>
-            <h3>Nutrition Schedule & Macro Tracking</h3>
-            <p>Plan your meals, track macros, and follow nutritionist-designed meal plans. Everything syncs with your training for a complete picture.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">5</div>
-          <div>
-            <h3>Direct Messaging</h3>
-            <p>Message your trainers and nutritionists directly. Ask questions, get form checks, adjust your plan, and stay connected with the pros guiding you.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">6</div>
-          <div>
-            <h3>Community & Social</h3>
-            <p>Chat with other members, follow friends, share your favorite workouts and trainers, and build accountability with people who get it.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">7</div>
-          <div>
-            <h3>Shape Radio</h3>
-            <p>Ad-free curated workout music stations. The right playlist can make or break a session — Shape Radio keeps you in the zone.</p>
-          </div>
-        </div>
-        <div class="value-card">
-          <div class="value-number">8</div>
-          <div>
-            <h3>Gym & At Home Workouts</h3>
-            <p>Every workout is tagged so you know if it's designed for the gym or your living room. No equipment? No problem. Shape has you covered either way.</p>
-          </div>
+          <p>Follow workouts, log progress, track nutrition, and message your pros directly. Everything in one place.</p>
         </div>
       </div>
     </div>
