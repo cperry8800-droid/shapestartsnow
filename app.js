@@ -54,17 +54,30 @@ const trainers = [
     tags: ["Cardio", "HIIT", "Endurance"]
   },
   {
-    id: 5, name: "Sophie Turner", specialty: "Functional Fitness",
-    category: "functional", price: 54.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
-    bio: "Functional fitness expert who builds programs that make you stronger, faster, and ready for anything life throws at you.",
+    id: 5, name: "Sophie Turner", specialty: "Mobility & Recovery",
+    category: "mobility", price: 54.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
+    bio: "Mobility specialist who builds programs that keep you moving well — fewer injuries, better range, more years training.",
     color: "#EF4444",
     workouts: [
-      { name: "Total Body Conditioning", type: "Functional", duration: "35 min", difficulty: "Advanced", location: "Gym", price: 31.99, description: "Full-body workout combining compound lifts with metabolic conditioning." },
-      { name: "Functional Foundations", type: "Functional", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Master the basic functional movements before scaling up." },
-      { name: "Strength & Power", type: "Strength", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Progressive overload training with compound movements for real-world strength." },
-      { name: "Athletic Circuit", type: "Functional", duration: "25 min", difficulty: "Advanced", location: "At Home", price: 29.99, description: "Fast-paced athletic circuits that build coordination, power, and agility." },
+      { name: "Full Body Mobility Flow", type: "Mobility", duration: "35 min", difficulty: "All Levels", location: "At Home", price: 31.99, description: "Head-to-toe mobility routine that opens up everything. No equipment needed." },
+      { name: "Mobility Foundations", type: "Mobility", duration: "40 min", difficulty: "Beginner", location: "At Home", price: 27.99, description: "Learn the basics of joint health and movement quality before loading up." },
+      { name: "Pre-Workout Warm-Up", type: "Mobility", duration: "15 min", difficulty: "All Levels", location: "Gym", price: 19.99, description: "Quick activation routine to prime your joints and muscles before lifting." },
+      { name: "Recovery Day Protocol", type: "Mobility", duration: "30 min", difficulty: "All Levels", location: "At Home", price: 24.99, description: "Active recovery session combining stretching, foam rolling cues, and breathwork." },
     ],
-    tags: ["Functional", "Strength", "Athletic"]
+    tags: ["Mobility", "Recovery", "Flexibility"]
+  },
+  {
+    id: 6, name: "Jordan Blake", specialty: "Weight Loss",
+    category: "weightloss", price: 44.99, rating: 4.9, subscribers: 2180, experience: "7 yrs",
+    bio: "Straight-up fat loss programs that work. No gimmicks, no crash diets — just structured training and accountability.",
+    color: "#F59E0B",
+    workouts: [
+      { name: "Lean Out — Phase 1", type: "Weight Loss", duration: "40 min", difficulty: "Beginner", location: "Gym", price: 29.99, description: "Entry-level fat loss program combining resistance training with steady-state cardio." },
+      { name: "Lean Out — Phase 2", type: "Weight Loss", duration: "45 min", difficulty: "Intermediate", location: "Gym", price: 34.99, description: "Progressive overload meets metabolic conditioning. For when Phase 1 gets easy." },
+      { name: "At Home Burn", type: "Weight Loss", duration: "30 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Bodyweight circuits designed to keep your heart rate up and burn calories at home." },
+      { name: "Accountability Check-In", type: "Weight Loss", duration: "20 min", difficulty: "All Levels", location: "At Home", price: 19.99, description: "Weekly check-in session with progress tracking, weigh-in protocol, and adjustments." },
+    ],
+    tags: ["Weight Loss", "Fat Loss", "Cardio"]
   },
 ];
 
