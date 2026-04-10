@@ -239,21 +239,20 @@ function createTrainerCard(trainer) {
   const initials = trainer.name.split(' ').map(n => n[0]).join('');
   return `
     <div class="card" onclick="openTrainerModal(${trainer.id})" data-category="${trainer.category}">
-      <div class="card-banner" style="background: linear-gradient(135deg, ${trainer.color}33, ${trainer.color}11);">
-        ${trainer.avatar
-          ? `<img class="card-avatar-img" src="${trainer.avatar}" alt="${trainer.name}">`
-          : `<div class="card-avatar" style="background: ${trainer.color};">${initials}</div>`
-        }
-      </div>
       <div class="card-body">
-        <h3>${trainer.name}</h3>
-        <div class="card-specialty">${trainer.specialty}</div>
-        <p class="card-desc">${trainer.bio}</p>
-        <div class="workout-tags">
-          ${trainer.tags.map(t => `<span class="workout-tag">${t}</span>`).join('')}
+        <div class="card-header-row">
+          ${trainer.avatar
+            ? `<img class="card-avatar-inline" src="${trainer.avatar}" alt="${trainer.name}">`
+            : `<div class="card-avatar-inline" style="background: ${trainer.color};">${initials}</div>`
+          }
+          <div class="card-header-info">
+            <h3>${trainer.name}</h3>
+            <div class="card-specialty">${trainer.specialty}</div>
+          </div>
         </div>
+        <p class="card-desc">${trainer.bio}</p>
         <div class="card-meta">
-          <span class="card-rating">&#9733; ${trainer.rating}</span>
+          <span class="card-rating">${trainer.rating}</span>
           <span>${trainer.subscribers.toLocaleString()} subscribers</span>
           <span>${trainer.experience}</span>
         </div>
@@ -270,21 +269,20 @@ function createNutritionistCard(nutritionist) {
   const initials = nutritionist.name.split(' ').map(n => n[0]).join('');
   return `
     <div class="card" onclick="openNutritionistModal(${nutritionist.id})">
-      <div class="card-banner" style="background: linear-gradient(135deg, ${nutritionist.color}33, ${nutritionist.color}11);">
-        ${nutritionist.avatar
-          ? `<img class="card-avatar-img" src="${nutritionist.avatar}" alt="${nutritionist.name}">`
-          : `<div class="card-avatar" style="background: ${nutritionist.color};">${initials}</div>`
-        }
-      </div>
       <div class="card-body">
-        <h3>${nutritionist.name}</h3>
-        <div class="card-specialty">${nutritionist.specialty}</div>
-        <p class="card-desc">${nutritionist.bio}</p>
-        <div class="workout-tags">
-          ${nutritionist.tags.map(t => `<span class="workout-tag">${t}</span>`).join('')}
+        <div class="card-header-row">
+          ${nutritionist.avatar
+            ? `<img class="card-avatar-inline" src="${nutritionist.avatar}" alt="${nutritionist.name}">`
+            : `<div class="card-avatar-inline" style="background: ${nutritionist.color};">${initials}</div>`
+          }
+          <div class="card-header-info">
+            <h3>${nutritionist.name}</h3>
+            <div class="card-specialty">${nutritionist.specialty}</div>
+          </div>
         </div>
+        <p class="card-desc">${nutritionist.bio}</p>
         <div class="card-meta">
-          <span class="card-rating">&#9733; ${nutritionist.rating}</span>
+          <span class="card-rating">${nutritionist.rating}</span>
           <span>${nutritionist.subscribers.toLocaleString()} subscribers</span>
           <span>${nutritionist.experience}</span>
         </div>
@@ -315,7 +313,7 @@ if (totmCard) {
           <p class="totm-quote">"${totm.totmQuote}"</p>
           <p class="card-desc">${totm.bio}</p>
           <div class="trainer-detail-stats">
-            <span>&#9733; ${totm.rating} rating</span>
+            <span>${totm.rating} rating</span>
             <span>${totm.subscribers.toLocaleString()} subscribers</span>
             <span>${totm.experience} experience</span>
           </div>
@@ -353,7 +351,7 @@ if (notmCard) {
           <p class="totm-quote">"${notm.notmQuote}"</p>
           <p class="card-desc">${notm.bio}</p>
           <div class="card-meta">
-            <span>&#9733; ${notm.rating} rating</span>
+            <span>${notm.rating} rating</span>
             <span>${notm.subscribers.toLocaleString()} subscribers</span>
             <span>${notm.experience} experience</span>
           </div>
@@ -479,7 +477,7 @@ function openTrainerModal(id) {
         <div class="card-specialty">${t.specialty}</div>
         <p class="card-desc">${t.bio}</p>
         <div class="trainer-detail-stats">
-          <span>&#9733; ${t.rating} rating</span>
+          <span>${t.rating} rating</span>
           <span>${t.subscribers.toLocaleString()} subscribers</span>
           <span>${t.experience} experience</span>
         </div>
@@ -535,7 +533,7 @@ function openNutritionistModal(id) {
         <div class="card-specialty">${n.specialty}</div>
         <p class="card-desc">${n.bio}</p>
         <div class="trainer-detail-stats">
-          <span>&#9733; ${n.rating} rating</span>
+          <span>${n.rating} rating</span>
           <span>${n.subscribers.toLocaleString()} subscribers</span>
           <span>${n.experience} experience</span>
         </div>

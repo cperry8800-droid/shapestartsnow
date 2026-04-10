@@ -142,37 +142,7 @@
     /* Vertical list layout */
     #nutritionistGrid.card-grid {
       grid-template-columns: 1fr;
-      gap: 16px;
-    }
-    #nutritionistGrid .card {
-      display: flex;
-      flex-direction: row;
-      border-radius: 0;
-    }
-    #nutritionistGrid .card-banner {
-      width: 200px;
-      min-width: 200px;
-      height: auto;
-      min-height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    #nutritionistGrid .card-avatar {
-      position: static;
-      width: 72px;
-      height: 72px;
-      font-size: 1.4rem;
-      border: none;
-    }
-    #nutritionistGrid .card-avatar-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    #nutritionistGrid .card-body {
-      padding: 24px 28px;
-      flex: 1;
+      gap: 12px;
     }
     @media (max-width: 768px) {
       .filter-bar-top {
@@ -181,23 +151,6 @@
       .filter-sort {
         min-width: unset;
         width: 100%;
-      }
-      #nutritionistGrid .card {
-        flex-direction: column;
-      }
-      #nutritionistGrid .card-banner {
-        width: 100%;
-        min-width: unset;
-        height: 160px;
-        min-height: unset;
-      }
-      #nutritionistGrid .card-avatar {
-        position: absolute;
-        bottom: -28px;
-        left: 28px;
-      }
-      #nutritionistGrid .card-body {
-        padding: 44px 28px 28px;
       }
     }
   </style>
