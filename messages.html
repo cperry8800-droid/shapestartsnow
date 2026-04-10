@@ -140,8 +140,16 @@
 
     @media (max-width: 768px) {
       .msg-layout { grid-template-columns: 1fr; }
-      .msg-sidebar { display: none; }
-      .msg-sidebar.mobile-open { display: flex; position: fixed; inset: 0; z-index: 100; width: 100%; }
+      .msg-chat { display: none; }
+      .msg-chat.mobile-open { display: flex; }
+      .msg-sidebar.mobile-hidden { display: none; }
+      .msg-back-btn {
+        display: none; background: none; border: none; font-size: 0.85rem;
+        color: var(--text-muted); cursor: pointer; padding: 0; font-family: inherit;
+      }
+    }
+    @media (max-width: 768px) {
+      .msg-back-btn { display: inline-block; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -333,12 +341,19 @@
 
       const initials = c.name.split(' ').map(n => n[0]).join('');
       document.getElementById('msgChatHeader').innerHTML = `
+        <button class="msg-back-btn" onclick="backToContacts()">&#8592; Back</button>
         <div class="msg-contact-avatar" style="background:${c.status === 'online' ? 'var(--accent-dark)' : 'var(--text)'};">${initials}</div>
         <div class="msg-chat-header-info">
           <h3>${c.name} <span class="msg-role-tag ${c.roleClass}">${c.role}</span></h3>
           <span>${c.status === 'online' ? 'Online' : 'Offline'}</span>
         </div>
       `;
+
+      // Mobile: show chat, hide sidebar
+      if (window.innerWidth <= 768) {
+        document.getElementById('msgSidebar').classList.add('mobile-hidden');
+        document.getElementById('msgChat').classList.add('mobile-open');
+      }
 
       renderMessages(c);
       document.getElementById('msgInput').focus();
@@ -407,6 +422,14 @@
         if (activeConversation === c.id) renderMessages(c);
         renderContacts(document.getElementById('msgSearch').value);
       }, 1500 + Math.random() * 2000);
+    }
+
+    function backToContacts() {
+      document.getElementById('msgSidebar').classList.remove('mobile-hidden');
+      document.getElementById('msgChat').classList.remove('mobile-open');
+      activeConversation = null;
+      document.getElementById('msgEmpty').style.display = '';
+      document.getElementById('msgChatArea').style.display = 'none';
     }
 
     // Init
