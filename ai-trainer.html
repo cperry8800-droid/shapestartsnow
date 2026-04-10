@@ -95,10 +95,10 @@
   <section class="ai-select-section">
     <div class="container">
       <div class="ai-select-grid">
-        <div class="ai-select-card" id="selectNova" onclick="selectTrainer('nova')">
+        <div class="ai-select-card" id="selectNora" onclick="selectTrainer('nova')">
           <div class="ai-select-avatar" style="background: var(--accent-dark);">N</div>
-          <h3>Nova</h3>
-          <p class="ai-select-desc">Encouraging and methodical. Nova focuses on form, recovery, and sustainable progress. Great for balanced training and flexibility.</p>
+          <h3>Nora</h3>
+          <p class="ai-select-desc">Encouraging and methodical. Nora focuses on form, recovery, and sustainable progress. Great for balanced training and flexibility.</p>
           <div class="ai-select-traits">
             <span>Supportive</span>
             <span>Detail-Oriented</span>
@@ -130,11 +130,11 @@
             <div class="ai-trainer-name-card">
               <div class="ai-trainer-name-avatar" id="trainerAvatar">N</div>
               <div>
-                <h3 id="trainerNameDisplay">Nova</h3>
+                <h3 id="trainerNameDisplay">Nora</h3>
                 <span>Shape AI Trainer</span>
               </div>
             </div>
-            <p class="ai-trainer-bio" id="trainerBioDisplay">Nova is Shape's AI-powered personal trainer. Built on years of exercise science data, Nova creates personalized workout plans tailored to your fitness level, goals, and available equipment.</p>
+            <p class="ai-trainer-bio" id="trainerBioDisplay">Nora is Shape's AI-powered personal trainer. Built on years of exercise science data, Nora creates personalized workout plans tailored to your fitness level, goals, and available equipment.</p>
           </div>
 
           <div class="ai-feature">
@@ -174,7 +174,7 @@
           <div class="ai-chat-header" id="aiChatHeader">
             <div class="ai-chat-avatar" style="background: var(--accent-dark);" id="chatAvatar">N</div>
             <div>
-              <strong id="chatName">Nova</strong>
+              <strong id="chatName">Nora</strong>
               <span class="ai-status">Online</span>
             </div>
           </div>
@@ -250,12 +250,12 @@
   <script>
     const aiTrainers = {
       nova: {
-        name: 'Nova',
+        name: 'Nora',
         initial: 'N',
         color: 'var(--accent-dark)',
-        bio: "Nova is Shape's female AI trainer. Encouraging and methodical, she focuses on form, recovery, and sustainable progress. Nova creates balanced workout plans tailored to your fitness level and goals.",
-        greeting: "Hey! I'm <strong>Nova</strong>, your AI trainer. I'll build you a personalized workout right now. Let's start — what's your <strong>fitness goal</strong>?",
-        placeholder: "Type a message to Nova...",
+        bio: "Nora is Shape's female AI trainer. Encouraging and methodical, she focuses on form, recovery, and sustainable progress. Nora creates balanced workout plans tailored to your fitness level and goals.",
+        greeting: "Hey! I'm <strong>Nora</strong>, your AI trainer. I'll build you a personalized workout right now. Let's start — what's your <strong>fitness goal</strong>?",
+        placeholder: "Type a message to Nora...",
       },
       atlas: {
         name: 'Sebastian',
@@ -274,7 +274,7 @@
       const t = aiTrainers[type];
 
       // Highlight selected card
-      document.getElementById('selectNova').classList.toggle('selected', type === 'nova');
+      document.getElementById('selectNora').classList.toggle('selected', type === 'nova');
       document.getElementById('selectSebastian').classList.toggle('selected', type === 'atlas');
 
       // Show trainer session
@@ -287,7 +287,7 @@
       document.getElementById('trainerBioDisplay').textContent = t.bio;
 
       // Update switch button
-      const other = type === 'nova' ? 'Sebastian' : 'Nova';
+      const other = type === 'nova' ? 'Sebastian' : 'Nora';
       document.getElementById('switchBtn').textContent = `Switch to ${other}`;
 
       // Update chat header
