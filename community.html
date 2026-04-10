@@ -302,12 +302,20 @@
     }
     @media (max-width: 768px) {
       .community-layout {
-        grid-template-columns: 1fr; height: auto; min-height: calc(100vh - 80px);
+        display: flex; flex-direction: column; height: auto; min-height: calc(100vh - 80px);
       }
-      .community-sidebar { height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
-      .community-chat { min-height: 400px; }
+      .community-sidebar {
+        height: auto; max-height: 360px; border-right: none; border-bottom: 1px solid var(--border);
+        overflow: visible;
+      }
+      .community-list { max-height: 180px; overflow-y: auto; }
+      .community-chat { min-height: 400px; flex: 1; }
       .community-activity { display: none; }
       .chat-msg { max-width: 95%; }
+      .community-user { padding: 10px 16px; }
+      .friend-btn { font-size: 0.65rem; padding: 4px 10px; }
+      .chat-channel-tabs { flex-wrap: wrap; }
+      .chat-channel { font-size: 0.7rem; padding: 6px 10px; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
