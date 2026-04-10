@@ -383,9 +383,12 @@
           </div>
         </div>
       </div>
-      <div class="chat-channel-tabs">
-        <button class="chat-channel active" onclick="switchChannel('trainer')">Trainer Chat</button>
-        <button class="chat-channel" onclick="switchChannel('general')">General</button>
+      <div class="chat-channel-tabs" id="mainChatTabs">
+        <button class="chat-channel active" onclick="switchMainTab('trainer')">Trainer Chat</button>
+        <button class="chat-channel" onclick="switchMainTab('client')">Client Chat</button>
+      </div>
+      <div class="chat-channel-tabs chat-sub-tabs" id="clientSubTabs" style="display:none; border-top:none; padding-top:0;">
+        <button class="chat-channel active" onclick="switchChannel('general')">General</button>
         <button class="chat-channel" onclick="switchChannel('workouts')">Workouts</button>
         <button class="chat-channel" onclick="switchChannel('nutrition')">Nutrition</button>
         <button class="chat-channel" onclick="switchChannel('motivation')">Motivation</button>
@@ -645,15 +648,47 @@
 
     function filterUsers() { renderUserList(); }
 
-    function switchChannel(channel) {
-      currentChannel = channel;
-      document.querySelectorAll('.chat-channel').forEach(c => c.classList.remove('active'));
+    let currentMainTab = 'trainer';
+
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      document.querySelectorAll('#mainChatTabs .chat-channel').forEach(c => c.classList.remove('active'));
       event.target.classList.add('active');
 
-      const titles = { trainer: 'Trainer Chat', general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
-      const subs = { trainer: 'All trainers', general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
+      const subTabs = document.getElementById('clientSubTabs');
+      if (tab === 'client') {
+        subTabs.style.display = 'flex';
+        currentChannel = 'general';
+        // Reset sub-tab active state
+        document.querySelectorAll('#clientSubTabs .chat-channel').forEach(c => c.classList.remove('active'));
+        document.querySelector('#clientSubTabs .chat-channel').classList.add('active');
+        document.getElementById('chatTitle').textContent = 'General Chat';
+        document.getElementById('chatSubtitle').textContent = 'All members';
+        document.getElementById('chatAvatar').textContent = 'GC';
+        document.getElementById('chatAvatar').style.background = 'var(--primary)';
+      } else {
+        subTabs.style.display = 'none';
+        currentChannel = 'trainer';
+        document.getElementById('chatTitle').textContent = 'Trainer Chat';
+        document.getElementById('chatSubtitle').textContent = 'All trainers';
+        document.getElementById('chatAvatar').textContent = 'TC';
+        document.getElementById('chatAvatar').style.background = 'var(--accent)';
+      }
+      selectedUser = null;
+      renderChat();
+    }
+
+    function switchChannel(channel) {
+      currentChannel = channel;
+      document.querySelectorAll('#clientSubTabs .chat-channel').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const titles = { general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
+      const subs = { general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
       document.getElementById('chatTitle').textContent = titles[channel];
       document.getElementById('chatSubtitle').textContent = subs[channel];
+      document.getElementById('chatAvatar').textContent = channel === 'general' ? 'GC' : channel[0].toUpperCase();
+      document.getElementById('chatAvatar').style.background = 'var(--primary)';
 
       selectedUser = null;
       renderChat();
