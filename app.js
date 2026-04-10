@@ -89,6 +89,12 @@ const nutritionists = [
     color: "#10B981", nutritionistOfMonth: true,
     notmQuote: "Food is fuel, but the right food is a superpower. Let's unlock yours.",
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
+    plans: [
+      { name: "High Protein Performance", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Optimized macro split for muscle growth and recovery. 40/30/30 protein-forward approach." },
+      { name: "Competition Prep Plan", type: "Low Carb", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Periodized nutrition plan for athletes peaking for competition. Precise carb cycling included." },
+      { name: "Clean Bulk Blueprint", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to gain lean mass without excess fat. Includes supplement timing." },
+      { name: "Race Day Fuel Guide", type: "Performance", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Pre, during, and post-race nutrition strategy for endurance athletes." },
+    ],
     tags: ["Performance", "Athletes", "Macro Coaching"]
   },
   {
@@ -97,6 +103,12 @@ const nutritionists = [
     bio: "Registered dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
     color: "#6C3AED",
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
+    plans: [
+      { name: "Sustainable Deficit Plan", type: "Low Calorie", duration: "12 weeks", difficulty: "Beginner", price: 29.99, description: "Gradual calorie reduction with flexible food choices. No crash dieting — just steady results." },
+      { name: "Macro Counting Mastery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Learn to track and balance macros while hitting your weight loss goals." },
+      { name: "Metabolic Reset", type: "High Protein", duration: "6 weeks", difficulty: "Intermediate", price: 32.99, description: "Reverse diet protocol to restore metabolism after prolonged restriction." },
+      { name: "Weekend-Proof Plan", type: "Flexible", duration: "8 weeks", difficulty: "Beginner", price: 27.99, description: "A practical plan that accounts for social eating and weekends without derailing progress." },
+    ],
     tags: ["Weight Loss", "Sustainable", "Habit Coaching"]
   },
   {
@@ -105,6 +117,12 @@ const nutritionists = [
     bio: "Certified plant-based nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
     color: "#EC4899",
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
+    plans: [
+      { name: "Plant-Powered Starter", type: "Vegan", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Ease into plant-based eating with simple swaps and complete nutrition guidance." },
+      { name: "High Protein Vegan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Hit your protein goals without animal products. Includes 60+ recipes." },
+      { name: "Whole Foods Reset", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Eliminate processed foods and reset your palate with nutrient-dense whole foods." },
+      { name: "Vegan Athlete Fuel", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 39.99, description: "High-performance plant-based plan for serious athletes and active lifestyles." },
+    ],
     tags: ["Vegan", "Plant-Based", "Whole Foods"]
   },
   {
@@ -113,6 +131,12 @@ const nutritionists = [
     bio: "Functional medicine nutritionist specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
     color: "#F59E0B",
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
+    plans: [
+      { name: "Gut Restore Protocol", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Step-by-step gut healing plan with probiotics, bone broth, and targeted elimination." },
+      { name: "Anti-Inflammatory Reset", type: "Low Carb", duration: "6 weeks", difficulty: "Beginner", price: 34.99, description: "Remove inflammatory triggers and rebuild with healing whole foods." },
+      { name: "Food Sensitivity Blueprint", type: "Elimination", duration: "10 weeks", difficulty: "Advanced", price: 44.99, description: "Structured elimination and reintroduction protocol to identify your triggers." },
+      { name: "Digestive Wellness Plan", type: "Balanced", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Daily meal plans designed to support healthy digestion and reduce bloating." },
+    ],
     tags: ["Gut Health", "Functional", "Anti-Inflammatory"]
   },
   {
@@ -121,6 +145,12 @@ const nutritionists = [
     bio: "Specializes in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
     color: "#8B5CF6",
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
+    plans: [
+      { name: "First Trimester Foundations", type: "Prenatal", duration: "12 weeks", difficulty: "Beginner", price: 34.99, description: "Nausea-friendly meals packed with folate, iron, and essential nutrients for early pregnancy." },
+      { name: "Third Trimester Power Plan", type: "High Calorie", duration: "12 weeks", difficulty: "Intermediate", price: 37.99, description: "Calorie-dense nutrition to support baby's growth and prepare your body for delivery." },
+      { name: "Postnatal Recovery Plan", type: "Recovery", duration: "8 weeks", difficulty: "Beginner", price: 34.99, description: "Healing foods and balanced meals to support recovery and energy after birth." },
+      { name: "Lactation Boost Plan", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Nutrient-rich meals to support milk production and postpartum energy levels." },
+    ],
     tags: ["Prenatal", "Postnatal", "Maternal Health"]
   },
   {
@@ -129,6 +159,12 @@ const nutritionists = [
     bio: "Makes healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
     color: "#EF4444",
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
+    plans: [
+      { name: "$50/Week Meal Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "Complete weekly meal plan for one person on a tight budget. Includes shopping lists." },
+      { name: "Sunday Prep Master", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Prep all your weekday meals in under 2 hours every Sunday. Step-by-step guide." },
+      { name: "Family of Four Plan", type: "Budget", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Healthy, kid-friendly meals for the whole family without breaking the bank." },
+      { name: "15-Minute Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "30 quick and healthy recipes that go from fridge to plate in 15 minutes or less." },
+    ],
     tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
   },
 ];
@@ -379,7 +415,27 @@ function openNutritionistModal(id) {
       </div>
     </div>
     <div class="workout-list">
-      <h3>What You Get</h3>
+      <h3>Meal Plans — Buy Individually</h3>
+      ${n.plans.map(p => `
+        <div class="workout-item-purchase">
+          <div class="workout-item-info">
+            <h4>${p.name}</h4>
+            <p>${p.description}</p>
+            <div class="workout-item-tags">
+              <span class="workout-tag">${p.type}</span>
+              <span class="workout-tag">${p.duration}</span>
+              <span class="workout-tag">${p.difficulty}</span>
+            </div>
+          </div>
+          <div class="workout-item-buy">
+            <div class="workout-item-price">$${p.price.toFixed(2)}</div>
+            <button class="btn btn-sm btn-outline" onclick="purchaseWorkout('${p.name}', ${p.price}, event)">Buy Plan</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="workout-list" style="margin-top:24px;">
+      <h3>What's Included with Subscription</h3>
       ${n.services.map(s => `
         <div class="workout-item">
           <div class="workout-item-info">
@@ -399,7 +455,7 @@ function openNutritionistModal(id) {
     <div class="subscribe-bar">
       <div>
         <div class="card-price">$${n.price}<span>/mo</span></div>
-        <div style="font-size:0.82rem;color:var(--text-muted);">Cancel anytime</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">Subscribe for all plans + new ones monthly</div>
       </div>
       <button class="btn btn-accent" onclick="subscribe('${n.name}', ${n.price})">Subscribe Now</button>
     </div>
