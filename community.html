@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape — Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .community-layout {
+      display: grid; grid-template-columns: 300px 1fr 320px;
+      height: calc(100vh - 80px); margin-top: 80px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* === Left Panel: Friends & People === */
+    .community-sidebar {
+      border-right: 1px solid var(--border); display: flex;
+      flex-direction: column; background: var(--bg-card); overflow: hidden;
+    }
+    .community-sidebar-header {
+      padding: 20px 24px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .community-sidebar-header h2 { font-size: 1.05rem; font-weight: 600; }
+    .community-tabs {
+      display: flex; border-bottom: 1px solid var(--border);
+    }
+    .community-tab {
+      flex: 1; padding: 12px; text-align: center; font-size: 0.78rem;
+      font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text-muted); cursor: pointer; border: none; background: none;
+      border-bottom: 2px solid transparent; transition: all 0.3s;
+    }
+    .community-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+    .community-tab:hover { color: var(--text); }
+
+    .community-search {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+    }
+    .community-search input {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: inherit;
+      font-size: 0.82rem; outline: none; transition: border-color 0.3s;
+    }
+    .community-search input:focus { border-color: var(--accent); }
+
+    .community-list { flex: 1; overflow-y: auto; }
+    .community-user {
+      display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+      cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+    }
+    .community-user:hover { background: var(--bg-alt); }
+    .community-user.active { background: var(--bg-alt); }
+    .community-user-avatar {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.72rem; color: #fff;
+    }
+    .community-user-info { flex: 1; min-width: 0; }
+    .community-user-name {
+      font-size: 0.85rem; font-weight: 500; margin-bottom: 2px;
+    }
+    .community-user-status {
+      font-size: 0.75rem; color: var(--text-muted); font-weight: 300;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .community-user-action {
+      flex-shrink: 0;
+    }
+    .btn-follow {
+      padding: 6px 14px; font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid var(--accent);
+      background: transparent; color: var(--accent-dark); cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-follow:hover { background: var(--accent); color: #fff; }
+    .btn-follow.following {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .online-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22C55E;
+      display: inline-block; margin-right: 4px;
+    }
+    .offline-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--border);
+      display: inline-block; margin-right: 4px;
+    }
+
+    /* === Center: Chat === */
+    .community-chat {
+      display: flex; flex-direction: column; background: var(--bg);
+    }
+    .chat-header {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+      background: var(--bg-card); display: flex; align-items: center;
+      justify-content: space-between;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 12px; }
+    .chat-header-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.7rem; color: #fff; background: var(--primary);
+    }
+    .chat-header h3 { font-size: 0.95rem; font-weight: 600; }
+    .chat-header p { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; }
+    .chat-channel-tabs {
+      display: flex; gap: 8px; padding: 12px 24px;
+      border-bottom: 1px solid var(--border); background: var(--bg-card);
+    }
+    .chat-channel {
+      padding: 6px 16px; font-size: 0.75rem; font-weight: 500;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+    }
+    .chat-channel.active {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+    }
+    .chat-channel:hover:not(.active) { border-color: var(--text); color: var(--text); }
+
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 24px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .chat-msg {
+      display: flex; gap: 12px; max-width: 85%;
+    }
+    .chat-msg.own {
+      margin-left: auto; flex-direction: row-reverse;
+    }
+    .chat-msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.6rem; color: #fff;
+    }
+    .chat-msg-body {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 12px 16px; border-radius: 12px; border-top-left-radius: 4px;
+    }
+    .chat-msg.own .chat-msg-body {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+      border-top-left-radius: 12px; border-top-right-radius: 4px;
+    }
+    .chat-msg-name {
+      font-size: 0.72rem; font-weight: 600; margin-bottom: 4px;
+    }
+    .chat-msg.own .chat-msg-name { color: rgba(255,255,255,0.7); }
+    .chat-msg-text { font-size: 0.85rem; line-height: 1.5; font-weight: 300; }
+    .chat-msg-time {
+      font-size: 0.65rem; color: var(--text-muted); margin-top: 6px;
+    }
+    .chat-msg.own .chat-msg-time { color: rgba(255,255,255,0.5); }
+
+    .chat-input-area {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      background: var(--bg-card); display: flex; gap: 12px;
+    }
+    .chat-input-area input {
+      flex: 1; padding: 12px 16px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: inherit;
+      font-size: 0.85rem; outline: none; transition: border-color 0.3s;
+    }
+    .chat-input-area input:focus { border-color: var(--accent); }
+    .chat-send-btn {
+      padding: 12px 24px; background: var(--accent); color: #fff;
+      border: none; font-family: inherit; font-weight: 600; font-size: 0.8rem;
+      text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
+      transition: background 0.3s;
+    }
+    .chat-send-btn:hover { background: var(--accent-dark); }
+
+    /* === Right Panel: Profile & Activity === */
+    .community-activity {
+      border-left: 1px solid var(--border); display: flex;
+      flex-direction: column; background: var(--bg-card); overflow: hidden;
+    }
+    .activity-profile {
+      padding: 28px 20px; text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .activity-profile-avatar {
+      width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.1rem; color: #fff;
+    }
+    .activity-profile h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+    .activity-profile p { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+    .activity-stats {
+      display: flex; justify-content: center; gap: 24px; margin-top: 16px;
+    }
+    .activity-stat { text-align: center; }
+    .activity-stat-num { font-size: 1.1rem; font-weight: 700; }
+    .activity-stat-label {
+      font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.06em; font-weight: 500;
+    }
+
+    .activity-section-title {
+      padding: 16px 20px 8px; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);
+    }
+    .activity-feed { flex: 1; overflow-y: auto; }
+    .activity-item {
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    .activity-item:hover { background: var(--bg-alt); }
+    .activity-item-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+    .activity-item-avatar {
+      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.55rem; color: #fff;
+    }
+    .activity-item-name { font-size: 0.8rem; font-weight: 500; }
+    .activity-item-time { font-size: 0.68rem; color: var(--text-muted); margin-left: auto; }
+    .activity-item-text {
+      font-size: 0.78rem; color: var(--text-muted); font-weight: 300; line-height: 1.5;
+      padding-left: 38px;
+    }
+    .activity-workout-tag {
+      display: inline-block; padding: 2px 8px; font-size: 0.68rem;
+      background: rgba(45,212,191,0.1); color: var(--accent-dark);
+      font-weight: 500; margin-top: 4px;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 1100px) {
+      .community-layout { grid-template-columns: 280px 1fr; }
+      .community-activity { display: none; }
+    }
+    @media (max-width: 768px) {
+      .community-layout {
+        grid-template-columns: 1fr; height: auto; min-height: calc(100vh - 80px);
+      }
+      .community-sidebar { height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
+      .community-chat { min-height: 400px; }
+      .community-activity { display: none; }
+      .chat-msg { max-width: 95%; }
+    }
+  </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1A1A1A">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="apple-touch-icon" href="logo.png">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="home.html" class="logo">
+        <img src="logo.png" alt="Shape" class="logo-img">
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="ai-trainer.html">AI Trainer</a>
+        <a href="trainers.html">Trainers</a>
+        <a href="nutritionists.html">Nutritionists</a>
+        <a href="community.html" class="nav-active">Community</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+        <a href="radio.html" class="btn btn-sm btn-radio"><span class="btn-shape-text"><img src="logo.png" alt="Shape"></span> Radio</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Community Layout -->
+  <div class="community-layout">
+
+    <!-- Left: Friends & People -->
+    <div class="community-sidebar">
+      <div class="community-sidebar-header">
+        <h2>Community</h2>
+      </div>
+      <div class="community-tabs">
+        <button class="community-tab active" onclick="switchTab('friends')">Friends</button>
+        <button class="community-tab" onclick="switchTab('discover')">Discover</button>
+      </div>
+      <div class="community-search">
+        <input type="text" placeholder="Search people..." id="communitySearch" oninput="filterUsers()">
+      </div>
+      <div class="community-list" id="communityList">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Center: Chat -->
+    <div class="community-chat">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="chat-header-avatar" id="chatAvatar">GC</div>
+          <div>
+            <h3 id="chatTitle">General Chat</h3>
+            <p id="chatSubtitle">All members</p>
+          </div>
+        </div>
+      </div>
+      <div class="chat-channel-tabs">
+        <button class="chat-channel active" onclick="switchChannel('general')">General</button>
+        <button class="chat-channel" onclick="switchChannel('workouts')">Workouts</button>
+        <button class="chat-channel" onclick="switchChannel('nutrition')">Nutrition</button>
+        <button class="chat-channel" onclick="switchChannel('motivation')">Motivation</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- Populated by JS -->
+      </div>
+      <div class="chat-input-area">
+        <input type="text" placeholder="Type a message..." id="chatInput" onkeydown="if(event.key==='Enter')sendMessage()">
+        <button class="chat-send-btn" onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <!-- Right: Profile & Activity Feed -->
+    <div class="community-activity">
+      <div class="activity-profile" id="activityProfile">
+        <div class="activity-profile-avatar" style="background:#2DD4BF;">You</div>
+        <h3>Your Profile</h3>
+        <p>Member since 2025</p>
+        <div class="activity-stats">
+          <div class="activity-stat">
+            <div class="activity-stat-num" id="statFriends">4</div>
+            <div class="activity-stat-label">Friends</div>
+          </div>
+          <div class="activity-stat">
+            <div class="activity-stat-num">23</div>
+            <div class="activity-stat-label">Workouts</div>
+          </div>
+          <div class="activity-stat">
+            <div class="activity-stat-num">2</div>
+            <div class="activity-stat-label">Trainers</div>
+          </div>
+        </div>
+      </div>
+      <div class="activity-section-title">Friend Activity</div>
+      <div class="activity-feed" id="activityFeed">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    // === Community Data ===
+    const communityUsers = [
+      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025" },
+      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024" },
+      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025" },
+      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026" },
+      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Functional fitness enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Total Body Conditioning", memberSince: "2025" },
+      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape! Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026" },
+      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024" },
+      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Trying to get into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025" },
+    ];
+
+    const chatChannels = {
+      general: [
+        { user: communityUsers[0], text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
+        { user: communityUsers[1], text: "Anyone tried the new Tabata Inferno workout? It's insane", time: "10:31 AM" },
+        { user: communityUsers[3], text: "I did it yesterday! Couldn't walk after lol", time: "10:33 AM" },
+        { user: communityUsers[0], text: "Worth it though. The burn is real", time: "10:35 AM" },
+        { user: null, text: "Has anyone tried Nina Brooks' at home programs? Thinking about switching", time: "10:42 AM" },
+        { user: communityUsers[3], text: "Yes! Living Room HIIT is my go-to. No equipment needed and it still destroys me", time: "10:44 AM" },
+        { user: communityUsers[2], text: "I'm doing Sprint Intervals with Damon today. Who's joining?", time: "10:50 AM" },
+        { user: communityUsers[1], text: "I might hop in later! Need to recover from yesterday first 😅", time: "10:52 AM" },
+      ],
+      workouts: [
+        { user: communityUsers[0], text: "5x5 Foundation is the best strength program on the platform. 3 months and my squat went up 40lbs", time: "9:15 AM" },
+        { user: communityUsers[4], text: "Total Body Conditioning with Sophie Turner is no joke. Highly recommend", time: "9:22 AM" },
+        { user: null, text: "I've been doing Nina's Apartment-Friendly Strength. Great for home workouts", time: "9:30 AM" },
+        { user: communityUsers[3], text: "Band & Bodyweight Burn is also amazing from Nina. Just need a resistance band", time: "9:35 AM" },
+        { user: communityUsers[2], text: "For cardio people — Endurance Builder by Damon Clarke changed my running game", time: "9:41 AM" },
+        { user: communityUsers[1], text: "Anyone comparing HIIT Burn vs 20-Min Torch? Which one's better for beginners?", time: "9:48 AM" },
+      ],
+      nutrition: [
+        { user: communityUsers[3], text: "Started Dr. Sarah Mitchell's High Protein Performance plan. Meal prep Sunday was intense", time: "8:05 AM" },
+        { user: communityUsers[1], text: "Maria Santos has great vegan options if anyone's looking. Plant-Powered Starter is beginner friendly", time: "8:12 AM" },
+        { user: communityUsers[0], text: "How do you guys handle meal prep for the week? I always fall off by Wednesday", time: "8:20 AM" },
+        { user: null, text: "I use Alex Rivera's Sunday Prep Master plan. Game changer for staying consistent", time: "8:25 AM" },
+        { user: communityUsers[2], text: "Same! The $50/Week Meal Plan from Alex is also great if you're on a budget", time: "8:30 AM" },
+      ],
+      motivation: [
+        { user: communityUsers[0], text: "Day 90 of consistent training. Never going back to my old lifestyle", time: "7:00 AM" },
+        { user: communityUsers[1], text: "Let's go Jake!! That's amazing 💪", time: "7:05 AM" },
+        { user: communityUsers[3], text: "Reminder: even a 15-minute at home workout counts. Don't skip just because you can't get to the gym", time: "7:15 AM" },
+        { user: null, text: "Hit a new PR on deadlift today! This community keeps me going", time: "7:20 AM" },
+        { user: communityUsers[2], text: "Just signed up for a half marathon. Damon Clarke's programs are getting me there", time: "7:30 AM" },
+        { user: communityUsers[1], text: "You got this Carlos! We'll all be cheering you on", time: "7:33 AM" },
+      ]
+    };
+
+    const activityData = [
+      { user: communityUsers[0], action: "completed", workout: "5x5 Foundation", trainer: "Marcus Johnson", time: "2h ago" },
+      { user: communityUsers[1], action: "started following", workout: null, trainer: "Nina Brooks", time: "3h ago" },
+      { user: communityUsers[3], action: "completed", workout: "Living Room HIIT", trainer: "Nina Brooks", time: "4h ago" },
+      { user: communityUsers[2], action: "purchased", workout: "Sprint Intervals", trainer: "Damon Clarke", time: "5h ago" },
+      { user: communityUsers[0], action: "completed", workout: "Upper Body Blast", trainer: "Marcus Johnson", time: "1d ago" },
+      { user: communityUsers[3], action: "completed", workout: "Band & Bodyweight Burn", trainer: "Nina Brooks", time: "1d ago" },
+      { user: communityUsers[1], action: "completed", workout: "20-Min Torch", trainer: "Aisha Patel", time: "1d ago" },
+      { user: communityUsers[2], action: "completed", workout: "Endurance Builder", trainer: "Damon Clarke", time: "2d ago" },
+    ];
+
+    let currentTab = 'friends';
+    let currentChannel = 'general';
+    let selectedUser = null;
+
+    // === Render Functions ===
+    function renderUserList() {
+      const list = document.getElementById('communityList');
+      const search = document.getElementById('communitySearch').value.toLowerCase();
+      let users = communityUsers;
+
+      if (currentTab === 'friends') {
+        users = users.filter(u => u.friend);
+      }
+      if (search) {
+        users = users.filter(u => u.name.toLowerCase().includes(search) || u.bio.toLowerCase().includes(search));
+      }
+
+      // Sort: online first, then alphabetical
+      users.sort((a, b) => {
+        if (a.online !== b.online) return b.online - a.online;
+        return a.name.localeCompare(b.name);
+      });
+
+      list.innerHTML = users.map(u => `
+        <div class="community-user ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
+          <div class="community-user-avatar" style="background:${u.color};">${u.initials}</div>
+          <div class="community-user-info">
+            <div class="community-user-name">${u.name}</div>
+            <div class="community-user-status">
+              <span class="${u.online ? 'online-dot' : 'offline-dot'}"></span>
+              ${u.online ? 'Online' : 'Offline'} · ${u.recentWorkout}
+            </div>
+          </div>
+          <div class="community-user-action">
+            <button class="btn-follow ${u.friend ? 'following' : ''}" onclick="toggleFriend(${u.id}, event)">
+              ${u.friend ? 'Friends' : 'Follow'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderChat() {
+      const container = document.getElementById('chatMessages');
+      const messages = chatChannels[currentChannel] || [];
+
+      container.innerHTML = messages.map(m => {
+        const isOwn = m.user === null;
+        const user = isOwn ? { initials: 'You', color: '#2DD4BF', name: 'You' } : m.user;
+        return `
+          <div class="chat-msg ${isOwn ? 'own' : ''}">
+            <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">${user.name}</div>
+              <div class="chat-msg-text">${m.text}</div>
+              <div class="chat-msg-time">${m.time}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderActivity() {
+      const feed = document.getElementById('activityFeed');
+      feed.innerHTML = activityData.map(a => {
+        let text = '';
+        if (a.action === 'completed') {
+          text = `Completed <span class="activity-workout-tag">${a.workout}</span> with ${a.trainer}`;
+        } else if (a.action === 'started following') {
+          text = `Started following ${a.trainer}`;
+        } else if (a.action === 'purchased') {
+          text = `Purchased <span class="activity-workout-tag">${a.workout}</span> from ${a.trainer}`;
+        }
+        return `
+          <div class="activity-item">
+            <div class="activity-item-header">
+              <div class="activity-item-avatar" style="background:${a.user.color};">${a.user.initials}</div>
+              <div class="activity-item-name">${a.user.name}</div>
+              <div class="activity-item-time">${a.time}</div>
+            </div>
+            <div class="activity-item-text">${text}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // === Actions ===
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.community-tab').forEach(t => t.classList.remove('active'));
+      event.target.classList.add('active');
+      renderUserList();
+    }
+
+    function filterUsers() { renderUserList(); }
+
+    function switchChannel(channel) {
+      currentChannel = channel;
+      document.querySelectorAll('.chat-channel').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const titles = { general: 'General Chat', workouts: 'Workouts', nutrition: 'Nutrition', motivation: 'Motivation' };
+      const subs = { general: 'All members', workouts: 'Share & discover workouts', nutrition: 'Meal plans & tips', motivation: 'Hype each other up' };
+      document.getElementById('chatTitle').textContent = titles[channel];
+      document.getElementById('chatSubtitle').textContent = subs[channel];
+
+      selectedUser = null;
+      renderChat();
+    }
+
+    function selectUser(id) {
+      const user = communityUsers.find(u => u.id === id);
+      selectedUser = user;
+      renderUserList();
+
+      // Show profile in activity panel
+      const profile = document.getElementById('activityProfile');
+      profile.innerHTML = `
+        <div class="activity-profile-avatar" style="background:${user.color};">${user.initials}</div>
+        <h3>${user.name}</h3>
+        <p>${user.bio}</p>
+        <div class="activity-stats">
+          <div class="activity-stat">
+            <div class="activity-stat-num">${Math.floor(Math.random() * 8) + 2}</div>
+            <div class="activity-stat-label">Friends</div>
+          </div>
+          <div class="activity-stat">
+            <div class="activity-stat-num">${Math.floor(Math.random() * 40) + 5}</div>
+            <div class="activity-stat-label">Workouts</div>
+          </div>
+          <div class="activity-stat">
+            <div class="activity-stat-num">${Math.floor(Math.random() * 3) + 1}</div>
+            <div class="activity-stat-label">Trainers</div>
+          </div>
+        </div>
+      `;
+
+      // Update chat to DM view
+      document.getElementById('chatTitle').textContent = user.name;
+      document.getElementById('chatSubtitle').textContent = user.online ? 'Online now' : 'Offline';
+      document.getElementById('chatAvatar').textContent = user.initials;
+      document.getElementById('chatAvatar').style.background = user.color;
+
+      // Show DM messages
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = `
+        <div class="chat-msg">
+          <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
+          <div class="chat-msg-body">
+            <div class="chat-msg-name">${user.name}</div>
+            <div class="chat-msg-text">Hey! Have you tried ${user.recentWorkout}? It's ${user.favoriteTrainer}'s best program imo</div>
+            <div class="chat-msg-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="chat-msg own">
+          <div class="chat-msg-avatar" style="background:#2DD4BF;">You</div>
+          <div class="chat-msg-body">
+            <div class="chat-msg-name">You</div>
+            <div class="chat-msg-text">Not yet! Is it good for ${user.favoriteTrainer === 'Nina Brooks' ? 'at home' : 'the gym'}?</div>
+            <div class="chat-msg-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
+          <div class="chat-msg-body">
+            <div class="chat-msg-name">${user.name}</div>
+            <div class="chat-msg-text">Absolutely. ${user.favoriteTrainer} is my favorite trainer on Shape. Totally worth subscribing</div>
+            <div class="chat-msg-time">Today</div>
+          </div>
+        </div>
+      `;
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function toggleFriend(id, e) {
+      e.stopPropagation();
+      const user = communityUsers.find(u => u.id === id);
+      user.friend = !user.friend;
+
+      // Update friend count
+      const friendCount = communityUsers.filter(u => u.friend).length;
+      const statEl = document.getElementById('statFriends');
+      if (statEl) statEl.textContent = friendCount;
+
+      // Show toast
+      const toast = document.getElementById('toast');
+      toast.textContent = user.friend ? `You and ${user.name} are now friends!` : `Unfollowed ${user.name}`;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+
+      renderUserList();
+      renderActivity();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const container = document.getElementById('chatMessages');
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const msgHtml = `
+        <div class="chat-msg own">
+          <div class="chat-msg-avatar" style="background:#2DD4BF;">You</div>
+          <div class="chat-msg-body">
+            <div class="chat-msg-name">You</div>
+            <div class="chat-msg-text">${text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</div>
+            <div class="chat-msg-time">${time}</div>
+          </div>
+        </div>
+      `;
+
+      container.insertAdjacentHTML('beforeend', msgHtml);
+      container.scrollTop = container.scrollHeight;
+      input.value = '';
+    }
+
+    // === Init ===
+    renderUserList();
+    renderChat();
+    renderActivity();
+  </script>
+  <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
+</body>
+</html>
