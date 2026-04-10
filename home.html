@@ -7,6 +7,81 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .split-hero {
+      padding: 200px 0 80px;
+      position: relative;
+    }
+    .split-hero .tag { display: block; margin-bottom: 16px; }
+    .split-hero h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 300;
+      letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 20px;
+    }
+    .split-hero-sub {
+      font-size: clamp(0.85rem, 1vw, 0.95rem); color: var(--text-muted);
+      max-width: 520px; font-weight: 300; line-height: 1.8; margin-bottom: 48px;
+    }
+
+    .split-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--border); margin-top: 60px;
+    }
+    .split-card {
+      background: var(--bg); padding: 48px 40px;
+      transition: background 0.3s;
+    }
+    .split-card:hover { background: var(--bg-card); }
+    .split-label {
+      font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 20px;
+    }
+    .split-card h2 {
+      font-size: clamp(1.2rem, 2vw, 1.5rem); font-weight: 300;
+      letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 16px;
+    }
+    .split-card p {
+      font-size: 0.88rem; color: var(--text-muted); font-weight: 300;
+      line-height: 1.7; margin-bottom: 28px;
+    }
+    .split-card-links {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .split-card-links a {
+      font-size: 0.82rem; font-weight: 400; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.3s;
+    }
+    .split-card-links a:hover { opacity: 0.5; }
+    .split-card-links a .arrow {
+      font-size: 0.75rem; color: var(--text-muted);
+    }
+
+    .split-divider {
+      text-align: center; padding: 48px 0;
+      font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--text-muted);
+    }
+
+    .stats-bar {
+      display: flex; gap: 64px; padding: 48px 0;
+      border-top: 1px solid var(--border);
+    }
+    .stats-bar .stat { text-align: left; }
+    .stats-bar .stat strong {
+      display: block; font-size: clamp(1.4rem, 2.5vw, 2rem); font-weight: 300;
+      letter-spacing: -0.03em; line-height: 1;
+    }
+    .stats-bar .stat span {
+      font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-top: 8px; display: block;
+    }
+
+    @media (max-width: 768px) {
+      .split-grid { grid-template-columns: 1fr; }
+      .split-card { padding: 36px 24px; }
+      .stats-bar { flex-wrap: wrap; gap: 32px; }
+    }
+  </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -39,58 +114,57 @@
   </nav>
 
   <!-- Hero -->
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
+  <section class="split-hero">
+    <div class="container">
+      <span class="tag">Shape</span>
       <h1>Your body.<br>Your <span class="gradient-text">Shape</span>.</h1>
-      <p class="hero-sub">Subscribe to the trainers and nutritionists who actually get it. Custom sessions, meal plans, and 1-on-1 guidance — all in one place.</p>
-      <div class="hero-actions">
-        <a href="pricing.html" class="btn btn-outline btn-lg">See How It Works</a>
+      <p class="split-hero-sub">One platform for training and nutrition. Whether you're here to train or here to build your business — this is where it happens.</p>
+
+      <!-- Split Paths -->
+      <div class="split-grid">
+        <div class="split-card">
+          <div class="split-label">I want to train</div>
+          <h2>Find your trainer. Start this week.</h2>
+          <p>Browse certified trainers and nutritionists. Subscribe on your terms — custom sessions, meal plans, and direct access to the people coaching you.</p>
+          <div class="split-card-links">
+            <a href="trainers.html">Trainer Marketplace <span class="arrow">&#8594;</span></a>
+            <a href="nutritionists.html">Nutritionists <span class="arrow">&#8594;</span></a>
+            <a href="pricing.html">See pricing <span class="arrow">&#8594;</span></a>
+          </div>
+        </div>
+        <div class="split-card">
+          <div class="split-label">I'm a trainer</div>
+          <h2>Get seen. Get subscribers. It's free.</h2>
+          <p>Shape puts you in front of thousands of members looking for custom programs. Build your profile, sell your sessions, and let us handle the marketing.</p>
+          <div class="split-card-links">
+            <a href="for-trainers.html">How it works <span class="arrow">&#8594;</span></a>
+            <a href="trainer-profile.html">Trainer profile <span class="arrow">&#8594;</span></a>
+            <a href="signup-trainer.html">Apply now <span class="arrow">&#8594;</span></a>
+          </div>
+        </div>
       </div>
-      <div class="hero-stats">
-        <div class="stat"><strong>200+</strong><span>Expert Trainers</span></div>
+
+      <!-- Stats -->
+      <div class="stats-bar">
+        <div class="stat"><strong>200+</strong><span>Trainers</span></div>
         <div class="stat"><strong>50+</strong><span>Nutritionists</span></div>
         <div class="stat"><strong>10k+</strong><span>Active Members</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature Highlights -->
-  <section class="section section-alt">
-    <div class="container">
-      <div class="section-header">
-        <span class="tag">Why Shape</span>
-        <h2>Everything you need — in one place</h2>
-        <p>One platform for training, nutrition, and accountability — built around the pros who know best.</p>
-      </div>
-      <div class="steps">
-        <div class="step">
-          <div class="step-number">01</div>
-          <h3>Expert Trainers</h3>
-          <p>Subscribe to certified personal trainers. Get custom programs, progress tracking, and 1-on-1 messaging.</p>
-          <a href="trainers.html" class="step-link">Browse Trainer Marketplace &#8594;</a>
-        </div>
-        <div class="step">
-          <div class="step-number">02</div>
-          <h3>Nutrition Plans</h3>
-          <p>Work with certified nutritionists for custom meal plans, macro coaching, and ongoing support.</p>
-          <a href="nutritionists.html" class="step-link">Browse Nutritionists &#8594;</a>
-        </div>
+        <div class="stat"><strong>$0</strong><span>To Join as Trainer</span></div>
       </div>
     </div>
   </section>
 
   <!-- Testimonials -->
-  <section class="section">
+  <section class="section section-alt">
     <div class="container">
       <div class="section-header">
-        <span class="tag">Testimonials</span>
+        <span class="tag">From the community</span>
         <h2>Real results from real people</h2>
       </div>
       <div class="testimonials">
         <div class="testimonial">
           <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"I subscribed to Coach Marcus for strength training and Sarah for nutrition. Down 30 lbs in 4 months. Shape made it so easy to find pros who actually care."</p>
+          <p>"Subscribed to Coach Marcus for strength and Sarah for nutrition. Down 30 lbs in 4 months. Shape made it easy to find pros who actually care."</p>
           <div class="testimonial-author">
             <div class="avatar avatar-sm">JR</div>
             <div><strong>Jake R.</strong><span>Member since 2025</span></div>
@@ -98,7 +172,7 @@
         </div>
         <div class="testimonial">
           <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"The ability to try different trainers without long-term contracts is a game changer. I found my perfect HIIT coach in the first week."</p>
+          <p>"Tried different trainers without a long-term contract. Found my HIIT coach in the first week. No other platform does that."</p>
           <div class="testimonial-author">
             <div class="avatar avatar-sm">AL</div>
             <div><strong>Aisha L.</strong><span>Member since 2024</span></div>
@@ -106,10 +180,10 @@
         </div>
         <div class="testimonial">
           <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p>"As a nutritionist on Shape, I've been able to reach clients worldwide. The platform handles everything so I can focus on helping people eat better."</p>
+          <p>"I used to spend half my time finding clients. Now I upload my programs and the subscribers come to me. The exposure is unreal."</p>
           <div class="testimonial-author">
-            <div class="avatar avatar-sm">DM</div>
-            <div><strong>Dr. Maria D.</strong><span>Nutritionist</span></div>
+            <div class="avatar avatar-sm">MJ</div>
+            <div><strong>Marcus J.</strong><span>Trainer — 1,240 subscribers</span></div>
           </div>
         </div>
       </div>
@@ -121,7 +195,10 @@
     <div class="container">
       <h2>Ready to get in <span class="gradient-text">Shape</span>?</h2>
       <p>Thousands of members already train with Shape. You're next.</p>
-      <a href="landing.html" class="btn btn-primary btn-lg">Get Started</a>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="landing.html" class="btn btn-primary btn-lg">Start Training</a>
+        <a href="for-trainers.html" class="btn btn-outline btn-lg" style="border-color:#fff;color:#fff;">I'm a Trainer</a>
+      </div>
     </div>
   </section>
 
@@ -140,7 +217,7 @@
           <a href="trainers.html">Trainer Marketplace</a>
           <a href="nutritionists.html">Nutritionists</a>
           <a href="community.html">Community</a>
-        <a href="pricing.html">Pricing</a>
+          <a href="pricing.html">Pricing</a>
           <a href="clients.html">Clients</a>
           <a href="nutrition-schedule.html">Nutrition Schedule</a>
           <a href="trainer-dashboard.html">Trainer Dashboard</a>
