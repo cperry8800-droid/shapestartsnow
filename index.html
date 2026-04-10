@@ -44,13 +44,71 @@
       text-align: center;
     }
 
+    /* ===== Loading Screen ===== */
+    .loader-overlay {
+      position: fixed; inset: 0; z-index: 50;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: #0a0a0a;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .loader-overlay.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-box {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 32px;
+    }
+
+    .loader-logo {
+      height: 80px; width: auto;
+      filter: brightness(0) invert(1);
+      opacity: 0.4;
+    }
+
+    .loader-track {
+      width: 220px; height: 1px;
+      background: rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-fill {
+      position: absolute; left: 0; top: 0;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(45,212,191,0.6), #2DD4BF);
+      transition: width 0.15s linear;
+    }
+
+    .loader-percent {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .loader-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.15);
+    }
+
     .intro-logo {
       height: 140px; width: auto;
       margin-bottom: 48px;
       filter: brightness(0) invert(1);
       opacity: 0;
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards,
-                 logoPulse 2.5s ease-in-out 1.5s infinite;
+    }
+    .intro-logo.show {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 logoPulse 2.5s ease-in-out 1.2s infinite;
     }
 
     @keyframes logoPulse {
@@ -66,7 +124,9 @@
       text-transform: uppercase;
       margin-bottom: 64px;
       opacity: 0;
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    }
+    .intro-tagline.show {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
     }
 
     .enter-btn {
@@ -83,10 +143,14 @@
       cursor: pointer;
       transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       opacity: 0;
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+      pointer-events: none;
       text-decoration: none;
       position: relative;
       overflow: hidden;
+    }
+    .enter-btn.show {
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+      pointer-events: auto;
     }
 
     .enter-btn::before {
@@ -133,9 +197,21 @@
   </div>
   <div class="grain"></div>
 
+  <!-- Loading Screen -->
+  <div class="loader-overlay" id="loaderOverlay">
+    <div class="loader-box">
+      <img src="logo.png" alt="Shape" class="loader-logo">
+      <div class="loader-track">
+        <div class="loader-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-percent" id="loaderPercent">0</div>
+      <div class="loader-label">Loading</div>
+    </div>
+  </div>
+
   <div class="intro-content" id="introContent">
-    <img src="logo.png" alt="Shape" class="intro-logo">
-    <p class="intro-tagline">Your body. Your shape.</p>
+    <img src="logo.png" alt="Shape" class="intro-logo" id="introLogo">
+    <p class="intro-tagline" id="introTagline">Your body. Your shape.</p>
     <a href="home.html" class="enter-btn" id="enterBtn" onclick="enterSite(event)">
       <span>Enter</span>
     </a>
@@ -212,6 +288,53 @@
     }
 
     draw();
+
+    // ===== Loading Sequence =====
+    (function runLoader() {
+      const fill = document.getElementById('loaderFill');
+      const percent = document.getElementById('loaderPercent');
+      const overlay = document.getElementById('loaderOverlay');
+      let progress = 0;
+
+      function tick() {
+        // Variable speed — starts fast, slows in middle, accelerates at end
+        let increment;
+        if (progress < 30) {
+          increment = Math.random() * 3 + 1.5;
+        } else if (progress < 70) {
+          increment = Math.random() * 2 + 0.5;
+        } else if (progress < 90) {
+          increment = Math.random() * 1.5 + 0.8;
+        } else {
+          increment = Math.random() * 3 + 2;
+        }
+
+        progress = Math.min(progress + increment, 100);
+        const rounded = Math.floor(progress);
+        fill.style.width = rounded + '%';
+        percent.textContent = rounded;
+
+        if (rounded < 100) {
+          // Variable delay for organic feel
+          const delay = progress < 30 ? 60 : progress < 70 ? 120 : progress < 90 ? 80 : 40;
+          setTimeout(tick, delay + Math.random() * 60);
+        } else {
+          // Loading complete — transition out
+          setTimeout(() => {
+            overlay.classList.add('done');
+            // Reveal intro content
+            setTimeout(() => {
+              document.getElementById('introLogo').classList.add('show');
+              document.getElementById('introTagline').classList.add('show');
+              document.getElementById('enterBtn').classList.add('show');
+            }, 400);
+          }, 500);
+        }
+      }
+
+      // Start after brief pause
+      setTimeout(tick, 600);
+    })();
 
     // Enter transition
     function enterSite(e) {
