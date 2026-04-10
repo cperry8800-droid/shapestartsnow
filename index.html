@@ -233,7 +233,7 @@
   let ambientCtx = null;
   let ambientNodes = null;
   let ambientPlaying = false;
-  const AMB_VOL = 0.85;
+  const AMB_VOL = 1.0;
 
   function createAmbient() {
     ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -242,7 +242,7 @@
 
     // Master compressor to glue everything and add weight
     const comp = ambientCtx.createDynamicsCompressor();
-    comp.threshold.value = -20;
+    comp.threshold.value = -12;
     comp.knee.value = 10;
     comp.ratio.value = 4;
     comp.attack.value = 0.05;
@@ -259,7 +259,7 @@
     const drone1G = ambientCtx.createGain();
     drone1.type = 'sine';
     drone1.frequency.value = 28;
-    drone1G.gain.value = 0.6;
+    drone1G.gain.value = 0.9;
     drone1.connect(drone1G);
     drone1G.connect(master);
     drone1.start();
@@ -269,7 +269,7 @@
     const drone2G = ambientCtx.createGain();
     drone2.type = 'sawtooth';
     drone2.frequency.value = 42;
-    drone2G.gain.value = 0.3;
+    drone2G.gain.value = 0.5;
     const drone2F = ambientCtx.createBiquadFilter();
     drone2F.type = 'lowpass';
     drone2F.frequency.value = 90;
@@ -284,7 +284,7 @@
     const drone3G = ambientCtx.createGain();
     drone3.type = 'square';
     drone3.frequency.value = 56;
-    drone3G.gain.value = 0.15;
+    drone3G.gain.value = 0.3;
     const drone3F = ambientCtx.createBiquadFilter();
     drone3F.type = 'lowpass';
     drone3F.frequency.value = 70;
@@ -303,10 +303,10 @@
     const eng1G = ambientCtx.createGain();
     eng1.type = 'sawtooth';
     eng1.frequency.value = 36;
-    eng1G.gain.value = 0.2;
+    eng1G.gain.value = 0.35;
     const eng1F = ambientCtx.createBiquadFilter();
     eng1F.type = 'lowpass';
-    eng1F.frequency.value = 120;
+    eng1F.frequency.value = 140;
     eng1F.Q.value = 12; // High resonance — sci-fi character
     eng1.connect(eng1F);
     eng1F.connect(eng1G);
@@ -317,10 +317,10 @@
     const eng2G = ambientCtx.createGain();
     eng2.type = 'sawtooth';
     eng2.frequency.value = 36.8; // Slightly detuned — creates beating/thickness
-    eng2G.gain.value = 0.2;
+    eng2G.gain.value = 0.35;
     const eng2F = ambientCtx.createBiquadFilter();
     eng2F.type = 'lowpass';
-    eng2F.frequency.value = 120;
+    eng2F.frequency.value = 140;
     eng2F.Q.value = 12;
     eng2.connect(eng2F);
     eng2F.connect(eng2G);
@@ -332,7 +332,7 @@
     const reactorG = ambientCtx.createGain();
     reactor.type = 'sawtooth';
     reactor.frequency.value = 150;
-    reactorG.gain.value = 0.06;
+    reactorG.gain.value = 0.12;
     const reactorF = ambientCtx.createBiquadFilter();
     reactorF.type = 'bandpass';
     reactorF.frequency.value = 150;
@@ -347,7 +347,7 @@
     const scifiG = ambientCtx.createGain();
     scifi.type = 'sine';
     scifi.frequency.value = 320;
-    scifiG.gain.value = 0.015;
+    scifiG.gain.value = 0.035;
     const scifiF = ambientCtx.createBiquadFilter();
     scifiF.type = 'bandpass';
     scifiF.frequency.value = 320;
@@ -421,7 +421,7 @@
     rumbleF.frequency.value = 100;
     rumbleF.Q.value = 3;
     const rumbleG = ambientCtx.createGain();
-    rumbleG.gain.value = 0.25;
+    rumbleG.gain.value = 0.4;
     rumble.connect(rumbleF);
     rumbleF.connect(rumbleG);
     rumbleG.connect(master);
@@ -436,7 +436,7 @@
     engineNoiseF.frequency.value = 250;
     engineNoiseF.Q.value = 2;
     const engineNoiseG = ambientCtx.createGain();
-    engineNoiseG.gain.value = 0.05;
+    engineNoiseG.gain.value = 0.1;
     engineNoise.connect(engineNoiseF);
     engineNoiseF.connect(engineNoiseG);
     engineNoiseG.connect(master);
