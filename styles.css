@@ -65,9 +65,9 @@ ul { list-style: none; }
   border: 1px solid transparent; text-align: center; letter-spacing: 0.03em;
 }
 .btn-primary {
-  background: var(--text); color: var(--bg); border-color: rgba(255,255,255,0.15);
+  background: transparent; color: var(--text); border-color: rgba(255,255,255,0.15);
 }
-.btn-primary:hover { background: transparent; color: var(--text); border-color: rgba(255,255,255,0.25); }
+.btn-primary:hover { background: var(--text); color: var(--bg); }
 .btn-outline {
   background: transparent; color: var(--text); border-color: rgba(255,255,255,0.15);
 }
