@@ -459,58 +459,54 @@
     ambientNodes = { master };
   }
 
+  async function startSound() {
+    if (!ambientCtx) createAmbient();
+    // Force resume — browsers require user gesture to unlock
+    if (ambientCtx.state === 'suspended') {
+      await ambientCtx.resume();
+    }
+    ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
+    ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
+    ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 2);
+    document.getElementById('soundIcon').textContent = 'Sound On';
+    document.getElementById('soundToggle').style.opacity = '0.7';
+    ambientPlaying = true;
+  }
+
+  function stopSound() {
+    if (!ambientCtx || !ambientNodes) return;
+    ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
+    ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
+    ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1);
+    document.getElementById('soundIcon').textContent = 'Sound Off';
+    document.getElementById('soundToggle').style.opacity = '0.3';
+    ambientPlaying = false;
+  }
+
   function toggleAmbient() {
-    const label = document.getElementById('soundIcon');
-    const toggle = document.getElementById('soundToggle');
     if (!ambientPlaying) {
-      if (!ambientCtx) createAmbient();
-      if (ambientCtx.state === 'suspended') ambientCtx.resume();
-      ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
-      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
-      ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 2);
-      label.textContent = 'Sound On';
-      toggle.style.opacity = '0.7';
-      ambientPlaying = true;
+      startSound();
     } else {
-      ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
-      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
-      ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1);
-      label.textContent = 'Sound Off';
-      toggle.style.opacity = '0.3';
-      ambientPlaying = false;
+      stopSound();
     }
   }
 
-  // Try to autoplay immediately, fall back to first interaction
+  // Auto-start on first user interaction
   let ambientStarted = false;
-  function startAmbient() {
+  function initAmbient() {
     if (ambientStarted) return;
     ambientStarted = true;
-    toggleAmbient();
-    // Remove all listeners once started
-    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
-      document.removeEventListener(evt, startAmbient);
+    startSound();
+    // Clean up all listeners
+    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
+      document.removeEventListener(evt, initAmbient);
     });
   }
 
-  // Attempt immediate autoplay
-  try {
-    const testCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (testCtx.state === 'running') {
-      testCtx.close();
-      startAmbient();
-    } else {
-      testCtx.close();
-      // Browser blocked autoplay — listen for any interaction
-      ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
-        document.addEventListener(evt, startAmbient, { once: false });
-      });
-    }
-  } catch(e) {
-    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
-      document.addEventListener(evt, startAmbient, { once: false });
-    });
-  }
+  // Register listeners for first interaction
+  ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
+    document.addEventListener(evt, initAmbient, { once: false });
+  });
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
