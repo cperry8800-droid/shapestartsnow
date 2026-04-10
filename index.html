@@ -793,20 +793,35 @@
 
   // Start dial-up on first user interaction
   let audioStarted = false;
-  async function initAudio() {
+  const AUDIO_EVENTS = ['click','touchstart','touchend','mousedown','keydown','pointerdown'];
+
+  function initAudio() {
     if (audioStarted) return;
     audioStarted = true;
-    // Clean up listeners immediately so this can't fire twice
-    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
-      document.removeEventListener(evt, initAudio);
+
+    // Remove listeners immediately
+    AUDIO_EVENTS.forEach(evt => {
+      window.removeEventListener(evt, initAudio, true);
     });
-    const ctx = ensureAudioCtx();
-    if (ctx.state === 'suspended') await ctx.resume();
-    createDialUp();
+
+    try {
+      const ctx = ensureAudioCtx();
+      const start = () => {
+        try { createDialUp(); } catch(e) { console.warn('dial-up error:', e); }
+      };
+      if (ctx.state === 'suspended') {
+        ctx.resume().then(start).catch(start);
+      } else {
+        start();
+      }
+    } catch(e) {
+      console.warn('audio init error:', e);
+    }
   }
 
-  ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
-    document.addEventListener(evt, initAudio, { once: false });
+  // Use capture phase on window — fires before anything else
+  AUDIO_EVENTS.forEach(evt => {
+    window.addEventListener(evt, initAudio, { capture: true, passive: true });
   });
   </script>
 
