@@ -53,7 +53,7 @@
     }
     .split-card {
       background: var(--bg); padding: 48px 40px;
-      transition: background 0.3s;
+      transition: background 0.3s; text-align: center;
     }
     .split-card:hover { background: var(--bg-card); }
     .split-label {
@@ -69,11 +69,11 @@
       line-height: 1.7; margin-bottom: 28px;
     }
     .split-card-links {
-      display: flex; flex-direction: column; gap: 10px;
+      display: flex; flex-direction: column; gap: 10px; align-items: center;
     }
     .split-card-links a {
       font-size: 0.82rem; font-weight: 400; color: var(--text);
-      display: flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       transition: opacity 0.3s;
     }
     .split-card-links a:hover { opacity: 0.5; }
