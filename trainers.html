@@ -122,6 +122,41 @@
       gap: 8px;
       flex-wrap: wrap;
     }
+    /* Vertical list layout */
+    #trainerGrid.card-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    #trainerGrid .card {
+      display: flex;
+      flex-direction: row;
+      border-radius: 0;
+    }
+    #trainerGrid .card-banner {
+      width: 200px;
+      min-width: 200px;
+      height: auto;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #trainerGrid .card-avatar {
+      position: static;
+      width: 72px;
+      height: 72px;
+      font-size: 1.4rem;
+      border: none;
+    }
+    #trainerGrid .card-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #trainerGrid .card-body {
+      padding: 24px 28px;
+      flex: 1;
+    }
     @media (max-width: 768px) {
       .filter-bar-top {
         flex-direction: column;
@@ -129,6 +164,23 @@
       .filter-sort {
         min-width: unset;
         width: 100%;
+      }
+      #trainerGrid .card {
+        flex-direction: column;
+      }
+      #trainerGrid .card-banner {
+        width: 100%;
+        min-width: unset;
+        height: 160px;
+        min-height: unset;
+      }
+      #trainerGrid .card-avatar {
+        position: absolute;
+        bottom: -28px;
+        left: 28px;
+      }
+      #trainerGrid .card-body {
+        padding: 44px 28px 28px;
       }
     }
   </style>
