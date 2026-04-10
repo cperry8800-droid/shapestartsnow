@@ -92,12 +92,12 @@ ul { list-style: none; }
   padding: 12px 0;
 }
 .nav-container { display: flex; align-items: center; justify-content: space-between; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; margin-right: 32px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; margin-right: 20px; }
 .logo-img { height: 64px; width: auto; }
-.nav-links { display: flex; align-items: center; gap: 24px; flex-wrap: nowrap; }
+.nav-links { display: flex; align-items: center; gap: 16px; flex-wrap: nowrap; }
 .nav-links a {
-  font-size: 0.85rem; font-weight: 400; transition: opacity 0.3s;
-  letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.6;
+  font-size: 0.78rem; font-weight: 400; transition: opacity 0.3s;
+  letter-spacing: 0.02em; text-transform: uppercase; opacity: 0.6; white-space: nowrap;
 }
 .nav-links a:hover { opacity: 1; }
 .nav-dropdown { position: relative; }
