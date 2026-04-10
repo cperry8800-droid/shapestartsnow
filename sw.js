@@ -12,7 +12,7 @@ const ASSETS = [
   '/contact.html',
   '/landing.html',
   '/login.html',
-  '/progress.html',
+  '/clients.html',
   '/nutrition-schedule.html',
   '/trainer-dashboard.html',
   '/messages.html',
