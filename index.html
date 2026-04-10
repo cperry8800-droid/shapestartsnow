@@ -109,11 +109,12 @@
     .intro-logo.show {
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
                  logoPulse 2.5s ease-in-out 1.5s infinite;
+      filter: brightness(0) invert(1);
     }
 
     @keyframes logoPulse {
-      0%, 100% { opacity: 1; filter: brightness(0) invert(1) drop-shadow(0 0 12px rgba(45, 212, 191, 0.4)); }
-      50% { opacity: 0.15; filter: brightness(0) invert(1) drop-shadow(0 0 0px rgba(45, 212, 191, 0)); }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.15; }
     }
 
     .intro-tagline {
@@ -612,18 +613,38 @@
   let audioStarted = false;
   const AUDIO_EVENTS = ['click','touchstart','touchend','mousedown','keydown','pointerdown'];
 
+  function unlockAndPlay(ctx) {
+    // iOS/Safari requires playing a silent buffer to fully unlock audio
+    try {
+      const buf = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+    } catch(e) {}
+    // Now start the real sound
+    try { startRumble(); } catch(e) { console.warn('audio error:', e); }
+  }
+
   function initAudio() {
     if (audioStarted) return;
     audioStarted = true;
     AUDIO_EVENTS.forEach(evt => window.removeEventListener(evt, initAudio, true));
     try {
       const ctx = ensureAudioCtx();
-      const go = () => { try { startRumble(); } catch(e) { console.warn('audio error:', e); } };
-      ctx.state === 'suspended' ? ctx.resume().then(go).catch(go) : go();
+      if (ctx.state === 'suspended') {
+        ctx.resume().then(() => unlockAndPlay(ctx)).catch(() => unlockAndPlay(ctx));
+      } else {
+        unlockAndPlay(ctx);
+      }
     } catch(e) { console.warn('audio init error:', e); }
   }
 
-  AUDIO_EVENTS.forEach(evt => window.addEventListener(evt, initAudio, { capture: true, passive: true }));
+  // Use capture phase, non-passive for touchstart so we can unlock audio in the gesture callstack
+  AUDIO_EVENTS.forEach(evt => {
+    const opts = evt === 'touchstart' ? { capture: true, passive: false } : { capture: true, passive: true };
+    window.addEventListener(evt, initAudio, opts);
+  });
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
