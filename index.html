@@ -180,16 +180,16 @@
       pointer-events: all;
     }
 
-    /* White flash wipe */
+    /* Black fade out */
     .dissolve-flash {
       position: absolute; inset: 0;
-      background: #fff;
+      background: #0a0a0a;
       opacity: 0;
-      transition: opacity 0.6s ease-in;
+      transition: opacity 1.2s cubic-bezier(0.4, 0, 1, 1);
     }
     .dissolve-overlay.active .dissolve-flash {
       opacity: 1;
-      transition-delay: 0.8s;
+      transition-delay: 0.3s;
     }
 
     /* Content dissolve state */
@@ -383,6 +383,8 @@
           // Loading complete — transition out
           setTimeout(() => {
             overlay.classList.add('done');
+            // Crossfade: dial-up → deep rumble
+            if (typeof crossfadeToRumble === 'function') crossfadeToRumble();
             // Reveal intro content
             setTimeout(() => {
               document.getElementById('introLogo').classList.add('show');
@@ -414,10 +416,11 @@
       }, 200);
 
       // 4. Fade out sound
-      if (ambientPlaying && ambientNodes && ambientCtx) {
-        ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
-        ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
-        ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1.2);
+      if (audioCtx && ambientNodes) {
+        const t = audioCtx.currentTime;
+        ambientNodes.master.gain.cancelScheduledValues(t);
+        ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
+        ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
       }
 
       // 5. Navigate after dissolve completes
@@ -485,283 +488,384 @@
   </div>
 
   <script>
-  // ===== Ambient Background Hum =====
-  let ambientCtx = null;
+  // ===== AUDIO ENGINE =====
+  let audioCtx = null;
+  let dialUpNodes = null;
   let ambientNodes = null;
   let ambientPlaying = false;
+  let dialUpPlaying = false;
   const AMB_VOL = 1.0;
+  const DIALUP_VOL = 0.7;
 
+  function ensureAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+  }
+
+  // =============================================
+  // DIAL-UP MODEM SOUND (plays during loading)
+  // =============================================
+  function createDialUp() {
+    const ctx = ensureAudioCtx();
+    const t = ctx.currentTime;
+    const master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+
+    // --- Phase 1: Dial tones (DTMF-style beeps) 0s–1.5s ---
+    const dtmfFreqs = [
+      [941, 1336], // 0
+      [697, 1209], // 1
+      [697, 1336], // 2
+      [770, 1209], // 3
+      [770, 1477], // 6
+      [852, 1209], // 7
+      [852, 1336], // 8
+    ];
+    dtmfFreqs.forEach((pair, i) => {
+      const start = t + 0.1 + i * 0.18;
+      pair.forEach(freq => {
+        const osc = ctx.createOscillator();
+        const g = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        g.gain.setValueAtTime(0, start);
+        g.gain.linearRampToValueAtTime(0.15, start + 0.01);
+        g.gain.setValueAtTime(0.15, start + 0.12);
+        g.gain.linearRampToValueAtTime(0, start + 0.14);
+        osc.connect(g);
+        g.connect(master);
+        osc.start(start);
+        osc.stop(start + 0.15);
+      });
+    });
+
+    // --- Phase 2: Ring / answer tones 1.5s–2.5s ---
+    const ring1 = ctx.createOscillator();
+    const ring1G = ctx.createGain();
+    ring1.type = 'sine';
+    ring1.frequency.value = 2025;
+    ring1G.gain.setValueAtTime(0, t + 1.5);
+    ring1G.gain.linearRampToValueAtTime(0.2, t + 1.55);
+    ring1G.gain.setValueAtTime(0.2, t + 2.0);
+    ring1G.gain.linearRampToValueAtTime(0, t + 2.05);
+    ring1.connect(ring1G);
+    ring1G.connect(master);
+    ring1.start(t + 1.5);
+    ring1.stop(t + 2.1);
+
+    const ring2 = ctx.createOscillator();
+    const ring2G = ctx.createGain();
+    ring2.type = 'sine';
+    ring2.frequency.value = 1070;
+    ring2G.gain.setValueAtTime(0, t + 2.1);
+    ring2G.gain.linearRampToValueAtTime(0.2, t + 2.15);
+    ring2G.gain.setValueAtTime(0.2, t + 2.45);
+    ring2G.gain.linearRampToValueAtTime(0, t + 2.5);
+    ring2.connect(ring2G);
+    ring2G.connect(master);
+    ring2.start(t + 2.1);
+    ring2.stop(t + 2.55);
+
+    // --- Phase 3: Carrier handshake screech 2.5s–5s ---
+    // Two competing carriers doing frequency sweeps
+    const carrier1 = ctx.createOscillator();
+    const carrier1G = ctx.createGain();
+    carrier1.type = 'square';
+    carrier1.frequency.setValueAtTime(1300, t + 2.5);
+    carrier1.frequency.linearRampToValueAtTime(2100, t + 3.0);
+    carrier1.frequency.setValueAtTime(2100, t + 3.0);
+    carrier1.frequency.linearRampToValueAtTime(1500, t + 3.5);
+    carrier1.frequency.linearRampToValueAtTime(2400, t + 4.0);
+    carrier1.frequency.linearRampToValueAtTime(1800, t + 4.5);
+    carrier1.frequency.linearRampToValueAtTime(2200, t + 5.0);
+    const c1Filter = ctx.createBiquadFilter();
+    c1Filter.type = 'bandpass';
+    c1Filter.frequency.value = 1800;
+    c1Filter.Q.value = 3;
+    carrier1G.gain.setValueAtTime(0, t + 2.5);
+    carrier1G.gain.linearRampToValueAtTime(0.12, t + 2.6);
+    carrier1G.gain.setValueAtTime(0.12, t + 4.8);
+    carrier1G.gain.linearRampToValueAtTime(0, t + 5.0);
+    carrier1.connect(c1Filter);
+    c1Filter.connect(carrier1G);
+    carrier1G.connect(master);
+    carrier1.start(t + 2.5);
+    carrier1.stop(t + 5.1);
+
+    const carrier2 = ctx.createOscillator();
+    const carrier2G = ctx.createGain();
+    carrier2.type = 'sawtooth';
+    carrier2.frequency.setValueAtTime(2100, t + 2.7);
+    carrier2.frequency.linearRampToValueAtTime(1400, t + 3.2);
+    carrier2.frequency.linearRampToValueAtTime(2300, t + 3.8);
+    carrier2.frequency.linearRampToValueAtTime(1600, t + 4.3);
+    carrier2.frequency.linearRampToValueAtTime(2000, t + 5.0);
+    const c2Filter = ctx.createBiquadFilter();
+    c2Filter.type = 'bandpass';
+    c2Filter.frequency.value = 1900;
+    c2Filter.Q.value = 4;
+    carrier2G.gain.setValueAtTime(0, t + 2.7);
+    carrier2G.gain.linearRampToValueAtTime(0.08, t + 2.8);
+    carrier2G.gain.setValueAtTime(0.08, t + 4.8);
+    carrier2G.gain.linearRampToValueAtTime(0, t + 5.0);
+    carrier2.connect(c2Filter);
+    c2Filter.connect(carrier2G);
+    carrier2G.connect(master);
+    carrier2.start(t + 2.7);
+    carrier2.stop(t + 5.1);
+
+    // --- Phase 4: Digital negotiation noise/static 4s–ongoing ---
+    const noiseLen = ctx.sampleRate * 3;
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
+    const nd = noiseBuf.getChannelData(0);
+    for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
+
+    // Harsh digital static
+    const static1 = ctx.createBufferSource();
+    static1.buffer = noiseBuf;
+    static1.loop = true;
+    const staticF = ctx.createBiquadFilter();
+    staticF.type = 'bandpass';
+    staticF.frequency.value = 2000;
+    staticF.Q.value = 1.5;
+    const staticG = ctx.createGain();
+    staticG.gain.setValueAtTime(0, t + 4.0);
+    staticG.gain.linearRampToValueAtTime(0.15, t + 4.3);
+    static1.connect(staticF);
+    staticF.connect(staticG);
+    staticG.connect(master);
+    static1.start(t + 4.0);
+
+    // Pulsing data bursts — rapid on/off modulation
+    const burstLfo = ctx.createOscillator();
+    const burstLfoG = ctx.createGain();
+    burstLfo.type = 'square';
+    burstLfo.frequency.value = 8; // 8Hz pulsing
+    burstLfoG.gain.value = 0.08;
+    burstLfo.connect(burstLfoG);
+    burstLfoG.connect(staticG.gain);
+    burstLfo.start(t + 5.0);
+
+    // High-pitched modem whine that persists
+    const whine = ctx.createOscillator();
+    const whineG = ctx.createGain();
+    whine.type = 'sine';
+    whine.frequency.value = 1650;
+    // Slight wobble
+    const whineLfo = ctx.createOscillator();
+    const whineLfoG = ctx.createGain();
+    whineLfo.type = 'sine';
+    whineLfo.frequency.value = 3;
+    whineLfoG.gain.value = 20;
+    whineLfo.connect(whineLfoG);
+    whineLfoG.connect(whine.frequency);
+    whineLfo.start(t + 5.0);
+    whineG.gain.setValueAtTime(0, t + 5.0);
+    whineG.gain.linearRampToValueAtTime(0.06, t + 5.5);
+    whine.connect(whineG);
+    whineG.connect(master);
+    whine.start(t + 5.0);
+
+    // Fade master in
+    master.gain.setValueAtTime(0, t);
+    master.gain.linearRampToValueAtTime(DIALUP_VOL, t + 0.3);
+
+    dialUpNodes = { master, static1, burstLfo, whine, whineLfo, staticG };
+    dialUpPlaying = true;
+  }
+
+  function fadeOutDialUp(duration) {
+    if (!dialUpNodes || !audioCtx) return;
+    const t = audioCtx.currentTime;
+    dialUpNodes.master.gain.cancelScheduledValues(t);
+    dialUpNodes.master.gain.setValueAtTime(dialUpNodes.master.gain.value, t);
+    dialUpNodes.master.gain.linearRampToValueAtTime(0, t + duration);
+    // Clean up after fade
+    setTimeout(() => {
+      try {
+        dialUpNodes.static1.stop();
+        dialUpNodes.burstLfo.stop();
+        dialUpNodes.whine.stop();
+        dialUpNodes.whineLfo.stop();
+      } catch(e) {}
+      dialUpPlaying = false;
+    }, duration * 1000 + 100);
+  }
+
+  // =============================================
+  // DEEP RUMBLE AMBIENT (plays after loading)
+  // =============================================
   function createAmbient() {
-    ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const master = ambientCtx.createGain();
+    const ctx = ensureAudioCtx();
+    const master = ctx.createGain();
     master.gain.value = 0;
 
-    // Master compressor to glue everything and add weight
-    const comp = ambientCtx.createDynamicsCompressor();
+    const comp = ctx.createDynamicsCompressor();
     comp.threshold.value = -12;
     comp.knee.value = 10;
     comp.ratio.value = 4;
     comp.attack.value = 0.05;
     comp.release.value = 0.25;
     master.connect(comp);
-    comp.connect(ambientCtx.destination);
+    comp.connect(ctx.destination);
 
-    // =========================================
-    // LAYER 1: DEEP BASS DRONE (the foundation)
-    // =========================================
+    // LAYER 1: DEEP BASS DRONE
+    const drone1 = ctx.createOscillator();
+    const drone1G = ctx.createGain();
+    drone1.type = 'sine'; drone1.frequency.value = 28; drone1G.gain.value = 0.9;
+    drone1.connect(drone1G); drone1G.connect(master); drone1.start();
 
-    // Primary sub drone — 28Hz, barely audible, felt in chest
-    const drone1 = ambientCtx.createOscillator();
-    const drone1G = ambientCtx.createGain();
-    drone1.type = 'sine';
-    drone1.frequency.value = 28;
-    drone1G.gain.value = 0.9;
-    drone1.connect(drone1G);
-    drone1G.connect(master);
-    drone1.start();
+    const drone2 = ctx.createOscillator();
+    const drone2G = ctx.createGain();
+    drone2.type = 'sawtooth'; drone2.frequency.value = 42; drone2G.gain.value = 0.5;
+    const drone2F = ctx.createBiquadFilter();
+    drone2F.type = 'lowpass'; drone2F.frequency.value = 90; drone2F.Q.value = 6;
+    drone2.connect(drone2F); drone2F.connect(drone2G); drone2G.connect(master); drone2.start();
 
-    // Second drone layer — 42Hz, adds grit
-    const drone2 = ambientCtx.createOscillator();
-    const drone2G = ambientCtx.createGain();
-    drone2.type = 'sawtooth';
-    drone2.frequency.value = 42;
-    drone2G.gain.value = 0.5;
-    const drone2F = ambientCtx.createBiquadFilter();
-    drone2F.type = 'lowpass';
-    drone2F.frequency.value = 90;
-    drone2F.Q.value = 6;
-    drone2.connect(drone2F);
-    drone2F.connect(drone2G);
-    drone2G.connect(master);
-    drone2.start();
+    const drone3 = ctx.createOscillator();
+    const drone3G = ctx.createGain();
+    drone3.type = 'square'; drone3.frequency.value = 56; drone3G.gain.value = 0.3;
+    const drone3F = ctx.createBiquadFilter();
+    drone3F.type = 'lowpass'; drone3F.frequency.value = 70; drone3F.Q.value = 10;
+    drone3.connect(drone3F); drone3F.connect(drone3G); drone3G.connect(master); drone3.start();
 
-    // Third drone — 56Hz square wave, filtered heavy, adds rumble texture
-    const drone3 = ambientCtx.createOscillator();
-    const drone3G = ambientCtx.createGain();
-    drone3.type = 'square';
-    drone3.frequency.value = 56;
-    drone3G.gain.value = 0.3;
-    const drone3F = ambientCtx.createBiquadFilter();
-    drone3F.type = 'lowpass';
-    drone3F.frequency.value = 70;
-    drone3F.Q.value = 10;
-    drone3.connect(drone3F);
-    drone3F.connect(drone3G);
-    drone3G.connect(master);
-    drone3.start();
-
-    // =========================================
     // LAYER 2: SCI-FI ENGINE
-    // =========================================
+    const eng1 = ctx.createOscillator();
+    const eng1G = ctx.createGain();
+    eng1.type = 'sawtooth'; eng1.frequency.value = 36; eng1G.gain.value = 0.35;
+    const eng1F = ctx.createBiquadFilter();
+    eng1F.type = 'lowpass'; eng1F.frequency.value = 140; eng1F.Q.value = 12;
+    eng1.connect(eng1F); eng1F.connect(eng1G); eng1G.connect(master); eng1.start();
 
-    // Engine core — detuned sawtooth pair for thick sci-fi texture
-    const eng1 = ambientCtx.createOscillator();
-    const eng1G = ambientCtx.createGain();
-    eng1.type = 'sawtooth';
-    eng1.frequency.value = 36;
-    eng1G.gain.value = 0.35;
-    const eng1F = ambientCtx.createBiquadFilter();
-    eng1F.type = 'lowpass';
-    eng1F.frequency.value = 140;
-    eng1F.Q.value = 12; // High resonance — sci-fi character
-    eng1.connect(eng1F);
-    eng1F.connect(eng1G);
-    eng1G.connect(master);
-    eng1.start();
+    const eng2 = ctx.createOscillator();
+    const eng2G = ctx.createGain();
+    eng2.type = 'sawtooth'; eng2.frequency.value = 36.8; eng2G.gain.value = 0.35;
+    const eng2F = ctx.createBiquadFilter();
+    eng2F.type = 'lowpass'; eng2F.frequency.value = 140; eng2F.Q.value = 12;
+    eng2.connect(eng2F); eng2F.connect(eng2G); eng2G.connect(master); eng2.start();
 
-    const eng2 = ambientCtx.createOscillator();
-    const eng2G = ambientCtx.createGain();
-    eng2.type = 'sawtooth';
-    eng2.frequency.value = 36.8; // Slightly detuned — creates beating/thickness
-    eng2G.gain.value = 0.35;
-    const eng2F = ambientCtx.createBiquadFilter();
-    eng2F.type = 'lowpass';
-    eng2F.frequency.value = 140;
-    eng2F.Q.value = 12;
-    eng2.connect(eng2F);
-    eng2F.connect(eng2G);
-    eng2G.connect(master);
-    eng2.start();
+    const reactor = ctx.createOscillator();
+    const reactorG = ctx.createGain();
+    reactor.type = 'sawtooth'; reactor.frequency.value = 150; reactorG.gain.value = 0.12;
+    const reactorF = ctx.createBiquadFilter();
+    reactorF.type = 'bandpass'; reactorF.frequency.value = 150; reactorF.Q.value = 20;
+    reactor.connect(reactorF); reactorF.connect(reactorG); reactorG.connect(master); reactor.start();
 
-    // Reactor tone — distant sci-fi hum, bandpassed for that "power core" feel
-    const reactor = ambientCtx.createOscillator();
-    const reactorG = ambientCtx.createGain();
-    reactor.type = 'sawtooth';
-    reactor.frequency.value = 150;
-    reactorG.gain.value = 0.12;
-    const reactorF = ambientCtx.createBiquadFilter();
-    reactorF.type = 'bandpass';
-    reactorF.frequency.value = 150;
-    reactorF.Q.value = 20; // Very narrow — eerie resonant tone
-    reactor.connect(reactorF);
-    reactorF.connect(reactorG);
-    reactorG.connect(master);
-    reactor.start();
+    const scifi = ctx.createOscillator();
+    const scifiG = ctx.createGain();
+    scifi.type = 'sine'; scifi.frequency.value = 320; scifiG.gain.value = 0.035;
+    const scifiF = ctx.createBiquadFilter();
+    scifiF.type = 'bandpass'; scifiF.frequency.value = 320; scifiF.Q.value = 30;
+    scifi.connect(scifiF); scifiF.connect(scifiG); scifiG.connect(master); scifi.start();
 
-    // High-frequency sci-fi whine — very quiet, adds "electronic" feel
-    const scifi = ambientCtx.createOscillator();
-    const scifiG = ambientCtx.createGain();
-    scifi.type = 'sine';
-    scifi.frequency.value = 320;
-    scifiG.gain.value = 0.035;
-    const scifiF = ambientCtx.createBiquadFilter();
-    scifiF.type = 'bandpass';
-    scifiF.frequency.value = 320;
-    scifiF.Q.value = 30;
-    scifi.connect(scifiF);
-    scifiF.connect(scifiG);
-    scifiG.connect(master);
-    scifi.start();
-
-    // =========================================
-    // LAYER 3: MOVEMENT & LIFE (LFOs)
-    // =========================================
-
-    // Slow drone pitch drift — makes it feel alive
-    const driftLfo = ambientCtx.createOscillator();
-    const driftLfoG = ambientCtx.createGain();
-    driftLfo.type = 'sine';
-    driftLfo.frequency.value = 0.03; // Very slow
-    driftLfoG.gain.value = 4;
+    // LAYER 3: LFOs
+    const driftLfo = ctx.createOscillator();
+    const driftLfoG = ctx.createGain();
+    driftLfo.type = 'sine'; driftLfo.frequency.value = 0.03; driftLfoG.gain.value = 4;
     driftLfo.connect(driftLfoG);
-    driftLfoG.connect(drone1.frequency);
-    driftLfoG.connect(drone2.frequency);
+    driftLfoG.connect(drone1.frequency); driftLfoG.connect(drone2.frequency);
     driftLfo.start();
 
-    // Engine filter sweep — sci-fi wah effect
-    const sweepLfo = ambientCtx.createOscillator();
-    const sweepLfoG = ambientCtx.createGain();
-    sweepLfo.type = 'sine';
-    sweepLfo.frequency.value = 0.07;
-    sweepLfoG.gain.value = 30;
+    const sweepLfo = ctx.createOscillator();
+    const sweepLfoG = ctx.createGain();
+    sweepLfo.type = 'sine'; sweepLfo.frequency.value = 0.07; sweepLfoG.gain.value = 30;
     sweepLfo.connect(sweepLfoG);
-    sweepLfoG.connect(eng1F.frequency);
-    sweepLfoG.connect(eng2F.frequency);
+    sweepLfoG.connect(eng1F.frequency); sweepLfoG.connect(eng2F.frequency);
     sweepLfo.start();
 
-    // Volume throb — engine idle pulse
-    const throbLfo = ambientCtx.createOscillator();
-    const throbLfoG = ambientCtx.createGain();
-    throbLfo.type = 'sine';
-    throbLfo.frequency.value = 0.25;
-    throbLfoG.gain.value = 0.1;
-    throbLfo.connect(throbLfoG);
-    throbLfoG.connect(master.gain);
-    throbLfo.start();
+    const throbLfo = ctx.createOscillator();
+    const throbLfoG = ctx.createGain();
+    throbLfo.type = 'sine'; throbLfo.frequency.value = 0.25; throbLfoG.gain.value = 0.1;
+    throbLfo.connect(throbLfoG); throbLfoG.connect(master.gain); throbLfo.start();
 
-    // Reactor warble
-    const warble = ambientCtx.createOscillator();
-    const warbleG = ambientCtx.createGain();
-    warble.type = 'sine';
-    warble.frequency.value = 0.5;
-    warbleG.gain.value = 5;
-    warble.connect(warbleG);
-    warbleG.connect(reactor.frequency);
-    warble.start();
+    const warble = ctx.createOscillator();
+    const warbleG = ctx.createGain();
+    warble.type = 'sine'; warble.frequency.value = 0.5; warbleG.gain.value = 5;
+    warble.connect(warbleG); warbleG.connect(reactor.frequency); warble.start();
 
-    // =========================================
-    // LAYER 4: NOISE — rumble & atmosphere
-    // =========================================
-
-    const noiseLen = ambientCtx.sampleRate * 4;
-    const noiseBuf = ambientCtx.createBuffer(1, noiseLen, ambientCtx.sampleRate);
+    // LAYER 4: NOISE
+    const noiseLen = ctx.sampleRate * 4;
+    const noiseBuf = ctx.createBuffer(1, noiseLen, ctx.sampleRate);
     const nd = noiseBuf.getChannelData(0);
     for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
 
-    // Heavy low rumble noise
-    const rumble = ambientCtx.createBufferSource();
-    rumble.buffer = noiseBuf;
-    rumble.loop = true;
-    const rumbleF = ambientCtx.createBiquadFilter();
-    rumbleF.type = 'lowpass';
-    rumbleF.frequency.value = 100;
-    rumbleF.Q.value = 3;
-    const rumbleG = ambientCtx.createGain();
-    rumbleG.gain.value = 0.4;
-    rumble.connect(rumbleF);
-    rumbleF.connect(rumbleG);
-    rumbleG.connect(master);
-    rumble.start();
+    const rumble = ctx.createBufferSource();
+    rumble.buffer = noiseBuf; rumble.loop = true;
+    const rumbleF = ctx.createBiquadFilter();
+    rumbleF.type = 'lowpass'; rumbleF.frequency.value = 100; rumbleF.Q.value = 3;
+    const rumbleG = ctx.createGain(); rumbleG.gain.value = 0.4;
+    rumble.connect(rumbleF); rumbleF.connect(rumbleG); rumbleG.connect(master); rumble.start();
 
-    // Mid-range engine noise — gives width
-    const engineNoise = ambientCtx.createBufferSource();
-    engineNoise.buffer = noiseBuf;
-    engineNoise.loop = true;
-    const engineNoiseF = ambientCtx.createBiquadFilter();
-    engineNoiseF.type = 'bandpass';
-    engineNoiseF.frequency.value = 250;
-    engineNoiseF.Q.value = 2;
-    const engineNoiseG = ambientCtx.createGain();
-    engineNoiseG.gain.value = 0.1;
-    engineNoise.connect(engineNoiseF);
-    engineNoiseF.connect(engineNoiseG);
-    engineNoiseG.connect(master);
-    engineNoise.start();
+    const engineNoise = ctx.createBufferSource();
+    engineNoise.buffer = noiseBuf; engineNoise.loop = true;
+    const engineNoiseF = ctx.createBiquadFilter();
+    engineNoiseF.type = 'bandpass'; engineNoiseF.frequency.value = 250; engineNoiseF.Q.value = 2;
+    const engineNoiseG = ctx.createGain(); engineNoiseG.gain.value = 0.1;
+    engineNoise.connect(engineNoiseF); engineNoiseF.connect(engineNoiseG); engineNoiseG.connect(master); engineNoise.start();
 
-    // Rumble modulation — noise level breathes
-    const rumbleLfo = ambientCtx.createOscillator();
-    const rumbleLfoG = ambientCtx.createGain();
-    rumbleLfo.type = 'sine';
-    rumbleLfo.frequency.value = 0.1;
-    rumbleLfoG.gain.value = 0.1;
-    rumbleLfo.connect(rumbleLfoG);
-    rumbleLfoG.connect(rumbleG.gain);
-    rumbleLfo.start();
-
-    // Fade in over 6 seconds
-    master.gain.setValueAtTime(0, ambientCtx.currentTime);
-    master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 6);
+    const rumbleLfo = ctx.createOscillator();
+    const rumbleLfoG = ctx.createGain();
+    rumbleLfo.type = 'sine'; rumbleLfo.frequency.value = 0.1; rumbleLfoG.gain.value = 0.1;
+    rumbleLfo.connect(rumbleLfoG); rumbleLfoG.connect(rumbleG.gain); rumbleLfo.start();
 
     ambientNodes = { master };
   }
 
-  async function startSound() {
-    if (!ambientCtx) createAmbient();
-    // Force resume — browsers require user gesture to unlock
-    if (ambientCtx.state === 'suspended') {
-      await ambientCtx.resume();
-    }
-    ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
-    ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
-    ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 2);
+  // Crossfade: dial-up out, rumble in
+  function crossfadeToRumble() {
+    // Fade out dial-up over 1.5s
+    fadeOutDialUp(1.5);
+    // Create and fade in rumble
+    if (!ambientNodes) createAmbient();
+    const t = audioCtx.currentTime;
+    ambientNodes.master.gain.setValueAtTime(0, t);
+    ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, t + 3);
     document.getElementById('soundIcon').textContent = 'Sound On';
     document.getElementById('soundToggle').style.opacity = '0.7';
     ambientPlaying = true;
   }
 
-  function stopSound() {
-    if (!ambientCtx || !ambientNodes) return;
-    ambientNodes.master.gain.cancelScheduledValues(ambientCtx.currentTime);
-    ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, ambientCtx.currentTime);
-    ambientNodes.master.gain.linearRampToValueAtTime(0, ambientCtx.currentTime + 1);
-    document.getElementById('soundIcon').textContent = 'Sound Off';
-    document.getElementById('soundToggle').style.opacity = '0.3';
-    ambientPlaying = false;
-  }
-
   function toggleAmbient() {
     if (!ambientPlaying) {
-      startSound();
+      if (!audioCtx) ensureAudioCtx();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (!ambientNodes) createAmbient();
+      const t = audioCtx.currentTime;
+      ambientNodes.master.gain.cancelScheduledValues(t);
+      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
+      ambientNodes.master.gain.linearRampToValueAtTime(AMB_VOL, t + 2);
+      document.getElementById('soundIcon').textContent = 'Sound On';
+      document.getElementById('soundToggle').style.opacity = '0.7';
+      ambientPlaying = true;
     } else {
-      stopSound();
+      if (!audioCtx || !ambientNodes) return;
+      const t = audioCtx.currentTime;
+      ambientNodes.master.gain.cancelScheduledValues(t);
+      ambientNodes.master.gain.setValueAtTime(ambientNodes.master.gain.value, t);
+      ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1);
+      document.getElementById('soundIcon').textContent = 'Sound Off';
+      document.getElementById('soundToggle').style.opacity = '0.3';
+      ambientPlaying = false;
     }
   }
 
-  // Auto-start on first user interaction
-  let ambientStarted = false;
-  function initAmbient() {
-    if (ambientStarted) return;
-    ambientStarted = true;
-    startSound();
-    // Clean up all listeners
+  // Start dial-up on first user interaction
+  let audioStarted = false;
+  function initAudio() {
+    if (audioStarted) return;
+    audioStarted = true;
+    const ctx = ensureAudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    createDialUp();
+    // Clean up listeners
     ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
-      document.removeEventListener(evt, initAmbient);
+      document.removeEventListener(evt, initAudio);
     });
   }
 
-  // Register listeners for first interaction
   ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
-    document.addEventListener(evt, initAmbient, { once: false });
+    document.addEventListener(evt, initAudio, { once: false });
   });
   </script>
 
