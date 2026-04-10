@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape — For Nutritionists</title>
+  <title>Shape — For Gyms & Studios</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -41,14 +41,20 @@
     .ft-earnings-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
     .ft-earnings-info h3 { font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 300; margin-bottom: 16px; letter-spacing: -0.03em; }
     .ft-earnings-info p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; line-height: 1.8; margin-bottom: 16px; }
-    .ft-earnings-info ul { list-style: none; padding: 0; }
-    .ft-earnings-info li { padding: 8px 0; font-size: 0.92rem; display: flex; align-items: center; gap: 10px; }
-    .ft-earnings-info li span { color: var(--text-muted); font-weight: 400; }
 
     .ft-testimonial { padding: 80px 0; text-align: center; }
     .ft-quote { max-width: 700px; margin: 0 auto; font-size: 1.2rem; font-weight: 300; line-height: 1.8; color: var(--text-muted); font-style: italic; margin-bottom: 24px; }
     .ft-quote-author { font-size: 0.92rem; font-weight: 500; }
     .ft-quote-role { font-size: 0.82rem; color: var(--text-muted); font-weight: 400; }
+
+    .gym-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .gym-type-card {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 28px;
+      text-align: center; transition: all 0.3s;
+    }
+    .gym-type-card:hover { border-color: rgba(255,255,255,0.18); background: var(--bg-alt); }
+    .gym-type-card h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 8px; }
+    .gym-type-card p { font-size: 0.82rem; color: var(--text-muted); font-weight: 300; line-height: 1.6; }
 
     @media (max-width: 900px) {
       .ft-hero { padding: 120px 0 30px; }
@@ -57,6 +63,7 @@
       .ft-steps { grid-template-columns: 1fr; gap: 32px; }
       .ft-features-grid { grid-template-columns: 1fr; }
       .ft-earnings-layout { grid-template-columns: 1fr; }
+      .gym-types { grid-template-columns: 1fr; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -124,9 +131,9 @@
   <!-- Hero -->
   <section class="ft-hero">
     <div class="container">
-      <span class="tag">For Nutritionists</span>
-      <h1>Shape how people <span class="gradient-text">eat</span>.</h1>
-      <p>Members are already tracking meals, logging macros, and looking for guidance. Shape puts you where they are — ready to listen, ready to commit, and ready to let you shape their nutrition.</p>
+      <span class="tag">For Gyms & Studios</span>
+      <h1>Shape how your <span class="gradient-text">facility</span> grows.</h1>
+      <p>List your gym on Shape. Onboard your trainers. Offer memberships and class packs to thousands of members already shaping their fitness on the platform.</p>
     </div>
   </section>
 
@@ -136,91 +143,115 @@
       <div class="ft-stats-grid">
         <div>
           <div class="ft-stat-value">10k+</div>
-          <div class="ft-stat-label">Members Tracking Meals</div>
+          <div class="ft-stat-label">Members on Shape</div>
         </div>
         <div>
           <div class="ft-stat-value">$0</div>
           <div class="ft-stat-label">To Get Started</div>
         </div>
         <div>
-          <div class="ft-stat-value">85%</div>
-          <div class="ft-stat-label">Client Retention Rate</div>
+          <div class="ft-stat-value">50+</div>
+          <div class="ft-stat-label">Partner Facilities</div>
         </div>
         <div>
-          <div class="ft-stat-value">50+</div>
-          <div class="ft-stat-label">Nutritionists on Shape</div>
+          <div class="ft-stat-value">92%</div>
+          <div class="ft-stat-label">Partner Retention</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Exposure -->
+  <!-- Who It's For -->
   <section class="ft-how section-alt">
     <div class="container">
       <div class="section-header">
-        <span class="tag">Built-In Demand</span>
-        <h2>Clients already shaping their habits</h2>
-        <p>Shape members are actively logging workouts and tracking food. They're not browsing — they're shaping their routines and looking for someone to guide the nutrition side.</p>
+        <span class="tag">Built for Every Space</span>
+        <h2>From boutique studios to full-scale gyms</h2>
+        <p>Shape works with facilities of every size. Whether you run a single-room yoga studio or a multi-location gym chain, the platform shapes around your business.</p>
+      </div>
+      <div class="gym-types">
+        <div class="gym-type-card">
+          <h3>Traditional Gyms</h3>
+          <p>Full-service facilities with equipment, classes, and personal training. Shape extends your reach beyond the front desk.</p>
+        </div>
+        <div class="gym-type-card">
+          <h3>Boutique Studios</h3>
+          <p>Yoga, pilates, cycling, boxing — specialized studios that thrive on community. Shape brings that community online.</p>
+        </div>
+        <div class="gym-type-card">
+          <h3>CrossFit Boxes</h3>
+          <p>Programming, class scheduling, and athlete tracking built for the box mentality. Shape keeps your members engaged beyond the WOD.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="ft-how">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">How It Works</span>
+        <h2>Three steps to get your facility on Shape</h2>
       </div>
       <div class="ft-steps">
         <div class="ft-step">
-          <h3>Embedded in the Workflow</h3>
-          <p>Your meal plans and consultations live inside the same dashboard members use to shape their day. No separate app, no friction — just seamless access to your services.</p>
+          <h3>List Your Facility</h3>
+          <p>Create your gym profile with location, amenities, photos, and class schedules. Shape makes your facility discoverable to members in your area.</p>
         </div>
         <div class="ft-step">
-          <h3>Warm Leads, Not Cold Outreach</h3>
-          <p>Every client who finds you on Shape is already invested in their health. They're tracking macros, completing workouts, and ready for the nutrition piece.</p>
+          <h3>Onboard Your Team</h3>
+          <p>Invite your trainers and nutritionists to join under your facility. They build their own profiles while representing your brand on the platform.</p>
         </div>
         <div class="ft-step">
-          <h3>Paired with Trainers</h3>
-          <p>Trainers on Shape regularly recommend nutritionists to their subscribers. Built-in referrals from professionals who already trust the platform.</p>
+          <h3>Start Earning</h3>
+          <p>Sell memberships, class packs, and day passes directly through Shape. Members subscribe, you get paid. Shape handles the rest.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Features -->
-  <section class="ft-features">
+  <section class="ft-features section-alt">
     <div class="container">
       <div class="section-header">
-        <span class="tag">Tools That Work for You</span>
-        <h2>Shape your practice. We built the tools.</h2>
+        <span class="tag">Platform Tools</span>
+        <h2>Everything you need to shape your facility's growth</h2>
       </div>
       <div class="ft-features-grid">
         <div class="ft-feature">
           <div>
-            <h3>Publish Meal Plans</h3>
-            <p>Design weekly or monthly plans with macros, portions, and alternatives. Clients see them directly in their nutrition dashboard alongside their daily tracker.</p>
+            <h3>Facility Profile</h3>
+            <p>Showcase your space with photos, amenities, hours, and class schedules. Your profile is your digital storefront on Shape.</p>
           </div>
         </div>
         <div class="ft-feature">
           <div>
-            <h3>1-on-1 Consultations</h3>
-            <p>Offer video or in-app check-ins. Clients book directly from your profile — no back-and-forth scheduling. You set availability and pricing.</p>
+            <h3>Trainer Management</h3>
+            <p>Onboard your staff, track their subscriber growth, and manage your team all from one dashboard.</p>
           </div>
         </div>
         <div class="ft-feature">
           <div>
-            <h3>See What Clients Eat</h3>
-            <p>Clients log meals and macros in real time. You get visibility into their food diary so you can give feedback that actually sticks.</p>
+            <h3>Membership Sales</h3>
+            <p>Sell monthly memberships, class packs, and drop-in passes. Shape processes payments and handles billing automatically.</p>
           </div>
         </div>
         <div class="ft-feature">
           <div>
-            <h3>Recurring Revenue</h3>
-            <p>Offer monthly subscriptions for ongoing coaching. Clients stay because the results are shaped into their daily routine, not a PDF they forget about.</p>
+            <h3>Class Scheduling</h3>
+            <p>Publish your class schedule on Shape. Members can browse, book, and check in — all through the platform.</p>
           </div>
         </div>
         <div class="ft-feature">
           <div>
-            <h3>Your Brand, Front and Center</h3>
-            <p>Your profile showcases your credentials, approach, and results. Clients choose you for you — not a generic service behind a logo.</p>
+            <h3>Analytics Dashboard</h3>
+            <p>Track membership trends, class attendance, revenue, and trainer performance with real-time reporting.</p>
           </div>
         </div>
         <div class="ft-feature">
           <div>
-            <h3>Collaborate with Trainers</h3>
-            <p>Co-shape a client's journey with trainers on the platform. Align meal plans with workout schedules for results that go beyond the plate.</p>
+            <h3>Local Discovery</h3>
+            <p>Shape surfaces your facility to nearby members searching for gyms, classes, and trainers in their area.</p>
           </div>
         </div>
       </div>
@@ -228,19 +259,19 @@
   </section>
 
   <!-- Free to Join -->
-  <section class="ft-earnings section-alt">
+  <section class="ft-earnings">
     <div class="container">
       <div class="ft-earnings-layout" style="grid-template-columns:1fr;max-width:640px;margin:0 auto;">
         <div class="ft-earnings-info" style="text-align:center;">
-          <span class="tag">Zero Risk</span>
-          <h3>Shape your income. We only earn when you do.</h3>
-          <p style="text-align:center;">No sign-up fees. No monthly charges. Shape takes a small percentage when you get paid — that's it. Everything else is included so you can focus on shaping better outcomes, not chasing overhead.</p>
+          <span class="tag">Partner With Shape</span>
+          <h3>Zero upfront costs. We grow when you grow.</h3>
+          <p style="text-align:center;">There are no listing fees, no setup charges, and no monthly platform costs. Shape takes a small percentage of membership revenue processed through the platform. Everything else — marketing, billing, support — is included.</p>
           <ul style="display:inline-flex;flex-direction:column;align-items:center;text-align:center;list-style:none;">
-            <li>No upfront costs or commitments</li>
-            <li>Billing, invoicing, and payments handled</li>
-            <li>Client acquisition built into the platform</li>
-            <li>Your own scheduling and availability controls</li>
-            <li>Payouts deposited monthly</li>
+            <li>Free to list your facility</li>
+            <li>No monthly platform fees</li>
+            <li>Shape handles all payment processing</li>
+            <li>Marketing and promotion included</li>
+            <li>Monthly payouts via direct deposit</li>
           </ul>
         </div>
       </div>
@@ -248,15 +279,23 @@
   </section>
 
   <!-- Testimonial -->
-  <section class="ft-testimonial">
+  <section class="ft-testimonial section-alt">
     <div class="container">
-      <span class="tag">From Our Nutritionists</span>
-      <p class="ft-quote">"Shape changed everything for my practice. My clients log meals in the app, I shape their plans in real time, and new clients find me every week. I went from chasing leads to just doing what I love."</p>
-      <div class="ft-quote-author">Dr. Sarah Mitchell</div>
-      <div class="ft-quote-role">Sports Nutrition — 680 active clients</div>
+      <span class="tag">From Our Partners</span>
+      <p class="ft-quote">"We listed our studio on Shape and within two months had 40 new members who found us through the platform. The onboarding was seamless and our trainers love the exposure."</p>
+      <div class="ft-quote-author">Elena Torres</div>
+      <div class="ft-quote-role">Owner, Iron & Flow Studio — Denver, CO</div>
     </div>
   </section>
 
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container" style="text-align:center;">
+      <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-bottom:16px;">Ready to shape your facility's future?</h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;font-weight:300;margin-bottom:28px;">Join Shape as a gym partner. It's free to get started.</p>
+      <a href="signup-gym.html" class="btn btn-sm btn-outline">Partner With Us</a>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -300,9 +339,7 @@
     </div>
   </footer>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
-
   <script src="app.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
