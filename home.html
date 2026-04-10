@@ -8,6 +8,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
+    /* Fade-in from intro dissolve */
+    .page-reveal {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #0a0a0a;
+      pointer-events: none;
+      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .page-reveal.done { opacity: 0; }
+  </style>
+  <script>
+    // If arriving from intro, start black and fade in
+    if (new URLSearchParams(location.search).get('from') === 'intro') {
+      document.addEventListener('DOMContentLoaded', () => {
+        const el = document.createElement('div');
+        el.className = 'page-reveal';
+        document.body.prepend(el);
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          el.classList.add('done');
+          setTimeout(() => el.remove(), 1000);
+        }));
+      });
+    }
+  </script>
+  <style>
     .split-hero {
       padding: 160px 0 40px; text-align: center;
       position: relative;

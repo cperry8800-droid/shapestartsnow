@@ -423,10 +423,10 @@
         ambientNodes.master.gain.linearRampToValueAtTime(0, t + 1.4);
       }
 
-      // 5. Navigate after dissolve completes
+      // 5. Navigate after dissolve completes (black overlay fully covering)
       setTimeout(() => {
-        window.location.href = 'home.html';
-      }, 1600);
+        window.location.href = 'home.html?from=intro';
+      }, 1500);
     }
 
     // Dissolve particles effect
@@ -852,16 +852,16 @@
 
   // Start dial-up on first user interaction
   let audioStarted = false;
-  function initAudio() {
+  async function initAudio() {
     if (audioStarted) return;
     audioStarted = true;
-    const ctx = ensureAudioCtx();
-    if (ctx.state === 'suspended') ctx.resume();
-    createDialUp();
-    // Clean up listeners
+    // Clean up listeners immediately so this can't fire twice
     ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
       document.removeEventListener(evt, initAudio);
     });
+    const ctx = ensureAudioCtx();
+    if (ctx.state === 'suspended') await ctx.resume();
+    createDialUp();
   }
 
   ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove','pointerdown'].forEach(evt => {
