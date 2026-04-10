@@ -566,6 +566,15 @@ ul { list-style: none; }
   }
   .nav-links.open { right: 0; }
   .nav-toggle { display: block; }
+  .nav-dropdown { position: static; }
+  .nav-dropdown-menu {
+    position: static; transform: none; opacity: 1; visibility: visible;
+    background: transparent; border: none; border-radius: 0; box-shadow: none;
+    padding: 0 0 0 16px; margin-top: 0; min-width: unset;
+  }
+  .nav-dropdown-menu a {
+    padding: 6px 0; font-size: 0.75rem; opacity: 0.5;
+  }
   .hero h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
   .hero { padding: 140px 0 80px; }
   .section { padding: 80px 0; }

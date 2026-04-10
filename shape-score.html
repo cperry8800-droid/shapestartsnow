@@ -10,6 +10,9 @@
   <style>
     @media (max-width: 768px) {
       .shape-score-grid { grid-template-columns: 1fr !important; }
+      .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .redeem-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px; }
+      .redeem-card > div:last-child { text-align: left !important; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -78,7 +81,7 @@
           </div>
 
           <!-- Status Tiers -->
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
+          <div class="tier-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:14px 12px;text-align:center;">
               <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;color:#CD7F32;font-weight:500;margin-bottom:4px;">Bronze</div>
               <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">0 pts</div>
@@ -142,7 +145,7 @@
             <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Spend your points</h2>
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;">
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
+            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
               <div>
                 <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">10% off any program</div>
                 <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Works on any trainer or nutritionist program.</div>
@@ -152,7 +155,7 @@
                 <button class="btn btn-sm btn-outline">Redeem</button>
               </div>
             </div>
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
+            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
               <div>
                 <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">Free session unlock</div>
                 <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Unlock any single session from any trainer.</div>
@@ -162,7 +165,7 @@
                 <button class="btn btn-sm btn-outline">Redeem</button>
               </div>
             </div>
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
+            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
               <div>
                 <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">25% off next month</div>
                 <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Save on any subscription renewal.</div>
@@ -172,7 +175,7 @@
                 <button class="btn btn-sm btn-outline">Redeem</button>
               </div>
             </div>
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
+            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
               <div>
                 <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">1 month free</div>
                 <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">A full month of any subscription — on us.</div>
