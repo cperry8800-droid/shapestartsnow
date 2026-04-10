@@ -7,27 +7,64 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Fade-in from intro dissolve */
-    .page-reveal {
-      position: fixed; inset: 0; z-index: 9999;
-      background: #0a0a0a;
-      pointer-events: none;
-      transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .page-reveal.done { opacity: 0; }
-  </style>
   <script>
-    // If arriving from intro, start black and fade in
     if (new URLSearchParams(location.search).get('from') === 'intro') {
       document.addEventListener('DOMContentLoaded', () => {
-        const el = document.createElement('div');
-        el.className = 'page-reveal';
-        document.body.prepend(el);
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          el.classList.add('done');
-          setTimeout(() => el.remove(), 1000);
-        }));
+        const canvas = document.createElement('canvas');
+        canvas.style.cssText = 'position:fixed;inset:0;z-index:9999;pointer-events:all;display:block;';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        document.body.prepend(canvas);
+
+        const ctx = canvas.getContext('2d');
+
+        // Fill solid black
+        ctx.fillStyle = '#0a0a0a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Build grid of blocks
+        const blockSize = 8;
+        const cols = Math.ceil(canvas.width / blockSize);
+        const rows = Math.ceil(canvas.height / blockSize);
+        const blocks = [];
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            blocks.push([c * blockSize, r * blockSize]);
+          }
+        }
+
+        // Fisher-Yates shuffle for random order
+        for (let i = blocks.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [blocks[i], blocks[j]] = [blocks[j], blocks[i]];
+        }
+
+        let cleared = 0;
+        const total = blocks.length;
+        const duration = 3200; // ms — slow dissolve
+        const start = performance.now();
+
+        function dissolve(now) {
+          const raw = Math.min((now - start) / duration, 1);
+          // Ease-in: slow start, accelerates
+          const eased = raw * raw;
+          const target = Math.floor(eased * total);
+
+          // Clear a batch of blocks this frame
+          while (cleared < target) {
+            const [x, y] = blocks[cleared];
+            ctx.clearRect(x, y, blockSize, blockSize);
+            cleared++;
+          }
+
+          if (raw < 1) {
+            requestAnimationFrame(dissolve);
+          } else {
+            canvas.remove();
+          }
+        }
+
+        requestAnimationFrame(dissolve);
       });
     }
   </script>
