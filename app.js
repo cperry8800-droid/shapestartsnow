@@ -449,7 +449,14 @@ document.querySelectorAll('.nav-dropdown > a').forEach(link => {
   link.addEventListener('click', function(e) {
     if (window.innerWidth <= 768) {
       e.preventDefault();
-      this.parentElement.classList.toggle('open');
+      e.stopPropagation();
+      const parent = this.parentElement;
+      // Close other dropdowns (accordion)
+      document.querySelectorAll('.nav-dropdown').forEach(dd => {
+        if (dd !== parent) dd.classList.remove('open');
+      });
+      parent.classList.toggle('open');
+      return false;
     }
   });
 });
