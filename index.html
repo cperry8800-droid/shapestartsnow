@@ -343,17 +343,36 @@
     }
   }
 
-  // Auto-start on first user interaction
+  // Try to autoplay immediately, fall back to first interaction
   let ambientStarted = false;
-  function autoStartAmbient() {
+  function startAmbient() {
     if (ambientStarted) return;
     ambientStarted = true;
     toggleAmbient();
-    document.removeEventListener('click', autoStartAmbient);
-    document.removeEventListener('touchstart', autoStartAmbient);
+    // Remove all listeners once started
+    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
+      document.removeEventListener(evt, startAmbient);
+    });
   }
-  document.addEventListener('click', autoStartAmbient);
-  document.addEventListener('touchstart', autoStartAmbient);
+
+  // Attempt immediate autoplay
+  try {
+    const testCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (testCtx.state === 'running') {
+      testCtx.close();
+      startAmbient();
+    } else {
+      testCtx.close();
+      // Browser blocked autoplay — listen for any interaction
+      ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
+        document.addEventListener(evt, startAmbient, { once: false });
+      });
+    }
+  } catch(e) {
+    ['click','touchstart','mousemove','mousedown','keydown','scroll','touchmove'].forEach(evt => {
+      document.addEventListener(evt, startAmbient, { once: false });
+    });
+  }
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
