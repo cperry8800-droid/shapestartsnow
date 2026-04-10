@@ -61,8 +61,99 @@
   </section>
 
   <!-- Nutritionists Section -->
+  <style>
+    .filter-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 32px;
+    }
+    .filter-bar-top {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .filter-search {
+      flex: 1;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .filter-search:focus {
+      border-color: var(--accent, #2DD4BF);
+    }
+    .filter-search::placeholder {
+      color: var(--text-muted);
+    }
+    .filter-sort {
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      cursor: pointer;
+      outline: none;
+      min-width: 180px;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px;
+    }
+    .filter-sort:focus {
+      border-color: var(--accent, #2DD4BF);
+    }
+    .filter-bar-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 768px) {
+      .filter-bar-top {
+        flex-direction: column;
+      }
+      .filter-sort {
+        min-width: unset;
+        width: 100%;
+      }
+    }
+  </style>
   <section class="section">
     <div class="container">
+      <div class="filter-bar">
+        <div class="filter-bar-top">
+          <input type="text" class="filter-search" id="nutritionistSearch" placeholder="Search by name..." oninput="filterNutritionists()">
+          <select class="filter-sort" id="nutritionistSort" onchange="filterNutritionists()">
+            <option value="subscribers">Most Subscribers</option>
+            <option value="rating">Highest Rated</option>
+            <option value="price">Lowest Price</option>
+            <option value="experience">Most Experience</option>
+          </select>
+        </div>
+        <div class="filter-bar-buttons">
+          <button class="filter-btn active" data-filter="all" onclick="setNutritionistFilter(this)">All</button>
+          <button class="filter-btn" data-filter="sports" onclick="setNutritionistFilter(this)">Sports Nutrition</button>
+          <button class="filter-btn" data-filter="weightloss" onclick="setNutritionistFilter(this)">Weight Management</button>
+          <button class="filter-btn" data-filter="plantbased" onclick="setNutritionistFilter(this)">Plant-Based</button>
+          <button class="filter-btn" data-filter="guthealth" onclick="setNutritionistFilter(this)">Gut Health</button>
+          <button class="filter-btn" data-filter="prenatal" onclick="setNutritionistFilter(this)">Prenatal</button>
+          <button class="filter-btn" data-filter="mealprep" onclick="setNutritionistFilter(this)">Meal Prep</button>
+        </div>
+      </div>
+
       <div class="card-grid" id="nutritionistGrid">
         <!-- Populated by JS -->
       </div>

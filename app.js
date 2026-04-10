@@ -71,7 +71,7 @@ const trainers = [
 const nutritionists = [
   {
     id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports Nutrition",
-    price: 59.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
+    category: "sports", price: 59.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
     bio: "PhD in Nutritional Science. Specializes in performance nutrition for athletes — from amateur to Olympic level.",
     color: "#10B981", nutritionistOfMonth: true,
     notmQuote: "Food is fuel, but the right food is a superpower. Let's unlock yours.",
@@ -86,7 +86,7 @@ const nutritionists = [
   },
   {
     id: 102, name: "James Okafor", specialty: "Weight Management",
-    price: 44.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
+    category: "weightloss", price: 44.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
     bio: "Registered dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
     color: "#6C3AED",
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
@@ -100,7 +100,7 @@ const nutritionists = [
   },
   {
     id: 103, name: "Maria Santos", specialty: "Plant-Based Nutrition",
-    price: 39.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
+    category: "plantbased", price: 39.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
     bio: "Certified plant-based nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
     color: "#EC4899",
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
@@ -114,7 +114,7 @@ const nutritionists = [
   },
   {
     id: 104, name: "Dr. Kevin Park", specialty: "Gut Health & Wellness",
-    price: 54.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
+    category: "guthealth", price: 54.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
     bio: "Functional medicine nutritionist specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
     color: "#F59E0B",
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
@@ -128,7 +128,7 @@ const nutritionists = [
   },
   {
     id: 105, name: "Rachel Kim", specialty: "Prenatal & Postnatal",
-    price: 49.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
+    category: "prenatal", price: 49.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
     bio: "Specializes in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
     color: "#8B5CF6",
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
@@ -142,7 +142,7 @@ const nutritionists = [
   },
   {
     id: 106, name: "Alex Rivera", specialty: "Meal Prep & Budget",
-    price: 32.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
+    category: "mealprep", price: 32.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
     bio: "Makes healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
     color: "#EF4444",
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
@@ -289,22 +289,66 @@ if (notmCard) {
   }
 }
 
-// ===== Filter =====
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    const cards = document.querySelectorAll('#trainerGrid .card');
-    cards.forEach(card => {
-      if (filter === 'all' || card.dataset.category === filter) {
-        card.style.display = '';
-      } else {
-        card.style.display = 'none';
-      }
-    });
+// ===== Filter & Sort =====
+let activeTrainerFilter = 'all';
+let activeNutritionistFilter = 'all';
+
+function setTrainerFilter(btn) {
+  document.querySelectorAll('.filter-bar-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeTrainerFilter = btn.dataset.filter;
+  filterTrainers();
+}
+
+function setNutritionistFilter(btn) {
+  document.querySelectorAll('.filter-bar-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeNutritionistFilter = btn.dataset.filter;
+  filterNutritionists();
+}
+
+function sortData(data, sortBy) {
+  const sorted = [...data];
+  switch (sortBy) {
+    case 'subscribers': sorted.sort((a, b) => b.subscribers - a.subscribers); break;
+    case 'rating': sorted.sort((a, b) => b.rating - a.rating); break;
+    case 'price': sorted.sort((a, b) => a.price - b.price); break;
+    case 'experience': sorted.sort((a, b) => parseInt(b.experience) - parseInt(a.experience)); break;
+  }
+  return sorted;
+}
+
+function filterTrainers() {
+  const searchEl = document.getElementById('trainerSearch');
+  const sortEl = document.getElementById('trainerSort');
+  const grid = document.getElementById('trainerGrid');
+  if (!grid) return;
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const sortBy = sortEl ? sortEl.value : 'subscribers';
+  let filtered = trainers.filter(t => {
+    const matchesSearch = !search || t.name.toLowerCase().includes(search);
+    const matchesCategory = activeTrainerFilter === 'all' || t.category === activeTrainerFilter;
+    return matchesSearch && matchesCategory;
   });
-});
+  filtered = sortData(filtered, sortBy);
+  grid.innerHTML = filtered.map(createTrainerCard).join('');
+}
+
+function filterNutritionists() {
+  const searchEl = document.getElementById('nutritionistSearch');
+  const sortEl = document.getElementById('nutritionistSort');
+  const grid = document.getElementById('nutritionistGrid');
+  if (!grid) return;
+  const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
+  const sortBy = sortEl ? sortEl.value : 'subscribers';
+  let filtered = nutritionists.filter(n => {
+    const matchesSearch = !search || n.name.toLowerCase().includes(search);
+    const matchesCategory = activeNutritionistFilter === 'all' || n.category === activeNutritionistFilter;
+    return matchesSearch && matchesCategory;
+  });
+  filtered = sortData(filtered, sortBy);
+  grid.innerHTML = filtered.map(createNutritionistCard).join('');
+}
 
 // ===== Navbar Scroll =====
 const navbar = document.getElementById('navbar');
