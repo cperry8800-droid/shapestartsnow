@@ -233,152 +233,228 @@
   let ambientCtx = null;
   let ambientNodes = null;
   let ambientPlaying = false;
-  const AMB_VOL = 0.7;
+  const AMB_VOL = 0.85;
 
   function createAmbient() {
     ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
     const master = ambientCtx.createGain();
     master.gain.value = 0;
-    master.connect(ambientCtx.destination);
 
-    // === ENGINE CORE — heavy sub bass throb ===
-    const engine = ambientCtx.createOscillator();
-    const engineG = ambientCtx.createGain();
-    engine.type = 'sawtooth';
-    engine.frequency.value = 38; // Deep engine drone
-    engineG.gain.value = 0.25;
-    const engineFilter = ambientCtx.createBiquadFilter();
-    engineFilter.type = 'lowpass';
-    engineFilter.frequency.value = 80;
-    engineFilter.Q.value = 8; // Resonant — gives it that hovering throb
-    engine.connect(engineFilter);
-    engineFilter.connect(engineG);
-    engineG.connect(master);
-    engine.start();
+    // Master compressor to glue everything and add weight
+    const comp = ambientCtx.createDynamicsCompressor();
+    comp.threshold.value = -20;
+    comp.knee.value = 10;
+    comp.ratio.value = 4;
+    comp.attack.value = 0.05;
+    comp.release.value = 0.25;
+    master.connect(comp);
+    comp.connect(ambientCtx.destination);
 
-    // === SUB BASS — floor-shaking low end ===
-    const sub = ambientCtx.createOscillator();
-    const subG = ambientCtx.createGain();
-    sub.type = 'sine';
-    sub.frequency.value = 30; // Very low — feel more than hear
-    subG.gain.value = 0.5;
-    sub.connect(subG);
-    subG.connect(master);
-    sub.start();
+    // =========================================
+    // LAYER 1: DEEP BASS DRONE (the foundation)
+    // =========================================
 
-    // === HULL RESONANCE — metallic body ===
-    const hull = ambientCtx.createOscillator();
-    const hullG = ambientCtx.createGain();
-    hull.type = 'triangle';
-    hull.frequency.value = 75;
-    hullG.gain.value = 0.15;
-    hull.connect(hullG);
-    hullG.connect(master);
-    hull.start();
+    // Primary sub drone — 28Hz, barely audible, felt in chest
+    const drone1 = ambientCtx.createOscillator();
+    const drone1G = ambientCtx.createGain();
+    drone1.type = 'sine';
+    drone1.frequency.value = 28;
+    drone1G.gain.value = 0.6;
+    drone1.connect(drone1G);
+    drone1G.connect(master);
+    drone1.start();
 
-    // === POWER HUM — electrical system ===
-    const power = ambientCtx.createOscillator();
-    const powerG = ambientCtx.createGain();
-    power.type = 'sine';
-    power.frequency.value = 60; // Mains hum frequency
-    powerG.gain.value = 0.12;
-    power.connect(powerG);
-    powerG.connect(master);
-    power.start();
+    // Second drone layer — 42Hz, adds grit
+    const drone2 = ambientCtx.createOscillator();
+    const drone2G = ambientCtx.createGain();
+    drone2.type = 'sawtooth';
+    drone2.frequency.value = 42;
+    drone2G.gain.value = 0.3;
+    const drone2F = ambientCtx.createBiquadFilter();
+    drone2F.type = 'lowpass';
+    drone2F.frequency.value = 90;
+    drone2F.Q.value = 6;
+    drone2.connect(drone2F);
+    drone2F.connect(drone2G);
+    drone2G.connect(master);
+    drone2.start();
 
-    // === HARMONIC OVERTONE — distant whine ===
-    const whine = ambientCtx.createOscillator();
-    const whineG = ambientCtx.createGain();
-    whine.type = 'sine';
-    whine.frequency.value = 185;
-    whineG.gain.value = 0.04;
-    const whineFilter = ambientCtx.createBiquadFilter();
-    whineFilter.type = 'bandpass';
-    whineFilter.frequency.value = 185;
-    whineFilter.Q.value = 12;
-    whine.connect(whineFilter);
-    whineFilter.connect(whineG);
-    whineG.connect(master);
-    whine.start();
+    // Third drone — 56Hz square wave, filtered heavy, adds rumble texture
+    const drone3 = ambientCtx.createOscillator();
+    const drone3G = ambientCtx.createGain();
+    drone3.type = 'square';
+    drone3.frequency.value = 56;
+    drone3G.gain.value = 0.15;
+    const drone3F = ambientCtx.createBiquadFilter();
+    drone3F.type = 'lowpass';
+    drone3F.frequency.value = 70;
+    drone3F.Q.value = 10;
+    drone3.connect(drone3F);
+    drone3F.connect(drone3G);
+    drone3G.connect(master);
+    drone3.start();
 
-    // === ENGINE THROB LFO — slow pulsing rhythm ===
-    const throb = ambientCtx.createOscillator();
-    const throbG = ambientCtx.createGain();
-    throb.type = 'sine';
-    throb.frequency.value = 0.4; // Slow pulse — hovering idle
-    throbG.gain.value = 0.08;
-    throb.connect(throbG);
-    throbG.connect(master.gain);
-    throb.start();
+    // =========================================
+    // LAYER 2: SCI-FI ENGINE
+    // =========================================
 
-    // === FREQUENCY DRIFT LFO — engine not perfectly stable ===
-    const drift = ambientCtx.createOscillator();
-    const driftG = ambientCtx.createGain();
-    drift.type = 'sine';
-    drift.frequency.value = 0.05;
-    driftG.gain.value = 3;
-    drift.connect(driftG);
-    driftG.connect(engine.frequency);
-    driftG.connect(sub.frequency);
-    drift.start();
+    // Engine core — detuned sawtooth pair for thick sci-fi texture
+    const eng1 = ambientCtx.createOscillator();
+    const eng1G = ambientCtx.createGain();
+    eng1.type = 'sawtooth';
+    eng1.frequency.value = 36;
+    eng1G.gain.value = 0.2;
+    const eng1F = ambientCtx.createBiquadFilter();
+    eng1F.type = 'lowpass';
+    eng1F.frequency.value = 120;
+    eng1F.Q.value = 12; // High resonance — sci-fi character
+    eng1.connect(eng1F);
+    eng1F.connect(eng1G);
+    eng1G.connect(master);
+    eng1.start();
 
-    // === SECOND DRIFT — on hull resonance ===
-    const drift2 = ambientCtx.createOscillator();
-    const drift2G = ambientCtx.createGain();
-    drift2.type = 'sine';
-    drift2.frequency.value = 0.08;
-    drift2G.gain.value = 1.5;
-    drift2.connect(drift2G);
-    drift2G.connect(hull.frequency);
-    drift2.start();
+    const eng2 = ambientCtx.createOscillator();
+    const eng2G = ambientCtx.createGain();
+    eng2.type = 'sawtooth';
+    eng2.frequency.value = 36.8; // Slightly detuned — creates beating/thickness
+    eng2G.gain.value = 0.2;
+    const eng2F = ambientCtx.createBiquadFilter();
+    eng2F.type = 'lowpass';
+    eng2F.frequency.value = 120;
+    eng2F.Q.value = 12;
+    eng2.connect(eng2F);
+    eng2F.connect(eng2G);
+    eng2G.connect(master);
+    eng2.start();
 
-    // === TURBINE WASH — filtered noise ===
-    const noiseLen = ambientCtx.sampleRate * 2;
+    // Reactor tone — distant sci-fi hum, bandpassed for that "power core" feel
+    const reactor = ambientCtx.createOscillator();
+    const reactorG = ambientCtx.createGain();
+    reactor.type = 'sawtooth';
+    reactor.frequency.value = 150;
+    reactorG.gain.value = 0.06;
+    const reactorF = ambientCtx.createBiquadFilter();
+    reactorF.type = 'bandpass';
+    reactorF.frequency.value = 150;
+    reactorF.Q.value = 20; // Very narrow — eerie resonant tone
+    reactor.connect(reactorF);
+    reactorF.connect(reactorG);
+    reactorG.connect(master);
+    reactor.start();
+
+    // High-frequency sci-fi whine — very quiet, adds "electronic" feel
+    const scifi = ambientCtx.createOscillator();
+    const scifiG = ambientCtx.createGain();
+    scifi.type = 'sine';
+    scifi.frequency.value = 320;
+    scifiG.gain.value = 0.015;
+    const scifiF = ambientCtx.createBiquadFilter();
+    scifiF.type = 'bandpass';
+    scifiF.frequency.value = 320;
+    scifiF.Q.value = 30;
+    scifi.connect(scifiF);
+    scifiF.connect(scifiG);
+    scifiG.connect(master);
+    scifi.start();
+
+    // =========================================
+    // LAYER 3: MOVEMENT & LIFE (LFOs)
+    // =========================================
+
+    // Slow drone pitch drift — makes it feel alive
+    const driftLfo = ambientCtx.createOscillator();
+    const driftLfoG = ambientCtx.createGain();
+    driftLfo.type = 'sine';
+    driftLfo.frequency.value = 0.03; // Very slow
+    driftLfoG.gain.value = 4;
+    driftLfo.connect(driftLfoG);
+    driftLfoG.connect(drone1.frequency);
+    driftLfoG.connect(drone2.frequency);
+    driftLfo.start();
+
+    // Engine filter sweep — sci-fi wah effect
+    const sweepLfo = ambientCtx.createOscillator();
+    const sweepLfoG = ambientCtx.createGain();
+    sweepLfo.type = 'sine';
+    sweepLfo.frequency.value = 0.07;
+    sweepLfoG.gain.value = 30;
+    sweepLfo.connect(sweepLfoG);
+    sweepLfoG.connect(eng1F.frequency);
+    sweepLfoG.connect(eng2F.frequency);
+    sweepLfo.start();
+
+    // Volume throb — engine idle pulse
+    const throbLfo = ambientCtx.createOscillator();
+    const throbLfoG = ambientCtx.createGain();
+    throbLfo.type = 'sine';
+    throbLfo.frequency.value = 0.25;
+    throbLfoG.gain.value = 0.1;
+    throbLfo.connect(throbLfoG);
+    throbLfoG.connect(master.gain);
+    throbLfo.start();
+
+    // Reactor warble
+    const warble = ambientCtx.createOscillator();
+    const warbleG = ambientCtx.createGain();
+    warble.type = 'sine';
+    warble.frequency.value = 0.5;
+    warbleG.gain.value = 5;
+    warble.connect(warbleG);
+    warbleG.connect(reactor.frequency);
+    warble.start();
+
+    // =========================================
+    // LAYER 4: NOISE — rumble & atmosphere
+    // =========================================
+
+    const noiseLen = ambientCtx.sampleRate * 4;
     const noiseBuf = ambientCtx.createBuffer(1, noiseLen, ambientCtx.sampleRate);
     const nd = noiseBuf.getChannelData(0);
     for (let i = 0; i < noiseLen; i++) nd[i] = Math.random() * 2 - 1;
-    const noise = ambientCtx.createBufferSource();
-    noise.buffer = noiseBuf;
-    noise.loop = true;
-    // Low rumble layer
-    const nfLow = ambientCtx.createBiquadFilter();
-    nfLow.type = 'lowpass';
-    nfLow.frequency.value = 200;
-    nfLow.Q.value = 2;
-    const ngLow = ambientCtx.createGain();
-    ngLow.gain.value = 0.18;
-    noise.connect(nfLow);
-    nfLow.connect(ngLow);
-    ngLow.connect(master);
-    // Mid hiss layer — exhaust
-    const noise2 = ambientCtx.createBufferSource();
-    noise2.buffer = noiseBuf;
-    noise2.loop = true;
-    const nfMid = ambientCtx.createBiquadFilter();
-    nfMid.type = 'bandpass';
-    nfMid.frequency.value = 800;
-    nfMid.Q.value = 0.5;
-    const ngMid = ambientCtx.createGain();
-    ngMid.gain.value = 0.03;
-    noise2.connect(nfMid);
-    nfMid.connect(ngMid);
-    ngMid.connect(master);
-    noise.start();
-    noise2.start();
 
-    // === NOISE LFO — turbine wash modulation ===
-    const noiseLfo = ambientCtx.createOscillator();
-    const noiseLfoG = ambientCtx.createGain();
-    noiseLfo.type = 'sine';
-    noiseLfo.frequency.value = 0.15;
-    noiseLfoG.gain.value = 0.06;
-    noiseLfo.connect(noiseLfoG);
-    noiseLfoG.connect(ngLow.gain);
-    noiseLfo.start();
+    // Heavy low rumble noise
+    const rumble = ambientCtx.createBufferSource();
+    rumble.buffer = noiseBuf;
+    rumble.loop = true;
+    const rumbleF = ambientCtx.createBiquadFilter();
+    rumbleF.type = 'lowpass';
+    rumbleF.frequency.value = 100;
+    rumbleF.Q.value = 3;
+    const rumbleG = ambientCtx.createGain();
+    rumbleG.gain.value = 0.25;
+    rumble.connect(rumbleF);
+    rumbleF.connect(rumbleG);
+    rumbleG.connect(master);
+    rumble.start();
 
-    // Fade in over 5 seconds
+    // Mid-range engine noise — gives width
+    const engineNoise = ambientCtx.createBufferSource();
+    engineNoise.buffer = noiseBuf;
+    engineNoise.loop = true;
+    const engineNoiseF = ambientCtx.createBiquadFilter();
+    engineNoiseF.type = 'bandpass';
+    engineNoiseF.frequency.value = 250;
+    engineNoiseF.Q.value = 2;
+    const engineNoiseG = ambientCtx.createGain();
+    engineNoiseG.gain.value = 0.05;
+    engineNoise.connect(engineNoiseF);
+    engineNoiseF.connect(engineNoiseG);
+    engineNoiseG.connect(master);
+    engineNoise.start();
+
+    // Rumble modulation — noise level breathes
+    const rumbleLfo = ambientCtx.createOscillator();
+    const rumbleLfoG = ambientCtx.createGain();
+    rumbleLfo.type = 'sine';
+    rumbleLfo.frequency.value = 0.1;
+    rumbleLfoG.gain.value = 0.1;
+    rumbleLfo.connect(rumbleLfoG);
+    rumbleLfoG.connect(rumbleG.gain);
+    rumbleLfo.start();
+
+    // Fade in over 6 seconds
     master.gain.setValueAtTime(0, ambientCtx.currentTime);
-    master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 5);
+    master.gain.linearRampToValueAtTime(AMB_VOL, ambientCtx.currentTime + 6);
 
     ambientNodes = { master };
   }
