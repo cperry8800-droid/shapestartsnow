@@ -580,7 +580,7 @@ img.card-avatar-inline { background: var(--border); }
   .nav-actions {
     display: none;
   }
-  .nav-toggle { display: block; }
+  .nav-toggle { display: block; position: fixed; top: 24px; right: 48px; z-index: 1060; }
   .nav-dropdown { position: static; flex-direction: column; align-items: flex-start; }
   .nav-dropdown > a {
     display: flex; align-items: center; gap: 6px;
