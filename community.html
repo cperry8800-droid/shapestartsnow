@@ -399,6 +399,9 @@
         <div class="activity-profile-avatar" id="myAvatar" style="background:#2DD4BF;"><span id="myInitials">You</span></div>
         <h3 id="myName">Your Profile</h3>
         <p id="myBio">Member since 2025</p>
+        <div style="display:inline-block;padding:4px 12px;margin-top:10px;border:1px solid #CD7F32;font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:#CD7F32;">
+          Bronze · 2,450 pts
+        </div>
         <div class="activity-stats">
           <div class="activity-stat">
             <div class="activity-stat-num" id="statFriends">4</div>
@@ -414,6 +417,10 @@
           </div>
         </div>
         <button class="btn-edit-profile" onclick="openProfileModal()">Edit Profile</button>
+      </div>
+      <div class="activity-section-title">Friend Scores</div>
+      <div style="padding:0 12px 8px;">
+        <div id="friendScoreBoard"></div>
       </div>
       <div class="activity-section-title">Friend Activity</div>
       <div class="activity-feed" id="activityFeed">
@@ -464,14 +471,14 @@
   <script>
     // === Community Data ===
     const communityUsers = [
-      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025" },
-      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024" },
-      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025" },
-      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026" },
-      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Functional fitness enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Total Body Conditioning", memberSince: "2025" },
-      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape! Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026" },
-      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024" },
-      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Trying to get into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025" },
+      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025", shapeScore: 8420, tier: "Gold" },
+      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024", shapeScore: 7150, tier: "Gold" },
+      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025", shapeScore: 4200, tier: "Silver" },
+      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026", shapeScore: 1850, tier: "Bronze" },
+      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Full Body Mobility Flow", memberSince: "2025", shapeScore: 5320, tier: "Gold" },
+      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze" },
+      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum" },
+      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver" },
     ];
 
     const trainerChatUsers = [
@@ -586,6 +593,9 @@
               <span class="${u.online ? 'online-dot' : 'offline-dot'}"></span>
               ${u.online ? 'Online' : 'Offline'} · ${u.recentWorkout}
             </div>
+            <div style="font-size:0.68rem;font-weight:500;color:${u.tier==='Platinum'?'#E5E4E2':u.tier==='Gold'?'#FFD700':u.tier==='Silver'?'#C0C0C0':'#CD7F32'};margin-top:2px;">
+              ${u.tier} · ${u.shapeScore.toLocaleString()} pts
+            </div>
           </div>
           <div class="community-user-action">
             <button class="btn-follow ${u.friend ? 'following' : ''}" onclick="toggleFriend(${u.id}, event)">
@@ -670,10 +680,14 @@
 
       // Show profile in activity panel
       const profile = document.getElementById('activityProfile');
+      const tierColor = user.tier==='Platinum'?'#E5E4E2':user.tier==='Gold'?'#FFD700':user.tier==='Silver'?'#C0C0C0':'#CD7F32';
       profile.innerHTML = `
         <div class="activity-profile-avatar" style="background:${user.color};">${user.initials}</div>
         <h3>${user.name}</h3>
         <p>${user.bio}</p>
+        <div style="display:inline-block;padding:4px 12px;margin-top:10px;border:1px solid ${tierColor};font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:${tierColor};">
+          ${user.tier} · ${user.shapeScore.toLocaleString()} pts
+        </div>
         <div class="activity-stats">
           <div class="activity-stat">
             <div class="activity-stat-num">${Math.floor(Math.random() * 8) + 2}</div>
@@ -886,11 +900,31 @@
       if (e.target === this) closeProfileModal();
     });
 
+    function renderFriendScores() {
+      const board = document.getElementById('friendScoreBoard');
+      if (!board) return;
+      const friends = communityUsers.filter(u => u.friend).sort((a,b) => b.shapeScore - a.shapeScore);
+      const you = { name: 'You', shapeScore: 2450, tier: 'Bronze' };
+      const all = [...friends, you].sort((a,b) => b.shapeScore - a.shapeScore);
+      board.innerHTML = all.map((u, i) => {
+        const isYou = u.name === 'You';
+        const tierColor = u.tier==='Platinum'?'#E5E4E2':u.tier==='Gold'?'#FFD700':u.tier==='Silver'?'#C0C0C0':'#CD7F32';
+        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px;${isYou?'background:rgba(45,212,191,0.06);':''}border-bottom:1px solid var(--border);">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:0.72rem;font-weight:500;color:var(--accent-dark);width:16px;">${i+1}</span>
+            <span style="font-size:0.78rem;font-weight:${isYou?'600':'400'};${isYou?'color:var(--accent-dark);':''}">${u.name}</span>
+          </div>
+          <span style="font-size:0.7rem;font-weight:500;color:${tierColor};">${u.shapeScore.toLocaleString()}</span>
+        </div>`;
+      }).join('');
+    }
+
     // === Init ===
     loadProfile();
     renderUserList();
     renderChat();
     renderActivity();
+    renderFriendScores();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
