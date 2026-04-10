@@ -152,12 +152,69 @@
       color: rgba(255,255,255,0.3); font-size: 0.82rem; font-weight: 300;
     }
 
+    /* Radio Login Gate */
+    .radio-gate {
+      display: flex; align-items: center; justify-content: center;
+      min-height: calc(100vh - 100px); padding: 48px;
+    }
+    .radio-gate-box {
+      max-width: 420px; width: 100%; text-align: center;
+    }
+    .radio-gate-box h2 {
+      font-size: 1.6rem; font-weight: 300; margin-bottom: 8px; letter-spacing: -0.02em;
+    }
+    .radio-gate-box .subtitle {
+      color: rgba(255,255,255,0.5); font-size: 0.92rem; font-weight: 300; margin-bottom: 32px;
+    }
+    .radio-gate-box .form-group { text-align: left; margin-bottom: 20px; }
+    .radio-gate-box label {
+      display: block; font-size: 0.78rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      margin-bottom: 8px; color: rgba(255,255,255,0.6);
+    }
+    .radio-gate-box input {
+      width: 100%; padding: 14px 16px; border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.05); color: #fff; font-size: 0.92rem;
+      font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.3s;
+      border-radius: 0; box-sizing: border-box;
+    }
+    .radio-gate-box input::placeholder { color: rgba(255,255,255,0.3); }
+    .radio-gate-box input:focus { border-color: #2DD4BF; }
+    .radio-gate-box .btn-radio-login {
+      width: 100%; padding: 16px; background: #2DD4BF; color: #0a0a0a;
+      border: none; font-size: 0.88rem; font-weight: 600; font-family: 'Inter', sans-serif;
+      cursor: pointer; text-transform: uppercase; letter-spacing: 0.06em;
+      transition: background 0.3s; margin-bottom: 16px;
+    }
+    .radio-gate-box .btn-radio-login:hover { background: #14B8A6; }
+    .radio-gate-box .gate-divider {
+      display: flex; align-items: center; gap: 16px; margin: 24px 0;
+      color: rgba(255,255,255,0.3); font-size: 0.78rem; font-weight: 400;
+    }
+    .radio-gate-box .gate-divider::before,
+    .radio-gate-box .gate-divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1);
+    }
+    .radio-gate-box .btn-radio-subscribe {
+      width: 100%; padding: 16px; background: transparent; color: #fff;
+      border: 1px solid rgba(255,255,255,0.2); font-size: 0.88rem; font-weight: 500;
+      font-family: 'Inter', sans-serif; cursor: pointer; letter-spacing: 0.02em;
+      transition: all 0.3s;
+    }
+    .radio-gate-box .btn-radio-subscribe:hover { border-color: #2DD4BF; color: #2DD4BF; }
+    .radio-gate-price {
+      font-size: 0.82rem; color: rgba(255,255,255,0.4); font-weight: 300; margin-top: 16px;
+    }
+    .radio-content { display: none; }
+    .radio-content.active { display: block; }
+
     @media (max-width: 768px) {
       .radio-nav { padding: 24px; }
       .radio-hero { padding: 60px 24px 40px; }
       .radio-player { padding: 0 24px; }
       .now-playing { padding: 32px 24px; }
       .radio-footer { padding: 32px 24px; }
+      .radio-gate { padding: 24px; min-height: calc(100vh - 80px); }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -173,6 +230,29 @@
     <a href="home.html" class="back-link">Back to Shape</a>
   </nav>
 
+  <!-- Login Gate -->
+  <div class="radio-gate" id="radioGate">
+    <div class="radio-gate-box">
+      <div class="radio-logo" style="margin-bottom:24px;"><span class="shape-text"><img src="logo.png" alt="Shape"></span><span class="radio-label">R A D I O</span></div>
+      <h2>Welcome back</h2>
+      <p class="subtitle">Log in to start listening</p>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="radioEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="radioPassword" placeholder="Enter your password">
+      </div>
+      <button class="btn-radio-login" onclick="radioLogin()">Log In</button>
+      <div class="gate-divider">or</div>
+      <button class="btn-radio-subscribe" onclick="radioSubscribe()">Subscribe — $5/mo</button>
+      <p class="radio-gate-price">Ad-free workout music. Cancel anytime.</p>
+    </div>
+  </div>
+
+  <!-- Radio Content (hidden until login) -->
+  <div class="radio-content" id="radioContent">
   <section class="radio-hero">
     <div class="radio-logo"><span class="shape-text"><img src="logo.png" alt="Shape"></span><span class="radio-label">R A D I O</span></div>
     <p class="radio-tagline">Live music to fuel your workout.</p>
@@ -206,6 +286,8 @@
 
   </div>
 
+  </div><!-- end radio-content -->
+
   <footer class="radio-footer">
     <p>&copy; 2026 Shape Radio. All rights reserved.</p>
   </footer>
@@ -221,6 +303,28 @@
     }
 
     document.getElementById('visualizer').classList.add('paused');
+
+    // Check if already logged in
+    if (localStorage.getItem('shapeRadioLoggedIn')) {
+      document.getElementById('radioGate').style.display = 'none';
+      document.getElementById('radioContent').classList.add('active');
+    }
+
+    function radioLogin() {
+      const email = document.getElementById('radioEmail').value;
+      const password = document.getElementById('radioPassword').value;
+      if (!email || !password) {
+        alert('Please enter your email and password.');
+        return;
+      }
+      localStorage.setItem('shapeRadioLoggedIn', 'true');
+      document.getElementById('radioGate').style.display = 'none';
+      document.getElementById('radioContent').classList.add('active');
+    }
+
+    function radioSubscribe() {
+      window.location.href = 'landing.html';
+    }
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
