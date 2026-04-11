@@ -514,7 +514,7 @@
     // Warm low-pass
     const masterLP = ctx.createBiquadFilter();
     masterLP.type = 'lowpass';
-    masterLP.frequency.value = 400;
+    masterLP.frequency.value = 600;
     masterLP.Q.value = 0.7;
 
     // Saturation for weight
@@ -608,16 +608,33 @@
     const midLP = ctx.createBiquadFilter();
     midLP.type = 'bandpass';
     midLP.frequency.setValueAtTime(150, now);
-    midLP.frequency.linearRampToValueAtTime(220, now + t * 0.4);
-    midLP.frequency.linearRampToValueAtTime(180, now + t);
-    midLP.Q.value = 2;
+    midLP.frequency.linearRampToValueAtTime(280, now + t * 0.4);
+    midLP.frequency.linearRampToValueAtTime(200, now + t);
+    midLP.Q.value = 1.5;
     const midG = ctx.createGain();
     midG.gain.setValueAtTime(0, now);
-    midG.gain.linearRampToValueAtTime(0.15 * intensity, now + 0.6);
-    midG.gain.linearRampToValueAtTime(0.2 * intensity, now + t * 0.5);
+    midG.gain.linearRampToValueAtTime(0.5 * intensity, now + 0.6);
+    midG.gain.linearRampToValueAtTime(0.65 * intensity, now + t * 0.5);
     midG.gain.linearRampToValueAtTime(0.001, now + t);
     midRumble.connect(midLP); midLP.connect(midG); midG.connect(master);
     midRumble.start(now); midRumble.stop(now + t + 0.2);
+
+    // Upper-mid presence — ensures audibility on mobile speakers
+    const hiRumble = ctx.createBufferSource();
+    hiRumble.buffer = noiseBuf;
+    const hiLP = ctx.createBiquadFilter();
+    hiLP.type = 'bandpass';
+    hiLP.frequency.setValueAtTime(300, now);
+    hiLP.frequency.linearRampToValueAtTime(500, now + t * 0.4);
+    hiLP.frequency.linearRampToValueAtTime(350, now + t);
+    hiLP.Q.value = 1;
+    const hiG = ctx.createGain();
+    hiG.gain.setValueAtTime(0, now);
+    hiG.gain.linearRampToValueAtTime(0.3 * intensity, now + 0.8);
+    hiG.gain.linearRampToValueAtTime(0.4 * intensity, now + t * 0.5);
+    hiG.gain.linearRampToValueAtTime(0.001, now + t);
+    hiRumble.connect(hiLP); hiLP.connect(hiG); hiG.connect(master);
+    hiRumble.start(now); hiRumble.stop(now + t + 0.2);
 
     // ========== LAYER 3: LOW SAW HUM ==========
     const saw1 = ctx.createOscillator();
