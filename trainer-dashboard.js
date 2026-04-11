@@ -1,10 +1,18 @@
 // ===== Trainer Dashboard =====
 
+// Dynamic date helper
+const _tdToday = new Date();
+function _tdDate(daysAgo) {
+  const d = new Date(_tdToday);
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().split('T')[0];
+}
+
 // Demo client data
 const clients = [
   {
     id: 1, name: "Jake Roberts", plan: "Monthly Subscription", status: "active",
-    joined: "2026-01-15", lastWorkout: "2026-04-09", workoutsThisMonth: 12,
+    joined: "2026-01-15", lastWorkout: _tdDate(0), workoutsThisMonth: 12,
     totalMinutes: 540, streak: 5, goal: "Build Muscle",
     progress: [
       { week: "Week 1", workouts: 3, minutes: 135 },
@@ -13,14 +21,14 @@ const clients = [
       { week: "Week 4", workouts: 2, minutes: 90 },
     ],
     recentWorkouts: [
-      { name: "5x5 Foundation", date: "2026-04-09", duration: 55, difficulty: "Hard", completed: true },
-      { name: "Upper Body Blast", date: "2026-04-07", duration: 45, difficulty: "Moderate", completed: true },
-      { name: "Leg Day Legends", date: "2026-04-05", duration: 50, difficulty: "Hard", completed: true },
+      { name: "5x5 Foundation", date: _tdDate(0), duration: 55, difficulty: "Hard", completed: true },
+      { name: "Upper Body Blast", date: _tdDate(2), duration: 45, difficulty: "Moderate", completed: true },
+      { name: "Leg Day Legends", date: _tdDate(4), duration: 50, difficulty: "Hard", completed: true },
     ]
   },
   {
     id: 2, name: "Sarah Kim", plan: "Monthly Subscription", status: "active",
-    joined: "2026-02-03", lastWorkout: "2026-04-08", workoutsThisMonth: 10,
+    joined: "2026-02-03", lastWorkout: _tdDate(1), workoutsThisMonth: 10,
     totalMinutes: 420, streak: 3, goal: "Weight Loss",
     progress: [
       { week: "Week 1", workouts: 3, minutes: 120 },
@@ -29,14 +37,14 @@ const clients = [
       { week: "Week 4", workouts: 2, minutes: 105 },
     ],
     recentWorkouts: [
-      { name: "Full Body Burn", date: "2026-04-08", duration: 40, difficulty: "Moderate", completed: true },
-      { name: "Core Crusher", date: "2026-04-06", duration: 15, difficulty: "Easy", completed: true },
-      { name: "20-Min Torch", date: "2026-04-04", duration: 20, difficulty: "Moderate", completed: true },
+      { name: "Full Body Burn", date: _tdDate(1), duration: 40, difficulty: "Moderate", completed: true },
+      { name: "Core Crusher", date: _tdDate(3), duration: 15, difficulty: "Easy", completed: true },
+      { name: "20-Min Torch", date: _tdDate(5), duration: 20, difficulty: "Moderate", completed: true },
     ]
   },
   {
     id: 3, name: "Marcus Lee", plan: "5x5 Foundation (One-time)", status: "active",
-    joined: "2026-03-20", lastWorkout: "2026-04-07", workoutsThisMonth: 6,
+    joined: "2026-03-20", lastWorkout: _tdDate(2), workoutsThisMonth: 6,
     totalMinutes: 270, streak: 0, goal: "Strength",
     progress: [
       { week: "Week 1", workouts: 2, minutes: 110 },
@@ -45,13 +53,13 @@ const clients = [
       { week: "Week 4", workouts: 1, minutes: 30 },
     ],
     recentWorkouts: [
-      { name: "5x5 Foundation", date: "2026-04-07", duration: 55, difficulty: "Hard", completed: true },
-      { name: "5x5 Foundation", date: "2026-04-04", duration: 50, difficulty: "Moderate", completed: true },
+      { name: "5x5 Foundation", date: _tdDate(2), duration: 55, difficulty: "Hard", completed: true },
+      { name: "5x5 Foundation", date: _tdDate(5), duration: 50, difficulty: "Moderate", completed: true },
     ]
   },
   {
     id: 4, name: "Priya Patel", plan: "Monthly Subscription", status: "active",
-    joined: "2025-11-08", lastWorkout: "2026-04-09", workoutsThisMonth: 15,
+    joined: "2025-11-08", lastWorkout: _tdDate(0), workoutsThisMonth: 15,
     totalMinutes: 675, streak: 8, goal: "General Fitness",
     progress: [
       { week: "Week 1", workouts: 4, minutes: 180 },
@@ -60,9 +68,9 @@ const clients = [
       { week: "Week 4", workouts: 3, minutes: 160 },
     ],
     recentWorkouts: [
-      { name: "Deadlift Domination", date: "2026-04-09", duration: 60, difficulty: "Intense", completed: true },
-      { name: "Upper Body Blast", date: "2026-04-08", duration: 45, difficulty: "Hard", completed: true },
-      { name: "Leg Day Legends", date: "2026-04-07", duration: 50, difficulty: "Hard", completed: true },
+      { name: "Deadlift Domination", date: _tdDate(0), duration: 60, difficulty: "Intense", completed: true },
+      { name: "Upper Body Blast", date: _tdDate(1), duration: 45, difficulty: "Hard", completed: true },
+      { name: "Leg Day Legends", date: _tdDate(2), duration: 50, difficulty: "Hard", completed: true },
     ]
   },
   {
@@ -81,7 +89,7 @@ const clients = [
   },
   {
     id: 6, name: "Emma Chen", plan: "Deadlift Domination (One-time)", status: "active",
-    joined: "2026-04-01", lastWorkout: "2026-04-08", workoutsThisMonth: 4,
+    joined: _tdDate(10), lastWorkout: _tdDate(1), workoutsThisMonth: 4,
     totalMinutes: 240, streak: 2, goal: "Powerlifting",
     progress: [
       { week: "Week 1", workouts: 2, minutes: 120 },
@@ -90,13 +98,13 @@ const clients = [
       { week: "Week 4", workouts: 0, minutes: 0 },
     ],
     recentWorkouts: [
-      { name: "Deadlift Domination", date: "2026-04-08", duration: 60, difficulty: "Intense", completed: true },
-      { name: "Deadlift Domination", date: "2026-04-05", duration: 60, difficulty: "Hard", completed: true },
+      { name: "Deadlift Domination", date: _tdDate(1), duration: 60, difficulty: "Intense", completed: true },
+      { name: "Deadlift Domination", date: _tdDate(4), duration: 60, difficulty: "Hard", completed: true },
     ]
   },
   {
     id: 7, name: "David Nguyen", plan: "Monthly Subscription", status: "inactive",
-    joined: "2025-12-10", lastWorkout: "2026-04-01", workoutsThisMonth: 2,
+    joined: "2025-12-10", lastWorkout: _tdDate(8), workoutsThisMonth: 2,
     totalMinutes: 90, streak: 0, goal: "Weight Loss",
     progress: [
       { week: "Week 1", workouts: 2, minutes: 90 },
@@ -105,13 +113,13 @@ const clients = [
       { week: "Week 4", workouts: 0, minutes: 0 },
     ],
     recentWorkouts: [
-      { name: "Upper Body Blast", date: "2026-04-01", duration: 45, difficulty: "Hard", completed: true },
-      { name: "Leg Day Legends", date: "2026-04-01", duration: 45, difficulty: "Moderate", completed: true },
+      { name: "Upper Body Blast", date: _tdDate(8), duration: 45, difficulty: "Hard", completed: true },
+      { name: "Leg Day Legends", date: _tdDate(8), duration: 45, difficulty: "Moderate", completed: true },
     ]
   },
   {
     id: 8, name: "Lisa Johnson", plan: "Monthly Subscription", status: "active",
-    joined: "2026-03-01", lastWorkout: "2026-04-09", workoutsThisMonth: 9,
+    joined: "2026-03-01", lastWorkout: _tdDate(0), workoutsThisMonth: 9,
     totalMinutes: 405, streak: 4, goal: "Tone & Sculpt",
     progress: [
       { week: "Week 1", workouts: 2, minutes: 90 },
@@ -120,22 +128,22 @@ const clients = [
       { week: "Week 4", workouts: 2, minutes: 90 },
     ],
     recentWorkouts: [
-      { name: "Upper Body Blast", date: "2026-04-09", duration: 45, difficulty: "Moderate", completed: true },
-      { name: "Leg Day Legends", date: "2026-04-08", duration: 50, difficulty: "Hard", completed: true },
-      { name: "5x5 Foundation", date: "2026-04-06", duration: 55, difficulty: "Hard", completed: true },
+      { name: "Upper Body Blast", date: _tdDate(0), duration: 45, difficulty: "Moderate", completed: true },
+      { name: "Leg Day Legends", date: _tdDate(1), duration: 50, difficulty: "Hard", completed: true },
+      { name: "5x5 Foundation", date: _tdDate(3), duration: 55, difficulty: "Hard", completed: true },
     ]
   },
 ];
 
 const recentSales = [
-  { client: "Emma Chen", plan: "Deadlift Domination", price: 34.99, date: "2026-04-01", type: "One-time" },
-  { client: "Marcus Lee", plan: "5x5 Foundation", price: 29.99, date: "2026-03-20", type: "One-time" },
-  { client: "New User", plan: "Upper Body Blast", price: 27.99, date: "2026-04-05", type: "One-time" },
-  { client: "Sarah Kim", plan: "Monthly Subscription", price: 49.99, date: "2026-04-03", type: "Recurring" },
-  { client: "Priya Patel", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
-  { client: "Jake Roberts", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
-  { client: "Lisa Johnson", plan: "Monthly Subscription", price: 49.99, date: "2026-04-01", type: "Recurring" },
-  { client: "New User", plan: "Leg Day Legends", price: 29.99, date: "2026-04-07", type: "One-time" },
+  { client: "Emma Chen", plan: "Deadlift Domination", price: 34.99, date: _tdDate(10), type: "One-time" },
+  { client: "Marcus Lee", plan: "5x5 Foundation", price: 29.99, date: _tdDate(20), type: "One-time" },
+  { client: "New User", plan: "Upper Body Blast", price: 27.99, date: _tdDate(4), type: "One-time" },
+  { client: "Sarah Kim", plan: "Monthly Subscription", price: 49.99, date: _tdDate(6), type: "Recurring" },
+  { client: "Priya Patel", plan: "Monthly Subscription", price: 49.99, date: _tdDate(8), type: "Recurring" },
+  { client: "Jake Roberts", plan: "Monthly Subscription", price: 49.99, date: _tdDate(8), type: "Recurring" },
+  { client: "Lisa Johnson", plan: "Monthly Subscription", price: 49.99, date: _tdDate(8), type: "Recurring" },
+  { client: "New User", plan: "Leg Day Legends", price: 29.99, date: _tdDate(2), type: "One-time" },
 ];
 
 // ===== Render Client List =====

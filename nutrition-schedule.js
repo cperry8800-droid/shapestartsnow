@@ -1,59 +1,70 @@
 // ===== Nutrition Schedule & Tracker =====
 
+// Generate demo dates relative to today
+const _nToday = new Date();
+function _nDate(daysAgo) {
+  const d = new Date(_nToday);
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().split('T')[0];
+}
+
 // Demo meal log data
 const demoMealLog = [
-  { name: "Smoothie Bowl", type: "Breakfast", calories: 340, protein: 18, carbs: 52, fat: 8, date: "2026-04-10", notes: "Acai base" },
-  { name: "Grilled Chicken & Rice", type: "Lunch", calories: 540, protein: 44, carbs: 50, fat: 14, date: "2026-04-10", notes: "" },
-  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: "2026-04-10", notes: "After Tabata" },
-  { name: "Greek Yogurt & Berries", type: "Breakfast", calories: 280, protein: 20, carbs: 35, fat: 8, date: "2026-04-09", notes: "Added honey" },
-  { name: "Grilled Chicken Salad", type: "Lunch", calories: 520, protein: 42, carbs: 28, fat: 22, date: "2026-04-09", notes: "" },
-  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: "2026-04-09", notes: "With banana" },
-  { name: "Salmon & Quinoa Bowl", type: "Dinner", calories: 620, protein: 38, carbs: 52, fat: 24, date: "2026-04-08", notes: "Great recovery meal" },
-  { name: "Overnight Oats", type: "Breakfast", calories: 380, protein: 14, carbs: 58, fat: 12, date: "2026-04-08", notes: "" },
-  { name: "Turkey Wrap", type: "Lunch", calories: 450, protein: 32, carbs: 40, fat: 16, date: "2026-04-08", notes: "" },
-  { name: "Almonds & Apple", type: "Snack", calories: 220, protein: 6, carbs: 25, fat: 14, date: "2026-04-08", notes: "" },
-  { name: "Egg White Omelette", type: "Breakfast", calories: 310, protein: 28, carbs: 12, fat: 16, date: "2026-04-07", notes: "With spinach and mushrooms" },
-  { name: "Grilled Steak & Sweet Potato", type: "Dinner", calories: 680, protein: 45, carbs: 48, fat: 28, date: "2026-04-07", notes: "" },
-  { name: "Chicken Stir-Fry", type: "Lunch", calories: 490, protein: 36, carbs: 42, fat: 18, date: "2026-04-07", notes: "" },
-  { name: "Smoothie Bowl", type: "Breakfast", calories: 340, protein: 18, carbs: 52, fat: 8, date: "2026-04-06", notes: "Acai base" },
-  { name: "Tuna Poke Bowl", type: "Lunch", calories: 510, protein: 38, carbs: 48, fat: 18, date: "2026-04-06", notes: "" },
-  { name: "Cottage Cheese & Fruit", type: "Snack", calories: 180, protein: 22, carbs: 18, fat: 4, date: "2026-04-05", notes: "" },
-  { name: "Pasta Bolognese", type: "Dinner", calories: 580, protein: 30, carbs: 68, fat: 18, date: "2026-04-05", notes: "Lean beef" },
+  { name: "Overnight Oats", type: "Breakfast", calories: 380, protein: 14, carbs: 58, fat: 12, date: _nDate(0), notes: "With berries" },
+  { name: "Grilled Chicken & Quinoa", type: "Lunch", calories: 560, protein: 46, carbs: 48, fat: 16, date: _nDate(0), notes: "" },
+  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: _nDate(0), notes: "After training" },
+  { name: "Smoothie Bowl", type: "Breakfast", calories: 340, protein: 18, carbs: 52, fat: 8, date: _nDate(1), notes: "Acai base" },
+  { name: "Grilled Chicken & Rice", type: "Lunch", calories: 540, protein: 44, carbs: 50, fat: 14, date: _nDate(1), notes: "" },
+  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: _nDate(1), notes: "After Tabata" },
+  { name: "Greek Yogurt & Berries", type: "Breakfast", calories: 280, protein: 20, carbs: 35, fat: 8, date: _nDate(2), notes: "Added honey" },
+  { name: "Grilled Chicken Salad", type: "Lunch", calories: 520, protein: 42, carbs: 28, fat: 22, date: _nDate(2), notes: "" },
+  { name: "Protein Shake", type: "Post-Workout", calories: 210, protein: 30, carbs: 15, fat: 5, date: _nDate(2), notes: "With banana" },
+  { name: "Salmon & Quinoa Bowl", type: "Dinner", calories: 620, protein: 38, carbs: 52, fat: 24, date: _nDate(3), notes: "Great recovery meal" },
+  { name: "Overnight Oats", type: "Breakfast", calories: 380, protein: 14, carbs: 58, fat: 12, date: _nDate(3), notes: "" },
+  { name: "Turkey Wrap", type: "Lunch", calories: 450, protein: 32, carbs: 40, fat: 16, date: _nDate(3), notes: "" },
+  { name: "Almonds & Apple", type: "Snack", calories: 220, protein: 6, carbs: 25, fat: 14, date: _nDate(3), notes: "" },
+  { name: "Egg White Omelette", type: "Breakfast", calories: 310, protein: 28, carbs: 12, fat: 16, date: _nDate(4), notes: "With spinach and mushrooms" },
+  { name: "Grilled Steak & Sweet Potato", type: "Dinner", calories: 680, protein: 45, carbs: 48, fat: 28, date: _nDate(4), notes: "" },
+  { name: "Chicken Stir-Fry", type: "Lunch", calories: 490, protein: 36, carbs: 42, fat: 18, date: _nDate(4), notes: "" },
+  { name: "Smoothie Bowl", type: "Breakfast", calories: 340, protein: 18, carbs: 52, fat: 8, date: _nDate(5), notes: "Acai base" },
+  { name: "Tuna Poke Bowl", type: "Lunch", calories: 510, protein: 38, carbs: 48, fat: 18, date: _nDate(5), notes: "" },
+  { name: "Cottage Cheese & Fruit", type: "Snack", calories: 180, protein: 22, carbs: 18, fat: 4, date: _nDate(6), notes: "" },
+  { name: "Pasta Bolognese", type: "Dinner", calories: 580, protein: 30, carbs: 68, fat: 18, date: _nDate(6), notes: "Lean beef" },
 ];
 
 // Demo meal schedule
 const demoMealSchedule = {
-  "2026-04-07": [
+  [_nDate(4)]: [
     { name: "Egg White Omelette", type: "Breakfast", calories: 310 },
     { name: "Chicken Stir-Fry", type: "Lunch", calories: 490 },
     { name: "Grilled Steak & Sweet Potato", type: "Dinner", calories: 680 },
   ],
-  "2026-04-08": [
+  [_nDate(3)]: [
     { name: "Overnight Oats", type: "Breakfast", calories: 380 },
     { name: "Turkey Wrap", type: "Lunch", calories: 450 },
     { name: "Salmon & Quinoa Bowl", type: "Dinner", calories: 620 },
   ],
-  "2026-04-09": [
+  [_nDate(2)]: [
     { name: "Greek Yogurt & Berries", type: "Breakfast", calories: 280 },
     { name: "Grilled Chicken Salad", type: "Lunch", calories: 520 },
     { name: "Lean Beef Tacos", type: "Dinner", calories: 560 },
   ],
-  "2026-04-10": [
+  [_nDate(1)]: [
     { name: "Smoothie Bowl", type: "Breakfast", calories: 340 },
     { name: "Tuna Poke Bowl", type: "Lunch", calories: 510 },
     { name: "Baked Chicken Thighs", type: "Dinner", calories: 580 },
   ],
-  "2026-04-11": [
+  [_nDate(0)]: [
     { name: "Avocado Toast & Eggs", type: "Breakfast", calories: 420 },
     { name: "Shrimp Caesar Salad", type: "Lunch", calories: 460 },
     { name: "Salmon with Asparagus", type: "Dinner", calories: 540 },
   ],
-  "2026-04-12": [
+  [_nDate(-1)]: [
     { name: "Protein Pancakes", type: "Breakfast", calories: 360 },
     { name: "Mediterranean Bowl", type: "Lunch", calories: 480 },
     { name: "Grilled Chicken & Veggies", type: "Dinner", calories: 500 },
   ],
-  "2026-04-13": [
+  [_nDate(-2)]: [
     { name: "Overnight Oats", type: "Breakfast", calories: 380 },
     { name: "Turkey & Avocado Wrap", type: "Lunch", calories: 470 },
     { name: "Stir-Fry Tofu & Rice", type: "Dinner", calories: 520 },

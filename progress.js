@@ -1,25 +1,34 @@
 // ===== Progress Tracker & Schedule =====
 
 // Demo data for a new user — simulates a month of workouts
+// Generate demo dates relative to today so data always looks fresh
+const _today = new Date();
+function _demoDate(daysAgo) {
+  const d = new Date(_today);
+  d.setDate(d.getDate() - daysAgo);
+  return d.toISOString().split('T')[0];
+}
+
 const demoWorkoutLog = [
-  { name: "5x5 Foundation", type: "Strength", trainer: "Marcus Johnson", duration: 55, difficulty: "Hard", date: "2026-04-01", notes: "Felt strong on squats" },
-  { name: "20-Min Torch", type: "HIIT", trainer: "Damon Clarke", duration: 20, difficulty: "Moderate", date: "2026-04-02", notes: "Quick morning session" },
-  { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", duration: 25, difficulty: "Easy", date: "2026-04-03", notes: "Great at-home session" },
-  { name: "Full Body Burn", type: "Cardio", trainer: "Damon Clarke", duration: 40, difficulty: "Hard", date: "2026-04-06", notes: "" },
-  { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", duration: 25, difficulty: "Moderate", date: "2026-04-07", notes: "Fun session" },
-  { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", duration: 30, difficulty: "Moderate", date: "2026-04-08", notes: "" },
-  { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", duration: 45, difficulty: "Hard", date: "2026-04-09", notes: "Increased weight on bench" },
-  { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", duration: 35, difficulty: "Hard", date: "2026-04-10", notes: "Morning session" },
+  { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", duration: 25, difficulty: "Easy", date: _demoDate(0), notes: "Morning session" },
+  { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", duration: 35, difficulty: "Hard", date: _demoDate(1), notes: "Pushed hard" },
+  { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", duration: 45, difficulty: "Hard", date: _demoDate(2), notes: "Increased weight on bench" },
+  { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", duration: 30, difficulty: "Moderate", date: _demoDate(3), notes: "" },
+  { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", duration: 25, difficulty: "Moderate", date: _demoDate(4), notes: "Fun session" },
+  { name: "Full Body Burn", type: "Cardio", trainer: "Damon Clarke", duration: 40, difficulty: "Hard", date: _demoDate(6), notes: "" },
+  { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", duration: 25, difficulty: "Easy", date: _demoDate(8), notes: "Great at-home session" },
+  { name: "20-Min Torch", type: "HIIT", trainer: "Damon Clarke", duration: 20, difficulty: "Moderate", date: _demoDate(9), notes: "Quick morning session" },
+  { name: "5x5 Foundation", type: "Strength", trainer: "Marcus Johnson", duration: 55, difficulty: "Hard", date: _demoDate(10), notes: "Felt strong on squats" },
 ];
 
 const demoSchedule = {
-  "2026-04-07": { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", time: "7:00 AM" },
-  "2026-04-08": { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", time: "6:30 AM" },
-  "2026-04-09": { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
-  "2026-04-10": { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", time: "6:00 AM" },
-  "2026-04-11": { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", time: "8:00 AM" },
-  "2026-04-12": { name: "Rest Day", type: "Rest Day", trainer: "", time: "" },
-  "2026-04-13": { name: "Leg Day Legends", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
+  [_demoDate(4)]: { name: "HIIT Burn", type: "Cardio", trainer: "Damon Clarke", time: "7:00 AM" },
+  [_demoDate(3)]: { name: "Band & Bodyweight Burn", type: "Resistance", trainer: "Nina Brooks", time: "6:30 AM" },
+  [_demoDate(2)]: { name: "Upper Body Blast", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
+  [_demoDate(1)]: { name: "Tabata Inferno", type: "HIIT", trainer: "Sophie Turner", time: "6:00 AM" },
+  [_demoDate(0)]: { name: "Living Room HIIT", type: "HIIT", trainer: "Nina Brooks", time: "8:00 AM" },
+  [_demoDate(-1)]: { name: "Rest Day", type: "Rest Day", trainer: "", time: "" },
+  [_demoDate(-2)]: { name: "Leg Day Legends", type: "Strength", trainer: "Marcus Johnson", time: "7:00 AM" },
 };
 
 // Load from localStorage or use demo data
