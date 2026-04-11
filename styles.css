@@ -253,7 +253,7 @@ img.card-avatar-inline { background: var(--border); }
 .step p { font-size: 0.92rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
 
 /* ===== Pricing ===== */
-.pricing-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); max-width: 800px; margin: 0 auto; }
+.pricing-grid { display: grid; grid-template-columns: 1fr; gap: 1px; background: var(--border); max-width: 500px; margin: 0 auto; }
 .pricing-card {
   background: var(--bg-card); border: none; border-radius: 0;
   padding: 48px 36px; position: relative; transition: all 0.4s;
