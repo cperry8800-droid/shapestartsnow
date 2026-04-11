@@ -496,7 +496,7 @@
     const ctx = ensureAudioCtx();
     const {
       intensity = 1.0,
-      duration = 9.5
+      duration = 14
     } = opts;
 
     const now = ctx.currentTime;
@@ -508,8 +508,8 @@
 
     // Compressor
     const comp = ctx.createDynamicsCompressor();
-    comp.threshold.value = -12; comp.knee.value = 10;
-    comp.ratio.value = 4; comp.attack.value = 0.05; comp.release.value = 0.25;
+    comp.threshold.value = -6; comp.knee.value = 8;
+    comp.ratio.value = 3; comp.attack.value = 0.05; comp.release.value = 0.25;
 
     // Warm low-pass
     const masterLP = ctx.createBiquadFilter();
@@ -682,10 +682,10 @@
 
     // ========== MASTER ENVELOPE ==========
     master.gain.setValueAtTime(0, now);
-    master.gain.linearRampToValueAtTime(0.5 * intensity, now + 0.4);
-    master.gain.linearRampToValueAtTime(0.9 * intensity, now + t * 0.3);
-    master.gain.linearRampToValueAtTime(1.0 * intensity, now + t * 0.5);
-    master.gain.linearRampToValueAtTime(0.9 * intensity, now + t * 0.85);
+    master.gain.linearRampToValueAtTime(0.8 * intensity, now + 0.4);
+    master.gain.linearRampToValueAtTime(1.4 * intensity, now + t * 0.3);
+    master.gain.linearRampToValueAtTime(1.6 * intensity, now + t * 0.5);
+    master.gain.linearRampToValueAtTime(1.4 * intensity, now + t * 0.85);
     master.gain.linearRampToValueAtTime(0.001, now + t);
 
     ambientNodes = { master };
