@@ -421,6 +421,66 @@ const gyms = [
     classes: ["Strength Basics", "Hypertrophy", "Functional Fitness", "Mobility"],
     tags: ["Strength", "Community", "Coaching"]
   },
+  {
+    id: 211, name: "Northeast Barbell", type: "Specialty Gym",
+    category: "specialty", location: "Boston, MA", rating: 4.9, members: 420,
+    trainers: 5, price: 89.99,
+    bio: "A no-nonsense barbell gym in South Boston built for lifters who want to get strong. Calibrated equipment, experienced coaching, and a tight-knit community of dedicated athletes.",
+    color: "#1D4ED8",
+    amenities: ["Eleiko Equipment", "Competition Platforms", "Chalk Friendly", "Open Gym Hours", "Meet Prep Program"],
+    classes: ["Powerlifting", "Olympic Lifting", "Strongman Saturday", "Beginner Barbell"],
+    tags: ["Powerlifting", "Barbell", "Coaching"]
+  },
+  {
+    id: 212, name: "Harbor Fitness Club", type: "Full-Service Gym",
+    category: "gym", location: "Portland, ME", rating: 4.7, members: 1600,
+    trainers: 12, price: 44.99,
+    bio: "Portland's largest full-service gym overlooking the harbor. Two floors of cardio and strength equipment, a lap pool, and over 40 group classes per week.",
+    color: "#0891B2",
+    amenities: ["Lap Pool", "Steam Room", "Free Weights", "Cardio Deck", "Group Studios", "Childcare", "Free Parking"],
+    classes: ["Spin", "Yoga", "Aqua Fitness", "Strength", "Zumba", "Boxing"],
+    tags: ["Full-Service", "Pool", "Family-Friendly"]
+  },
+  {
+    id: 213, name: "Elm City CrossFit", type: "CrossFit Box",
+    category: "crossfit", location: "New Haven, CT", rating: 4.8, members: 340,
+    trainers: 4, price: 175.99,
+    bio: "A welcoming CrossFit affiliate in the heart of New Haven. Scalable programming for all levels, a strong competition team, and a community that shows up for each other every day.",
+    color: "#059669",
+    amenities: ["Rigs & Bars", "Rowers & Ski Ergs", "Outdoor Training Area", "Mobility Corner", "Community Events"],
+    classes: ["CrossFit WOD", "Olympic Lifting", "Engine Builder", "Competitors Class"],
+    tags: ["CrossFit", "Community", "All Levels"]
+  },
+  {
+    id: 214, name: "Summit Studio", type: "Boutique Studio",
+    category: "studio", location: "Burlington, VT", rating: 4.8, members: 380,
+    trainers: 6, price: 74.99,
+    bio: "A mountain-inspired boutique studio offering cycling, barre, and strength classes. Small class sizes, locally sourced smoothie bar, and a rooftop stretch deck with views of the Green Mountains.",
+    color: "#7C3AED",
+    amenities: ["Cycling Room", "Barre Studio", "Rooftop Deck", "Smoothie Bar", "Showers", "Towel Service"],
+    classes: ["Rhythm Ride", "Barre Sculpt", "Strength & Flow", "Stretch & Recover"],
+    tags: ["Boutique", "Cycling", "Barre"]
+  },
+  {
+    id: 215, name: "Granite State Athletics", type: "Full-Service Gym",
+    category: "gym", location: "Manchester, NH", rating: 4.6, members: 2100,
+    trainers: 14, price: 34.99,
+    bio: "New Hampshire's most affordable full-service gym. Clean, well-maintained, and open early to late. No frills, no gimmicks — just solid equipment and a welcoming atmosphere.",
+    color: "#64748B",
+    amenities: ["Free Weights", "Machines", "Cardio Floor", "Turf Area", "Locker Rooms", "24/7 Key Fob Access"],
+    classes: ["Group Strength", "Cardio Kickboxing", "Yoga", "Ab Lab"],
+    tags: ["Affordable", "24/7", "No Contract"]
+  },
+  {
+    id: 216, name: "Coastline Yoga", type: "Boutique Studio",
+    category: "studio", location: "Newport, RI", rating: 4.9, members: 290,
+    trainers: 5, price: 79.99,
+    bio: "A serene oceanside yoga studio offering heated and unheated classes in a restored seaside building. Specializing in Vinyasa, Yin, and meditation with views of Narragansett Bay.",
+    color: "#2DD4BF",
+    amenities: ["Ocean Views", "Heated Studio", "Mat Rentals", "Tea Lounge", "Private Sessions", "Weekend Retreats"],
+    classes: ["Vinyasa Flow", "Yin Yoga", "Hot Power Yoga", "Meditation", "Sunrise Stretch"],
+    tags: ["Yoga", "Wellness", "Oceanside"]
+  },
 ];
 
 // ===== Render Functions =====
