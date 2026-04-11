@@ -186,7 +186,7 @@ ul { list-style: none; }
   letter-spacing: 0.02em; text-transform: uppercase;
 }
 .filter-btn:hover { border-color: var(--text); color: var(--text); }
-.filter-btn.active { background: var(--text); border-color: var(--text); color: #fff; }
+.filter-btn.active { background: var(--text); border-color: var(--text); color: var(--bg); }
 
 /* ===== Cards ===== */
 .card-grid {
@@ -572,7 +572,7 @@ img.card-avatar-inline { background: var(--border); }
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;
     left: auto; transform: none;
-    background: #0f0f0f; flex-direction: column; padding: 80px 32px 32px;
+    background: #0f0f0f; flex-direction: column; align-items: flex-start; padding: 80px 32px 32px;
     gap: 20px; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-left: 1px solid var(--border);
     z-index: 1050; overflow-y: auto;
   }
@@ -580,7 +580,7 @@ img.card-avatar-inline { background: var(--border); }
   .nav-actions {
     display: none;
   }
-  .nav-toggle { display: block; position: fixed; top: 24px; right: 48px; z-index: 1060; }
+  .nav-toggle { display: block; position: fixed; top: 24px; right: 24px; z-index: 1060; }
   .nav-dropdown { position: static; flex-direction: column; align-items: flex-start; }
   .nav-dropdown > a {
     display: flex; align-items: center; gap: 6px;
