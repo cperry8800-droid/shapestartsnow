@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape — For Trainers</title>
+  <title>Shape Pass — For Gym Owners</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -21,7 +21,6 @@
     .ft-how .section-header { margin-bottom: 48px; }
     .ft-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
     .ft-step { text-align: center; }
-    .ft-step-num { width: 56px; height: 56px; background: rgba(45,212,191,0.1); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 500; color: var(--accent-dark); margin: 0 auto 20px; border-radius: 50%; }
     .ft-step h3 { font-size: 1rem; font-weight: 500; margin-bottom: 10px; }
     .ft-step p { font-size: 0.9rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; }
 
@@ -34,25 +33,14 @@
       transition: transform 0.3s, box-shadow 0.3s;
     }
     .ft-feature:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
-    .ft-feature-icon { font-size: 0.82rem; font-weight: 500; color: var(--accent-dark); flex-shrink: 0; margin-top: 4px; letter-spacing: 0.02em; }
     .ft-feature h3 { font-size: 1rem; font-weight: 500; margin-bottom: 6px; }
     .ft-feature p { font-size: 0.88rem; color: var(--text-muted); font-weight: 300; line-height: 1.6; }
 
     .ft-earnings { padding: 80px 0; }
     .ft-earnings .section-header { margin-bottom: 48px; }
     .ft-earnings-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
-    .ft-earnings-card { background: var(--bg-card); border: 1px solid var(--border); padding: 40px; }
-    .ft-earnings-card h3 { font-size: 1.1rem; font-weight: 500; margin-bottom: 20px; }
-    .ft-earning-row { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; }
-    .ft-earning-row:last-child { border-bottom: none; }
-    .ft-earning-label { color: var(--text-muted); font-weight: 300; }
-    .ft-earning-value { font-weight: 600; }
-    .ft-earning-highlight { color: var(--accent-dark); font-weight: 700; font-size: 1.1rem; }
     .ft-earnings-info h3 { font-size: clamp(1.2rem, 2vw, 1.4rem); font-weight: 300; margin-bottom: 16px; letter-spacing: -0.03em; }
     .ft-earnings-info p { font-size: 0.95rem; color: var(--text-muted); font-weight: 300; line-height: 1.8; margin-bottom: 16px; }
-    .ft-earnings-info ul { list-style: none; padding: 0; }
-    .ft-earnings-info li { padding: 8px 0; font-size: 0.92rem; display: flex; align-items: center; gap: 10px; }
-    .ft-earnings-info li span { color: var(--text-muted); font-weight: 400; }
 
     .ft-testimonial { padding: 80px 0; text-align: center; }
     .ft-quote { max-width: 700px; margin: 0 auto; font-size: 1.2rem; font-weight: 300; line-height: 1.8; color: var(--text-muted); font-style: italic; margin-bottom: 24px; }
@@ -138,9 +126,9 @@
   <!-- Hero -->
   <section class="ft-hero">
     <div class="container">
-      <span class="tag">For Trainers</span>
-      <h1>Build your brand. Start your <span class="gradient-text">business</span>.</h1>
-      <p>Shape puts your training business in front of thousands of members actively looking for custom programs. Build your profile, sell your sessions, and let us handle the marketing. It costs nothing to join.</p>
+      <span class="tag">For Gym Owners</span>
+      <h1>Grow your gym with <span class="gradient-text">Shape Pass.</span></h1>
+      <p>Join the Shape Pass network and get discovered by thousands of active members looking for a place to train. We bring the members — you do what you do best.</p>
     </div>
   </section>
 
@@ -150,121 +138,132 @@
       <div class="ft-stats-grid">
         <div>
           <div class="ft-stat-value">10k+</div>
-          <div class="ft-stat-label">Active Members Browsing</div>
+          <div class="ft-stat-label">Active Members</div>
         </div>
         <div>
           <div class="ft-stat-value">$0</div>
-          <div class="ft-stat-label">Cost to Join</div>
+          <div class="ft-stat-label">To Join</div>
         </div>
         <div>
-          <div class="ft-stat-value">100%</div>
-          <div class="ft-stat-label">Your Brand, Your Way</div>
+          <div class="ft-stat-value">85%</div>
+          <div class="ft-stat-label">Avg Revenue Share</div>
         </div>
         <div>
-          <div class="ft-stat-value">24/7</div>
-          <div class="ft-stat-label">Marketing by Shape</div>
+          <div class="ft-stat-value">30-Day</div>
+          <div class="ft-stat-label">Payout Cycle</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Exposure -->
+  <!-- How It Works -->
   <section class="ft-how section-alt">
     <div class="container">
       <div class="section-header">
-        <span class="tag">Exposure</span>
-        <h2>We bring the clients to you</h2>
-        <p>Stop spending time and money finding clients. Shape's marketplace puts you in front of members who are ready to subscribe.</p>
+        <span class="tag">How It Works</span>
+        <h2>Three steps to join the network</h2>
       </div>
       <div class="ft-steps">
         <div class="ft-step">
-          <div class="ft-step-num" style="display:none;">1</div>
-          <h3>Instant Visibility</h3>
-          <p>Your profile goes live in our Trainer Marketplace the moment you're approved. Thousands of active members can discover you immediately.</p>
+          <h3>Apply to Join</h3>
+          <p>Submit your facility details through our partner application. We review every gym to ensure quality and safety standards for Shape members.</p>
         </div>
         <div class="ft-step">
-          <div class="ft-step-num" style="display:none;">2</div>
-          <h3>Shape Promotes You</h3>
-          <p>We handle all platform marketing, social media promotion, and member outreach. You focus on training — we focus on filling your subscriber list.</p>
+          <h3>Set Your Terms</h3>
+          <p>Define your hours, capacity limits, class availability, and access rules for Shape Pass members. You stay in full control of your facility.</p>
         </div>
         <div class="ft-step">
-          <div class="ft-step-num" style="display:none;">3</div>
-          <h3>Trainer of the Month</h3>
-          <p>Top trainers get a dedicated spotlight on the platform with homepage features and community shoutouts that drive massive subscriber growth.</p>
+          <h3>Start Earning</h3>
+          <p>Shape members check in through the app and you earn revenue from every visit. We handle billing, marketing, and member management.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
+  <!-- Benefits -->
   <section class="ft-features">
     <div class="container">
       <div class="section-header">
-        <span class="tag">Your Business, Your Way</span>
-        <h2>Customize your profile. Sell your programs.</h2>
+        <span class="tag">Partner Benefits</span>
+        <h2>Why gyms partner with Shape</h2>
       </div>
       <div class="ft-features-grid">
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">01</div>
           <div>
-            <h3>Custom Trainer Profile</h3>
-            <p>Build a profile that represents your brand. Add your bio, specialties, certifications, and training philosophy.</p>
+            <h3>Free to Join</h3>
+            <p>No listing fees, no setup costs, no monthly charges. Shape only earns when you earn — we take a small percentage of revenue from Shape Pass visits to your facility.</p>
           </div>
         </div>
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">02</div>
           <div>
-            <h3>Sell Your Own Programs</h3>
-            <p>Create and publish workout programs your way. Set your own prices — subscriptions or one-time purchases.</p>
+            <h3>New Members, No Marketing</h3>
+            <p>Shape drives thousands of active members to your gym through the app. You get foot traffic and revenue from people who might never have found you otherwise.</p>
           </div>
         </div>
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">03</div>
           <div>
-            <h3>Grow Your Subscriber Base</h3>
-            <p>Real-time dashboard with subscriber trends, revenue analytics, and program performance.</p>
+            <h3>Full Control</h3>
+            <p>Set your own hours, capacity limits, and class availability for Shape members. You decide how many members you accept and when they can visit.</p>
           </div>
         </div>
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">04</div>
           <div>
-            <h3>Direct Client Relationships</h3>
-            <p>Message subscribers 1-on-1. Provide form checks, answer questions, and build lasting coaching relationships.</p>
+            <h3>Fill Off-Peak Hours</h3>
+            <p>Attract Shape members during your slowest hours. Set time-based availability to drive traffic when your facility needs it most — mornings, afternoons, weekends.</p>
           </div>
         </div>
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">05</div>
           <div>
-            <h3>Marketing Handled by Shape</h3>
-            <p>No ad spend. No social media grind. Shape drives traffic to the marketplace so you can focus on training.</p>
+            <h3>Real-Time Analytics</h3>
+            <p>Track Shape member visits, peak check-in times, revenue earned, and member demographics through your partner dashboard. Data-driven decisions for your business.</p>
           </div>
         </div>
         <div class="ft-feature">
-          <div class="ft-feature-icon" style="display:none;">06</div>
           <div>
-            <h3>Trainer Community</h3>
-            <p>Connect with other trainers in a dedicated chat. Share strategies, collaborate, and grow together.</p>
+            <h3>Brand Exposure</h3>
+            <p>Your gym is featured in the Shape Pass marketplace with photos, amenities, class schedules, and member reviews — reaching an audience of thousands.</p>
+          </div>
+        </div>
+        <div class="ft-feature">
+          <div>
+            <h3>Seamless Check-In</h3>
+            <p>Members check in through the Shape app at your front desk. No extra hardware, no key fobs, no guest pass paperwork. Fast and frictionless for your staff.</p>
+          </div>
+        </div>
+        <div class="ft-feature">
+          <div>
+            <h3>Reliable Payouts</h3>
+            <p>Get paid on a consistent 30-day cycle. Track your earnings in real time through the partner dashboard and see exactly what you're owed before payout day.</p>
+          </div>
+        </div>
+        <div class="ft-feature">
+          <div>
+            <h3>Traveler Traffic</h3>
+            <p>Shape Pass members traveling for work or vacation search for partner gyms in new cities. Your facility becomes a go-to stop for out-of-town visitors.</p>
+          </div>
+        </div>
+        <div class="ft-feature">
+          <div>
+            <h3>No Contracts</h3>
+            <p>Partner on your terms. There are no long-term contracts or lock-in periods. You can leave the network at any time with no penalties or fees.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Free to Join -->
+  <!-- Revenue Breakdown -->
   <section class="ft-earnings section-alt">
     <div class="container">
+      <div class="section-header">
+        <span class="tag">Revenue</span>
+        <h2>How you earn with Shape Pass</h2>
+      </div>
       <div class="ft-earnings-layout" style="grid-template-columns:1fr;max-width:640px;margin:0 auto;">
         <div class="ft-earnings-info" style="text-align:center;">
-          <span class="tag">Free to Join</span>
-          <h3>No cost to get started. Ever.</h3>
-          <p style="text-align:center;">There are no sign-up fees, no monthly platform charges, and no hidden costs. Shape handles all billing, hosting, and marketing so you can focus on what you do best — training.</p>
-          <ul style="display:inline-flex;flex-direction:column;align-items:center;text-align:center;list-style:none;">
-            <li>Free to join, no upfront costs</li>
-            <li>No monthly fees or minimums</li>
-            <li>Shape handles billing and payments</li>
-            <li>All marketing and promotion included</li>
-            <li>Monthly payouts via direct deposit</li>
-          </ul>
+          <h3>You keep the majority of every visit</h3>
+          <p>When a Shape Pass member checks into your facility, you earn a share of their monthly subscription based on visit frequency. The more they train at your gym, the more you earn. Shape handles all billing, member support, and payment processing.</p>
+          <p>There are no upfront costs, no monthly platform fees, and no hidden charges. You only earn — never pay.</p>
         </div>
       </div>
     </div>
@@ -273,13 +272,21 @@
   <!-- Testimonial -->
   <section class="ft-testimonial">
     <div class="container">
-      <span class="tag">From Our Trainers</span>
-      <p class="ft-quote">"I used to spend half my time trying to find clients. Shape changed everything — I just upload my programs and the subscribers come to me. The exposure is unreal."</p>
-      <div class="ft-quote-author">Marcus Johnson</div>
-      <div class="ft-quote-role">Strength & Powerlifting — 1,240 subscribers</div>
+      <span class="tag">From Our Partners</span>
+      <p class="ft-quote">"We joined the Shape Pass network six months ago and it's been the easiest source of new revenue we've ever had. Members show up, check in on the app, and we get paid. No marketing spend, no contracts to manage."</p>
+      <div class="ft-quote-author">Lisa Tran</div>
+      <div class="ft-quote-role">Owner — Peak Performance Fitness, Austin, TX</div>
     </div>
   </section>
 
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container" style="text-align:center;">
+      <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-bottom:16px;">Ready to join the Shape Pass network?</h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;font-weight:300;margin-bottom:28px;">Apply today and start earning from thousands of active Shape members.</p>
+      <a href="signup-gym.html" class="btn btn-sm btn-outline">Partner With Us</a>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="footer">
@@ -323,9 +330,7 @@
     </div>
   </footer>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
-
   <script src="app.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
