@@ -884,6 +884,7 @@ img.card-avatar-inline { background: var(--border); }
 @media (max-width: 768px) {
   .schedule-grid { grid-template-columns: 1fr; }
   .progress-stats-row { grid-template-columns: 1fr 1fr !important; }
+  .progress-stat-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .td-client-stats-mini { display: none; }
   .td-section { margin-bottom: 32px; }
   .td-section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
