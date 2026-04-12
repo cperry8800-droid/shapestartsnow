@@ -449,6 +449,92 @@
       .community-layout.mobile-dm .chat-channel-tabs { display: none; }
       .community-layout.mobile-dm .community-sidebar { display: none !important; }
     }
+
+    /* === Profile Snapshot Modal === */
+    .profile-modal-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .profile-modal-overlay.active { display: flex; }
+    .profile-modal {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+      width: 380px; max-width: 90vw; max-height: 85vh; overflow-y: auto;
+      padding: 0; position: relative; animation: profileSlideIn 0.25s ease;
+    }
+    @keyframes profileSlideIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .profile-modal-close {
+      position: absolute; top: 12px; right: 14px; background: none; border: none;
+      color: var(--text-muted); font-size: 1.3rem; cursor: pointer; z-index: 2;
+      width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; transition: background 0.2s;
+    }
+    .profile-modal-close:hover { background: rgba(255,255,255,0.08); }
+    .profile-modal-header {
+      text-align: center; padding: 32px 24px 20px; border-bottom: 1px solid var(--border);
+    }
+    .profile-modal-avatar {
+      width: 72px; height: 72px; border-radius: 50%; display: inline-flex;
+      align-items: center; justify-content: center; font-weight: 700;
+      font-size: 1.4rem; color: #fff; margin-bottom: 12px;
+    }
+    .profile-modal-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 2px; }
+    .profile-modal-status { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
+    .profile-modal-bio {
+      font-size: 0.82rem; color: var(--text-secondary); font-weight: 300;
+      margin-top: 10px; line-height: 1.5;
+    }
+    .profile-modal-tier {
+      display: inline-block; padding: 4px 14px; margin-top: 12px;
+      border: 1px solid; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; border-radius: 4px;
+    }
+    .profile-modal-section {
+      padding: 16px 24px; border-bottom: 1px solid var(--border);
+    }
+    .profile-modal-section:last-child { border-bottom: none; }
+    .profile-modal-section-title {
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 10px;
+    }
+    .profile-modal-stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 0;
+    }
+    .profile-modal-stat-label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 400; }
+    .profile-modal-stat-value { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+    .profile-modal-badges {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .profile-modal-badge {
+      padding: 4px 10px; font-size: 0.7rem; font-weight: 500;
+      background: rgba(45,212,191,0.1); color: var(--accent);
+      border-radius: 20px; border: 1px solid rgba(45,212,191,0.2);
+    }
+    .profile-modal-private {
+      font-size: 0.78rem; color: var(--text-muted); font-weight: 300;
+      font-style: italic; padding: 4px 0;
+    }
+    .profile-modal-actions {
+      display: flex; gap: 8px; padding: 16px 24px; justify-content: center;
+    }
+    .profile-modal-actions button {
+      padding: 8px 20px; border-radius: 8px; font-size: 0.8rem;
+      font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .profile-modal-msg-btn {
+      background: var(--accent); color: #fff;
+    }
+    .profile-modal-msg-btn:hover { opacity: 0.9; }
+    .profile-modal-friend-btn {
+      background: transparent; border: 1px solid var(--border) !important; color: var(--text-secondary);
+    }
+    .profile-modal-friend-btn.is-friend {
+      border-color: var(--accent) !important; color: var(--accent);
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -616,6 +702,14 @@
   </div>
   </section>
 
+  <!-- Profile Snapshot Modal -->
+  <div class="profile-modal-overlay" id="profileModal" onclick="if(event.target===this)closeProfileModal()">
+    <div class="profile-modal">
+      <button class="profile-modal-close" onclick="closeProfileModal()">&times;</button>
+      <div id="profileModalContent"></div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
@@ -626,18 +720,18 @@
     let myMessagingSetting = localStorage.getItem('shapeMessagingSetting') || 'friends';
 
     const communityUsers = [
-      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025", shapeScore: 8420, tier: "Gold", allowMessages: "everyone" },
-      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024", shapeScore: 7150, tier: "Gold", allowMessages: "everyone" },
-      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025", shapeScore: 4200, tier: "Silver", allowMessages: "friends" },
-      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026", shapeScore: 1850, tier: "Bronze", allowMessages: "everyone" },
-      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Full Body Mobility Flow", memberSince: "2025", shapeScore: 5320, tier: "Gold", allowMessages: "friends" },
-      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze", allowMessages: "everyone" },
-      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum", allowMessages: "friends" },
-      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver", allowMessages: "everyone" },
-      { id: 9, name: "Chris P.", initials: "CP", color: "#3B82F6", online: true, friend: true, bio: "Full stack fitness. Lifting, running, and meal prepping", favoriteTrainer: "Marcus Johnson", recentWorkout: "Push Pull Legs", memberSince: "2024", shapeScore: 9800, tier: "Platinum", fullName: "Chris Perry", allowMessages: "everyone" },
-      { id: 10, name: "Haleigh R.", initials: "HR", color: "#E879F9", online: true, friend: true, bio: "Yoga & strength combo. Balance is everything", favoriteTrainer: "Sophie Turner", recentWorkout: "Strength & Flow", memberSince: "2025", shapeScore: 6540, tier: "Gold", fullName: "Haleigh Rimland", allowMessages: "everyone" },
-      { id: 11, name: "Laurie P.", initials: "LP", color: "#F472B6", online: true, friend: true, bio: "Pilates and clean eating. Consistency over intensity", favoriteTrainer: "Nina Brooks", recentWorkout: "Core & Stretch", memberSince: "2025", shapeScore: 5100, tier: "Gold", fullName: "Laurie Perry", allowMessages: "everyone" },
-      { id: 12, name: "Charlie T.", initials: "CT", color: "#22D3EE", online: false, friend: true, bio: "Calisthenics and outdoor training. No gym needed", favoriteTrainer: "Damon Clarke", recentWorkout: "Bodyweight Beast", memberSince: "2024", shapeScore: 7320, tier: "Gold", fullName: "Charlie Trapani", allowMessages: "everyone" },
+      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025", shapeScore: 8420, tier: "Gold", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: true, badges: true }, weight: "185 lbs", height: "5'11\"", bodyFat: "14%", workoutsCompleted: 156, streak: 12, calories: "2,400/day", protein: "180g/day", instagram: "@jake_lifts", badges: ["Early Adopter", "100 Workouts", "Gold Tier"] },
+      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024", shapeScore: 7150, tier: "Gold", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "135 lbs", height: "5'5\"", bodyFat: "19%", workoutsCompleted: 210, streak: 24, calories: "1,850/day", protein: "120g/day", instagram: "@aisha_hiit", badges: ["Early Adopter", "200 Workouts", "Gold Tier", "Streak Master"] },
+      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025", shapeScore: 4200, tier: "Silver", allowMessages: "friends", visibility: "friends", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: false, badges: true }, weight: "170 lbs", height: "5'10\"", bodyFat: "16%", workoutsCompleted: 89, streak: 5, calories: "2,200/day", protein: "140g/day", instagram: "@carlos_runs", badges: ["Silver Tier", "Cardio King"] },
+      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026", shapeScore: 1850, tier: "Bronze", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: true, badges: true }, weight: "125 lbs", height: "5'3\"", bodyFat: "22%", workoutsCompleted: 34, streak: 8, calories: "1,600/day", protein: "95g/day", instagram: "@priya_athome", badges: ["New Member", "Bronze Tier"] },
+      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Full Body Mobility Flow", memberSince: "2025", shapeScore: 5320, tier: "Gold", allowMessages: "friends", visibility: "friends", privacy: { photoBio: true, fitnessStats: false, bodyMetrics: false, workoutHistory: false, nutritionInfo: false, socialLinks: false, badges: true }, weight: "175 lbs", height: "6'0\"", bodyFat: "15%", workoutsCompleted: 112, streak: 3, calories: "2,100/day", protein: "150g/day", instagram: "@tyler_mobility", badges: ["Gold Tier", "Flexibility Pro"] },
+      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: true, badges: true }, weight: "140 lbs", height: "5'6\"", bodyFat: "24%", workoutsCompleted: 12, streak: 4, calories: "1,700/day", protein: "100g/day", instagram: "@mia_newbie", badges: ["New Member"] },
+      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum", allowMessages: "friends", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "210 lbs", height: "6'2\"", bodyFat: "11%", workoutsCompleted: 340, streak: 45, calories: "3,200/day", protein: "240g/day", instagram: "@devon_strong", badges: ["Early Adopter", "300 Workouts", "Platinum Tier", "Streak Master", "Iron Will"] },
+      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: false, socialLinks: false, badges: true }, weight: "145 lbs", height: "5'7\"", bodyFat: "20%", workoutsCompleted: 67, streak: 9, calories: "1,900/day", protein: "110g/day", instagram: "@emma_cardio", badges: ["Silver Tier", "Cardio Queen"] },
+      { id: 9, name: "Chris P.", initials: "CP", color: "#3B82F6", online: true, friend: true, bio: "Full stack fitness. Lifting, running, and meal prepping", favoriteTrainer: "Marcus Johnson", recentWorkout: "Push Pull Legs", memberSince: "2024", shapeScore: 9800, tier: "Platinum", fullName: "Chris Perry", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "190 lbs", height: "6'0\"", bodyFat: "13%", workoutsCompleted: 285, streak: 30, calories: "2,800/day", protein: "200g/day", instagram: "@chrisperry_fit", badges: ["Early Adopter", "200 Workouts", "Platinum Tier", "Streak Master", "Meal Prep Pro"] },
+      { id: 10, name: "Haleigh R.", initials: "HR", color: "#E879F9", online: true, friend: true, bio: "Yoga & strength combo. Balance is everything", favoriteTrainer: "Sophie Turner", recentWorkout: "Strength & Flow", memberSince: "2025", shapeScore: 6540, tier: "Gold", fullName: "Haleigh Rimland", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "130 lbs", height: "5'4\"", bodyFat: "18%", workoutsCompleted: 145, streak: 15, calories: "1,750/day", protein: "115g/day", instagram: "@haleigh_flow", badges: ["100 Workouts", "Gold Tier", "Balance Queen"] },
+      { id: 11, name: "Laurie P.", initials: "LP", color: "#F472B6", online: true, friend: true, bio: "Pilates and clean eating. Consistency over intensity", favoriteTrainer: "Nina Brooks", recentWorkout: "Core & Stretch", memberSince: "2025", shapeScore: 5100, tier: "Gold", fullName: "Laurie Perry", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: false, workoutHistory: true, nutritionInfo: true, socialLinks: true, badges: true }, weight: "128 lbs", height: "5'5\"", bodyFat: "20%", workoutsCompleted: 120, streak: 18, calories: "1,650/day", protein: "105g/day", instagram: "@laurie_pilates", badges: ["100 Workouts", "Gold Tier", "Clean Eater"] },
+      { id: 12, name: "Charlie T.", initials: "CT", color: "#22D3EE", online: false, friend: true, bio: "Calisthenics and outdoor training. No gym needed", favoriteTrainer: "Damon Clarke", recentWorkout: "Bodyweight Beast", memberSince: "2024", shapeScore: 7320, tier: "Gold", fullName: "Charlie Trapani", allowMessages: "everyone", visibility: "public", privacy: { photoBio: true, fitnessStats: true, bodyMetrics: true, workoutHistory: true, nutritionInfo: false, socialLinks: true, badges: true }, weight: "165 lbs", height: "5'9\"", bodyFat: "12%", workoutsCompleted: 198, streak: 22, calories: "2,300/day", protein: "160g/day", instagram: "@charlie_cali", badges: ["Early Adopter", "Gold Tier", "Bodyweight Boss", "Outdoor Warrior"] },
     ];
 
     // Pre-built DM conversation data for each user
@@ -841,9 +935,9 @@
         const canMessage = u.allowMessages === 'everyone' || u.friend;
         return `
         <div class="community-user ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
-          <div class="community-user-avatar" style="background:${u.color};">${u.initials}</div>
+          <div class="community-user-avatar" style="background:${u.color};cursor:pointer;" onclick="event.stopPropagation();showProfile(${u.id})">${u.initials}</div>
           <div class="community-user-info">
-            <div class="community-user-name">${u.name}</div>
+            <div class="community-user-name" style="cursor:pointer;" onclick="event.stopPropagation();showProfile(${u.id})">${u.name}</div>
             <div class="community-user-status">
               <span class="${u.online ? 'online-dot' : 'offline-dot'}"></span>
               ${u.online ? 'Online' : 'Offline'} · ${u.recentWorkout}
@@ -871,11 +965,12 @@
       container.innerHTML = messages.map(m => {
         const isOwn = m.user === null;
         const user = isOwn ? { initials: 'You', color: '#2DD4BF', name: 'You' } : m.user;
+        const clickable = !isOwn && user.id;
         return `
           <div class="chat-msg ${isOwn ? 'own' : ''}">
-            <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
+            <div class="chat-msg-avatar" style="background:${user.color};${clickable ? 'cursor:pointer;' : ''}" ${clickable ? `onclick="showProfile(${user.id})"` : ''}>${user.initials}</div>
             <div class="chat-msg-body">
-              <div class="chat-msg-name">${user.name}</div>
+              <div class="chat-msg-name" ${clickable ? `style="cursor:pointer;" onclick="showProfile(${user.id})"` : ''}>${user.name}</div>
               <div class="chat-msg-text">${m.text}</div>
               <div class="chat-msg-time">${m.time}</div>
             </div>
@@ -1228,6 +1323,119 @@
     }
     window.addEventListener('load', positionMobileElements);
     window.addEventListener('resize', positionMobileElements);
+
+    // === Profile Snapshot ===
+    function showProfile(userId) {
+      const user = communityUsers.find(u => u.id === userId);
+      if (!user) return;
+
+      const p = user.privacy || {};
+      const isFriend = user.friend;
+      const vis = user.visibility || 'public';
+
+      // If profile is private and not a friend, show limited view
+      const isRestricted = (vis === 'private') || (vis === 'friends' && !isFriend);
+
+      const tierColor = user.tier === 'Platinum' ? '#E5E4E2' : user.tier === 'Gold' ? '#FFD700' : user.tier === 'Silver' ? '#C0C0C0' : '#CD7F32';
+
+      let html = '';
+
+      // Header — always show name, avatar, online status
+      html += `<div class="profile-modal-header">`;
+      html += `<div class="profile-modal-avatar" style="background:${user.color};">${user.initials}</div>`;
+      html += `<div class="profile-modal-name">${user.fullName || user.name}</div>`;
+      html += `<div class="profile-modal-status"><span class="${user.online ? 'online-dot' : 'offline-dot'}"></span> ${user.online ? 'Online now' : 'Offline'} · Member since ${user.memberSince}</div>`;
+
+      if (isRestricted) {
+        html += `<div class="profile-modal-bio" style="margin-top:16px;font-style:italic;">This profile is ${vis === 'private' ? 'private' : 'visible to friends only'}.</div>`;
+        html += `<div class="profile-modal-tier" style="border-color:${tierColor};color:${tierColor};">${user.tier} · ${user.shapeScore.toLocaleString()} pts</div>`;
+        html += `</div>`;
+      } else {
+        // Bio
+        if (p.photoBio !== false) {
+          html += `<div class="profile-modal-bio">${user.bio}</div>`;
+        }
+        html += `<div class="profile-modal-tier" style="border-color:${tierColor};color:${tierColor};">${user.tier} · ${user.shapeScore.toLocaleString()} pts</div>`;
+        html += `</div>`;
+
+        // Fitness Stats
+        if (p.fitnessStats !== false) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Fitness Stats</div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Favorite Trainer</span><span class="profile-modal-stat-value">${user.favoriteTrainer}</span></div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Recent Workout</span><span class="profile-modal-stat-value">${user.recentWorkout}</span></div>`;
+          if (user.workoutsCompleted) {
+            html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Workouts Completed</span><span class="profile-modal-stat-value">${user.workoutsCompleted}</span></div>`;
+          }
+          if (user.streak) {
+            html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Current Streak</span><span class="profile-modal-stat-value">${user.streak} days</span></div>`;
+          }
+          html += `</div>`;
+        }
+
+        // Body Metrics
+        if (p.bodyMetrics === true) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Body Metrics</div>`;
+          if (user.height) html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Height</span><span class="profile-modal-stat-value">${user.height}</span></div>`;
+          if (user.weight) html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Weight</span><span class="profile-modal-stat-value">${user.weight}</span></div>`;
+          if (user.bodyFat) html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Body Fat</span><span class="profile-modal-stat-value">${user.bodyFat}</span></div>`;
+          html += `</div>`;
+        }
+
+        // Workout History
+        if (p.workoutHistory !== false && user.workoutsCompleted) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Workout History</div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Total Workouts</span><span class="profile-modal-stat-value">${user.workoutsCompleted}</span></div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Current Streak</span><span class="profile-modal-stat-value">${user.streak} days</span></div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Last Workout</span><span class="profile-modal-stat-value">${user.recentWorkout}</span></div>`;
+          html += `</div>`;
+        }
+
+        // Nutrition Info
+        if (p.nutritionInfo === true) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Nutrition</div>`;
+          if (user.calories) html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Daily Calories</span><span class="profile-modal-stat-value">${user.calories}</span></div>`;
+          if (user.protein) html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Daily Protein</span><span class="profile-modal-stat-value">${user.protein}</span></div>`;
+          html += `</div>`;
+        }
+
+        // Social Links
+        if (p.socialLinks !== false && user.instagram) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Social</div>`;
+          html += `<div class="profile-modal-stat-row"><span class="profile-modal-stat-label">Instagram</span><span class="profile-modal-stat-value">${user.instagram}</span></div>`;
+          html += `</div>`;
+        }
+
+        // Badges
+        if (p.badges !== false && user.badges && user.badges.length) {
+          html += `<div class="profile-modal-section">`;
+          html += `<div class="profile-modal-section-title">Badges</div>`;
+          html += `<div class="profile-modal-badges">`;
+          user.badges.forEach(b => { html += `<span class="profile-modal-badge">${b}</span>`; });
+          html += `</div></div>`;
+        }
+      }
+
+      // Action buttons
+      const canMessage = user.allowMessages === 'everyone' || user.friend;
+      html += `<div class="profile-modal-actions">`;
+      if (canMessage) {
+        html += `<button class="profile-modal-msg-btn" onclick="closeProfileModal();openDM(${user.id}, event)">Message</button>`;
+      }
+      html += `<button class="profile-modal-friend-btn ${user.friend ? 'is-friend' : ''}" onclick="toggleFriend(${user.id}, event);showProfile(${user.id})">${user.friend ? 'Friends' : 'Follow'}</button>`;
+      html += `</div>`;
+
+      document.getElementById('profileModalContent').innerHTML = html;
+      document.getElementById('profileModal').classList.add('active');
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').classList.remove('active');
+    }
 
     // === Init ===
     loadProfile();
