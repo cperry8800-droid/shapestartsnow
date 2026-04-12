@@ -115,6 +115,55 @@
       .tp-programs-grid { grid-template-columns: 1fr; }
       .tp-gallery-grid { grid-template-columns: repeat(2, 1fr); }
     }
+
+    .tp-section.editing .tp-edit-btn { display: none; }
+    .tp-section .tp-save-actions { display: none; gap: 8px; }
+    .tp-section.editing .tp-save-actions { display: flex; }
+    .tp-edit-btn {
+      font-size: 0.7rem; font-weight: 500; color: var(--accent-dark);
+      border: 1px solid var(--accent); padding: 4px 12px; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 0.06em; background: transparent;
+      transition: all 0.3s;
+    }
+    .tp-edit-btn:hover { background: var(--accent); color: #fff; }
+    .tp-save-btn {
+      font-size: 0.72rem; font-weight: 500; padding: 6px 18px;
+      background: var(--accent); color: #fff; border: none; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .tp-cancel-btn {
+      font-size: 0.72rem; font-weight: 500; padding: 6px 18px;
+      background: transparent; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .tp-section .tp-edit-input,
+    .tp-section .tp-edit-textarea,
+    .tp-section .tp-edit-select { display: none; }
+    .tp-section.editing .tp-edit-input,
+    .tp-section.editing .tp-edit-textarea,
+    .tp-section.editing .tp-edit-select { display: block; }
+    .tp-section.editing .tp-display-value { display: none; }
+    .tp-edit-input, .tp-edit-select {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; outline: none; margin-top: 4px;
+    }
+    .tp-edit-textarea {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; outline: none; margin-top: 4px; min-height: 100px; resize: vertical;
+    }
+    .tp-edit-input:focus, .tp-edit-textarea:focus, .tp-edit-select:focus { border-color: var(--accent); }
+    .tp-tag.removable { cursor: pointer; position: relative; }
+    .tp-tag.removable:hover { border-color: #EF4444; color: #EF4444; }
+    .tp-add-tag-row { display: none; gap: 8px; margin-top: 10px; align-items: center; }
+    .tp-section.editing .tp-add-tag-row { display: flex; }
+    .tp-cert-input-row { display: none; gap: 8px; margin-top: 10px; align-items: center; }
+    .tp-section.editing .tp-cert-input-row { display: flex; }
+    .tp-program.editing-program { border-color: var(--accent); }
+    .tp-program .tp-program-edit-fields { display: none; }
+    .tp-program.editing-program .tp-program-edit-fields { display: block; }
+    .tp-program.editing-program .tp-program-display { display: none; }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -188,14 +237,15 @@
 
   <!-- Avatar & Name -->
   <div class="tp-avatar-area">
-    <div class="tp-avatar" style="position: relative; cursor: pointer;">
-      YN
+    <div class="tp-avatar" id="tpAvatar" style="position: relative; cursor: pointer;" onclick="document.getElementById('avatarUpload').click()">
+      <span id="tpInitials">YN</span>
       <div style="position: absolute; bottom: 0; right: 0; width: 32px; height: 32px; background: var(--text); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg); font-size: 0.7rem; color: #fff;">+</div>
+      <input type="file" id="avatarUpload" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
     </div>
     <div class="tp-name-block">
-      <h1>Your Name</h1>
-      <div class="tp-specialty">Your Specialty</div>
-      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Upload your own profile photo</div>
+      <h1 id="tpName" onclick="editNameInline(this)" style="cursor:pointer;" title="Click to edit">Your Name</h1>
+      <div class="tp-specialty" id="tpSpecialty" onclick="editSpecialtyInline(this)" style="cursor:pointer;" title="Click to edit">Your Specialty</div>
+      <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Click name or specialty to edit</div>
     </div>
   </div>
 
@@ -204,105 +254,96 @@
 
     <!-- Stats -->
     <div class="tp-stats-row">
-      <div class="tp-stat">
-        <div class="tp-stat-value">0</div>
+      <div class="tp-stat" onclick="editStat(this, 'subscribers')" style="cursor:pointer;" title="Click to edit">
+        <div class="tp-stat-value tp-display-value" id="statSubscribers">0</div>
+        <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="0" data-stat="subscribers">
         <div class="tp-stat-label">Subscribers</div>
       </div>
-      <div class="tp-stat">
-        <div class="tp-stat-value">--</div>
+      <div class="tp-stat" onclick="editStat(this, 'rating')" style="cursor:pointer;" title="Click to edit">
+        <div class="tp-stat-value tp-display-value" id="statRating">--</div>
+        <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="rating" placeholder="4.8">
         <div class="tp-stat-label">Rating</div>
       </div>
-      <div class="tp-stat">
-        <div class="tp-stat-value">$--/mo</div>
+      <div class="tp-stat" onclick="editStat(this, 'price')" style="cursor:pointer;" title="Click to edit">
+        <div class="tp-stat-value tp-display-value" id="statPrice">$--/mo</div>
+        <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="price" placeholder="49.99">
         <div class="tp-stat-label">Your Price</div>
       </div>
-      <div class="tp-stat">
-        <div class="tp-stat-value">--</div>
+      <div class="tp-stat" onclick="editStat(this, 'experience')" style="cursor:pointer;" title="Click to edit">
+        <div class="tp-stat-value tp-display-value" id="statExperience">--</div>
+        <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="experience" placeholder="5 yrs">
         <div class="tp-stat-label">Experience</div>
       </div>
     </div>
 
     <!-- Bio -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionBio">
       <div class="tp-section-header">
         <h2>About You</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionBio')">Edit</button>
       </div>
-      <p class="tp-bio">Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you. This is your space to make a first impression.</p>
+      <p class="tp-bio tp-display-value" id="bioText">Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you. This is your space to make a first impression.</p>
+      <textarea class="tp-edit-textarea" id="bioInput">Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you. This is your space to make a first impression.</textarea>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveBio()">Save</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionBio')">Cancel</button>
+      </div>
     </div>
 
     <!-- Specialties & Tags -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionTags">
       <div class="tp-section-header">
         <h2>Specialties & Tags</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionTags')">Edit</button>
       </div>
-      <div class="tp-tags">
-        <span class="tp-tag">Strength</span>
-        <span class="tp-tag">Hypertrophy</span>
-        <span class="tp-tag">Fat Loss</span>
-        <span class="tp-tag">At Home</span>
-        <span class="tp-tag">+ Add Your Own</span>
+      <div class="tp-tags" id="tagsContainer">
+        <span class="tp-tag" data-tag="Strength">Strength</span>
+        <span class="tp-tag" data-tag="Hypertrophy">Hypertrophy</span>
+        <span class="tp-tag" data-tag="Fat Loss">Fat Loss</span>
+        <span class="tp-tag" data-tag="At Home">At Home</span>
+      </div>
+      <div class="tp-add-tag-row">
+        <input class="tp-edit-input" id="newTagInput" placeholder="New tag..." style="width:160px;margin-top:0;">
+        <button class="tp-save-btn" onclick="addTag()" style="padding:8px 14px;">Add</button>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveTags()">Done</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionTags')">Cancel</button>
       </div>
     </div>
 
     <!-- Programs -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionPrograms">
       <div class="tp-section-header">
         <h2>Your Programs</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionPrograms')">Edit</button>
       </div>
-      <div class="tp-programs-grid">
-        <div class="tp-program">
-          <h3>Program Name</h3>
-          <div class="tp-program-meta">Type &middot; Duration &middot; Difficulty</div>
-          <p>Describe your workout program. Clients will see this when browsing your profile.</p>
-          <div class="tp-program-footer">
-            <span class="tp-program-price">$--</span>
-            <button class="btn btn-sm btn-primary">View Details</button>
-          </div>
-        </div>
-        <div class="tp-program">
-          <h3>Program Name</h3>
-          <div class="tp-program-meta">Type &middot; Duration &middot; Difficulty</div>
-          <p>Create as many programs as you want. Sell them individually or include them with your subscription.</p>
-          <div class="tp-program-footer">
-            <span class="tp-program-price">$--</span>
-            <button class="btn btn-sm btn-primary">View Details</button>
-          </div>
-        </div>
-        <div class="tp-program">
-          <h3>Program Name</h3>
-          <div class="tp-program-meta">Type &middot; Duration &middot; Difficulty</div>
-          <p>Tag each program by location, difficulty, and category so clients can find exactly what they need.</p>
-          <div class="tp-program-footer">
-            <span class="tp-program-price">$--</span>
-            <button class="btn btn-sm btn-primary">View Details</button>
-          </div>
-        </div>
-        <div class="tp-program">
-          <h3>+ Add New Program</h3>
-          <div class="tp-program-meta">Build your library</div>
-          <p>Upload new programs anytime. Set your own pricing for subscriptions or one-time purchases.</p>
-          <div class="tp-program-footer">
-            <span class="tp-program-price"></span>
-            <button class="btn btn-sm btn-outline">Create</button>
-          </div>
-        </div>
+      <div class="tp-programs-grid" id="programsGrid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="savePrograms()">Save All</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionPrograms')">Cancel</button>
       </div>
     </div>
 
     <!-- Certifications -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionCerts">
       <div class="tp-section-header">
         <h2>Certifications</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionCerts')">Edit</button>
       </div>
-      <ul class="tp-certs-list">
-        <li><span class="tp-cert-icon">&mdash;</span> Add your certifications (e.g. NASM, ACE, ISSA, ACSM)</li>
-        <li><span class="tp-cert-icon">&mdash;</span> Verified credentials are displayed with a badge</li>
-        <li><span class="tp-cert-icon">&mdash;</span> Years of experience shown on your profile</li>
+      <ul class="tp-certs-list" id="certsContainer">
+        <li><span class="tp-cert-icon">&mdash;</span> <span>Add your certifications (e.g. NASM, ACE, ISSA, ACSM)</span></li>
       </ul>
+      <div class="tp-cert-input-row">
+        <input class="tp-edit-input" id="newCertInput" placeholder="e.g. NASM Certified Personal Trainer" style="margin-top:0;">
+        <button class="tp-save-btn" onclick="addCert()" style="padding:8px 14px;">Add</button>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveCerts()">Done</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionCerts')">Cancel</button>
+      </div>
     </div>
 
     <!-- Photos & Videos -->
@@ -340,31 +381,60 @@
     </div>
 
     <!-- Social Links -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionSocial">
       <div class="tp-section-header">
         <h2>Social Links</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionSocial')">Edit</button>
       </div>
-      <div class="tp-social-links">
-        <span class="tp-social-link">Instagram</span>
-        <span class="tp-social-link">YouTube</span>
-        <span class="tp-social-link">TikTok</span>
-        <span class="tp-social-link">Website</span>
+      <div class="tp-social-links tp-display-value" id="socialDisplay">
+        <span class="tp-social-link" id="socialIG">Instagram</span>
+        <span class="tp-social-link" id="socialYT">YouTube</span>
+        <span class="tp-social-link" id="socialTT">TikTok</span>
+        <span class="tp-social-link" id="socialWeb">Website</span>
+      </div>
+      <div class="tp-edit-fields" style="display:none;" id="socialEditFields">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Instagram</label>
+            <input class="tp-edit-input" id="inputIG" placeholder="@yourhandle" value="">
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">YouTube</label>
+            <input class="tp-edit-input" id="inputYT" placeholder="youtube.com/c/..." value="">
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">TikTok</label>
+            <input class="tp-edit-input" id="inputTT" placeholder="@yourhandle" value="">
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Website</label>
+            <input class="tp-edit-input" id="inputWeb" placeholder="https://..." value="">
+          </div>
+        </div>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="saveSocial()">Save</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionSocial')">Cancel</button>
       </div>
     </div>
 
     <!-- Subscription Pricing -->
-    <div class="tp-section">
+    <div class="tp-section" id="sectionPricing">
       <div class="tp-section-header">
         <h2>Subscription Pricing</h2>
-        <span class="tp-edit-badge">Customizable</span>
+        <button class="tp-edit-btn" onclick="toggleSection('sectionPricing')">Edit</button>
       </div>
       <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 28px; display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <div style="font-size: 1.4rem; font-weight: 700;">$--<span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+          <div class="tp-display-value" style="font-size: 1.4rem; font-weight: 700;" id="subPriceDisplay">$--<span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">/mo</span></div>
+          <input class="tp-edit-input" id="subPriceInput" type="number" placeholder="49.99" style="display:none;width:120px;margin-top:0;">
           <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">Set your own monthly subscription price</div>
         </div>
         <button class="btn btn-primary">Subscribe</button>
+      </div>
+      <div class="tp-save-actions">
+        <button class="tp-save-btn" onclick="savePricing()">Save</button>
+        <button class="tp-cancel-btn" onclick="cancelSection('sectionPricing')">Cancel</button>
       </div>
     </div>
 
@@ -412,6 +482,356 @@
   </footer>
 
   <div class="toast" id="toast"></div>
+
+  <script>
+// ===== Trainer Profile Editor =====
+let trainerData = {
+  name: 'Your Name', specialty: 'Your Specialty',
+  subscribers: '0', rating: '', price: '', experience: '',
+  bio: 'Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you. This is your space to make a first impression.',
+  tags: ['Strength', 'Hypertrophy', 'Fat Loss', 'At Home'],
+  programs: [
+    { name: 'Program Name', type: 'Strength', duration: '8 weeks', difficulty: 'Intermediate', desc: 'Describe your workout program. Clients will see this when browsing your profile.', price: '' },
+    { name: 'Program Name', type: 'HIIT', duration: '6 weeks', difficulty: 'Beginner', desc: 'Create as many programs as you want. Sell them individually or include them with your subscription.', price: '' },
+    { name: 'Program Name', type: 'Cardio', duration: '4 weeks', difficulty: 'Advanced', desc: 'Tag each program by location, difficulty, and category so clients can find exactly what they need.', price: '' }
+  ],
+  certs: [],
+  social: { ig: '', yt: '', tt: '', web: '' },
+  subPrice: ''
+};
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleSection(id) {
+  const s = document.getElementById(id);
+  s.classList.toggle('editing');
+  if (id === 'sectionSocial') {
+    document.getElementById('socialEditFields').style.display = s.classList.contains('editing') ? 'block' : 'none';
+  }
+  if (id === 'sectionPricing') {
+    document.getElementById('subPriceInput').style.display = s.classList.contains('editing') ? 'block' : 'none';
+    document.getElementById('subPriceDisplay').style.display = s.classList.contains('editing') ? 'none' : 'block';
+  }
+  if (id === 'sectionTags' && s.classList.contains('editing')) { renderTagsEditable(); }
+  if (id === 'sectionCerts' && s.classList.contains('editing')) { renderCertsEditable(); }
+  if (id === 'sectionPrograms' && s.classList.contains('editing')) { renderProgramsEditable(); }
+}
+
+function cancelSection(id) {
+  document.getElementById(id).classList.remove('editing');
+  if (id === 'sectionSocial') document.getElementById('socialEditFields').style.display = 'none';
+  if (id === 'sectionPricing') { document.getElementById('subPriceInput').style.display = 'none'; document.getElementById('subPriceDisplay').style.display = 'block'; }
+  loadFromStorage();
+}
+
+// --- Name / Specialty inline edit ---
+function editNameInline(el) {
+  const current = el.textContent;
+  el.innerHTML = '<input class="tp-edit-input" value="' + current + '" style="font-size:1.6rem;font-weight:700;width:300px;margin:0;padding:4px 8px;" onblur="saveNameInline(this)" onkeydown="if(event.key===\'Enter\'){this.blur();}">';
+  el.querySelector('input').focus();
+}
+function saveNameInline(input) {
+  const val = input.value.trim() || 'Your Name';
+  trainerData.name = val;
+  document.getElementById('tpName').textContent = val;
+  const initials = val.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('tpInitials').textContent = initials;
+  trainerData.initials = initials;
+  saveToStorage();
+  showToast('Name updated!');
+}
+function editSpecialtyInline(el) {
+  const current = el.textContent;
+  el.innerHTML = '<input class="tp-edit-input" value="' + current + '" style="font-size:0.82rem;width:250px;margin:0;padding:4px 8px;" onblur="saveSpecialtyInline(this)" onkeydown="if(event.key===\'Enter\'){this.blur();}">';
+  el.querySelector('input').focus();
+}
+function saveSpecialtyInline(input) {
+  const val = input.value.trim() || 'Your Specialty';
+  trainerData.specialty = val;
+  document.getElementById('tpSpecialty').textContent = val;
+  saveToStorage();
+  showToast('Specialty updated!');
+}
+
+// --- Stats ---
+function editStat(el, key) {
+  const display = el.querySelector('.tp-display-value');
+  const input = el.querySelector('input');
+  if (input.style.display === 'none') {
+    display.style.display = 'none';
+    input.style.display = 'block';
+    input.focus();
+    input.onblur = function() { saveStat(el, key); };
+    input.onkeydown = function(e) { if (e.key === 'Enter') this.blur(); };
+  }
+}
+function saveStat(el, key) {
+  const input = el.querySelector('input');
+  const display = el.querySelector('.tp-display-value');
+  const val = input.value.trim();
+  trainerData[key] = val;
+  if (key === 'price') display.textContent = val ? '$' + val + '/mo' : '$--/mo';
+  else display.textContent = val || '--';
+  display.style.display = 'block';
+  input.style.display = 'none';
+  saveToStorage();
+  showToast('Stat updated!');
+}
+
+// --- Bio ---
+function saveBio() {
+  trainerData.bio = document.getElementById('bioInput').value;
+  document.getElementById('bioText').textContent = trainerData.bio;
+  document.getElementById('sectionBio').classList.remove('editing');
+  saveToStorage();
+  showToast('Bio saved!');
+}
+
+// --- Tags ---
+function renderTags() {
+  const c = document.getElementById('tagsContainer');
+  c.innerHTML = trainerData.tags.map(t => '<span class="tp-tag" data-tag="' + t + '">' + t + '</span>').join('');
+}
+function renderTagsEditable() {
+  const c = document.getElementById('tagsContainer');
+  c.innerHTML = trainerData.tags.map(t => '<span class="tp-tag removable" data-tag="' + t + '" onclick="removeTag(\'' + t + '\')">' + t + ' &times;</span>').join('');
+}
+function addTag() {
+  const input = document.getElementById('newTagInput');
+  const val = input.value.trim();
+  if (val && !trainerData.tags.includes(val)) {
+    trainerData.tags.push(val);
+    renderTagsEditable();
+    input.value = '';
+  }
+}
+function removeTag(tag) {
+  trainerData.tags = trainerData.tags.filter(t => t !== tag);
+  renderTagsEditable();
+}
+function saveTags() {
+  document.getElementById('sectionTags').classList.remove('editing');
+  renderTags();
+  saveToStorage();
+  showToast('Tags saved!');
+}
+
+// --- Programs ---
+function renderPrograms() {
+  const grid = document.getElementById('programsGrid');
+  grid.innerHTML = trainerData.programs.map((p, i) => '\
+    <div class="tp-program" data-index="' + i + '">\
+      <h3>' + p.name + '</h3>\
+      <div class="tp-program-meta">' + p.type + ' &middot; ' + p.duration + ' &middot; ' + p.difficulty + '</div>\
+      <p>' + p.desc + '</p>\
+      <div class="tp-program-footer">\
+        <span class="tp-program-price">' + (p.price ? '$' + p.price : '$--') + '</span>\
+        <button class="btn btn-sm btn-primary">View Details</button>\
+      </div>\
+    </div>\
+  ').join('') + '\
+    <div class="tp-program" onclick="addProgram()" style="cursor:pointer;">\
+      <h3>+ Add New Program</h3>\
+      <div class="tp-program-meta">Build your library</div>\
+      <p>Upload new programs anytime. Set your own pricing for subscriptions or one-time purchases.</p>\
+      <div class="tp-program-footer">\
+        <span class="tp-program-price"></span>\
+        <button class="btn btn-sm btn-outline">Create</button>\
+      </div>\
+    </div>';
+}
+function renderProgramsEditable() {
+  const grid = document.getElementById('programsGrid');
+  grid.innerHTML = trainerData.programs.map((p, i) => '\
+    <div class="tp-program" data-index="' + i + '" style="border-color:var(--accent);">\
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">\
+        <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-dark);font-weight:500;">Program ' + (i+1) + '</span>\
+        <button class="tp-cancel-btn" onclick="removeProgram(' + i + ')" style="padding:2px 10px;font-size:0.65rem;">Remove</button>\
+      </div>\
+      <input class="tp-edit-input" value="' + p.name + '" data-field="name" data-idx="' + i + '" placeholder="Program name" style="margin-bottom:6px;">\
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:6px;">\
+        <input class="tp-edit-input" value="' + p.type + '" data-field="type" data-idx="' + i + '" placeholder="Type">\
+        <input class="tp-edit-input" value="' + p.duration + '" data-field="duration" data-idx="' + i + '" placeholder="Duration">\
+        <input class="tp-edit-input" value="' + p.difficulty + '" data-field="difficulty" data-idx="' + i + '" placeholder="Difficulty">\
+      </div>\
+      <textarea class="tp-edit-textarea" data-field="desc" data-idx="' + i + '" style="min-height:60px;margin-bottom:6px;">' + p.desc + '</textarea>\
+      <input class="tp-edit-input" value="' + p.price + '" data-field="price" data-idx="' + i + '" placeholder="Price (e.g. 29.99)">\
+    </div>\
+  ').join('') + '\
+    <div class="tp-program" onclick="addProgram()" style="cursor:pointer;">\
+      <h3>+ Add New Program</h3>\
+      <div class="tp-program-meta">Build your library</div>\
+      <p>Click to add a new program</p>\
+    </div>';
+}
+function addProgram() {
+  trainerData.programs.push({ name: 'New Program', type: 'Type', duration: 'Duration', difficulty: 'Difficulty', desc: 'Describe this program...', price: '' });
+  const section = document.getElementById('sectionPrograms');
+  if (!section.classList.contains('editing')) { toggleSection('sectionPrograms'); }
+  else { renderProgramsEditable(); }
+  saveToStorage();
+}
+function removeProgram(i) {
+  trainerData.programs.splice(i, 1);
+  renderProgramsEditable();
+}
+function savePrograms() {
+  document.querySelectorAll('#programsGrid [data-idx]').forEach(input => {
+    const idx = parseInt(input.dataset.idx);
+    const field = input.dataset.field;
+    if (trainerData.programs[idx]) {
+      trainerData.programs[idx][field] = input.value;
+    }
+  });
+  document.getElementById('sectionPrograms').classList.remove('editing');
+  renderPrograms();
+  saveToStorage();
+  showToast('Programs saved!');
+}
+
+// --- Certifications ---
+function renderCerts() {
+  const c = document.getElementById('certsContainer');
+  if (trainerData.certs.length === 0) {
+    c.innerHTML = '<li><span class="tp-cert-icon">&mdash;</span> <span>Add your certifications (e.g. NASM, ACE, ISSA, ACSM)</span></li>';
+  } else {
+    c.innerHTML = trainerData.certs.map(cert => '<li><span class="tp-cert-icon">&#10003;</span> <span>' + cert + '</span></li>').join('');
+  }
+}
+function renderCertsEditable() {
+  const c = document.getElementById('certsContainer');
+  if (trainerData.certs.length === 0) {
+    c.innerHTML = '<li style="color:var(--text-muted);font-size:0.85rem;">No certifications added yet</li>';
+  } else {
+    c.innerHTML = trainerData.certs.map((cert, i) => '<li><span class="tp-cert-icon">&#10003;</span> <span>' + cert + '</span> <button class="tp-cancel-btn" onclick="removeCert(' + i + ')" style="margin-left:auto;padding:2px 10px;font-size:0.65rem;">Remove</button></li>').join('');
+  }
+}
+function addCert() {
+  const input = document.getElementById('newCertInput');
+  const val = input.value.trim();
+  if (val) { trainerData.certs.push(val); renderCertsEditable(); input.value = ''; }
+}
+function removeCert(i) {
+  trainerData.certs.splice(i, 1);
+  renderCertsEditable();
+}
+function saveCerts() {
+  document.getElementById('sectionCerts').classList.remove('editing');
+  renderCerts();
+  saveToStorage();
+  showToast('Certifications saved!');
+}
+
+// --- Social ---
+function saveSocial() {
+  trainerData.social.ig = document.getElementById('inputIG').value;
+  trainerData.social.yt = document.getElementById('inputYT').value;
+  trainerData.social.tt = document.getElementById('inputTT').value;
+  trainerData.social.web = document.getElementById('inputWeb').value;
+  document.getElementById('socialIG').textContent = trainerData.social.ig || 'Instagram';
+  document.getElementById('socialYT').textContent = trainerData.social.yt || 'YouTube';
+  document.getElementById('socialTT').textContent = trainerData.social.tt || 'TikTok';
+  document.getElementById('socialWeb').textContent = trainerData.social.web || 'Website';
+  document.getElementById('sectionSocial').classList.remove('editing');
+  document.getElementById('socialEditFields').style.display = 'none';
+  saveToStorage();
+  showToast('Social links saved!');
+}
+
+// --- Pricing ---
+function savePricing() {
+  const val = document.getElementById('subPriceInput').value;
+  trainerData.subPrice = val;
+  document.getElementById('subPriceDisplay').innerHTML = val ? '$' + val + '<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>' : '$--<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>';
+  document.getElementById('statPrice').textContent = val ? '$' + val + '/mo' : '$--/mo';
+  trainerData.price = val;
+  document.getElementById('sectionPricing').classList.remove('editing');
+  document.getElementById('subPriceInput').style.display = 'none';
+  document.getElementById('subPriceDisplay').style.display = 'block';
+  saveToStorage();
+  showToast('Pricing saved!');
+}
+
+// --- Avatar ---
+function handleAvatarUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    trainerData.avatar = ev.target.result;
+    var el = document.getElementById('tpAvatar');
+    document.getElementById('tpInitials').innerHTML = '<img src="' + ev.target.result + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    saveToStorage();
+    showToast('Photo uploaded!');
+  };
+  reader.readAsDataURL(file);
+}
+
+// --- Storage ---
+function saveToStorage() {
+  localStorage.setItem('shapeTrainerProfile', JSON.stringify(trainerData));
+}
+function loadFromStorage() {
+  const raw = localStorage.getItem('shapeTrainerProfile');
+  if (!raw) return;
+  try {
+    const d = JSON.parse(raw);
+    Object.assign(trainerData, d);
+    // Apply to DOM
+    document.getElementById('tpName').textContent = trainerData.name;
+    document.getElementById('tpSpecialty').textContent = trainerData.specialty;
+    const initials = trainerData.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+    if (trainerData.avatar) {
+      document.getElementById('tpInitials').innerHTML = '<img src="' + trainerData.avatar + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+    } else {
+      document.getElementById('tpInitials').textContent = initials;
+    }
+    document.getElementById('statSubscribers').textContent = trainerData.subscribers || '0';
+    document.getElementById('statRating').textContent = trainerData.rating || '--';
+    document.getElementById('statPrice').textContent = trainerData.price ? '$' + trainerData.price + '/mo' : '$--/mo';
+    document.getElementById('statExperience').textContent = trainerData.experience || '--';
+    document.getElementById('bioText').textContent = trainerData.bio;
+    document.getElementById('bioInput').value = trainerData.bio;
+    // Stats inputs
+    document.querySelector('[data-stat="subscribers"]').value = trainerData.subscribers || '0';
+    document.querySelector('[data-stat="rating"]').value = trainerData.rating || '';
+    document.querySelector('[data-stat="price"]').value = trainerData.price || '';
+    document.querySelector('[data-stat="experience"]').value = trainerData.experience || '';
+    // Social
+    if (trainerData.social) {
+      document.getElementById('inputIG').value = trainerData.social.ig || '';
+      document.getElementById('inputYT').value = trainerData.social.yt || '';
+      document.getElementById('inputTT').value = trainerData.social.tt || '';
+      document.getElementById('inputWeb').value = trainerData.social.web || '';
+      document.getElementById('socialIG').textContent = trainerData.social.ig || 'Instagram';
+      document.getElementById('socialYT').textContent = trainerData.social.yt || 'YouTube';
+      document.getElementById('socialTT').textContent = trainerData.social.tt || 'TikTok';
+      document.getElementById('socialWeb').textContent = trainerData.social.web || 'Website';
+    }
+    // Pricing
+    if (trainerData.subPrice) {
+      document.getElementById('subPriceDisplay').innerHTML = '$' + trainerData.subPrice + '<span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">/mo</span>';
+      document.getElementById('subPriceInput').value = trainerData.subPrice;
+    }
+    renderTags();
+    renderPrograms();
+    renderCerts();
+  } catch(e) {}
+}
+
+// Init
+loadFromStorage();
+if (!localStorage.getItem('shapeTrainerProfile')) {
+  renderTags();
+  renderPrograms();
+  renderCerts();
+}
+  </script>
+
   <script src="app.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
