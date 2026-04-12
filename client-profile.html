@@ -1140,7 +1140,7 @@
           const myPlans = plans.filter(p => p.assignedTo === 'Christopher Perry');
           if (myPlans.length > 0) {
             wpContainer.innerHTML = myPlans.map(p => {
-              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : 'Custom Plan';
+              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : (p.type === 'template' ? 'Shape Template' : 'Uploaded Plan');
               let detailHtml = '';
               if (p.type === 'shape-template' && p.days && p.days.length) {
                 detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
@@ -1162,9 +1162,18 @@
                     return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">' + dayContent + '</div>';
                   }).join('') +
                 '</div>';
-              } else if (p.type === 'custom' && p.sections && p.sections.length) {
+              } else if (p.type === 'custom' && p.files && p.files.length) {
                 detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
-                  p.sections.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:0.82rem;font-weight:600;margin-bottom:4px;">' + s.title + '</div><div style="font-size:0.82rem;color:var(--text-muted);white-space:pre-wrap;">' + s.content + '</div></div>').join('') +
+                  '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Attached Files</div>' +
+                  p.files.map(f => {
+                    const isImage = f.type && f.type.startsWith('image/');
+                    const sizeKB = (f.size / 1024).toFixed(1);
+                    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);margin-bottom:6px;">' +
+                      (isImage ? '<img src="' + f.data + '" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">' : '<span style="font-size:1.4rem;">&#128196;</span>') +
+                      '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">' + f.name + '</div><div style="font-size:0.72rem;color:var(--text-muted);">' + sizeKB + ' KB</div></div>' +
+                      (isImage ? '<a href="' + f.data + '" target="_blank" style="font-size:0.72rem;color:var(--accent-dark);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Open</a>' : '') +
+                    '</div>';
+                  }).join('') +
                 '</div>';
               }
               return '<div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;margin-bottom:10px;">' +
@@ -1193,7 +1202,7 @@
           const myPlans = plans.filter(p => p.assignedTo === 'Christopher Perry');
           if (myPlans.length > 0) {
             mpContainer.innerHTML = myPlans.map(p => {
-              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : 'Custom Plan';
+              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : (p.type === 'template' ? 'Shape Template' : 'Uploaded Plan');
               let detailHtml = '';
               if (p.type === 'shape-template' && p.days && p.days.length) {
                 detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
@@ -1213,9 +1222,18 @@
                     return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">' + dayContent + '</div>';
                   }).join('') +
                 '</div>';
-              } else if (p.type === 'custom' && p.sections && p.sections.length) {
+              } else if (p.type === 'custom' && p.files && p.files.length) {
                 detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
-                  p.sections.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:0.82rem;font-weight:600;margin-bottom:4px;">' + s.title + '</div><div style="font-size:0.82rem;color:var(--text-muted);white-space:pre-wrap;">' + s.content + '</div></div>').join('') +
+                  '<div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Attached Files</div>' +
+                  p.files.map(f => {
+                    const isImage = f.type && f.type.startsWith('image/');
+                    const sizeKB = (f.size / 1024).toFixed(1);
+                    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg);border:1px solid var(--border);margin-bottom:6px;">' +
+                      (isImage ? '<img src="' + f.data + '" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">' : '<span style="font-size:1.4rem;">&#128196;</span>') +
+                      '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">' + f.name + '</div><div style="font-size:0.72rem;color:var(--text-muted);">' + sizeKB + ' KB</div></div>' +
+                      (isImage ? '<a href="' + f.data + '" target="_blank" style="font-size:0.72rem;color:var(--accent-dark);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;">Open</a>' : '') +
+                    '</div>';
+                  }).join('') +
                 '</div>';
               }
               return '<div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;margin-bottom:10px;">' +

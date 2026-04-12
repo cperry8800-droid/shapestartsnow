@@ -426,7 +426,7 @@
           letter-spacing: -0.01em; transition: background 0.2s;
         }
         .mpb-publish-btn:hover { background: var(--accent-dark); }
-        .mpb-custom-section {
+        .mpb-upload-section {
           background: var(--bg-card); border: 1px solid var(--border); padding: 20px;
           margin-bottom: 12px;
         }
@@ -482,8 +482,8 @@
               <p>Pre-structured meal plan with daily breakdowns and macro tracking</p>
             </button>
             <button class="mpb-choice-btn" onclick="mpbChoosePath('custom')">
-              <h3>Create Your Own</h3>
-              <p>Free-form plan with custom sections and flexible formatting</p>
+              <h3>Upload Custom Plan</h3>
+              <p>Upload your own meal plan as a PDF, image, or document and assign it to a client.</p>
             </button>
           </div>
 
@@ -582,7 +582,7 @@
             </div>
           </div>
 
-          <!-- Custom Form -->
+          <!-- Upload Custom Plan Form -->
           <div class="mpb-form" id="mpbCustomForm">
             <div class="mpb-form-grid">
               <div>
@@ -591,14 +591,26 @@
               </div>
               <div class="mpb-form-full">
                 <label class="mpb-label">Description</label>
-                <textarea class="mpb-textarea" id="mpbCustDesc" placeholder="Describe this plan..."></textarea>
+                <textarea class="mpb-textarea" id="mpbCustDesc" placeholder="Brief overview of the plan..."></textarea>
               </div>
             </div>
 
-            <!-- Custom Sections -->
-            <label class="mpb-label" style="margin-bottom:12px;">Sections</label>
-            <div id="mpbCustomSections"></div>
-            <button class="btn btn-sm btn-outline" onclick="mpbAddCustomSection()" style="margin-bottom:20px;">+ Add Section</button>
+            <!-- File Upload Area -->
+            <div style="margin-bottom:20px;">
+              <label class="mpb-label">Upload Your Plan</label>
+              <div id="mpbUploadZone" style="border:2px dashed var(--border);padding:40px 20px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--bg);" onclick="document.getElementById('mpbFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(45,212,191,0.04)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--bg)';mpbHandleFiles(event.dataTransfer.files)">
+                <div style="font-size:1.6rem;margin-bottom:8px;color:var(--text-muted);">&#8593;</div>
+                <div style="font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:4px;">Drag & drop your file here or click to browse</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">Supports PDF, PNG, JPG, DOCX, or TXT — max 10MB</div>
+              </div>
+              <input type="file" id="mpbFileInput" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.txt" style="display:none" onchange="mpbHandleFiles(this.files)">
+            </div>
+
+            <!-- Uploaded File Preview -->
+            <div id="mpbUploadedFiles" style="display:none;margin-bottom:20px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Uploaded Files</div>
+              <div id="mpbFileList"></div>
+            </div>
 
             <!-- Assign & Publish -->
             <div class="mpb-assign-row">
@@ -720,14 +732,41 @@
       btn.classList.add('mpb-active');
     };
 
-    // Custom sections
-    window.mpbAddCustomSection=function(title,content){
-      var wrap=document.getElementById('mpbCustomSections');
-      var sec=document.createElement('div');sec.className='mpb-custom-section';
-      sec.innerHTML='<button class="mpb-remove-sec" onclick="this.parentElement.remove()">&times;</button>'+
-        '<div style="margin-bottom:12px;"><label class="mpb-label">Section Title</label><input type="text" class="mpb-input mpb-cs-title" placeholder="e.g. Week 1 Overview" value="'+(title||'')+'"></div>'+
-        '<div><label class="mpb-label">Content</label><textarea class="mpb-textarea mpb-cs-content" placeholder="Section content...">'+(content||'')+'</textarea></div>';
-      wrap.appendChild(sec);
+    // File upload handling
+    var mpbUploadedFiles=[];
+
+    window.mpbHandleFiles=function(files){
+      Array.from(files).forEach(function(file){
+        if(file.size>10*1024*1024){mpbToast('File too large. Max 10MB.');return;}
+        var reader=new FileReader();
+        reader.onload=function(ev){
+          mpbUploadedFiles.push({name:file.name,type:file.type,size:file.size,data:ev.target.result});
+          mpbRenderFileList();
+          mpbToast(file.name+' uploaded!');
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+
+    function mpbRenderFileList(){
+      var container=document.getElementById('mpbUploadedFiles');
+      var list=document.getElementById('mpbFileList');
+      if(!mpbUploadedFiles.length){container.style.display='none';return;}
+      container.style.display='block';
+      list.innerHTML=mpbUploadedFiles.map(function(f,i){
+        var sizeKB=(f.size/1024).toFixed(1);
+        var isImage=f.type&&f.type.startsWith('image/');
+        var icon=f.type==='application/pdf'?'&#128196;':isImage?'&#128247;':'&#128196;';
+        return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:6px;">'+
+          (isImage?'<img src="'+f.data+'" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">':'<span style="font-size:1.6rem;">'+icon+'</span>')+
+          '<div style="flex:1;"><div style="font-size:0.88rem;font-weight:500;">'+mpbEsc(f.name)+'</div><div style="font-size:0.72rem;color:var(--text-muted);">'+sizeKB+' KB</div></div>'+
+          '<button style="background:none;border:none;font-size:1rem;color:var(--text-muted);cursor:pointer;" onclick="mpbRemoveFile('+i+')">&times;</button></div>';
+      }).join('');
+    }
+
+    window.mpbRemoveFile=function(idx){
+      mpbUploadedFiles.splice(idx,1);
+      mpbRenderFileList();
     };
 
     // Collect template day data
@@ -778,14 +817,7 @@
         plan.name=document.getElementById('mpbCustName').value.trim();
         if(!plan.name){mpbToast('Please enter a plan name');return;}
         plan.description=document.getElementById('mpbCustDesc').value;
-        var sections=[];
-        document.querySelectorAll('#mpbCustomSections .mpb-custom-section').forEach(function(sec){
-          sections.push({
-            title:sec.querySelector('.mpb-cs-title').value,
-            content:sec.querySelector('.mpb-cs-content').value
-          });
-        });
-        plan.sections=sections;
+        plan.files=mpbUploadedFiles.map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
         plan.client=document.getElementById('mpbCustClient').value;
         var statusEl=document.querySelector('#mpbCustStatus .mpb-status-opt.mpb-active');
         plan.status=statusEl?statusEl.dataset.val:'Draft';
@@ -887,10 +919,9 @@
         mpbChoosePathDirect('custom');
         document.getElementById('mpbCustName').value=plan.name||'';
         document.getElementById('mpbCustDesc').value=plan.description||'';
-        document.getElementById('mpbCustomSections').innerHTML='';
-        if(plan.sections){
-          plan.sections.forEach(function(s){mpbAddCustomSection(s.title,s.content);});
-        }
+        // Restore uploaded files
+        mpbUploadedFiles=(plan.files||[]).map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
+        mpbRenderFileList();
         document.getElementById('mpbCustClient').value=plan.client||'';
         document.querySelectorAll('#mpbCustStatus .mpb-status-opt').forEach(function(b){
           b.classList.toggle('mpb-active',b.dataset.val===plan.status);
@@ -930,7 +961,8 @@
       ['mpbCustName','mpbCustDesc'].forEach(function(id){
         var el=document.getElementById(id);if(el)el.value='';
       });
-      document.getElementById('mpbCustomSections').innerHTML='';
+      mpbUploadedFiles=[];
+      mpbRenderFileList();
       document.getElementById('mpbCustClient').selectedIndex=0;
       document.querySelectorAll('#mpbCustStatus .mpb-status-opt').forEach(function(b,i){b.classList.toggle('mpb-active',i===0);});
     }

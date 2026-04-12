@@ -267,8 +267,8 @@
                 <p>Pre-structured day-by-day workout plan with exercises, sets, reps, and rest periods.</p>
               </div>
               <div class="pb-type-card" onclick="pbSelectType('custom')">
-                <h3>Create Your Own</h3>
-                <p>Free-form plan with custom sections. Write your plan however works best for you.</p>
+                <h3>Upload Custom Plan</h3>
+                <p>Upload your own workout plan as a PDF, image, or document and assign it to a client.</p>
               </div>
             </div>
           </div>
@@ -345,7 +345,7 @@
             </div>
           </div>
 
-          <!-- Custom Form -->
+          <!-- Upload Custom Plan Form -->
           <div class="pb-form" id="pbCustomForm">
             <div class="pb-field">
               <label class="pb-label">Plan Name</label>
@@ -353,12 +353,25 @@
             </div>
             <div class="pb-field">
               <label class="pb-label">Description</label>
-              <textarea class="pb-textarea" id="pbCustDesc" placeholder="Overview of the plan..."></textarea>
+              <textarea class="pb-textarea" id="pbCustDesc" placeholder="Brief overview of the plan..."></textarea>
             </div>
 
-            <!-- Custom Sections Container -->
-            <div id="pbSectionsContainer"></div>
-            <button class="btn btn-sm btn-outline" onclick="pbAddSection()" style="margin-top:12px;">+ Add Section</button>
+            <!-- File Upload Area -->
+            <div class="pb-field">
+              <label class="pb-label">Upload Your Plan</label>
+              <div id="pbUploadZone" style="border:2px dashed var(--border);padding:40px 20px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--bg);" onclick="document.getElementById('pbFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(45,212,191,0.04)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--bg)';pbHandleFiles(event.dataTransfer.files)">
+                <div style="font-size:1.6rem;margin-bottom:8px;color:var(--text-muted);">&#8593;</div>
+                <div style="font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:4px;">Drag & drop your file here or click to browse</div>
+                <div style="font-size:0.72rem;color:var(--text-muted);">Supports PDF, PNG, JPG, DOCX, or TXT — max 10MB</div>
+              </div>
+              <input type="file" id="pbFileInput" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.txt" style="display:none" onchange="pbHandleFiles(this.files)">
+            </div>
+
+            <!-- Uploaded File Preview -->
+            <div id="pbUploadedFiles" style="display:none;margin-top:12px;">
+              <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Uploaded Files</div>
+              <div id="pbFileList"></div>
+            </div>
 
             <!-- Assign Bar -->
             <div class="pb-assign-bar">
@@ -568,26 +581,56 @@
         c.appendChild(row);
       };
 
-      // Add custom section
-      window.pbAddSection = function() {
-        pbSectionCount++;
-        const secId = pbSectionCount;
-        const container = document.getElementById('pbSectionsContainer');
-        const sec = document.createElement('div');
-        sec.className = 'pb-section-custom';
-        sec.id = 'pbSection' + secId;
-        sec.innerHTML = `
-          <button class="pb-remove-btn" onclick="document.getElementById('pbSection${secId}').remove()">&times;</button>
-          <div class="pb-field">
-            <label class="pb-label">Section Title</label>
-            <input type="text" class="pb-input pb-sec-title" placeholder="e.g. Week 1 Overview">
-          </div>
-          <div class="pb-field" style="margin-bottom:0;">
-            <label class="pb-label">Content</label>
-            <textarea class="pb-textarea pb-sec-content" placeholder="Write your content here..." style="min-height:120px;"></textarea>
-          </div>
-        `;
-        container.appendChild(sec);
+      // File upload handling
+      let pbUploadedFiles = [];
+
+      window.pbHandleFiles = function(files) {
+        Array.from(files).forEach(file => {
+          if (file.size > 10 * 1024 * 1024) {
+            showToast('File too large. Max 10MB.');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(ev) {
+            pbUploadedFiles.push({
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              data: ev.target.result
+            });
+            pbRenderFileList();
+            showToast(file.name + ' uploaded!');
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+
+      function pbRenderFileList() {
+        const container = document.getElementById('pbUploadedFiles');
+        const list = document.getElementById('pbFileList');
+        if (pbUploadedFiles.length === 0) {
+          container.style.display = 'none';
+          return;
+        }
+        container.style.display = 'block';
+        list.innerHTML = pbUploadedFiles.map((f, i) => {
+          const sizeKB = (f.size / 1024).toFixed(1);
+          const isImage = f.type.startsWith('image/');
+          const icon = f.type === 'application/pdf' ? '&#128196;' : isImage ? '&#128247;' : '&#128196;';
+          return `<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:6px;">
+            ${isImage ? '<img src="' + f.data + '" style="width:48px;height:48px;object-fit:cover;border:1px solid var(--border);">' : '<span style="font-size:1.6rem;">' + icon + '</span>'}
+            <div style="flex:1;">
+              <div style="font-size:0.88rem;font-weight:500;">${f.name}</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);">${sizeKB} KB</div>
+            </div>
+            <button class="pb-remove-btn" onclick="pbRemoveFile(${i})" style="font-size:1rem;">&times;</button>
+          </div>`;
+        }).join('');
+      }
+
+      window.pbRemoveFile = function(idx) {
+        pbUploadedFiles.splice(idx, 1);
+        pbRenderFileList();
       };
 
       // Collect template data
@@ -636,20 +679,13 @@
         };
       }
 
-      // Collect custom data
+      // Collect uploaded custom plan data
       function collectCustomPlan() {
-        const sections = [];
-        document.querySelectorAll('#pbSectionsContainer .pb-section-custom').forEach(sec => {
-          const title = sec.querySelector('.pb-sec-title').value;
-          const content = sec.querySelector('.pb-sec-content').value;
-          if (title || content) sections.push({ title, content });
-        });
-
         return {
           type: 'custom',
           name: document.getElementById('pbCustName').value,
           description: document.getElementById('pbCustDesc').value,
-          sections: sections,
+          files: pbUploadedFiles.map(f => ({ name: f.name, type: f.type, size: f.size, data: f.data })),
           client: document.getElementById('pbCustClient').value,
           status: document.getElementById('pbCustToggle').classList.contains('active') ? 'Published' : 'Draft'
         };
@@ -703,7 +739,8 @@
         document.getElementById('pbTplToggle').classList.remove('active');
         document.getElementById('pbCustToggle').classList.remove('active');
         document.getElementById('pbDaysContainer').innerHTML = '';
-        document.getElementById('pbSectionsContainer').innerHTML = '';
+        pbUploadedFiles = [];
+        pbRenderFileList();
         pbDayCount = 0;
         pbSectionCount = 0;
       }
@@ -721,7 +758,7 @@
         list.innerHTML = plans.map(p => {
           const badgeClass = p.status === 'Published' ? 'pb-badge-published' : 'pb-badge-draft';
           const clientStr = p.client ? ' &middot; Assigned to ' + p.client : '';
-          const typeLabel = p.type === 'template' ? 'Template' : 'Custom';
+          const typeLabel = p.type === 'template' ? 'Shape Template' : 'Uploaded Plan';
           const meta = [typeLabel, p.category, p.difficulty, p.duration].filter(Boolean).join(' &middot; ');
           return `
             <div class="pb-plan-item">
@@ -807,12 +844,9 @@
           document.getElementById('pbCustClient').value = plan.client || '';
           if (plan.status === 'Published') document.getElementById('pbCustToggle').classList.add('active');
 
-          (plan.sections || []).forEach(function(sec) {
-            pbAddSection();
-            const secEl = document.getElementById('pbSectionsContainer').lastElementChild;
-            secEl.querySelector('.pb-sec-title').value = sec.title || '';
-            secEl.querySelector('.pb-sec-content').value = sec.content || '';
-          });
+          // Restore uploaded files
+          pbUploadedFiles = (plan.files || []).map(f => ({ name: f.name, type: f.type, size: f.size, data: f.data }));
+          pbRenderFileList();
         }
 
         document.getElementById('pbBuilder').scrollIntoView({ behavior: 'smooth' });
