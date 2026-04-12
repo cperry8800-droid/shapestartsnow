@@ -35,14 +35,17 @@
   <style>
     .hero-logo-text {
       display: inline-block;
-      height: clamp(36px, 6vw, 58px);
+      width: clamp(280px, 38vw, 550px);
+      aspect-ratio: 7 / 1;
       overflow: hidden;
-      line-height: 0;
       margin-bottom: 20px;
+      position: relative;
     }
     .hero-logo-text img {
-      height: clamp(110px, 19vw, 175px);
-      margin-top: clamp(-68px, -12vw, -108px);
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      left: 0;
       filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(130deg) brightness(0.9);
     }
     .split-hero {
