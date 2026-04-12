@@ -322,6 +322,7 @@
         display: flex; flex-direction: column;
         position: fixed;
         top: 142px; left: 0; right: 0; bottom: 0;
+        height: auto !important;
         border: none; border-radius: 0;
         overflow: hidden;
       }
@@ -513,7 +514,7 @@
 
   <!-- Mobile View Switcher (hidden on desktop) -->
   <div class="mobile-view-switcher" id="mobileViewSwitcher">
-    <button class="mobile-view-tab active" onclick="switchMobileView('chat', this)">Chat</button>
+    <button class="mobile-view-tab active" onclick="switchMobileView('chat', this)">Community</button>
     <button class="mobile-view-tab" onclick="switchMobileView('friends', this)">Friends</button>
     <button class="mobile-view-tab" onclick="switchMobileView('discover', this)">Discover</button>
   </div>
@@ -1166,12 +1167,29 @@
       }
     }
 
+    // === Position mobile elements based on actual navbar height ===
+    function positionMobileElements() {
+      if (window.innerWidth > 768) return;
+      const nav = document.getElementById('navbar');
+      const switcher = document.getElementById('mobileViewSwitcher');
+      const layout = document.querySelector('.community-layout');
+      if (!nav || !switcher || !layout) return;
+
+      const navH = nav.offsetHeight;
+      const switcherH = switcher.offsetHeight;
+      switcher.style.top = navH + 'px';
+      layout.style.top = (navH + switcherH) + 'px';
+    }
+    window.addEventListener('load', positionMobileElements);
+    window.addEventListener('resize', positionMobileElements);
+
     // === Init ===
     loadProfile();
     renderUserList();
     renderChat();
     renderActivity();
     renderFriendScores();
+    positionMobileElements();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
