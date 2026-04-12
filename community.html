@@ -287,12 +287,12 @@
       /* Hide page hero on mobile — go straight to chat */
       .page-hero { display: none !important; }
 
-      /* Show mobile view switcher */
+      /* Show mobile view switcher — sits right below navbar */
       .mobile-view-switcher {
         display: flex;
         position: fixed;
-        top: 70px; left: 0; right: 0;
-        z-index: 90;
+        top: 96px; left: 0; right: 0;
+        z-index: 999;
         background: var(--bg-card);
         border-bottom: 1px solid var(--border);
       }
@@ -321,7 +321,7 @@
       .community-layout {
         display: flex; flex-direction: column;
         position: fixed;
-        top: 116px; left: 0; right: 0; bottom: 0;
+        top: 142px; left: 0; right: 0; bottom: 0;
         border: none; border-radius: 0;
         overflow: hidden;
       }
@@ -1118,8 +1118,14 @@
       const layout = document.querySelector('.community-layout');
       layout.classList.remove('mobile-dm');
 
-      // Go back to the group chat
-      renderChat();
+      // On mobile, go back to the friends list (not chat)
+      if (window.innerWidth <= 768) {
+        const friendsBtn = document.querySelectorAll('.mobile-view-tab')[1];
+        switchMobileView('friends', friendsBtn);
+      } else {
+        // On desktop, go back to the group chat
+        renderChat();
+      }
     }
 
     // === Mobile View Switcher ===
@@ -1131,9 +1137,16 @@
       document.querySelectorAll('.mobile-view-tab').forEach(t => t.classList.remove('active'));
       if (btn) btn.classList.add('active');
 
-      // Update layout class
+      // Update layout class — always clear all mobile view classes first
       const layout = document.querySelector('.community-layout');
-      layout.classList.remove('mobile-friends', 'mobile-discover');
+      layout.classList.remove('mobile-friends', 'mobile-discover', 'mobile-dm');
+
+      // Always close any open DM when switching views
+      if (dmUser) {
+        dmUser = null;
+        document.getElementById('dmHeader').style.display = 'none';
+        document.getElementById('mainChatTabs').style.display = '';
+      }
 
       const sidebarHeader = document.querySelector('.community-sidebar-header h2');
       if (view === 'friends') {
@@ -1148,8 +1161,9 @@
         renderUserList();
       } else {
         if (sidebarHeader) sidebarHeader.textContent = 'Community';
+        // Restore group chat when switching to Chat tab
+        renderChat();
       }
-      // 'chat' = default, no extra class needed (sidebar hidden, chat shown)
     }
 
     // === Init ===
