@@ -715,7 +715,30 @@
       </div>
     </div>
 
-    <!-- 6. Social & Community -->
+    <!-- 6. My Assigned Plans -->
+    <div class="cp-card" id="section-plans">
+      <div class="cp-card-header">
+        <h2>My Plans</h2>
+      </div>
+
+      <!-- Workout Plans -->
+      <div style="margin-bottom:24px;">
+        <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Workout Plans</div>
+        <div id="assignedWorkoutPlans">
+          <div style="color:var(--text-muted);font-size:0.88rem;font-weight:300;">No workout plans assigned yet.</div>
+        </div>
+      </div>
+
+      <!-- Meal Plans -->
+      <div>
+        <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">Meal Plans</div>
+        <div id="assignedMealPlans">
+          <div style="color:var(--text-muted);font-size:0.88rem;font-weight:300;">No meal plans assigned yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Social & Community -->
     <div class="cp-card" id="section-social">
       <div class="cp-card-header">
         <h2>Social & Community</h2>
@@ -1106,11 +1129,120 @@
       } catch(e) {}
     }
 
+    // --- Assigned Plans ---
+    function renderAssignedPlans() {
+      // Workout Plans
+      const wpRaw = localStorage.getItem('shapeClientAssignedPlans');
+      const wpContainer = document.getElementById('assignedWorkoutPlans');
+      if (wpRaw) {
+        try {
+          const plans = JSON.parse(wpRaw);
+          const myPlans = plans.filter(p => p.assignedTo === 'Christopher Perry');
+          if (myPlans.length > 0) {
+            wpContainer.innerHTML = myPlans.map(p => {
+              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : 'Custom Plan';
+              let detailHtml = '';
+              if (p.type === 'shape-template' && p.days && p.days.length) {
+                detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
+                  p.days.map((d, di) => {
+                    let dayContent = '<div style="font-size:0.82rem;font-weight:600;margin-bottom:6px;">' + (d.name || ('Day ' + (di+1))) + '</div>';
+                    if (d.warmup && d.warmup.length && d.warmup[0].exercise) {
+                      dayContent += '<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-dark);font-weight:600;margin-bottom:4px;">Warm-up</div>';
+                      dayContent += d.warmup.map(w => '<div style="font-size:0.82rem;color:var(--text-muted);">' + w.exercise + (w.duration ? ' — ' + w.duration : '') + '</div>').join('');
+                    }
+                    if (d.exercises && d.exercises.length && d.exercises[0].exercise) {
+                      dayContent += '<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-dark);font-weight:600;margin:6px 0 4px;">Exercises</div>';
+                      dayContent += '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4px;font-size:0.78rem;color:var(--text-muted);margin-bottom:2px;font-weight:500;"><span>Exercise</span><span>Sets</span><span>Reps</span><span>Rest</span></div>';
+                      dayContent += d.exercises.map(ex => '<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:4px;font-size:0.82rem;"><span>' + ex.exercise + '</span><span>' + (ex.sets||'') + '</span><span>' + (ex.reps||'') + '</span><span>' + (ex.rest||'') + '</span></div>').join('');
+                    }
+                    if (d.cooldown && d.cooldown.length && d.cooldown[0].exercise) {
+                      dayContent += '<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-dark);font-weight:600;margin:6px 0 4px;">Cool-down</div>';
+                      dayContent += d.cooldown.map(c => '<div style="font-size:0.82rem;color:var(--text-muted);">' + c.exercise + (c.duration ? ' — ' + c.duration : '') + '</div>').join('');
+                    }
+                    return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">' + dayContent + '</div>';
+                  }).join('') +
+                '</div>';
+              } else if (p.type === 'custom' && p.sections && p.sections.length) {
+                detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
+                  p.sections.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:0.82rem;font-weight:600;margin-bottom:4px;">' + s.title + '</div><div style="font-size:0.82rem;color:var(--text-muted);white-space:pre-wrap;">' + s.content + '</div></div>').join('') +
+                '</div>';
+              }
+              return '<div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;margin-bottom:10px;">' +
+                '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+                  '<div><div style="font-size:1rem;font-weight:600;">' + p.name + '</div>' +
+                  '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">' + (p.category || '') + (p.difficulty ? ' · ' + p.difficulty : '') + (p.duration ? ' · ' + p.duration : '') + '</div></div>' +
+                  '<div style="display:flex;gap:8px;align-items:center;">' +
+                    '<span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;padding:4px 10px;background:rgba(45,212,191,0.1);color:var(--accent-dark);font-weight:600;">' + typeLabel + '</span>' +
+                    '<button class="btn btn-sm btn-outline" onclick="this.closest(\'div\').closest(\'div\').closest(\'div\').querySelector(\'.ap-detail\').style.display=this.closest(\'div\').closest(\'div\').closest(\'div\').querySelector(\'.ap-detail\').style.display===\'none\'?\'block\':\'none\';this.textContent=this.textContent===\'View\'?\'Hide\':\'View\'">View</button>' +
+                  '</div>' +
+                '</div>' +
+                (p.description ? '<div style="font-size:0.85rem;color:var(--text-muted);font-weight:300;margin-top:8px;line-height:1.6;">' + p.description + '</div>' : '') +
+                detailHtml +
+              '</div>';
+            }).join('');
+          }
+        } catch(e) {}
+      }
+
+      // Meal Plans
+      const mpRaw = localStorage.getItem('shapeClientAssignedMealPlans');
+      const mpContainer = document.getElementById('assignedMealPlans');
+      if (mpRaw) {
+        try {
+          const plans = JSON.parse(mpRaw);
+          const myPlans = plans.filter(p => p.assignedTo === 'Christopher Perry');
+          if (myPlans.length > 0) {
+            mpContainer.innerHTML = myPlans.map(p => {
+              const typeLabel = p.type === 'shape-template' ? 'Shape Template' : 'Custom Plan';
+              let detailHtml = '';
+              if (p.type === 'shape-template' && p.days && p.days.length) {
+                detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
+                  p.days.map(d => {
+                    let dayContent = '<div style="font-size:0.82rem;font-weight:600;margin-bottom:8px;">' + d.dayName + '</div>';
+                    if (d.meals && d.meals.length) {
+                      dayContent += d.meals.filter(m => m.name).map(m =>
+                        '<div style="padding:6px 0;border-bottom:1px solid var(--border);">' +
+                          '<div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent-dark);font-weight:600;">' + m.type + '</div>' +
+                          '<div style="font-size:0.88rem;font-weight:500;margin:2px 0;">' + m.name + '</div>' +
+                          '<div style="font-size:0.78rem;color:var(--text-muted);">' + (m.calories ? m.calories + ' cal' : '') + (m.protein ? ' · P: ' + m.protein + 'g' : '') + (m.carbs ? ' · C: ' + m.carbs + 'g' : '') + (m.fat ? ' · F: ' + m.fat + 'g' : '') + '</div>' +
+                          (m.ingredients ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;"><strong>Ingredients:</strong> ' + m.ingredients + '</div>' : '') +
+                          (m.instructions ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;"><strong>Prep:</strong> ' + m.instructions + '</div>' : '') +
+                        '</div>'
+                      ).join('');
+                    }
+                    return '<div style="padding:10px 0;border-bottom:1px solid var(--border);">' + dayContent + '</div>';
+                  }).join('') +
+                '</div>';
+              } else if (p.type === 'custom' && p.sections && p.sections.length) {
+                detailHtml = '<div style="margin-top:12px;display:none;" class="ap-detail">' +
+                  p.sections.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border);"><div style="font-size:0.82rem;font-weight:600;margin-bottom:4px;">' + s.title + '</div><div style="font-size:0.82rem;color:var(--text-muted);white-space:pre-wrap;">' + s.content + '</div></div>').join('') +
+                '</div>';
+              }
+              return '<div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;margin-bottom:10px;">' +
+                '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+                  '<div><div style="font-size:1rem;font-weight:600;">' + p.name + '</div>' +
+                  '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">' + (p.goal || '') + (p.dietType ? ' · ' + p.dietType : '') + (p.duration ? ' · ' + p.duration : '') + '</div></div>' +
+                  '<div style="display:flex;gap:8px;align-items:center;">' +
+                    '<span style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.06em;padding:4px 10px;background:rgba(45,212,191,0.1);color:var(--accent-dark);font-weight:600;">' + typeLabel + '</span>' +
+                    '<button class="btn btn-sm btn-outline" onclick="this.closest(\'div\').closest(\'div\').closest(\'div\').querySelector(\'.ap-detail\').style.display=this.closest(\'div\').closest(\'div\').closest(\'div\').querySelector(\'.ap-detail\').style.display===\'none\'?\'block\':\'none\';this.textContent=this.textContent===\'View\'?\'Hide\':\'View\'">View</button>' +
+                  '</div>' +
+                '</div>' +
+                (p.description ? '<div style="font-size:0.85rem;color:var(--text-muted);font-weight:300;margin-top:8px;line-height:1.6;">' + p.description + '</div>' : '') +
+                (p.calories ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">' + p.calories + ' cal/day · Protein: ' + (p.macros?.protein||'--') + '% · Carbs: ' + (p.macros?.carbs||'--') + '% · Fat: ' + (p.macros?.fat||'--') + '%</div>' : '') +
+                detailHtml +
+              '</div>';
+            }).join('');
+          }
+        } catch(e) {}
+      }
+    }
+
     // Init
     loadFromLocalStorage();
     calcCompletion();
     calcBMI();
     updateMacros();
+    renderAssignedPlans();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
