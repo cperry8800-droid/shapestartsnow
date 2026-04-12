@@ -209,12 +209,21 @@
         </div>
         <div class="filter-bar-buttons">
           <button class="filter-btn active" data-filter="all" onclick="setTrainerFilter(this)">All</button>
-          <button class="filter-btn" data-filter="strength" onclick="setTrainerFilter(this)">Strength</button>
-          <button class="filter-btn" data-filter="hiit" onclick="setTrainerFilter(this)">HIIT</button>
-          <button class="filter-btn" data-filter="cardio" onclick="setTrainerFilter(this)">Cardio</button>
+          <button class="filter-btn" data-filter="strength" onclick="setTrainerFilter(this)">Strength & Conditioning</button>
+          <button class="filter-btn" data-filter="hiit" onclick="setTrainerFilter(this)">HIIT & CrossFit</button>
+          <button class="filter-btn" data-filter="cardio" onclick="setTrainerFilter(this)">Cardio & Endurance</button>
           <button class="filter-btn" data-filter="weightloss" onclick="setTrainerFilter(this)">Weight Loss</button>
-          <button class="filter-btn" data-filter="mobility" onclick="setTrainerFilter(this)">Mobility</button>
-          <button class="filter-btn" data-filter="athome" onclick="setTrainerFilter(this)">At Home</button>
+          <button class="filter-btn" data-filter="mobility" onclick="setTrainerFilter(this)">Mobility & Flexibility</button>
+          <button class="filter-btn" data-filter="athome" onclick="setTrainerFilter(this)">At Home & Bodyweight</button>
+        </div>
+        <div class="filter-bar-buttons" style="margin-top:8px;">
+          <span style="font-size:0.68rem;font-weight:500;color:var(--text-muted);padding:6px 0;text-transform:uppercase;letter-spacing:0.08em;">Credential:</span>
+          <button class="filter-btn trainer-credential-filter active" data-credential="all" onclick="setTrainerCredentialFilter(this)">All</button>
+          <button class="filter-btn trainer-credential-filter" data-credential="CSCS" onclick="setTrainerCredentialFilter(this)">CSCS</button>
+          <button class="filter-btn trainer-credential-filter" data-credential="NASM" onclick="setTrainerCredentialFilter(this)">NASM</button>
+          <button class="filter-btn trainer-credential-filter" data-credential="ACE-CPT" onclick="setTrainerCredentialFilter(this)">ACE-CPT</button>
+          <button class="filter-btn trainer-credential-filter" data-credential="ISSA-CPT" onclick="setTrainerCredentialFilter(this)">ISSA-CPT</button>
+          <button class="filter-btn trainer-credential-filter" data-credential="NSCA-CPT" onclick="setTrainerCredentialFilter(this)">NSCA-CPT</button>
         </div>
       </div>
 

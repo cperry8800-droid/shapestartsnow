@@ -3,7 +3,9 @@ const trainers = [
   {
     id: 1, name: "Marcus Johnson", specialty: "Strength & Powerlifting",
     category: "strength", price: 49.99, rating: 4.9, subscribers: 1240, experience: "12 yrs",
-    bio: "Former competitive powerlifter turned coach. Specializes in progressive overload programs for all levels.",
+    credential: "CSCS", credentialFull: "Certified Strength & Conditioning Specialist",
+    specialtyType: "Strength & Conditioning Coach",
+    bio: "CSCS-certified former competitive powerlifter turned coach. Specializes in progressive overload programs for all levels.",
     color: "#6C3AED", trainerOfMonth: true,
     totmQuote: "Consistency beats intensity. Show up every day and the results will follow.",
     workouts: [
@@ -33,7 +35,9 @@ const trainers = [
   {
     id: 2, name: "Aisha Patel", specialty: "HIIT & Fat Loss",
     category: "hiit", price: 39.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
-    bio: "High-energy coach known for efficient, no-equipment HIIT sessions that burn maximum calories in minimum time.",
+    credential: "NASM-CPT", credentialFull: "NASM Certified Personal Trainer",
+    specialtyType: "Weight Loss Coach",
+    bio: "NASM-certified high-energy coach known for efficient, no-equipment HIIT sessions that burn maximum calories in minimum time.",
     color: "#EC4899",
     workouts: [
       { name: "20-Min Torch", type: "HIIT", duration: "20 min", difficulty: "Beginner", location: "At Home", price: 24.99, description: "Quick full-body HIIT session perfect for busy mornings.", sampleDays: [
@@ -60,9 +64,11 @@ const trainers = [
     tags: ["HIIT", "Fat Loss", "No Equipment"]
   },
   {
-    id: 3, name: "Nina Brooks", specialty: "At Home Workouts",
+    id: 3, name: "Nina Brooks", specialty: "At Home & Functional Fitness",
     category: "athome", price: 29.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
-    bio: "No gym? No problem. Nina designs effective bodyweight and minimal-equipment workouts you can do anywhere in your home.",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Functional Fitness Trainer",
+    bio: "ACE-certified trainer designing effective bodyweight and minimal-equipment workouts you can do anywhere in your home.",
     color: "#10B981",
     workouts: [
       { name: "Living Room HIIT", type: "HIIT", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 22.99, description: "High-energy bodyweight HIIT you can do in your living room — no equipment needed.", sampleDays: [
@@ -91,7 +97,9 @@ const trainers = [
   {
     id: 4, name: "Damon Clarke", specialty: "Cardio & Endurance",
     category: "cardio", price: 44.99, rating: 4.7, subscribers: 890, experience: "10 yrs",
-    bio: "Endurance specialist who builds heart-pounding cardio programs. Improve stamina, burn fat, and boost your cardiovascular health.",
+    credential: "CSCS", credentialFull: "Certified Strength & Conditioning Specialist",
+    specialtyType: "Strength & Conditioning Coach",
+    bio: "CSCS-certified endurance specialist who builds heart-pounding cardio programs. Improve stamina, burn fat, and boost your cardiovascular health.",
     color: "#F59E0B",
     workouts: [
       { name: "HIIT Burn", type: "Cardio", duration: "25 min", difficulty: "Beginner", location: "At Home", price: 26.99, description: "High-intensity intervals designed to torch calories and build endurance.", sampleDays: [
@@ -120,7 +128,9 @@ const trainers = [
   {
     id: 5, name: "Sophie Turner", specialty: "Mobility & Recovery",
     category: "mobility", price: 54.99, rating: 4.8, subscribers: 1560, experience: "9 yrs",
-    bio: "Mobility specialist who builds programs that keep you moving well — fewer injuries, better range, more years training.",
+    credential: "NASM-CES", credentialFull: "NASM Corrective Exercise Specialist",
+    specialtyType: "Mobility/Flexibility Coach",
+    bio: "Corrective exercise specialist who builds programs that keep you moving well — fewer injuries, better range, more years training.",
     color: "#EF4444",
     workouts: [
       { name: "Full Body Mobility Flow", type: "Mobility", duration: "35 min", difficulty: "All Levels", location: "At Home", price: 31.99, description: "Head-to-toe mobility routine that opens up everything. No equipment needed.", sampleDays: [
@@ -147,9 +157,11 @@ const trainers = [
     tags: ["Mobility", "Recovery", "Flexibility"]
   },
   {
-    id: 6, name: "Jordan Blake", specialty: "Weight Loss",
+    id: 6, name: "Jordan Blake", specialty: "Weight Loss & Lifestyle",
     category: "weightloss", price: 44.99, rating: 4.9, subscribers: 2180, experience: "7 yrs",
-    bio: "Straight-up fat loss programs that work. No gimmicks, no crash diets — just structured training and accountability.",
+    credential: "NASM-CPT", credentialFull: "NASM Certified Personal Trainer",
+    specialtyType: "Weight Loss Coach",
+    bio: "NASM-certified trainer with straight-up fat loss programs that work. No gimmicks, no crash diets — just structured training and accountability.",
     color: "#F59E0B",
     workouts: [
       { name: "Lean Out — Phase 1", type: "Weight Loss", duration: "40 min", difficulty: "Beginner", location: "Gym", price: 29.99, description: "Entry-level fat loss program combining resistance training with steady-state cardio.", sampleDays: [
@@ -178,7 +190,9 @@ const trainers = [
   {
     id: 7, name: "Reese Calloway", specialty: "Strength & Hypertrophy",
     category: "strength", price: 42.99, rating: 4.7, subscribers: 1890, experience: "6 yrs",
-    bio: "Programs built around progressive overload and time under tension. If you want to get bigger and stronger — this is the playbook.",
+    credential: "ISSA-CPT", credentialFull: "ISSA Certified Personal Trainer",
+    specialtyType: "Bodybuilding/Physique Coach",
+    bio: "ISSA-certified trainer with programs built around progressive overload and time under tension. If you want to get bigger and stronger — this is the playbook.",
     color: "#8B5CF6",
     workouts: [
       { name: "Push Pull Legs — Week A", type: "Hypertrophy", duration: "50 min", difficulty: "Intermediate", location: "Gym", price: 32.99, description: "Classic PPL split designed for maximum muscle growth over 6 days.", sampleDays: [
@@ -207,7 +221,9 @@ const trainers = [
   {
     id: 8, name: "Leah Kim", specialty: "HIIT & Weight Loss",
     category: "hiit", price: 34.99, rating: 4.9, subscribers: 3200, experience: "5 yrs", featured: true,
-    bio: "Short sessions. Big results. Leah's HIIT programs are designed for people who don't have time to waste.",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Weight Loss Coach",
+    bio: "ACE-certified trainer. Short sessions. Big results. Leah's HIIT programs are designed for people who don't have time to waste.",
     color: "#EC4899",
     workouts: [
       { name: "15-Min Express", type: "HIIT", duration: "15 min", difficulty: "Beginner", location: "At Home", price: 19.99, description: "No-excuses HIIT that fits into any schedule. Done in 15 minutes flat.", sampleDays: [
@@ -235,6 +251,8 @@ const trainers = [
   },
   {
     id: 9, name: "Carlos Mendez", specialty: "Cardio & Endurance",
+    credential: "NSCA-CPT", credentialFull: "NSCA Certified Personal Trainer",
+    specialtyType: "Strength & Conditioning Coach",
     category: "cardio", price: 39.99, rating: 4.6, subscribers: 760, experience: "11 yrs",
     bio: "Marathon runner and endurance coach. Whether you're training for a 5K or an ultramarathon — Carlos has a plan for it.",
     color: "#0EA5E9",
@@ -264,6 +282,8 @@ const trainers = [
   },
   {
     id: 10, name: "Tanya West", specialty: "At Home & Bodyweight",
+    credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
+    specialtyType: "Functional Fitness Trainer",
     category: "athome", price: 27.99, rating: 4.8, subscribers: 2850, experience: "6 yrs", featured: true,
     bio: "You don't need a gym. Tanya's programs use nothing but your bodyweight and prove that simplicity works.",
     color: "#14B8A6",
@@ -293,6 +313,8 @@ const trainers = [
   },
   {
     id: 11, name: "Derek Osei", specialty: "Weight Loss & Strength",
+    credential: "CSCS", credentialFull: "Certified Strength & Conditioning Specialist",
+    specialtyType: "Weight Loss Coach",
     category: "weightloss", price: 49.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
     bio: "Fat loss through strength training. Derek's approach is simple — build muscle, burn more at rest, lose weight for good.",
     color: "#D97706",
@@ -891,6 +913,10 @@ function createTrainerCard(trainer) {
             <div class="card-specialty">${trainer.specialty}</div>
           </div>
         </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          ${trainer.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${trainer.credential}</span>` : ''}
+          ${trainer.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${trainer.specialtyType}</span>` : ''}
+        </div>
         <p class="card-desc">${trainer.bio}</p>
         <div class="card-meta">
           <span class="card-rating">${trainer.rating}</span>
@@ -1082,13 +1108,21 @@ if (notmCard) {
 
 // ===== Filter & Sort =====
 let activeTrainerFilter = 'all';
+let activeTrainerCredentialFilter = 'all';
 let activeNutritionistFilter = 'all';
 let activeGymFilter = 'all';
 
 function setTrainerFilter(btn) {
-  document.querySelectorAll('.filter-bar-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-bar-buttons .filter-btn:not(.credential-filter):not(.trainer-credential-filter)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeTrainerFilter = btn.dataset.filter;
+  filterTrainers();
+}
+
+function setTrainerCredentialFilter(btn) {
+  document.querySelectorAll('.trainer-credential-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeTrainerCredentialFilter = btn.dataset.credential;
   filterTrainers();
 }
 
@@ -1138,7 +1172,8 @@ function filterTrainers() {
   let filtered = trainers.filter(t => {
     const matchesSearch = !search || t.name.toLowerCase().includes(search);
     const matchesCategory = activeTrainerFilter === 'all' || t.category === activeTrainerFilter;
-    return matchesSearch && matchesCategory;
+    const matchesCredential = activeTrainerCredentialFilter === 'all' || (t.credential && t.credential === activeTrainerCredentialFilter) || (activeTrainerCredentialFilter === 'NASM' && t.credential && t.credential.startsWith('NASM'));
+    return matchesSearch && matchesCategory && matchesCredential;
   });
   filtered = sortData(filtered, sortBy);
   grid.innerHTML = filtered.map(createTrainerCard).join('');
@@ -1277,6 +1312,11 @@ function openTrainerModal(id) {
       <div class="trainer-detail-info">
         <h2>${t.name}</h2>
         <div class="card-specialty">${t.specialty}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;">
+          ${t.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${t.credential}</span>` : ''}
+          ${t.credentialFull ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${t.credentialFull}</span>` : ''}
+          ${t.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${t.specialtyType}</span>` : ''}
+        </div>
         <p class="card-desc">${t.bio}</p>
         <div class="trainer-detail-stats">
           <span>${t.rating} rating</span>
