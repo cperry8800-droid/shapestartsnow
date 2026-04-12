@@ -324,9 +324,11 @@ const trainers = [
 
 const nutritionists = [
   {
-    id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports Nutrition",
+    id: 101, name: "Dr. Sarah Mitchell", specialty: "Sports & Performance Nutrition",
     category: "sports", price: 59.99, rating: 4.9, subscribers: 980, experience: "14 yrs",
-    bio: "PhD in Nutritional Science. Specializes in performance nutrition for athletes — from amateur to Olympic level.",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "Sports/Performance Nutritionist",
+    bio: "PhD in Nutritional Science. Registered Dietitian specializing in performance nutrition for athletes — from amateur to Olympic level.",
     color: "#10B981", nutritionistOfMonth: true,
     notmQuote: "Food is fuel, but the right food is a superpower. Let's unlock yours.",
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
@@ -357,7 +359,9 @@ const nutritionists = [
   {
     id: 102, name: "James Okafor", specialty: "Weight Management",
     category: "weightloss", price: 44.99, rating: 4.8, subscribers: 1650, experience: "9 yrs",
-    bio: "Registered dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
+    credential: "RD", credentialFull: "Registered Dietitian",
+    specialtyType: "Clinical Nutritionist",
+    bio: "Registered Dietitian focused on sustainable weight loss. No fad diets — just science-backed strategies that stick.",
     color: "#6C3AED",
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
     plans: [
@@ -387,7 +391,9 @@ const nutritionists = [
   {
     id: 103, name: "Maria Santos", specialty: "Plant-Based Nutrition",
     category: "plantbased", price: 39.99, rating: 4.7, subscribers: 1120, experience: "7 yrs",
-    bio: "Certified plant-based nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
+    credential: "CN", credentialFull: "Certified Nutritionist",
+    specialtyType: "Functional/Integrative Nutritionist",
+    bio: "Certified Nutritionist helping people thrive on vegan and vegetarian diets without missing nutrients.",
     color: "#EC4899",
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
     plans: [
@@ -417,7 +423,9 @@ const nutritionists = [
   {
     id: 104, name: "Dr. Kevin Park", specialty: "Gut Health & Wellness",
     category: "guthealth", price: 54.99, rating: 4.9, subscribers: 760, experience: "16 yrs",
-    bio: "Functional medicine nutritionist specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
+    credential: "CNS", credentialFull: "Certified Nutrition Specialist",
+    specialtyType: "Functional/Integrative Nutritionist",
+    bio: "Certified Nutrition Specialist in functional medicine specializing in gut health, food sensitivities, and anti-inflammatory protocols.",
     color: "#F59E0B",
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
     plans: [
@@ -447,7 +455,9 @@ const nutritionists = [
   {
     id: 105, name: "Rachel Kim", specialty: "Prenatal & Postnatal",
     category: "prenatal", price: 49.99, rating: 4.8, subscribers: 540, experience: "10 yrs",
-    bio: "Specializes in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "Prenatal/Maternal Nutritionist",
+    bio: "Registered Dietitian specializing in nutrition for expecting and new mothers. Ensures optimal nutrition for both mom and baby.",
     color: "#8B5CF6",
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
     plans: [
@@ -477,7 +487,9 @@ const nutritionists = [
   {
     id: 106, name: "Alex Rivera", specialty: "Meal Prep & Budget",
     category: "mealprep", price: 32.99, rating: 4.7, subscribers: 2200, experience: "6 yrs",
-    bio: "Makes healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
+    credential: "Health Coach", credentialFull: "Certified Health & Nutrition Coach",
+    specialtyType: "Health Coach/Nutrition Coach",
+    bio: "Certified Nutrition Coach making healthy eating affordable and easy. Weekly meal prep plans that save time, money, and taste amazing.",
     color: "#EF4444",
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
     plans: [
@@ -505,9 +517,11 @@ const nutritionists = [
     tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
   },
   {
-    id: 107, name: "Tanya Brooks", specialty: "Sports Nutrition",
+    id: 107, name: "Tanya Brooks", specialty: "Sports & Performance Nutrition",
     category: "sports", price: 54.99, rating: 4.9, subscribers: 1340, experience: "11 yrs",
-    bio: "Former collegiate athlete turned sports dietitian. Builds fuel strategies for strength, endurance, and recovery.",
+    credential: "RD", credentialFull: "Registered Dietitian",
+    specialtyType: "Sports/Performance Nutritionist",
+    bio: "Former collegiate athlete turned Registered Dietitian. Builds fuel strategies for strength, endurance, and recovery.",
     color: "#0EA5E9", featured: true,
     services: ["Periodized nutrition", "Hydration protocols", "Recovery plans", "Race-day fueling"],
     plans: [
@@ -537,7 +551,9 @@ const nutritionists = [
   {
     id: 108, name: "Omar Hassan", specialty: "Weight Management",
     category: "weightloss", price: 42.99, rating: 4.8, subscribers: 1890, experience: "8 yrs",
-    bio: "Evidence-based approach to body composition. Combines flexible dieting with behavioral strategies that last.",
+    credential: "CNS", credentialFull: "Certified Nutrition Specialist",
+    specialtyType: "Clinical Nutritionist",
+    bio: "Certified Nutrition Specialist with an evidence-based approach to body composition. Combines flexible dieting with behavioral strategies that last.",
     color: "#D946EF", featured: true,
     services: ["Body recomposition", "Reverse dieting", "Flexible dieting", "Progress tracking"],
     plans: [
@@ -567,7 +583,9 @@ const nutritionists = [
   {
     id: 109, name: "Lisa Chen", specialty: "Gut Health & Wellness",
     category: "guthealth", price: 49.99, rating: 4.7, subscribers: 920, experience: "12 yrs",
-    bio: "Integrative nutritionist combining Eastern and Western dietary science for whole-body gut wellness.",
+    credential: "CN", credentialFull: "Certified Nutritionist",
+    specialtyType: "Functional/Integrative Nutritionist",
+    bio: "Certified Nutritionist combining Eastern and Western dietary science for whole-body gut wellness.",
     color: "#F97316",
     services: ["Microbiome support", "Fermentation guides", "Elimination diets", "Stress-gut protocols"],
     plans: [
@@ -597,6 +615,8 @@ const nutritionists = [
   {
     id: 110, name: "Derek Williams", specialty: "Meal Prep & Budget",
     category: "mealprep", price: 29.99, rating: 4.6, subscribers: 2450, experience: "5 yrs",
+    credential: "Health Coach", credentialFull: "Certified Health & Nutrition Coach",
+    specialtyType: "Health Coach/Nutrition Coach",
     bio: "College athlete who learned to eat well on nothing. Now teaches thousands to meal prep like a pro on any budget.",
     color: "#14B8A6",
     services: ["Student meal plans", "Bulk cooking", "Freezer prep", "Dorm-friendly recipes"],
@@ -625,9 +645,11 @@ const nutritionists = [
     tags: ["Budget", "Students", "Freezer Prep"]
   },
   {
-    id: 111, name: "Priya Sharma", specialty: "Plant-Based Nutrition",
+    id: 111, name: "Priya Sharma", specialty: "Ayurvedic & Plant-Based Nutrition",
     category: "plantbased", price: 44.99, rating: 4.8, subscribers: 1050, experience: "9 yrs",
-    bio: "Ayurvedic-inspired plant-based nutritionist. Blends traditional wisdom with modern nutrition science.",
+    credential: "CN", credentialFull: "Certified Nutritionist",
+    specialtyType: "Ayurvedic Nutritionist",
+    bio: "Certified Ayurvedic practitioner and plant-based nutritionist. Blends traditional Ayurvedic wisdom with modern nutrition science.",
     color: "#84CC16",
     services: ["Ayurvedic meal plans", "Plant protein optimization", "Spice therapy", "Seasonal eating"],
     plans: [
@@ -655,9 +677,11 @@ const nutritionists = [
     tags: ["Ayurvedic", "Plant-Based", "Holistic"]
   },
   {
-    id: 112, name: "Marcus Johnson", specialty: "Sports Nutrition",
+    id: 112, name: "Marcus Johnson", specialty: "Sports & Performance Nutrition",
     category: "sports", price: 59.99, rating: 4.9, subscribers: 1580, experience: "13 yrs",
-    bio: "NFL nutritionist for 8 seasons. Now bringing pro-level fuel strategies to everyday athletes on Shape.",
+    credential: "RDN", credentialFull: "Registered Dietitian Nutritionist",
+    specialtyType: "Sports/Performance Nutritionist",
+    bio: "Registered Dietitian and NFL nutritionist for 8 seasons. Now bringing pro-level fuel strategies to everyday athletes on Shape.",
     color: "#7C3AED",
     services: ["Pro athlete protocols", "Weight class management", "Supplement stacks", "In-season nutrition"],
     plans: [
@@ -897,6 +921,10 @@ function createNutritionistCard(nutritionist) {
             <div class="card-specialty">${nutritionist.specialty}</div>
           </div>
         </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
+          ${nutritionist.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${nutritionist.credential}</span>` : ''}
+          ${nutritionist.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${nutritionist.specialtyType}</span>` : ''}
+        </div>
         <p class="card-desc">${nutritionist.bio}</p>
         <div class="card-meta">
           <span class="card-rating">${nutritionist.rating}</span>
@@ -1064,10 +1092,19 @@ function setTrainerFilter(btn) {
   filterTrainers();
 }
 
+let activeCredentialFilter = 'all';
+
 function setNutritionistFilter(btn) {
-  document.querySelectorAll('.filter-bar-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-bar-buttons .filter-btn:not(.credential-filter)').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   activeNutritionistFilter = btn.dataset.filter;
+  filterNutritionists();
+}
+
+function setCredentialFilter(btn) {
+  document.querySelectorAll('.credential-filter').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCredentialFilter = btn.dataset.credential;
   filterNutritionists();
 }
 
@@ -1115,9 +1152,10 @@ function filterNutritionists() {
   const search = searchEl ? searchEl.value.toLowerCase().trim() : '';
   const sortBy = sortEl ? sortEl.value : 'subscribers';
   let filtered = nutritionists.filter(n => {
-    const matchesSearch = !search || n.name.toLowerCase().includes(search);
+    const matchesSearch = !search || n.name.toLowerCase().includes(search) || (n.specialtyType && n.specialtyType.toLowerCase().includes(search)) || (n.credential && n.credential.toLowerCase().includes(search));
     const matchesCategory = activeNutritionistFilter === 'all' || n.category === activeNutritionistFilter;
-    return matchesSearch && matchesCategory;
+    const matchesCredential = activeCredentialFilter === 'all' || n.credential === activeCredentialFilter || (activeCredentialFilter === 'RDN' && (n.credential === 'RDN' || n.credential === 'RD'));
+    return matchesSearch && matchesCategory && matchesCredential;
   });
   filtered = sortData(filtered, sortBy);
   grid.innerHTML = filtered.map(createNutritionistCard).join('');
@@ -1304,6 +1342,11 @@ function openNutritionistModal(id) {
       <div class="trainer-detail-info">
         <h2>${n.name}</h2>
         <div class="card-specialty">${n.specialty}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;">
+          ${n.credential ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${n.credential}</span>` : ''}
+          ${n.credentialFull ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:400;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${n.credentialFull}</span>` : ''}
+          ${n.specialtyType ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:400;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${n.specialtyType}</span>` : ''}
+        </div>
         <p class="card-desc">${n.bio}</p>
         <div class="trainer-detail-stats">
           <span>${n.rating} rating</span>
