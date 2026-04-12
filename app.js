@@ -65,7 +65,7 @@ const trainers = [
   },
   {
     id: 3, name: "Nina Brooks", specialty: "At Home & Functional Fitness",
-    category: "athome", price: 29.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
+    category: "fullbody", price: 29.99, rating: 4.8, subscribers: 2100, experience: "8 yrs",
     credential: "ACE-CPT", credentialFull: "ACE Certified Personal Trainer",
     specialtyType: "Functional Fitness Trainer",
     bio: "ACE-certified trainer designing effective bodyweight and minimal-equipment workouts you can do anywhere in your home.",
@@ -189,7 +189,7 @@ const trainers = [
   },
   {
     id: 7, name: "Reese Calloway", specialty: "Strength & Hypertrophy",
-    category: "strength", price: 42.99, rating: 4.7, subscribers: 1890, experience: "6 yrs",
+    category: "bodybuilding", price: 42.99, rating: 4.7, subscribers: 1890, experience: "6 yrs",
     credential: "ISSA-CPT", credentialFull: "ISSA Certified Personal Trainer",
     specialtyType: "Bodybuilding/Physique Coach",
     bio: "ISSA-certified trainer with programs built around progressive overload and time under tension. If you want to get bigger and stronger — this is the playbook.",
