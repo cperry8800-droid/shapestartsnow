@@ -332,24 +332,24 @@ const nutritionists = [
     services: ["Custom meal plans", "Macro coaching", "Supplement guidance", "Competition prep"],
     plans: [
       { name: "High Protein Performance", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Optimized macro split for muscle growth and recovery. 40/30/30 protein-forward approach.", sampleDays: [
-        { day: "Day 1", breakfast: "6 egg whites with spinach, whole grain toast, and turkey sausage", lunch: "Grilled chicken breast with quinoa and roasted vegetables", dinner: "Pan-seared salmon with sweet potato and steamed broccoli" },
-        { day: "Day 2", breakfast: "Protein overnight oats with whey, blueberries, and almond butter", lunch: "Lean ground turkey bowl with brown rice and black beans", dinner: "Grilled sirloin steak with asparagus and baked potato" },
-        { day: "Day 3", breakfast: "Greek yogurt with granola, honey, and mixed berries", lunch: "Tuna salad wrap with avocado and mixed greens", dinner: "Chicken stir-fry with bell peppers and jasmine rice" }
+        { day: "Day 1", calories: "2,180 cal", protein: "172g protein", breakfast: "6 egg whites with spinach, whole grain toast, and turkey sausage", lunch: "Grilled chicken breast with quinoa and roasted vegetables", dinner: "Pan-seared salmon with sweet potato and steamed broccoli" },
+        { day: "Day 2", calories: "2,240 cal", protein: "185g protein", breakfast: "Protein overnight oats with whey, blueberries, and almond butter", lunch: "Lean ground turkey bowl with brown rice and black beans", dinner: "Grilled sirloin steak with asparagus and baked potato" },
+        { day: "Day 3", calories: "2,050 cal", protein: "168g protein", breakfast: "Greek yogurt with granola, honey, and mixed berries", lunch: "Tuna salad wrap with avocado and mixed greens", dinner: "Chicken stir-fry with bell peppers and jasmine rice" }
       ] },
       { name: "Competition Prep Plan", type: "Low Carb", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Periodized nutrition plan for athletes peaking for competition. Precise carb cycling included.", sampleDays: [
-        { day: "Day 1 — Low Carb", breakfast: "Egg white frittata with spinach, mushrooms, and feta", lunch: "Herb-crusted tilapia with asparagus and cauliflower rice", dinner: "Turkey lettuce wraps with avocado and salsa" },
-        { day: "Day 2 — Moderate Carb", breakfast: "Oatmeal with protein powder, walnuts, and cinnamon", lunch: "Chicken breast with sweet potato and green beans", dinner: "Lean ground beef with zucchini noodles and marinara" },
-        { day: "Day 3 — High Carb (Refeed)", breakfast: "Pancakes with banana, maple syrup, and egg whites on the side", lunch: "Chicken and rice bowl with teriyaki sauce and edamame", dinner: "Pasta with grilled shrimp, garlic, and olive oil" }
+        { day: "Day 1 — Low Carb", calories: "1,620 cal", protein: "165g protein", breakfast: "Egg white frittata with spinach, mushrooms, and feta", lunch: "Herb-crusted tilapia with asparagus and cauliflower rice", dinner: "Turkey lettuce wraps with avocado and salsa" },
+        { day: "Day 2 — Moderate Carb", calories: "1,750 cal", protein: "158g protein", breakfast: "Oatmeal with protein powder, walnuts, and cinnamon", lunch: "Chicken breast with sweet potato and green beans", dinner: "Lean ground beef with zucchini noodles and marinara" },
+        { day: "Day 3 — High Carb (Refeed)", calories: "1,780 cal", protein: "152g protein", breakfast: "Pancakes with banana, maple syrup, and egg whites on the side", lunch: "Chicken and rice bowl with teriyaki sauce and edamame", dinner: "Pasta with grilled shrimp, garlic, and olive oil" }
       ] },
       { name: "Clean Bulk Blueprint", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to gain lean mass without excess fat. Includes supplement timing.", sampleDays: [
-        { day: "Day 1", breakfast: "Peanut butter banana protein smoothie with oats and whole milk", lunch: "Double chicken burrito bowl with rice, black beans, and cheese", dinner: "Beef stir-fry with noodles, mixed vegetables, and sesame oil" },
-        { day: "Day 2", breakfast: "4 whole eggs scrambled with cheese, toast, and avocado", lunch: "Turkey and avocado sandwich with sweet potato fries", dinner: "Salmon with wild rice, roasted broccoli, and olive oil drizzle" },
-        { day: "Day 3", breakfast: "Mass gainer shake with oats, banana, peanut butter, and whey", lunch: "Grilled chicken thighs with pasta and pesto sauce", dinner: "Lean ground beef tacos with rice, beans, and guacamole" }
+        { day: "Day 1", calories: "3,050 cal", protein: "185g protein", breakfast: "Peanut butter banana protein smoothie with oats and whole milk", lunch: "Double chicken burrito bowl with rice, black beans, and cheese", dinner: "Beef stir-fry with noodles, mixed vegetables, and sesame oil" },
+        { day: "Day 2", calories: "2,920 cal", protein: "178g protein", breakfast: "4 whole eggs scrambled with cheese, toast, and avocado", lunch: "Turkey and avocado sandwich with sweet potato fries", dinner: "Salmon with wild rice, roasted broccoli, and olive oil drizzle" },
+        { day: "Day 3", calories: "3,180 cal", protein: "192g protein", breakfast: "Mass gainer shake with oats, banana, peanut butter, and whey", lunch: "Grilled chicken thighs with pasta and pesto sauce", dinner: "Lean ground beef tacos with rice, beans, and guacamole" }
       ] },
       { name: "Race Day Fuel Guide", type: "Performance", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Pre, during, and post-race nutrition strategy for endurance athletes.", sampleDays: [
-        { day: "Day 1 — Pre-Race", breakfast: "Oatmeal with banana, honey, and almond butter", lunch: "Pasta with lean turkey bolognese and side salad", dinner: "Grilled chicken with white rice and steamed vegetables" },
-        { day: "Day 2 — Race Day", breakfast: "Toast with peanut butter and jam, plus a banana", lunch: "Mid-race energy gels, electrolyte drink, and orange slices", dinner: "Recovery shake with whey, berries, and a turkey sandwich" },
-        { day: "Day 3 — Recovery Day", breakfast: "Smoothie with tart cherry juice, protein, and oats", lunch: "Salmon with sweet potato and sauteed spinach", dinner: "Energy date balls with coconut, chia seeds, and a casein shake" }
+        { day: "Day 1 — Pre-Race", calories: "2,350 cal", protein: "155g protein", breakfast: "Oatmeal with banana, honey, and almond butter", lunch: "Pasta with lean turkey bolognese and side salad", dinner: "Grilled chicken with white rice and steamed vegetables" },
+        { day: "Day 2 — Race Day", calories: "2,480 cal", protein: "148g protein", breakfast: "Toast with peanut butter and jam, plus a banana", lunch: "Mid-race energy gels, electrolyte drink, and orange slices", dinner: "Recovery shake with whey, berries, and a turkey sandwich" },
+        { day: "Day 3 — Recovery Day", calories: "2,280 cal", protein: "162g protein", breakfast: "Smoothie with tart cherry juice, protein, and oats", lunch: "Salmon with sweet potato and sauteed spinach", dinner: "Energy date balls with coconut, chia seeds, and a casein shake" }
       ] },
     ],
     tags: ["Performance", "Athletes", "Macro Coaching"]
@@ -362,24 +362,24 @@ const nutritionists = [
     services: ["Calorie-deficit plans", "Habit coaching", "Weekly check-ins", "Grocery guides"],
     plans: [
       { name: "Sustainable Deficit Plan", type: "Low Calorie", duration: "12 weeks", difficulty: "Beginner", price: 29.99, description: "Gradual calorie reduction with flexible food choices. No crash dieting — just steady results.", sampleDays: [
-        { day: "Day 1", breakfast: "Greek yogurt parfait with mixed berries and a drizzle of honey", lunch: "Grilled chicken salad with cucumbers, tomatoes, and light vinaigrette", dinner: "Zucchini noodles with shrimp, garlic, and cherry tomatoes" },
-        { day: "Day 2", breakfast: "Two scrambled eggs with spinach and whole grain toast", lunch: "Turkey and veggie lettuce wraps with hummus", dinner: "Baked cod with roasted broccoli and a small baked potato" },
-        { day: "Day 3", breakfast: "Smoothie with banana, spinach, protein powder, and almond milk", lunch: "Lentil soup with a side of mixed green salad", dinner: "Grilled chicken breast with steamed green beans and quinoa" }
+        { day: "Day 1", calories: "1,480 cal", protein: "125g protein", breakfast: "Greek yogurt parfait with mixed berries and a drizzle of honey", lunch: "Grilled chicken salad with cucumbers, tomatoes, and light vinaigrette", dinner: "Zucchini noodles with shrimp, garlic, and cherry tomatoes" },
+        { day: "Day 2", calories: "1,520 cal", protein: "118g protein", breakfast: "Two scrambled eggs with spinach and whole grain toast", lunch: "Turkey and veggie lettuce wraps with hummus", dinner: "Baked cod with roasted broccoli and a small baked potato" },
+        { day: "Day 3", calories: "1,450 cal", protein: "132g protein", breakfast: "Smoothie with banana, spinach, protein powder, and almond milk", lunch: "Lentil soup with a side of mixed green salad", dinner: "Grilled chicken breast with steamed green beans and quinoa" }
       ] },
       { name: "Macro Counting Mastery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Learn to track and balance macros while hitting your weight loss goals.", sampleDays: [
-        { day: "Day 1", breakfast: "Overnight oats with chia seeds, almond butter, and banana", lunch: "Turkey and avocado whole wheat wrap with side salad", dinner: "Salmon with brown rice and steamed broccoli" },
-        { day: "Day 2", breakfast: "Egg white omelette with peppers, onions, and feta cheese", lunch: "Chicken and quinoa bowl with roasted sweet potato", dinner: "Lean ground turkey tacos with lettuce, salsa, and cheese" },
-        { day: "Day 3", breakfast: "Cottage cheese bowl with fruit, granola, and a drizzle of honey", lunch: "Grilled shrimp salad with avocado and balsamic dressing", dinner: "Baked chicken thigh with roasted vegetables and wild rice" }
+        { day: "Day 1", calories: "1,650 cal", protein: "128g protein", breakfast: "Overnight oats with chia seeds, almond butter, and banana", lunch: "Turkey and avocado whole wheat wrap with side salad", dinner: "Salmon with brown rice and steamed broccoli" },
+        { day: "Day 2", calories: "1,580 cal", protein: "135g protein", breakfast: "Egg white omelette with peppers, onions, and feta cheese", lunch: "Chicken and quinoa bowl with roasted sweet potato", dinner: "Lean ground turkey tacos with lettuce, salsa, and cheese" },
+        { day: "Day 3", calories: "1,620 cal", protein: "122g protein", breakfast: "Cottage cheese bowl with fruit, granola, and a drizzle of honey", lunch: "Grilled shrimp salad with avocado and balsamic dressing", dinner: "Baked chicken thigh with roasted vegetables and wild rice" }
       ] },
       { name: "Metabolic Reset", type: "High Protein", duration: "6 weeks", difficulty: "Intermediate", price: 32.99, description: "Reverse diet protocol to restore metabolism after prolonged restriction.", sampleDays: [
-        { day: "Day 1", breakfast: "Protein pancakes with blueberries and a side of turkey bacon", lunch: "Steak salad with mixed greens, avocado, and balsamic glaze", dinner: "Grilled salmon with roasted sweet potato and green beans" },
-        { day: "Day 2", breakfast: "Scrambled eggs with cheese, whole wheat toast, and fruit", lunch: "Tuna poke bowl with edamame, brown rice, and pickled ginger", dinner: "Chicken breast with mashed potatoes and sauteed spinach" },
-        { day: "Day 3", breakfast: "Greek yogurt with granola, walnuts, and sliced banana", lunch: "Turkey burger (no bun) with sweet potato fries and coleslaw", dinner: "Lean beef stir-fry with bell peppers and jasmine rice" }
+        { day: "Day 1", calories: "1,780 cal", protein: "148g protein", breakfast: "Protein pancakes with blueberries and a side of turkey bacon", lunch: "Steak salad with mixed greens, avocado, and balsamic glaze", dinner: "Grilled salmon with roasted sweet potato and green beans" },
+        { day: "Day 2", calories: "1,820 cal", protein: "155g protein", breakfast: "Scrambled eggs with cheese, whole wheat toast, and fruit", lunch: "Tuna poke bowl with edamame, brown rice, and pickled ginger", dinner: "Chicken breast with mashed potatoes and sauteed spinach" },
+        { day: "Day 3", calories: "1,750 cal", protein: "142g protein", breakfast: "Greek yogurt with granola, walnuts, and sliced banana", lunch: "Turkey burger (no bun) with sweet potato fries and coleslaw", dinner: "Lean beef stir-fry with bell peppers and jasmine rice" }
       ] },
       { name: "Weekend-Proof Plan", type: "Flexible", duration: "8 weeks", difficulty: "Beginner", price: 27.99, description: "A practical plan that accounts for social eating and weekends without derailing progress.", sampleDays: [
-        { day: "Day 1 — Weekday", breakfast: "Veggie omelette with whole wheat toast and fruit", lunch: "Build-your-own grain bowl with lean protein and veggies", dinner: "Grilled chicken stir-fry with flexible carb options" },
-        { day: "Day 2 — Weekday", breakfast: "Overnight oats with peanut butter and banana", lunch: "Chicken Caesar salad (light dressing) with a breadstick", dinner: "Baked fish with roasted vegetables and a small portion of rice" },
-        { day: "Day 3 — Weekend", breakfast: "Brunch-style eggs benedict (lighter portion) with fruit", lunch: "Grilled chicken sandwich with side salad instead of fries", dinner: "Portion-controlled pizza night (2 slices) with a large salad" }
+        { day: "Day 1 — Weekday", calories: "1,580 cal", protein: "115g protein", breakfast: "Veggie omelette with whole wheat toast and fruit", lunch: "Build-your-own grain bowl with lean protein and veggies", dinner: "Grilled chicken stir-fry with flexible carb options" },
+        { day: "Day 2 — Weekday", calories: "1,550 cal", protein: "120g protein", breakfast: "Overnight oats with peanut butter and banana", lunch: "Chicken Caesar salad (light dressing) with a breadstick", dinner: "Baked fish with roasted vegetables and a small portion of rice" },
+        { day: "Day 3 — Weekend", calories: "1,700 cal", protein: "112g protein", breakfast: "Brunch-style eggs benedict (lighter portion) with fruit", lunch: "Grilled chicken sandwich with side salad instead of fries", dinner: "Portion-controlled pizza night (2 slices) with a large salad" }
       ] },
     ],
     tags: ["Weight Loss", "Sustainable", "Habit Coaching"]
@@ -392,24 +392,24 @@ const nutritionists = [
     services: ["Vegan meal plans", "Nutrient optimization", "Recipe library", "Transition coaching"],
     plans: [
       { name: "Plant-Powered Starter", type: "Vegan", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Ease into plant-based eating with simple swaps and complete nutrition guidance.", sampleDays: [
-        { day: "Day 1", breakfast: "Avocado toast with hemp seeds, cherry tomatoes, and lemon", lunch: "Chickpea and vegetable curry with basmati rice", dinner: "Black bean tacos with mango salsa and cashew crema" },
-        { day: "Day 2", breakfast: "Smoothie bowl with acai, banana, granola, and coconut flakes", lunch: "Mediterranean hummus wrap with cucumber, tomato, and olives", dinner: "Veggie stir-fry with tofu, broccoli, and soy-ginger sauce" },
-        { day: "Day 3", breakfast: "Overnight oats with almond milk, chia seeds, and mixed berries", lunch: "Roasted vegetable and quinoa salad with tahini dressing", dinner: "Lentil and sweet potato coconut curry with naan bread" }
+        { day: "Day 1", calories: "1,720 cal", protein: "85g protein", breakfast: "Avocado toast with hemp seeds, cherry tomatoes, and lemon", lunch: "Chickpea and vegetable curry with basmati rice", dinner: "Black bean tacos with mango salsa and cashew crema" },
+        { day: "Day 2", calories: "1,680 cal", protein: "82g protein", breakfast: "Smoothie bowl with acai, banana, granola, and coconut flakes", lunch: "Mediterranean hummus wrap with cucumber, tomato, and olives", dinner: "Veggie stir-fry with tofu, broccoli, and soy-ginger sauce" },
+        { day: "Day 3", calories: "1,750 cal", protein: "88g protein", breakfast: "Overnight oats with almond milk, chia seeds, and mixed berries", lunch: "Roasted vegetable and quinoa salad with tahini dressing", dinner: "Lentil and sweet potato coconut curry with naan bread" }
       ] },
       { name: "High Protein Vegan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Hit your protein goals without animal products. Includes 60+ recipes.", sampleDays: [
-        { day: "Day 1", breakfast: "Tofu scramble with black beans, sweet potato, and nutritional yeast", lunch: "Tempeh stir-fry with broccoli, edamame, and peanut sauce", dinner: "Lentil bolognese with whole wheat pasta and side salad" },
-        { day: "Day 2", breakfast: "Protein smoothie with pea protein, banana, spinach, and almond butter", lunch: "Chickpea and quinoa power bowl with tahini and roasted veggies", dinner: "Black bean burgers with avocado and sweet potato wedges" },
-        { day: "Day 3", breakfast: "Peanut butter and banana oatmeal with hemp seeds and soy milk", lunch: "Seitan wrap with hummus, arugula, and pickled onions", dinner: "Thai red curry with tofu, chickpeas, and jasmine rice" }
+        { day: "Day 1", calories: "2,050 cal", protein: "125g protein", breakfast: "Tofu scramble with black beans, sweet potato, and nutritional yeast", lunch: "Tempeh stir-fry with broccoli, edamame, and peanut sauce", dinner: "Lentil bolognese with whole wheat pasta and side salad" },
+        { day: "Day 2", calories: "2,120 cal", protein: "128g protein", breakfast: "Protein smoothie with pea protein, banana, spinach, and almond butter", lunch: "Chickpea and quinoa power bowl with tahini and roasted veggies", dinner: "Black bean burgers with avocado and sweet potato wedges" },
+        { day: "Day 3", calories: "1,980 cal", protein: "122g protein", breakfast: "Peanut butter and banana oatmeal with hemp seeds and soy milk", lunch: "Seitan wrap with hummus, arugula, and pickled onions", dinner: "Thai red curry with tofu, chickpeas, and jasmine rice" }
       ] },
       { name: "Whole Foods Reset", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Eliminate processed foods and reset your palate with nutrient-dense whole foods.", sampleDays: [
-        { day: "Day 1", breakfast: "Fresh fruit bowl with raw almonds and coconut flakes", lunch: "Quinoa Buddha bowl with roasted vegetables and lemon-tahini dressing", dinner: "Sweet potato and lentil soup with crusty sourdough bread" },
-        { day: "Day 2", breakfast: "Steel-cut oats with cinnamon, walnuts, and fresh apple slices", lunch: "Fresh spring rolls with vegetables and almond dipping sauce", dinner: "Stuffed bell peppers with brown rice, black beans, and corn" },
-        { day: "Day 3", breakfast: "Green smoothie with kale, mango, banana, and coconut water", lunch: "Mixed bean salad with cucumber, tomato, and olive oil dressing", dinner: "Roasted cauliflower steaks with chimichurri and wild rice" }
+        { day: "Day 1", calories: "1,620 cal", protein: "82g protein", breakfast: "Fresh fruit bowl with raw almonds and coconut flakes", lunch: "Quinoa Buddha bowl with roasted vegetables and lemon-tahini dressing", dinner: "Sweet potato and lentil soup with crusty sourdough bread" },
+        { day: "Day 2", calories: "1,580 cal", protein: "78g protein", breakfast: "Steel-cut oats with cinnamon, walnuts, and fresh apple slices", lunch: "Fresh spring rolls with vegetables and almond dipping sauce", dinner: "Stuffed bell peppers with brown rice, black beans, and corn" },
+        { day: "Day 3", calories: "1,650 cal", protein: "85g protein", breakfast: "Green smoothie with kale, mango, banana, and coconut water", lunch: "Mixed bean salad with cucumber, tomato, and olive oil dressing", dinner: "Roasted cauliflower steaks with chimichurri and wild rice" }
       ] },
       { name: "Vegan Athlete Fuel", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 39.99, description: "High-performance plant-based plan for serious athletes and active lifestyles.", sampleDays: [
-        { day: "Day 1", breakfast: "Power smoothie with banana, spirulina, oat milk, and pea protein", lunch: "Loaded veggie burrito with brown rice, black beans, and guacamole", dinner: "Chickpea pasta with roasted red pepper sauce and nutritional yeast" },
-        { day: "Day 2", breakfast: "Tofu breakfast scramble with sweet potato hash and avocado", lunch: "Lentil and quinoa bowl with roasted beets and hemp seed dressing", dinner: "Tempeh teriyaki with stir-fried vegetables and brown rice" },
-        { day: "Day 3", breakfast: "Pre-workout energy bites with oats, dates, and peanut butter", lunch: "Giant salad with edamame, chickpeas, avocado, and seeds", dinner: "Plant-based protein bowl with soba noodles and miso broth" }
+        { day: "Day 1", calories: "2,180 cal", protein: "118g protein", breakfast: "Power smoothie with banana, spirulina, oat milk, and pea protein", lunch: "Loaded veggie burrito with brown rice, black beans, and guacamole", dinner: "Chickpea pasta with roasted red pepper sauce and nutritional yeast" },
+        { day: "Day 2", calories: "2,250 cal", protein: "122g protein", breakfast: "Tofu breakfast scramble with sweet potato hash and avocado", lunch: "Lentil and quinoa bowl with roasted beets and hemp seed dressing", dinner: "Tempeh teriyaki with stir-fried vegetables and brown rice" },
+        { day: "Day 3", calories: "2,080 cal", protein: "115g protein", breakfast: "Pre-workout energy bites with oats, dates, and peanut butter", lunch: "Giant salad with edamame, chickpeas, avocado, and seeds", dinner: "Plant-based protein bowl with soba noodles and miso broth" }
       ] },
     ],
     tags: ["Vegan", "Plant-Based", "Whole Foods"]
@@ -422,24 +422,24 @@ const nutritionists = [
     services: ["Elimination protocols", "Gut healing plans", "Food sensitivity guidance", "Anti-inflammatory diets"],
     plans: [
       { name: "Gut Restore Protocol", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Step-by-step gut healing plan with probiotics, bone broth, and targeted elimination.", sampleDays: [
-        { day: "Day 1", breakfast: "Bone broth with ginger, turmeric, and collagen peptides", lunch: "Baked salmon with sauerkraut and steamed leafy greens", dinner: "Slow-cooked chicken with roasted root vegetables and herbs" },
-        { day: "Day 2", breakfast: "Probiotic yogurt bowl with flaxseed, walnuts, and blueberries", lunch: "Turkey and avocado lettuce wraps with fermented pickles", dinner: "Herb-baked cod with steamed zucchini and bone broth soup" },
-        { day: "Day 3", breakfast: "Warm lemon water followed by oatmeal with slippery elm and banana", lunch: "Chicken and vegetable soup with fresh ginger and turmeric", dinner: "Grilled salmon with kimchi, brown rice, and steamed broccoli" }
+        { day: "Day 1", calories: "1,680 cal", protein: "115g protein", breakfast: "Bone broth with ginger, turmeric, and collagen peptides", lunch: "Baked salmon with sauerkraut and steamed leafy greens", dinner: "Slow-cooked chicken with roasted root vegetables and herbs" },
+        { day: "Day 2", calories: "1,720 cal", protein: "108g protein", breakfast: "Probiotic yogurt bowl with flaxseed, walnuts, and blueberries", lunch: "Turkey and avocado lettuce wraps with fermented pickles", dinner: "Herb-baked cod with steamed zucchini and bone broth soup" },
+        { day: "Day 3", calories: "1,650 cal", protein: "120g protein", breakfast: "Warm lemon water followed by oatmeal with slippery elm and banana", lunch: "Chicken and vegetable soup with fresh ginger and turmeric", dinner: "Grilled salmon with kimchi, brown rice, and steamed broccoli" }
       ] },
       { name: "Anti-Inflammatory Reset", type: "Low Carb", duration: "6 weeks", difficulty: "Beginner", price: 34.99, description: "Remove inflammatory triggers and rebuild with healing whole foods.", sampleDays: [
-        { day: "Day 1", breakfast: "Berry smoothie with collagen, almond butter, and coconut milk", lunch: "Turmeric-spiced chicken with roasted cauliflower and olive oil", dinner: "Wild-caught cod with sauteed leafy greens and lemon" },
-        { day: "Day 2", breakfast: "Chia pudding with coconut milk, walnuts, and cinnamon", lunch: "Grilled chicken salad with avocado, cucumber, and olive oil dressing", dinner: "Baked turkey meatballs with zucchini noodles and basil" },
-        { day: "Day 3", breakfast: "Scrambled eggs with turmeric, spinach, and avocado", lunch: "Salmon and avocado bowl with mixed greens and seeds", dinner: "Slow-cooked beef stew with anti-inflammatory spices and root vegetables" }
+        { day: "Day 1", calories: "1,580 cal", protein: "112g protein", breakfast: "Berry smoothie with collagen, almond butter, and coconut milk", lunch: "Turmeric-spiced chicken with roasted cauliflower and olive oil", dinner: "Wild-caught cod with sauteed leafy greens and lemon" },
+        { day: "Day 2", calories: "1,620 cal", protein: "105g protein", breakfast: "Chia pudding with coconut milk, walnuts, and cinnamon", lunch: "Grilled chicken salad with avocado, cucumber, and olive oil dressing", dinner: "Baked turkey meatballs with zucchini noodles and basil" },
+        { day: "Day 3", calories: "1,550 cal", protein: "118g protein", breakfast: "Scrambled eggs with turmeric, spinach, and avocado", lunch: "Salmon and avocado bowl with mixed greens and seeds", dinner: "Slow-cooked beef stew with anti-inflammatory spices and root vegetables" }
       ] },
       { name: "Food Sensitivity Blueprint", type: "Elimination", duration: "10 weeks", difficulty: "Advanced", price: 44.99, description: "Structured elimination and reintroduction protocol to identify your triggers.", sampleDays: [
-        { day: "Day 1 — Elimination Phase", breakfast: "Pear and oat porridge with cinnamon and coconut oil", lunch: "Simple rice bowl with steamed vegetables and olive oil", dinner: "Baked chicken breast with zucchini, carrots, and herbs" },
-        { day: "Day 2 — Elimination Phase", breakfast: "Rice cereal with coconut milk and sliced banana", lunch: "Turkey patties with sweet potato and steamed green beans", dinner: "Baked white fish with roasted squash and fresh dill" },
-        { day: "Day 3 — Reintroduction Phase", breakfast: "Oatmeal with one test food introduced (e.g., dairy or eggs)", lunch: "Chicken and rice with the test food included", dinner: "Simple protein with vegetables — monitor and log symptoms" }
+        { day: "Day 1 — Elimination Phase", calories: "1,650 cal", protein: "108g protein", breakfast: "Pear and oat porridge with cinnamon and coconut oil", lunch: "Simple rice bowl with steamed vegetables and olive oil", dinner: "Baked chicken breast with zucchini, carrots, and herbs" },
+        { day: "Day 2 — Elimination Phase", calories: "1,600 cal", protein: "102g protein", breakfast: "Rice cereal with coconut milk and sliced banana", lunch: "Turkey patties with sweet potato and steamed green beans", dinner: "Baked white fish with roasted squash and fresh dill" },
+        { day: "Day 3 — Reintroduction Phase", calories: "1,720 cal", protein: "115g protein", breakfast: "Oatmeal with one test food introduced (e.g., dairy or eggs)", lunch: "Chicken and rice with the test food included", dinner: "Simple protein with vegetables — monitor and log symptoms" }
       ] },
       { name: "Digestive Wellness Plan", type: "Balanced", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Daily meal plans designed to support healthy digestion and reduce bloating.", sampleDays: [
-        { day: "Day 1", breakfast: "Banana oat pancakes with a drizzle of honey and cinnamon", lunch: "Miso soup with tofu, seaweed, and steamed rice", dinner: "Grilled chicken with roasted fennel, quinoa, and lemon" },
-        { day: "Day 2", breakfast: "Warm ginger tea with yogurt, papaya, and pumpkin seeds", lunch: "Poached chicken salad with cucumber, mint, and light dressing", dinner: "Baked salmon with steamed asparagus and mashed sweet potato" },
-        { day: "Day 3", breakfast: "Smoothie with kefir, banana, ginger, and a pinch of turmeric", lunch: "Lentil soup with cumin, coriander, and a slice of sourdough", dinner: "Herb-baked chicken thigh with roasted carrots and brown rice" }
+        { day: "Day 1", calories: "1,750 cal", protein: "118g protein", breakfast: "Banana oat pancakes with a drizzle of honey and cinnamon", lunch: "Miso soup with tofu, seaweed, and steamed rice", dinner: "Grilled chicken with roasted fennel, quinoa, and lemon" },
+        { day: "Day 2", calories: "1,680 cal", protein: "112g protein", breakfast: "Warm ginger tea with yogurt, papaya, and pumpkin seeds", lunch: "Poached chicken salad with cucumber, mint, and light dressing", dinner: "Baked salmon with steamed asparagus and mashed sweet potato" },
+        { day: "Day 3", calories: "1,800 cal", protein: "125g protein", breakfast: "Smoothie with kefir, banana, ginger, and a pinch of turmeric", lunch: "Lentil soup with cumin, coriander, and a slice of sourdough", dinner: "Herb-baked chicken thigh with roasted carrots and brown rice" }
       ] },
     ],
     tags: ["Gut Health", "Functional", "Anti-Inflammatory"]
@@ -452,24 +452,24 @@ const nutritionists = [
     services: ["Trimester-specific plans", "Postnatal recovery nutrition", "Lactation support", "Iron & folate optimization"],
     plans: [
       { name: "First Trimester Foundations", type: "Prenatal", duration: "12 weeks", difficulty: "Beginner", price: 34.99, description: "Nausea-friendly meals packed with folate, iron, and essential nutrients for early pregnancy.", sampleDays: [
-        { day: "Day 1", breakfast: "Ginger tea with plain toast and a small banana", lunch: "Spinach and cheese quesadilla with sliced fruit", dinner: "Mild lentil soup with whole grain crackers and a side salad" },
-        { day: "Day 2", breakfast: "Small portions of scrambled eggs with dry toast", lunch: "Ginger lemon chicken with brown rice and steamed carrots", dinner: "Baked sweet potato with cottage cheese and steamed broccoli" },
-        { day: "Day 3", breakfast: "Smoothie with mango, yogurt, and a prenatal-friendly greens blend", lunch: "Turkey and avocado wrap with a cup of chicken broth", dinner: "Pasta with mild tomato sauce, ground turkey, and spinach" }
+        { day: "Day 1", calories: "1,820 cal", protein: "95g protein", breakfast: "Ginger tea with plain toast and a small banana", lunch: "Spinach and cheese quesadilla with sliced fruit", dinner: "Mild lentil soup with whole grain crackers and a side salad" },
+        { day: "Day 2", calories: "1,780 cal", protein: "92g protein", breakfast: "Small portions of scrambled eggs with dry toast", lunch: "Ginger lemon chicken with brown rice and steamed carrots", dinner: "Baked sweet potato with cottage cheese and steamed broccoli" },
+        { day: "Day 3", calories: "1,880 cal", protein: "98g protein", breakfast: "Smoothie with mango, yogurt, and a prenatal-friendly greens blend", lunch: "Turkey and avocado wrap with a cup of chicken broth", dinner: "Pasta with mild tomato sauce, ground turkey, and spinach" }
       ] },
       { name: "Third Trimester Power Plan", type: "High Calorie", duration: "12 weeks", difficulty: "Intermediate", price: 37.99, description: "Calorie-dense nutrition to support baby's growth and prepare your body for delivery.", sampleDays: [
-        { day: "Day 1", breakfast: "Nut butter smoothie with oats, banana, and whole milk", lunch: "Salmon with mashed sweet potato and sauteed kale", dinner: "Chicken thighs with roasted root vegetables and quinoa" },
-        { day: "Day 2", breakfast: "Eggs with whole grain toast, avocado, and a glass of orange juice", lunch: "Turkey and cheese sandwich with fruit and yogurt", dinner: "Beef stew with potatoes, carrots, and a slice of bread" },
-        { day: "Day 3", breakfast: "Oatmeal with dried fruit, walnuts, and a drizzle of maple syrup", lunch: "Chicken Caesar salad with extra protein and a breadstick", dinner: "Baked cod with brown rice, roasted broccoli, and butter" }
+        { day: "Day 1", calories: "2,150 cal", protein: "115g protein", breakfast: "Nut butter smoothie with oats, banana, and whole milk", lunch: "Salmon with mashed sweet potato and sauteed kale", dinner: "Chicken thighs with roasted root vegetables and quinoa" },
+        { day: "Day 2", calories: "2,080 cal", protein: "110g protein", breakfast: "Eggs with whole grain toast, avocado, and a glass of orange juice", lunch: "Turkey and cheese sandwich with fruit and yogurt", dinner: "Beef stew with potatoes, carrots, and a slice of bread" },
+        { day: "Day 3", calories: "2,200 cal", protein: "108g protein", breakfast: "Oatmeal with dried fruit, walnuts, and a drizzle of maple syrup", lunch: "Chicken Caesar salad with extra protein and a breadstick", dinner: "Baked cod with brown rice, roasted broccoli, and butter" }
       ] },
       { name: "Postnatal Recovery Plan", type: "Recovery", duration: "8 weeks", difficulty: "Beginner", price: 34.99, description: "Healing foods and balanced meals to support recovery and energy after birth.", sampleDays: [
-        { day: "Day 1", breakfast: "Overnight oats with dates, pumpkin seeds, and cinnamon", lunch: "Iron-rich beef stew with dark leafy greens and bread", dinner: "Warm salmon and avocado rice bowl with sesame seeds" },
-        { day: "Day 2", breakfast: "Eggs with spinach, whole wheat toast, and fresh fruit", lunch: "Chicken and vegetable soup with a side of crackers", dinner: "Baked chicken breast with sweet potato and steamed green beans" },
-        { day: "Day 3", breakfast: "Greek yogurt with iron-rich granola and mixed berries", lunch: "Turkey wrap with hummus, spinach, and bell peppers", dinner: "Slow-cooked pork with mashed potatoes and roasted carrots" }
+        { day: "Day 1", calories: "1,920 cal", protein: "105g protein", breakfast: "Overnight oats with dates, pumpkin seeds, and cinnamon", lunch: "Iron-rich beef stew with dark leafy greens and bread", dinner: "Warm salmon and avocado rice bowl with sesame seeds" },
+        { day: "Day 2", calories: "1,850 cal", protein: "112g protein", breakfast: "Eggs with spinach, whole wheat toast, and fresh fruit", lunch: "Chicken and vegetable soup with a side of crackers", dinner: "Baked chicken breast with sweet potato and steamed green beans" },
+        { day: "Day 3", calories: "1,980 cal", protein: "98g protein", breakfast: "Greek yogurt with iron-rich granola and mixed berries", lunch: "Turkey wrap with hummus, spinach, and bell peppers", dinner: "Slow-cooked pork with mashed potatoes and roasted carrots" }
       ] },
       { name: "Lactation Boost Plan", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Nutrient-rich meals to support milk production and postpartum energy levels.", sampleDays: [
-        { day: "Day 1", breakfast: "Oatmeal lactation cookies with brewer's yeast and a glass of milk", lunch: "Chicken and vegetable stir-fry with sesame and brown rice", dinner: "Salmon with roasted asparagus and quinoa" },
-        { day: "Day 2", breakfast: "Greek yogurt with granola, flaxseed, and berries", lunch: "Turkey and avocado sandwich with a side of fruit", dinner: "Lean beef tacos with cheese, tomato, and a lactation smoothie" },
-        { day: "Day 3", breakfast: "Whole grain waffles with almond butter, banana, and fenugreek tea", lunch: "Lentil soup with a slice of buttered sourdough bread", dinner: "Chicken breast with sweet potato mash and steamed broccoli" }
+        { day: "Day 1", calories: "2,050 cal", protein: "118g protein", breakfast: "Oatmeal lactation cookies with brewer's yeast and a glass of milk", lunch: "Chicken and vegetable stir-fry with sesame and brown rice", dinner: "Salmon with roasted asparagus and quinoa" },
+        { day: "Day 2", calories: "1,980 cal", protein: "115g protein", breakfast: "Greek yogurt with granola, flaxseed, and berries", lunch: "Turkey and avocado sandwich with a side of fruit", dinner: "Lean beef tacos with cheese, tomato, and a lactation smoothie" },
+        { day: "Day 3", calories: "2,120 cal", protein: "120g protein", breakfast: "Whole grain waffles with almond butter, banana, and fenugreek tea", lunch: "Lentil soup with a slice of buttered sourdough bread", dinner: "Chicken breast with sweet potato mash and steamed broccoli" }
       ] },
     ],
     tags: ["Prenatal", "Postnatal", "Maternal Health"]
@@ -482,24 +482,24 @@ const nutritionists = [
     services: ["Budget meal plans", "Batch cooking guides", "Shopping lists", "Quick recipes under 20 min"],
     plans: [
       { name: "$50/Week Meal Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 22.99, description: "Complete weekly meal plan for one person on a tight budget. Includes shopping lists.", sampleDays: [
-        { day: "Day 1", breakfast: "Scrambled eggs with toast and a banana", lunch: "Rice and beans with roasted frozen vegetables", dinner: "Pasta with canned tomatoes, garlic, and chickpeas" },
-        { day: "Day 2", breakfast: "Oatmeal with peanut butter and a drizzle of honey", lunch: "Egg fried rice with cabbage and soy sauce", dinner: "Baked chicken drumsticks with roasted potatoes and frozen peas" },
-        { day: "Day 3", breakfast: "Toast with peanut butter and sliced banana", lunch: "Black bean quesadilla with salsa and sour cream", dinner: "Spaghetti with meat sauce (ground beef) and a side of bread" }
+        { day: "Day 1", calories: "1,720 cal", protein: "105g protein", breakfast: "Scrambled eggs with toast and a banana", lunch: "Rice and beans with roasted frozen vegetables", dinner: "Pasta with canned tomatoes, garlic, and chickpeas" },
+        { day: "Day 2", calories: "1,680 cal", protein: "112g protein", breakfast: "Oatmeal with peanut butter and a drizzle of honey", lunch: "Egg fried rice with cabbage and soy sauce", dinner: "Baked chicken drumsticks with roasted potatoes and frozen peas" },
+        { day: "Day 3", calories: "1,750 cal", protein: "108g protein", breakfast: "Toast with peanut butter and sliced banana", lunch: "Black bean quesadilla with salsa and sour cream", dinner: "Spaghetti with meat sauce (ground beef) and a side of bread" }
       ] },
       { name: "Sunday Prep Master", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Prep all your weekday meals in under 2 hours every Sunday. Step-by-step guide.", sampleDays: [
-        { day: "Day 1", breakfast: "Pre-made egg muffins with veggies and cheese", lunch: "Chicken thigh meal prep with rice and broccoli", dinner: "Turkey taco bowls with black beans, corn, and salsa" },
-        { day: "Day 2", breakfast: "Overnight oats (prepped Sunday) with fruit and nuts", lunch: "Sheet pan sausage with peppers and sweet potato", dinner: "Pre-portioned pasta with turkey meatballs and marinara" },
-        { day: "Day 3", breakfast: "Grab-and-go smoothie packs (frozen, blend in AM)", lunch: "Mason jar salad with chicken and ranch dressing", dinner: "Slow cooker pulled chicken with coleslaw and rolls" }
+        { day: "Day 1", calories: "1,850 cal", protein: "128g protein", breakfast: "Pre-made egg muffins with veggies and cheese", lunch: "Chicken thigh meal prep with rice and broccoli", dinner: "Turkey taco bowls with black beans, corn, and salsa" },
+        { day: "Day 2", calories: "1,780 cal", protein: "122g protein", breakfast: "Overnight oats (prepped Sunday) with fruit and nuts", lunch: "Sheet pan sausage with peppers and sweet potato", dinner: "Pre-portioned pasta with turkey meatballs and marinara" },
+        { day: "Day 3", calories: "1,920 cal", protein: "135g protein", breakfast: "Grab-and-go smoothie packs (frozen, blend in AM)", lunch: "Mason jar salad with chicken and ranch dressing", dinner: "Slow cooker pulled chicken with coleslaw and rolls" }
       ] },
       { name: "Family of Four Plan", type: "Budget", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Healthy, kid-friendly meals for the whole family without breaking the bank.", sampleDays: [
-        { day: "Day 1", breakfast: "Pancakes with syrup and scrambled eggs", lunch: "PB&J sandwiches with carrot sticks and apple slices", dinner: "One-pot chicken pasta with hidden veggies" },
-        { day: "Day 2", breakfast: "Cereal with milk and a piece of fruit", lunch: "Quesadillas with cheese, chicken, and a side of grapes", dinner: "Homemade fish sticks with oven fries and ketchup" },
-        { day: "Day 3", breakfast: "Toast with butter, eggs, and orange juice", lunch: "Turkey and cheese wraps with cucumber slices", dinner: "Slow cooker chili with cornbread and shredded cheese" }
+        { day: "Day 1", calories: "1,880 cal", protein: "95g protein", breakfast: "Pancakes with syrup and scrambled eggs", lunch: "PB&J sandwiches with carrot sticks and apple slices", dinner: "One-pot chicken pasta with hidden veggies" },
+        { day: "Day 2", calories: "1,820 cal", protein: "92g protein", breakfast: "Cereal with milk and a piece of fruit", lunch: "Quesadillas with cheese, chicken, and a side of grapes", dinner: "Homemade fish sticks with oven fries and ketchup" },
+        { day: "Day 3", calories: "1,950 cal", protein: "98g protein", breakfast: "Toast with butter, eggs, and orange juice", lunch: "Turkey and cheese wraps with cucumber slices", dinner: "Slow cooker chili with cornbread and shredded cheese" }
       ] },
       { name: "15-Minute Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "30 quick and healthy recipes that go from fridge to plate in 15 minutes or less.", sampleDays: [
-        { day: "Day 1", breakfast: "Avocado toast with a fried egg and everything seasoning", lunch: "Caprese chicken with balsamic glaze and mixed greens", dinner: "Shrimp and garlic butter with couscous and lemon" },
-        { day: "Day 2", breakfast: "Greek yogurt with honey, granola, and berries", lunch: "Turkey and hummus wrap with cucumber and tomato", dinner: "Black bean quesadillas with quick guacamole and salsa" },
-        { day: "Day 3", breakfast: "Smoothie with frozen fruit, yogurt, and a handful of spinach", lunch: "Tuna salad on crackers with a side of fruit", dinner: "One-pan lemon herb chicken with cherry tomatoes and orzo" }
+        { day: "Day 1", calories: "1,680 cal", protein: "115g protein", breakfast: "Avocado toast with a fried egg and everything seasoning", lunch: "Caprese chicken with balsamic glaze and mixed greens", dinner: "Shrimp and garlic butter with couscous and lemon" },
+        { day: "Day 2", calories: "1,620 cal", protein: "108g protein", breakfast: "Greek yogurt with honey, granola, and berries", lunch: "Turkey and hummus wrap with cucumber and tomato", dinner: "Black bean quesadillas with quick guacamole and salsa" },
+        { day: "Day 3", calories: "1,750 cal", protein: "120g protein", breakfast: "Smoothie with frozen fruit, yogurt, and a handful of spinach", lunch: "Tuna salad on crackers with a side of fruit", dinner: "One-pan lemon herb chicken with cherry tomatoes and orzo" }
       ] },
     ],
     tags: ["Budget-Friendly", "Meal Prep", "Quick Recipes"]
@@ -512,24 +512,24 @@ const nutritionists = [
     services: ["Periodized nutrition", "Hydration protocols", "Recovery plans", "Race-day fueling"],
     plans: [
       { name: "Strength Fuel Plan", type: "High Protein", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Calorie and macro targets built around your training splits for max strength gains.", sampleDays: [
-        { day: "Day 1 — Training Day", breakfast: "4 whole eggs with turkey sausage, oats, and a banana", lunch: "Grilled steak with baked potato and asparagus", dinner: "Protein-packed chicken and rice meal prep with broccoli" },
-        { day: "Day 2 — Training Day", breakfast: "Post-workout whey shake with oats, banana, and peanut butter", lunch: "Salmon with sweet potato and steamed green beans", dinner: "Lean ground beef with jasmine rice and mixed vegetables" },
-        { day: "Day 3 — Rest Day", breakfast: "Greek yogurt with granola, honey, and mixed berries", lunch: "Turkey and avocado wrap with a side salad", dinner: "Grilled chicken breast with quinoa and roasted vegetables" }
+        { day: "Day 1 — Training Day", calories: "2,320 cal", protein: "188g protein", breakfast: "4 whole eggs with turkey sausage, oats, and a banana", lunch: "Grilled steak with baked potato and asparagus", dinner: "Protein-packed chicken and rice meal prep with broccoli" },
+        { day: "Day 2 — Training Day", calories: "2,280 cal", protein: "192g protein", breakfast: "Post-workout whey shake with oats, banana, and peanut butter", lunch: "Salmon with sweet potato and steamed green beans", dinner: "Lean ground beef with jasmine rice and mixed vegetables" },
+        { day: "Day 3 — Rest Day", calories: "2,050 cal", protein: "165g protein", breakfast: "Greek yogurt with granola, honey, and mixed berries", lunch: "Turkey and avocado wrap with a side salad", dinner: "Grilled chicken breast with quinoa and roasted vegetables" }
       ] },
       { name: "Endurance Nutrition System", type: "Performance", duration: "10 weeks", difficulty: "Advanced", price: 42.99, description: "Carb loading, mid-race fueling, and recovery nutrition for distance athletes.", sampleDays: [
-        { day: "Day 1 — Carb Loading", breakfast: "Whole wheat pasta with chicken and marinara sauce", lunch: "Large rice bowl with grilled chicken, beans, and corn", dinner: "Bagel with peanut butter, banana, and a glass of juice" },
-        { day: "Day 2 — Race Day", breakfast: "Pre-run oatmeal with honey and a banana", lunch: "Mid-race energy gels, sports drink, and rice cakes", dinner: "Recovery smoothie with tart cherry, protein, and oats" },
-        { day: "Day 3 — Recovery", breakfast: "Eggs with toast, avocado, and orange juice", lunch: "Salmon with sweet potato and sauteed spinach", dinner: "Chicken stir-fry with brown rice and anti-inflammatory spices" }
+        { day: "Day 1 — Carb Loading", calories: "2,650 cal", protein: "158g protein", breakfast: "Whole wheat pasta with chicken and marinara sauce", lunch: "Large rice bowl with grilled chicken, beans, and corn", dinner: "Bagel with peanut butter, banana, and a glass of juice" },
+        { day: "Day 2 — Race Day", calories: "2,480 cal", protein: "152g protein", breakfast: "Pre-run oatmeal with honey and a banana", lunch: "Mid-race energy gels, sports drink, and rice cakes", dinner: "Recovery smoothie with tart cherry, protein, and oats" },
+        { day: "Day 3 — Recovery", calories: "2,550 cal", protein: "168g protein", breakfast: "Eggs with toast, avocado, and orange juice", lunch: "Salmon with sweet potato and sauteed spinach", dinner: "Chicken stir-fry with brown rice and anti-inflammatory spices" }
       ] },
       { name: "Recovery Rebuild", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Post-training recovery meals rich in antioxidants and anti-inflammatory compounds.", sampleDays: [
-        { day: "Day 1", breakfast: "Blueberry almond overnight oats with chia seeds", lunch: "Turmeric salmon with wild rice and mixed greens", dinner: "Tart cherry and beet recovery smoothie bowl with granola" },
-        { day: "Day 2", breakfast: "Acai bowl with mixed berries, coconut, and hemp seeds", lunch: "Grilled chicken salad with walnuts, berries, and olive oil", dinner: "Baked cod with roasted sweet potato and steamed broccoli" },
-        { day: "Day 3", breakfast: "Green smoothie with spinach, pineapple, ginger, and turmeric", lunch: "Turkey and avocado lettuce wraps with a side of fruit", dinner: "Herb-crusted salmon with quinoa and sauteed kale" }
+        { day: "Day 1", calories: "1,780 cal", protein: "125g protein", breakfast: "Blueberry almond overnight oats with chia seeds", lunch: "Turmeric salmon with wild rice and mixed greens", dinner: "Tart cherry and beet recovery smoothie bowl with granola" },
+        { day: "Day 2", calories: "1,720 cal", protein: "118g protein", breakfast: "Acai bowl with mixed berries, coconut, and hemp seeds", lunch: "Grilled chicken salad with walnuts, berries, and olive oil", dinner: "Baked cod with roasted sweet potato and steamed broccoli" },
+        { day: "Day 3", calories: "1,850 cal", protein: "132g protein", breakfast: "Green smoothie with spinach, pineapple, ginger, and turmeric", lunch: "Turkey and avocado lettuce wraps with a side of fruit", dinner: "Herb-crusted salmon with quinoa and sauteed kale" }
       ] },
       { name: "Game Day Protocol", type: "Performance", duration: "4 weeks", difficulty: "Intermediate", price: 27.99, description: "Pre-game, halftime, and post-game nutrition timing for competitive athletes.", sampleDays: [
-        { day: "Day 1 — Pre-Game", breakfast: "Pre-game oatmeal with banana, honey, and almond butter", lunch: "Chicken and rice with steamed vegetables (3 hours before)", dinner: "Light pasta with olive oil and lean protein (evening game)" },
-        { day: "Day 2 — Game Day", breakfast: "Toast with peanut butter and banana (morning game)", lunch: "Halftime rice cakes with peanut butter and sports drink", dinner: "Post-game chicken wrap with sweet potato fries and juice" },
-        { day: "Day 3 — Recovery Day", breakfast: "Protein pancakes with berries and a recovery shake", lunch: "Grilled salmon with brown rice and steamed asparagus", dinner: "Lean beef with mashed potatoes and a large salad" }
+        { day: "Day 1 — Pre-Game", calories: "2,380 cal", protein: "162g protein", breakfast: "Pre-game oatmeal with banana, honey, and almond butter", lunch: "Chicken and rice with steamed vegetables (3 hours before)", dinner: "Light pasta with olive oil and lean protein (evening game)" },
+        { day: "Day 2 — Game Day", calories: "2,450 cal", protein: "155g protein", breakfast: "Toast with peanut butter and banana (morning game)", lunch: "Halftime rice cakes with peanut butter and sports drink", dinner: "Post-game chicken wrap with sweet potato fries and juice" },
+        { day: "Day 3 — Recovery Day", calories: "2,520 cal", protein: "175g protein", breakfast: "Protein pancakes with berries and a recovery shake", lunch: "Grilled salmon with brown rice and steamed asparagus", dinner: "Lean beef with mashed potatoes and a large salad" }
       ] },
     ],
     tags: ["Sports", "Performance", "Recovery"]
@@ -542,24 +542,24 @@ const nutritionists = [
     services: ["Body recomposition", "Reverse dieting", "Flexible dieting", "Progress tracking"],
     plans: [
       { name: "Flexible Cut", type: "Low Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 32.99, description: "Calorie deficit with no food restrictions. Hit your targets your way.", sampleDays: [
-        { day: "Day 1", breakfast: "Greek yogurt with honey, mixed nuts, and a piece of fruit", lunch: "Choose-your-protein bowl with mixed greens and light dressing", dinner: "Light chicken Caesar wrap with a side of veggies" },
-        { day: "Day 2", breakfast: "Two eggs any style with a slice of toast and fruit", lunch: "Turkey lettuce wraps with hummus and cucumber", dinner: "Grilled shrimp with cauliflower rice and steamed asparagus" },
-        { day: "Day 3", breakfast: "Protein smoothie with spinach, banana, and almond milk", lunch: "Chicken and veggie soup with a small roll", dinner: "Baked salmon with a large mixed green salad and vinaigrette" }
+        { day: "Day 1", calories: "1,520 cal", protein: "128g protein", breakfast: "Greek yogurt with honey, mixed nuts, and a piece of fruit", lunch: "Choose-your-protein bowl with mixed greens and light dressing", dinner: "Light chicken Caesar wrap with a side of veggies" },
+        { day: "Day 2", calories: "1,450 cal", protein: "122g protein", breakfast: "Two eggs any style with a slice of toast and fruit", lunch: "Turkey lettuce wraps with hummus and cucumber", dinner: "Grilled shrimp with cauliflower rice and steamed asparagus" },
+        { day: "Day 3", calories: "1,480 cal", protein: "135g protein", breakfast: "Protein smoothie with spinach, banana, and almond milk", lunch: "Chicken and veggie soup with a small roll", dinner: "Baked salmon with a large mixed green salad and vinaigrette" }
       ] },
       { name: "Body Recomp Blueprint", type: "High Protein", duration: "12 weeks", difficulty: "Advanced", price: 44.99, description: "Simultaneous fat loss and muscle gain through precise nutrition cycling.", sampleDays: [
-        { day: "Day 1 — Training Day (High Carb)", breakfast: "Egg and cheese breakfast burrito with salsa and fruit", lunch: "Lean ground turkey with jasmine rice and mixed veggies", dinner: "Grilled chicken with quinoa, roasted peppers, and sweet potato" },
-        { day: "Day 2 — Training Day (Moderate)", breakfast: "Protein oats with whey, banana, and almond butter", lunch: "Salmon with brown rice and steamed broccoli", dinner: "Lean steak with baked potato and a side salad" },
-        { day: "Day 3 — Rest Day (Low Carb)", breakfast: "Scrambled eggs with avocado and turkey bacon", lunch: "Grilled chicken salad with olive oil, feta, and walnuts", dinner: "Baked cod with roasted vegetables and a small portion of rice" }
+        { day: "Day 1 — Training Day (High Carb)", calories: "2,150 cal", protein: "178g protein", breakfast: "Egg and cheese breakfast burrito with salsa and fruit", lunch: "Lean ground turkey with jasmine rice and mixed veggies", dinner: "Grilled chicken with quinoa, roasted peppers, and sweet potato" },
+        { day: "Day 2 — Training Day (Moderate)", calories: "2,080 cal", protein: "172g protein", breakfast: "Protein oats with whey, banana, and almond butter", lunch: "Salmon with brown rice and steamed broccoli", dinner: "Lean steak with baked potato and a side salad" },
+        { day: "Day 3 — Rest Day (Low Carb)", calories: "1,820 cal", protein: "168g protein", breakfast: "Scrambled eggs with avocado and turkey bacon", lunch: "Grilled chicken salad with olive oil, feta, and walnuts", dinner: "Baked cod with roasted vegetables and a small portion of rice" }
       ] },
       { name: "Reverse Diet Recovery", type: "Balanced", duration: "8 weeks", difficulty: "Intermediate", price: 34.99, description: "Gradually increase calories post-diet to maintain results and restore metabolism.", sampleDays: [
-        { day: "Day 1", breakfast: "Whole grain toast with avocado and poached eggs", lunch: "Balanced plate with salmon, rice, and steamed veggies", dinner: "Chicken stir-fry with mixed vegetables and noodles" },
-        { day: "Day 2", breakfast: "Oatmeal with berries, nuts, and a drizzle of honey", lunch: "Turkey sandwich on whole wheat with a side of fruit", dinner: "Grilled chicken thigh with sweet potato and green beans" },
-        { day: "Day 3", breakfast: "Smoothie bowl with protein, granola, and sliced banana", lunch: "Quinoa bowl with black beans, corn, avocado, and salsa", dinner: "Lean beef with roasted potatoes and a mixed salad" }
+        { day: "Day 1", calories: "1,850 cal", protein: "132g protein", breakfast: "Whole grain toast with avocado and poached eggs", lunch: "Balanced plate with salmon, rice, and steamed veggies", dinner: "Chicken stir-fry with mixed vegetables and noodles" },
+        { day: "Day 2", calories: "1,780 cal", protein: "128g protein", breakfast: "Oatmeal with berries, nuts, and a drizzle of honey", lunch: "Turkey sandwich on whole wheat with a side of fruit", dinner: "Grilled chicken thigh with sweet potato and green beans" },
+        { day: "Day 3", calories: "1,920 cal", protein: "138g protein", breakfast: "Smoothie bowl with protein, granola, and sliced banana", lunch: "Quinoa bowl with black beans, corn, avocado, and salsa", dinner: "Lean beef with roasted potatoes and a mixed salad" }
       ] },
       { name: "No-Track Intuitive Plan", type: "Flexible", duration: "6 weeks", difficulty: "Beginner", price: 26.99, description: "Learn to eat intuitively with portion guides and hunger cue training.", sampleDays: [
-        { day: "Day 1", breakfast: "Mindful breakfast: eggs, toast, and fruit — eat until satisfied", lunch: "Portion-guided pasta with pesto and grilled chicken", dinner: "Simple fish tacos with slaw and lime" },
-        { day: "Day 2", breakfast: "Oatmeal with toppings of choice — practice hunger awareness", lunch: "Mindful snack plate with cheese, fruit, nuts, and crackers", dinner: "Grilled chicken with roasted vegetables and a roll" },
-        { day: "Day 3", breakfast: "Yogurt parfait — stop when comfortably full", lunch: "Soup and sandwich combo — listen to satiety cues", dinner: "Salmon with rice and salad — practice portion awareness" }
+        { day: "Day 1", calories: "1,680 cal", protein: "115g protein", breakfast: "Mindful breakfast: eggs, toast, and fruit — eat until satisfied", lunch: "Portion-guided pasta with pesto and grilled chicken", dinner: "Simple fish tacos with slaw and lime" },
+        { day: "Day 2", calories: "1,620 cal", protein: "108g protein", breakfast: "Oatmeal with toppings of choice — practice hunger awareness", lunch: "Mindful snack plate with cheese, fruit, nuts, and crackers", dinner: "Grilled chicken with roasted vegetables and a roll" },
+        { day: "Day 3", calories: "1,750 cal", protein: "120g protein", breakfast: "Yogurt parfait — stop when comfortably full", lunch: "Soup and sandwich combo — listen to satiety cues", dinner: "Salmon with rice and salad — practice portion awareness" }
       ] },
     ],
     tags: ["Flexible Dieting", "Recomp", "Sustainable"]
@@ -572,24 +572,24 @@ const nutritionists = [
     services: ["Microbiome support", "Fermentation guides", "Elimination diets", "Stress-gut protocols"],
     plans: [
       { name: "Microbiome Reset", type: "Gut Health", duration: "8 weeks", difficulty: "Intermediate", price: 37.99, description: "Rebuild your gut flora with prebiotic and probiotic-rich meal plans.", sampleDays: [
-        { day: "Day 1", breakfast: "Kefir smoothie with banana, prebiotic fiber, and flaxseed", lunch: "Kimchi rice bowl with soft-boiled egg and sesame seeds", dinner: "Jerusalem artichoke soup with sourdough bread and olive oil" },
-        { day: "Day 2", breakfast: "Yogurt bowl with prebiotic granola, chicory root, and berries", lunch: "Fermented vegetable wrap with hummus and sprouts", dinner: "Miso-glazed chicken with sauteed leeks and brown rice" },
-        { day: "Day 3", breakfast: "Overnight oats with kefir, chia seeds, and sliced banana", lunch: "Lentil soup with garlic, onions, and a side of sauerkraut", dinner: "Baked salmon with asparagus and fermented beet salad" }
+        { day: "Day 1", calories: "1,720 cal", protein: "108g protein", breakfast: "Kefir smoothie with banana, prebiotic fiber, and flaxseed", lunch: "Kimchi rice bowl with soft-boiled egg and sesame seeds", dinner: "Jerusalem artichoke soup with sourdough bread and olive oil" },
+        { day: "Day 2", calories: "1,680 cal", protein: "112g protein", breakfast: "Yogurt bowl with prebiotic granola, chicory root, and berries", lunch: "Fermented vegetable wrap with hummus and sprouts", dinner: "Miso-glazed chicken with sauteed leeks and brown rice" },
+        { day: "Day 3", calories: "1,750 cal", protein: "118g protein", breakfast: "Overnight oats with kefir, chia seeds, and sliced banana", lunch: "Lentil soup with garlic, onions, and a side of sauerkraut", dinner: "Baked salmon with asparagus and fermented beet salad" }
       ] },
       { name: "Fermented Foods Journey", type: "Whole Foods", duration: "6 weeks", difficulty: "Beginner", price: 28.99, description: "Introduce fermented foods into your daily routine for better digestion and immunity.", sampleDays: [
-        { day: "Day 1", breakfast: "Kombucha overnight oats with sauerkraut on toast", lunch: "Miso-glazed salmon with pickled vegetables and rice", dinner: "Tempeh bowl with fermented hot sauce, greens, and quinoa" },
-        { day: "Day 2", breakfast: "Kefir smoothie with mango, ginger, and turmeric", lunch: "Kimchi fried rice with a fried egg and scallions", dinner: "Grilled chicken with fermented salsa and sweet potato" },
-        { day: "Day 3", breakfast: "Sourdough toast with avocado and a side of yogurt", lunch: "Miso soup with tofu, seaweed, and pickled radish", dinner: "Tempeh stir-fry with fermented black bean sauce and noodles" }
+        { day: "Day 1", calories: "1,650 cal", protein: "105g protein", breakfast: "Kombucha overnight oats with sauerkraut on toast", lunch: "Miso-glazed salmon with pickled vegetables and rice", dinner: "Tempeh bowl with fermented hot sauce, greens, and quinoa" },
+        { day: "Day 2", calories: "1,620 cal", protein: "102g protein", breakfast: "Kefir smoothie with mango, ginger, and turmeric", lunch: "Kimchi fried rice with a fried egg and scallions", dinner: "Grilled chicken with fermented salsa and sweet potato" },
+        { day: "Day 3", calories: "1,700 cal", protein: "110g protein", breakfast: "Sourdough toast with avocado and a side of yogurt", lunch: "Miso soup with tofu, seaweed, and pickled radish", dinner: "Tempeh stir-fry with fermented black bean sauce and noodles" }
       ] },
       { name: "Stress-Gut Connection", type: "Anti-Inflammatory", duration: "8 weeks", difficulty: "Intermediate", price: 39.99, description: "Address the gut-brain axis with calming foods and stress-reducing meal patterns.", sampleDays: [
-        { day: "Day 1", breakfast: "Warm turmeric oatmeal with walnuts and a cup of chamomile tea", lunch: "Chamomile-poached chicken with steamed greens and brown rice", dinner: "Warm turmeric lentil soup with calming herbs and sourdough" },
-        { day: "Day 2", breakfast: "Magnesium-rich smoothie with banana, cacao, and almond butter", lunch: "Salmon salad with leafy greens, avocado, and pumpkin seeds", dinner: "Slow-cooked chicken with sweet potato and lavender-infused broth" },
-        { day: "Day 3", breakfast: "Yogurt with dark chocolate shavings, nuts, and berries", lunch: "Turkey and vegetable soup with ginger and lemongrass", dinner: "Baked cod with roasted root vegetables and fresh herbs" }
+        { day: "Day 1", calories: "1,780 cal", protein: "115g protein", breakfast: "Warm turmeric oatmeal with walnuts and a cup of chamomile tea", lunch: "Chamomile-poached chicken with steamed greens and brown rice", dinner: "Warm turmeric lentil soup with calming herbs and sourdough" },
+        { day: "Day 2", calories: "1,720 cal", protein: "122g protein", breakfast: "Magnesium-rich smoothie with banana, cacao, and almond butter", lunch: "Salmon salad with leafy greens, avocado, and pumpkin seeds", dinner: "Slow-cooked chicken with sweet potato and lavender-infused broth" },
+        { day: "Day 3", calories: "1,680 cal", protein: "108g protein", breakfast: "Yogurt with dark chocolate shavings, nuts, and berries", lunch: "Turkey and vegetable soup with ginger and lemongrass", dinner: "Baked cod with roasted root vegetables and fresh herbs" }
       ] },
       { name: "Seasonal Cleanse", type: "Elimination", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Quarterly reset plan using seasonal whole foods to support digestive health.", sampleDays: [
-        { day: "Day 1", breakfast: "Fresh fruit and seed breakfast bowl with coconut flakes", lunch: "Seasonal roasted vegetable and grain bowl with tahini", dinner: "Simple poached fish with steamed squash and fresh herbs" },
-        { day: "Day 2", breakfast: "Warm porridge with seasonal fruit, cinnamon, and honey", lunch: "Mixed green salad with roasted beets, walnuts, and lemon", dinner: "Herb-baked chicken with seasonal root vegetables" },
-        { day: "Day 3", breakfast: "Green juice with cucumber, celery, apple, and ginger", lunch: "Butternut squash soup with a slice of whole grain bread", dinner: "Steamed white fish with sauteed seasonal greens and rice" }
+        { day: "Day 1", calories: "1,580 cal", protein: "95g protein", breakfast: "Fresh fruit and seed breakfast bowl with coconut flakes", lunch: "Seasonal roasted vegetable and grain bowl with tahini", dinner: "Simple poached fish with steamed squash and fresh herbs" },
+        { day: "Day 2", calories: "1,620 cal", protein: "88g protein", breakfast: "Warm porridge with seasonal fruit, cinnamon, and honey", lunch: "Mixed green salad with roasted beets, walnuts, and lemon", dinner: "Herb-baked chicken with seasonal root vegetables" },
+        { day: "Day 3", calories: "1,550 cal", protein: "92g protein", breakfast: "Green juice with cucumber, celery, apple, and ginger", lunch: "Butternut squash soup with a slice of whole grain bread", dinner: "Steamed white fish with sauteed seasonal greens and rice" }
       ] },
     ],
     tags: ["Gut Health", "Integrative", "Fermentation"]
@@ -602,24 +602,24 @@ const nutritionists = [
     services: ["Student meal plans", "Bulk cooking", "Freezer prep", "Dorm-friendly recipes"],
     plans: [
       { name: "College Kitchen Plan", type: "Budget", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Healthy meals you can make in a dorm or small kitchen with basic equipment.", sampleDays: [
-        { day: "Day 1", breakfast: "Microwave scrambled eggs with cheese and toast", lunch: "Instant ramen upgrade with a soft-boiled egg and frozen veggies", dinner: "Peanut butter banana wrap with honey and a glass of milk" },
-        { day: "Day 2", breakfast: "Overnight oats with peanut butter (no cooking needed)", lunch: "Canned tuna on crackers with an apple", dinner: "Microwave baked potato with cheese, broccoli, and butter" },
-        { day: "Day 3", breakfast: "Cereal with milk and a banana", lunch: "Turkey and cheese sandwich with mustard and chips", dinner: "Quesadilla with canned beans, cheese, and salsa" }
+        { day: "Day 1", calories: "1,650 cal", protein: "88g protein", breakfast: "Microwave scrambled eggs with cheese and toast", lunch: "Instant ramen upgrade with a soft-boiled egg and frozen veggies", dinner: "Peanut butter banana wrap with honey and a glass of milk" },
+        { day: "Day 2", calories: "1,580 cal", protein: "82g protein", breakfast: "Overnight oats with peanut butter (no cooking needed)", lunch: "Canned tuna on crackers with an apple", dinner: "Microwave baked potato with cheese, broccoli, and butter" },
+        { day: "Day 3", calories: "1,620 cal", protein: "85g protein", breakfast: "Cereal with milk and a banana", lunch: "Turkey and cheese sandwich with mustard and chips", dinner: "Quesadilla with canned beans, cheese, and salsa" }
       ] },
       { name: "Freezer Meal Mastery", type: "Meal Prep", duration: "6 weeks", difficulty: "Beginner", price: 24.99, description: "Batch cook and freeze 20+ meals in one session. Reheat and eat all week.", sampleDays: [
-        { day: "Day 1", breakfast: "Frozen breakfast burritos with sausage, eggs, and peppers", lunch: "Pre-portioned beef and vegetable stew (thawed overnight)", dinner: "Freezer-friendly chicken enchilada bake with rice" },
-        { day: "Day 2", breakfast: "Frozen egg muffin cups with cheese and spinach", lunch: "Frozen chili portioned out with shredded cheese and crackers", dinner: "Frozen meatball marinara with pasta (boil fresh)" },
-        { day: "Day 3", breakfast: "Frozen smoothie packs — just add milk and blend", lunch: "Frozen chicken and rice casserole (reheat)", dinner: "Frozen teriyaki chicken with stir-fry vegetables and rice" }
+        { day: "Day 1", calories: "1,850 cal", protein: "118g protein", breakfast: "Frozen breakfast burritos with sausage, eggs, and peppers", lunch: "Pre-portioned beef and vegetable stew (thawed overnight)", dinner: "Freezer-friendly chicken enchilada bake with rice" },
+        { day: "Day 2", calories: "1,780 cal", protein: "112g protein", breakfast: "Frozen egg muffin cups with cheese and spinach", lunch: "Frozen chili portioned out with shredded cheese and crackers", dinner: "Frozen meatball marinara with pasta (boil fresh)" },
+        { day: "Day 3", calories: "1,920 cal", protein: "125g protein", breakfast: "Frozen smoothie packs — just add milk and blend", lunch: "Frozen chicken and rice casserole (reheat)", dinner: "Frozen teriyaki chicken with stir-fry vegetables and rice" }
       ] },
       { name: "Bulk on a Budget", type: "High Calorie", duration: "8 weeks", difficulty: "Intermediate", price: 29.99, description: "High-calorie meal plan for muscle building without expensive supplements.", sampleDays: [
-        { day: "Day 1", breakfast: "Peanut butter and oat mass gainer shake with whole milk and banana", lunch: "Chicken and rice with olive oil, mixed nuts, and avocado", dinner: "Ground beef pasta with cheese and a glass of whole milk" },
-        { day: "Day 2", breakfast: "6 eggs scrambled with cheese, toast with butter, and juice", lunch: "Double portion tuna salad sandwich with chips and fruit", dinner: "Chicken thighs with mashed potatoes, gravy, and bread" },
-        { day: "Day 3", breakfast: "Whole milk yogurt with granola, dried fruit, and honey", lunch: "Large burrito with rice, beans, cheese, and sour cream", dinner: "Pork chops with sweet potato, butter, and a protein shake" }
+        { day: "Day 1", calories: "3,050 cal", protein: "178g protein", breakfast: "Peanut butter and oat mass gainer shake with whole milk and banana", lunch: "Chicken and rice with olive oil, mixed nuts, and avocado", dinner: "Ground beef pasta with cheese and a glass of whole milk" },
+        { day: "Day 2", calories: "3,180 cal", protein: "185g protein", breakfast: "6 eggs scrambled with cheese, toast with butter, and juice", lunch: "Double portion tuna salad sandwich with chips and fruit", dinner: "Chicken thighs with mashed potatoes, gravy, and bread" },
+        { day: "Day 3", calories: "2,920 cal", protein: "172g protein", breakfast: "Whole milk yogurt with granola, dried fruit, and honey", lunch: "Large burrito with rice, beans, cheese, and sour cream", dinner: "Pork chops with sweet potato, butter, and a protein shake" }
       ] },
       { name: "5-Ingredient Meals", type: "Quick Recipes", duration: "4 weeks", difficulty: "Beginner", price: 19.99, description: "Simple, nutritious meals using just 5 ingredients each. Perfect for beginners.", sampleDays: [
-        { day: "Day 1", breakfast: "Banana pancakes with eggs, oats, cinnamon, and maple syrup", lunch: "Baked chicken with lemon, garlic, olive oil, and herbs", dinner: "Pasta with butter, parmesan, frozen peas, and black pepper" },
-        { day: "Day 2", breakfast: "Toast, peanut butter, banana, honey, and milk", lunch: "Canned soup upgraded with rotisserie chicken and frozen veggies", dinner: "Rice, canned black beans, salsa, cheese, and sour cream" },
-        { day: "Day 3", breakfast: "Yogurt, granola, honey, banana, and a handful of nuts", lunch: "Tortilla, deli turkey, cheese, mustard, and lettuce", dinner: "Salmon fillet, soy sauce, honey, garlic, and steamed rice" }
+        { day: "Day 1", calories: "1,720 cal", protein: "108g protein", breakfast: "Banana pancakes with eggs, oats, cinnamon, and maple syrup", lunch: "Baked chicken with lemon, garlic, olive oil, and herbs", dinner: "Pasta with butter, parmesan, frozen peas, and black pepper" },
+        { day: "Day 2", calories: "1,680 cal", protein: "102g protein", breakfast: "Toast, peanut butter, banana, honey, and milk", lunch: "Canned soup upgraded with rotisserie chicken and frozen veggies", dinner: "Rice, canned black beans, salsa, cheese, and sour cream" },
+        { day: "Day 3", calories: "1,750 cal", protein: "115g protein", breakfast: "Yogurt, granola, honey, banana, and a handful of nuts", lunch: "Tortilla, deli turkey, cheese, mustard, and lettuce", dinner: "Salmon fillet, soy sauce, honey, garlic, and steamed rice" }
       ] },
     ],
     tags: ["Budget", "Students", "Freezer Prep"]
@@ -632,24 +632,24 @@ const nutritionists = [
     services: ["Ayurvedic meal plans", "Plant protein optimization", "Spice therapy", "Seasonal eating"],
     plans: [
       { name: "Ayurvedic Balance", type: "Whole Foods", duration: "8 weeks", difficulty: "Intermediate", price: 36.99, description: "Eat according to your dosha with balanced plant-based meals rooted in Ayurveda.", sampleDays: [
-        { day: "Day 1", breakfast: "Warm spiced porridge with ghee, cardamom, and stewed fruit", lunch: "Kitchari with cumin, fresh cilantro, and a squeeze of lime", dinner: "Warming dal with turmeric rice and freshly baked naan" },
-        { day: "Day 2", breakfast: "Stewed apples with cinnamon, cloves, and a drizzle of honey", lunch: "Spiced coconut vegetable stew with basmati rice", dinner: "Mung bean soup with ginger, cumin, and fresh coriander" },
-        { day: "Day 3", breakfast: "Golden milk latte with dates and soaked almonds", lunch: "Vegetable biryani with raita and pickled onions", dinner: "Stuffed chapati with spiced potato and a side of sauteed greens" }
+        { day: "Day 1", calories: "1,750 cal", protein: "82g protein", breakfast: "Warm spiced porridge with ghee, cardamom, and stewed fruit", lunch: "Kitchari with cumin, fresh cilantro, and a squeeze of lime", dinner: "Warming dal with turmeric rice and freshly baked naan" },
+        { day: "Day 2", calories: "1,680 cal", protein: "78g protein", breakfast: "Stewed apples with cinnamon, cloves, and a drizzle of honey", lunch: "Spiced coconut vegetable stew with basmati rice", dinner: "Mung bean soup with ginger, cumin, and fresh coriander" },
+        { day: "Day 3", calories: "1,720 cal", protein: "85g protein", breakfast: "Golden milk latte with dates and soaked almonds", lunch: "Vegetable biryani with raita and pickled onions", dinner: "Stuffed chapati with spiced potato and a side of sauteed greens" }
       ] },
       { name: "Plant Protein Power", type: "High Protein", duration: "6 weeks", difficulty: "Beginner", price: 29.99, description: "Complete protein combinations from plant sources to fuel your training.", sampleDays: [
-        { day: "Day 1", breakfast: "Peanut butter oatmeal with hemp seeds and soy milk", lunch: "Red lentil and chickpea power bowl with tahini dressing", dinner: "Tofu tikka masala with brown rice and steamed spinach" },
-        { day: "Day 2", breakfast: "Protein smoothie with pea protein, banana, and almond butter", lunch: "Edamame and quinoa salad with sesame dressing and avocado", dinner: "Black bean and tempeh chili with cornbread" },
-        { day: "Day 3", breakfast: "Chickpea flour omelette with mushrooms and fresh herbs", lunch: "Lentil and walnut tacos with cashew crema and slaw", dinner: "Seitan stir-fry with broccoli, peanut sauce, and rice noodles" }
+        { day: "Day 1", calories: "2,080 cal", protein: "125g protein", breakfast: "Peanut butter oatmeal with hemp seeds and soy milk", lunch: "Red lentil and chickpea power bowl with tahini dressing", dinner: "Tofu tikka masala with brown rice and steamed spinach" },
+        { day: "Day 2", calories: "2,020 cal", protein: "128g protein", breakfast: "Protein smoothie with pea protein, banana, and almond butter", lunch: "Edamame and quinoa salad with sesame dressing and avocado", dinner: "Black bean and tempeh chili with cornbread" },
+        { day: "Day 3", calories: "2,150 cal", protein: "130g protein", breakfast: "Chickpea flour omelette with mushrooms and fresh herbs", lunch: "Lentil and walnut tacos with cashew crema and slaw", dinner: "Seitan stir-fry with broccoli, peanut sauce, and rice noodles" }
       ] },
       { name: "Anti-Inflammatory Spice Plan", type: "Anti-Inflammatory", duration: "6 weeks", difficulty: "Beginner", price: 27.99, description: "Harness turmeric, ginger, and healing spices in daily anti-inflammatory meals.", sampleDays: [
-        { day: "Day 1", breakfast: "Golden milk turmeric smoothie bowl with walnuts and berries", lunch: "Ginger-spiced lentil soup with fresh herbs and sourdough", dinner: "Cinnamon roasted sweet potato and chickpea bowl with tahini" },
-        { day: "Day 2", breakfast: "Warm ginger-turmeric tea with overnight oats and cardamom", lunch: "Cumin-roasted cauliflower wrap with anti-inflammatory slaw", dinner: "Coconut curry with turmeric, ginger, tofu, and vegetables" },
-        { day: "Day 3", breakfast: "Spiced chia pudding with cinnamon, nutmeg, and fresh mango", lunch: "Black pepper and turmeric chickpea salad with lemon", dinner: "Ginger-garlic stir-fry with tempeh, greens, and brown rice" }
+        { day: "Day 1", calories: "1,680 cal", protein: "88g protein", breakfast: "Golden milk turmeric smoothie bowl with walnuts and berries", lunch: "Ginger-spiced lentil soup with fresh herbs and sourdough", dinner: "Cinnamon roasted sweet potato and chickpea bowl with tahini" },
+        { day: "Day 2", calories: "1,620 cal", protein: "85g protein", breakfast: "Warm ginger-turmeric tea with overnight oats and cardamom", lunch: "Cumin-roasted cauliflower wrap with anti-inflammatory slaw", dinner: "Coconut curry with turmeric, ginger, tofu, and vegetables" },
+        { day: "Day 3", calories: "1,720 cal", protein: "92g protein", breakfast: "Spiced chia pudding with cinnamon, nutmeg, and fresh mango", lunch: "Black pepper and turmeric chickpea salad with lemon", dinner: "Ginger-garlic stir-fry with tempeh, greens, and brown rice" }
       ] },
       { name: "Seasonal Harvest Plan", type: "Whole Foods", duration: "12 weeks", difficulty: "Intermediate", price: 39.99, description: "Eat in sync with the seasons using local, plant-based whole foods.", sampleDays: [
-        { day: "Day 1", breakfast: "Seasonal fruit and nut morning porridge with maple syrup", lunch: "Farm-fresh vegetable and herb grain bowl with lemon dressing", dinner: "Root vegetable tagine with couscous and fresh mint" },
-        { day: "Day 2", breakfast: "Buckwheat pancakes with seasonal berries and coconut cream", lunch: "Roasted squash soup with toasted pumpkin seeds and bread", dinner: "Stuffed acorn squash with wild rice, cranberries, and pecans" },
-        { day: "Day 3", breakfast: "Smoothie with seasonal greens, pear, ginger, and hemp seeds", lunch: "Warm lentil salad with roasted seasonal vegetables", dinner: "Mushroom and barley risotto with fresh herbs and olive oil" }
+        { day: "Day 1", calories: "1,780 cal", protein: "82g protein", breakfast: "Seasonal fruit and nut morning porridge with maple syrup", lunch: "Farm-fresh vegetable and herb grain bowl with lemon dressing", dinner: "Root vegetable tagine with couscous and fresh mint" },
+        { day: "Day 2", calories: "1,720 cal", protein: "78g protein", breakfast: "Buckwheat pancakes with seasonal berries and coconut cream", lunch: "Roasted squash soup with toasted pumpkin seeds and bread", dinner: "Stuffed acorn squash with wild rice, cranberries, and pecans" },
+        { day: "Day 3", calories: "1,850 cal", protein: "85g protein", breakfast: "Smoothie with seasonal greens, pear, ginger, and hemp seeds", lunch: "Warm lentil salad with roasted seasonal vegetables", dinner: "Mushroom and barley risotto with fresh herbs and olive oil" }
       ] },
     ],
     tags: ["Ayurvedic", "Plant-Based", "Holistic"]
@@ -662,24 +662,24 @@ const nutritionists = [
     services: ["Pro athlete protocols", "Weight class management", "Supplement stacks", "In-season nutrition"],
     plans: [
       { name: "Pro Athlete Fuel", type: "Performance", duration: "12 weeks", difficulty: "Advanced", price: 49.99, description: "The same periodized nutrition framework used by professional athletes.", sampleDays: [
-        { day: "Day 1 — Game Day", breakfast: "Competition-day oatmeal with banana, honey, and electrolyte drink", lunch: "Chicken and white rice with steamed vegetables (3 hours pre-game)", dinner: "Post-game recovery shake with casein, berries, oats, and a full meal" },
-        { day: "Day 2 — Training Day", breakfast: "6 egg whites with whole grain toast, avocado, and orange juice", lunch: "High-carb pasta with lean ground beef and mixed veggies", dinner: "Grilled salmon with sweet potato, broccoli, and olive oil" },
-        { day: "Day 3 — Recovery Day", breakfast: "Protein pancakes with blueberries and turkey sausage", lunch: "Chicken breast with brown rice and a large mixed salad", dinner: "Lean beef with mashed potatoes, green beans, and a casein shake" }
+        { day: "Day 1 — Game Day", calories: "2,680 cal", protein: "185g protein", breakfast: "Competition-day oatmeal with banana, honey, and electrolyte drink", lunch: "Chicken and white rice with steamed vegetables (3 hours pre-game)", dinner: "Post-game recovery shake with casein, berries, oats, and a full meal" },
+        { day: "Day 2 — Training Day", calories: "2,750 cal", protein: "190g protein", breakfast: "6 egg whites with whole grain toast, avocado, and orange juice", lunch: "High-carb pasta with lean ground beef and mixed veggies", dinner: "Grilled salmon with sweet potato, broccoli, and olive oil" },
+        { day: "Day 3 — Recovery Day", calories: "2,520 cal", protein: "178g protein", breakfast: "Protein pancakes with blueberries and turkey sausage", lunch: "Chicken breast with brown rice and a large mixed salad", dinner: "Lean beef with mashed potatoes, green beans, and a casein shake" }
       ] },
       { name: "Weight Class Manager", type: "Low Calorie", duration: "8 weeks", difficulty: "Advanced", price: 42.99, description: "Safe, effective weight manipulation for combat sports and weight-class athletes.", sampleDays: [
-        { day: "Day 1 — Maintenance Phase", breakfast: "Egg white omelette with spinach, tomato, and a slice of toast", lunch: "Measured portion grilled fish with steamed greens and lemon", dinner: "Light turkey meatballs with zucchini noodles and marinara" },
-        { day: "Day 2 — Cutting Phase", breakfast: "Small portion of oatmeal with protein powder and water", lunch: "Grilled chicken breast with cucumber and a small sweet potato", dinner: "White fish with steamed broccoli and a tablespoon of olive oil" },
-        { day: "Day 3 — Refeed Day", breakfast: "Scrambled eggs with rice, avocado, and fruit", lunch: "Chicken and pasta with tomato sauce and a side salad", dinner: "Steak with baked potato, butter, and steamed vegetables" }
+        { day: "Day 1 — Maintenance Phase", calories: "1,620 cal", protein: "155g protein", breakfast: "Egg white omelette with spinach, tomato, and a slice of toast", lunch: "Measured portion grilled fish with steamed greens and lemon", dinner: "Light turkey meatballs with zucchini noodles and marinara" },
+        { day: "Day 2 — Cutting Phase", calories: "1,480 cal", protein: "162g protein", breakfast: "Small portion of oatmeal with protein powder and water", lunch: "Grilled chicken breast with cucumber and a small sweet potato", dinner: "White fish with steamed broccoli and a tablespoon of olive oil" },
+        { day: "Day 3 — Refeed Day", calories: "2,050 cal", protein: "148g protein", breakfast: "Scrambled eggs with rice, avocado, and fruit", lunch: "Chicken and pasta with tomato sauce and a side salad", dinner: "Steak with baked potato, butter, and steamed vegetables" }
       ] },
       { name: "Off-Season Builder", type: "High Calorie", duration: "10 weeks", difficulty: "Intermediate", price: 39.99, description: "Structured surplus plan to build size and strength during the off-season.", sampleDays: [
-        { day: "Day 1", breakfast: "Mass-building shake with oats, peanut butter, whole milk, and banana", lunch: "Double burger patties with rice, avocado, and cheese", dinner: "Loaded baked potato with pulled chicken, cheese, and sour cream" },
-        { day: "Day 2", breakfast: "5 whole eggs with bacon, hash browns, and toast with butter", lunch: "Chicken thighs with pasta, alfredo sauce, and breadsticks", dinner: "Ribeye steak with mashed potatoes, corn, and a roll" },
-        { day: "Day 3", breakfast: "French toast with syrup, scrambled eggs, and sausage links", lunch: "Large burrito bowl with double rice, double meat, and guacamole", dinner: "Salmon with wild rice, roasted vegetables, and a protein shake" }
+        { day: "Day 1", calories: "3,150 cal", protein: "195g protein", breakfast: "Mass-building shake with oats, peanut butter, whole milk, and banana", lunch: "Double burger patties with rice, avocado, and cheese", dinner: "Loaded baked potato with pulled chicken, cheese, and sour cream" },
+        { day: "Day 2", calories: "3,280 cal", protein: "188g protein", breakfast: "5 whole eggs with bacon, hash browns, and toast with butter", lunch: "Chicken thighs with pasta, alfredo sauce, and breadsticks", dinner: "Ribeye steak with mashed potatoes, corn, and a roll" },
+        { day: "Day 3", calories: "3,080 cal", protein: "192g protein", breakfast: "French toast with syrup, scrambled eggs, and sausage links", lunch: "Large burrito bowl with double rice, double meat, and guacamole", dinner: "Salmon with wild rice, roasted vegetables, and a protein shake" }
       ] },
       { name: "Travel Nutrition Guide", type: "Flexible", duration: "4 weeks", difficulty: "Beginner", price: 24.99, description: "Stay on track while traveling for games, tournaments, or work.", sampleDays: [
-        { day: "Day 1 — Travel Day", breakfast: "Hotel-room overnight oats with protein powder and fruit", lunch: "Airport-friendly chicken and veggie wrap with a protein bar", dinner: "Grilled chicken salad from a restaurant (dressing on the side)" },
-        { day: "Day 2 — On the Road", breakfast: "Portable protein box with nuts, jerky, fruit, and cheese", lunch: "Subway or deli sandwich with lean protein and vegetables", dinner: "Room service grilled fish with rice and steamed vegetables" },
-        { day: "Day 3 — Tournament Day", breakfast: "Pre-packed oatmeal cups with banana and almond butter", lunch: "Packed PB&J sandwich, trail mix, and sports drink", dinner: "Post-competition meal: pasta with grilled chicken and a recovery shake" }
+        { day: "Day 1 — Travel Day", calories: "2,150 cal", protein: "145g protein", breakfast: "Hotel-room overnight oats with protein powder and fruit", lunch: "Airport-friendly chicken and veggie wrap with a protein bar", dinner: "Grilled chicken salad from a restaurant (dressing on the side)" },
+        { day: "Day 2 — On the Road", calories: "2,080 cal", protein: "138g protein", breakfast: "Portable protein box with nuts, jerky, fruit, and cheese", lunch: "Subway or deli sandwich with lean protein and vegetables", dinner: "Room service grilled fish with rice and steamed vegetables" },
+        { day: "Day 3 — Tournament Day", calories: "2,250 cal", protein: "152g protein", breakfast: "Pre-packed oatmeal cups with banana and almond butter", lunch: "Packed PB&J sandwich, trail mix, and sports drink", dinner: "Post-competition meal: pasta with grilled chicken and a recovery shake" }
       ] },
     ],
     tags: ["Pro Sports", "Elite", "Performance"]
@@ -1264,7 +1264,7 @@ function openTrainerModal(id) {
               <div style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Sample Program</div>
               ${w.sampleDays.map(d => `
                 <div style="margin-bottom:6px;">
-                  <div style="font-size:0.78rem;font-weight:500;color:var(--text);margin-bottom:2px;">${d.day}</div>
+                  <div style="font-size:0.78rem;font-weight:500;color:var(--text);margin-bottom:2px;">${d.day}${d.calories ? ` <span style="font-weight:300;color:var(--text-muted);font-size:0.72rem;margin-left:6px;">${d.calories} \u00b7 ${d.protein}</span>` : ''}</div>
                   ${d.exercises.map(e => `<div style="font-size:0.78rem;color:var(--text-muted);padding:1px 0 1px 8px;font-weight:300;">&middot; ${e}</div>`).join('')}
                 </div>
               `).join('')}
