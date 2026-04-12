@@ -282,8 +282,8 @@ function closeClientDetail() {
 function renderSales() {
   const list = document.getElementById('salesList');
   const totalSales = recentSales.reduce((sum, s) => sum + s.price, 0);
-  const yourEarnings = totalSales * 0.8;
-  const shapeFee = totalSales * 0.2;
+  const yourEarnings = totalSales * 0.85;
+  const shapeFee = totalSales * 0.15;
 
   list.innerHTML = `
     <div style="display:flex;gap:24px;margin-bottom:24px;padding:20px;background:var(--bg-alt);border-radius:8px;">
@@ -293,11 +293,11 @@ function renderSales() {
       </div>
       <div style="flex:1;text-align:center;">
         <div style="font-size:1.2rem;font-weight:600;color:#10B981;">$${yourEarnings.toFixed(2)}</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Your Earnings (80%)</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Your Earnings (85%)</div>
       </div>
       <div style="flex:1;text-align:center;">
         <div style="font-size:1.2rem;font-weight:600;color:var(--text-muted);">$${shapeFee.toFixed(2)}</div>
-        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Shape Fee (20%)</div>
+        <div style="font-size:0.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Shape Fee (15%)</div>
       </div>
     </div>
   ` + recentSales.map(s => {
