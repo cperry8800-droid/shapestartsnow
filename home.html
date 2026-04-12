@@ -33,6 +33,16 @@
     }
   </script>
   <style>
+    .hero-shape-logo {
+      display: inline-block;
+      vertical-align: baseline;
+    }
+    .hero-shape-logo img {
+      height: 1.1em;
+      vertical-align: baseline;
+      margin-bottom: -0.15em;
+      filter: brightness(0) invert(1) sepia(1) saturate(5) hue-rotate(130deg) brightness(0.9);
+    }
     .split-hero {
       padding: 160px 0 40px; text-align: center;
       position: relative;
@@ -176,7 +186,7 @@
   <!-- Hero -->
   <section class="split-hero">
     <div class="container">
-      <h1>Welcome to <span class="gradient-text">Shape</span></h1>
+      <h1>Welcome to <span class="hero-shape-logo"><img src="logo-text.png" alt="Shape"></span></h1>
       <p class="split-hero-sub">Real trainers. Real nutritionists. Your shape.<br>Join the community.</p>
 
       <!-- Split Paths -->
