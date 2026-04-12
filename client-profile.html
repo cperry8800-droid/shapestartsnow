@@ -798,6 +798,15 @@
           <div class="cp-visibility-option" data-vis="private" onclick="setVisibility(this)">Private</div>
         </div>
       </div>
+
+      <div style="margin-top:20px;">
+        <div class="cp-field-label" style="margin-bottom:10px;">Direct Messages</div>
+        <p style="font-size:0.78rem;color:var(--text-muted);font-weight:300;margin-bottom:10px;">Choose who can send you direct messages in the community.</p>
+        <div class="cp-visibility-select" id="messagingSelect">
+          <div class="cp-visibility-option" data-msg="everyone" onclick="setMessaging(this)">Everyone</div>
+          <div class="cp-visibility-option active" data-msg="friends" onclick="setMessaging(this)">Friends Only</div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -912,10 +921,19 @@
 
     // ===== Visibility =====
     function setVisibility(el) {
-      document.querySelectorAll('.cp-visibility-option').forEach(o => o.classList.remove('active'));
+      document.querySelectorAll('#visibilitySelect .cp-visibility-option').forEach(o => o.classList.remove('active'));
       el.classList.add('active');
       saveToLocalStorage();
       showToast('Visibility updated!');
+    }
+
+    function setMessaging(el) {
+      document.querySelectorAll('#messagingSelect .cp-visibility-option').forEach(o => o.classList.remove('active'));
+      el.classList.add('active');
+      const setting = el.dataset.msg;
+      localStorage.setItem('shapeMessagingSetting', setting);
+      saveToLocalStorage();
+      showToast('Messaging preference updated!');
     }
 
     // ===== Privacy Toggles =====
@@ -971,8 +989,11 @@
         data.privacy[t.dataset.privacy] = t.checked;
       });
       // Visibility
-      const activeVis = document.querySelector('.cp-visibility-option.active');
+      const activeVis = document.querySelector('#visibilitySelect .cp-visibility-option.active');
       if (activeVis) data.visibility = activeVis.dataset.vis;
+      // Messaging
+      const activeMsg = document.querySelector('#messagingSelect .cp-visibility-option.active');
+      if (activeMsg) data.messaging = activeMsg.dataset.msg;
       // Macros
       data.proteinSlider = document.getElementById('proteinSlider').value;
       data.carbsSlider = document.getElementById('carbsSlider').value;
@@ -1024,9 +1045,16 @@
         }
         // Visibility
         if (data.visibility) {
-          document.querySelectorAll('.cp-visibility-option').forEach(o => {
+          document.querySelectorAll('#visibilitySelect .cp-visibility-option').forEach(o => {
             o.classList.toggle('active', o.dataset.vis === data.visibility);
           });
+        }
+        // Messaging
+        if (data.messaging) {
+          document.querySelectorAll('#messagingSelect .cp-visibility-option').forEach(o => {
+            o.classList.toggle('active', o.dataset.msg === data.messaging);
+          });
+          localStorage.setItem('shapeMessagingSetting', data.messaging);
         }
         // Macros
         if (data.proteinSlider) document.getElementById('proteinSlider').value = data.proteinSlider;

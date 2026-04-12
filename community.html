@@ -237,6 +237,42 @@
     .community-user-avatar img,
     .chat-msg-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
+    /* === DM Button in user list === */
+    .btn-dm {
+      padding: 6px 12px; font-size: 0.68rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+      margin-right: 6px;
+    }
+    .btn-dm:hover { border-color: var(--accent); color: var(--accent-dark); }
+
+    /* === DM Header (shows when in a DM conversation) === */
+    .dm-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 24px; border-bottom: 1px solid var(--border);
+      background: var(--bg-card); flex-shrink: 0;
+    }
+    .dm-back-btn {
+      padding: 6px 12px; font-size: 0.78rem; font-weight: 500;
+      background: none; border: 1px solid var(--border); color: var(--text);
+      cursor: pointer; transition: all 0.3s; font-family: inherit;
+    }
+    .dm-back-btn:hover { border-color: var(--accent); color: var(--accent-dark); }
+    .dm-header-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.6rem; color: #fff;
+    }
+    .dm-header-info { flex: 1; }
+    .dm-header-name { font-size: 0.9rem; font-weight: 600; }
+    .dm-header-status { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+
+    .dm-blocked-notice {
+      text-align: center; padding: 20px; font-size: 0.85rem;
+      color: var(--text-muted); font-weight: 300;
+    }
+
     /* === Mobile View Switcher (hidden on desktop) === */
     .mobile-view-switcher {
       display: none;
@@ -398,7 +434,18 @@
       .community-user-name { font-size: 0.92rem; }
       .community-user-status { font-size: 0.78rem; }
       .btn-follow { padding: 6px 16px; font-size: 0.72rem; border-radius: 20px; }
+      .btn-dm { padding: 6px 14px; font-size: 0.7rem; border-radius: 20px; }
       .friend-btn { font-size: 0.65rem; padding: 4px 10px; }
+
+      /* DM header on mobile */
+      .dm-header { padding: 10px 12px; gap: 10px; }
+      .dm-back-btn { padding: 6px 10px; font-size: 0.72rem; border-radius: 16px; }
+      .dm-header-avatar { width: 28px; height: 28px; font-size: 0.5rem; }
+      .dm-header-name { font-size: 0.85rem; }
+
+      /* Hide channel tabs when in DM mode */
+      .community-layout.mobile-dm .chat-channel-tabs { display: none; }
+      .community-layout.mobile-dm .community-sidebar { display: none; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -504,6 +551,15 @@
 
     <!-- Center: Chat -->
     <div class="community-chat">
+      <!-- DM Header (hidden by default, shown when in a DM) -->
+      <div class="dm-header" id="dmHeader" style="display:none;">
+        <button class="dm-back-btn" onclick="closeDM()">Back</button>
+        <div class="dm-header-avatar" id="dmAvatar"></div>
+        <div class="dm-header-info">
+          <div class="dm-header-name" id="dmName"></div>
+          <div class="dm-header-status" id="dmStatus"></div>
+        </div>
+      </div>
       <div class="chat-channel-tabs" id="mainChatTabs">
         <button class="chat-channel active" onclick="switchMainTab('client')">Client Chat</button>
         <button class="chat-channel" onclick="switchMainTab('trainer')">Trainer Chat</button>
@@ -564,16 +620,71 @@
   <script src="app.js"></script>
   <script>
     // === Community Data ===
+    // Load messaging preference from localStorage (default: "friends")
+    let myMessagingSetting = localStorage.getItem('shapeMessagingSetting') || 'friends';
+
     const communityUsers = [
-      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025", shapeScore: 8420, tier: "Gold" },
-      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024", shapeScore: 7150, tier: "Gold" },
-      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025", shapeScore: 4200, tier: "Silver" },
-      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026", shapeScore: 1850, tier: "Bronze" },
-      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Full Body Mobility Flow", memberSince: "2025", shapeScore: 5320, tier: "Gold" },
-      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze" },
-      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum" },
-      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver" },
+      { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training + Marcus Johnson subscriber", favoriteTrainer: "Marcus Johnson", recentWorkout: "5x5 Foundation", memberSince: "2025", shapeScore: 8420, tier: "Gold", allowMessages: "everyone" },
+      { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict. Training with Aisha Patel", favoriteTrainer: "Aisha Patel", recentWorkout: "Tabata Inferno", memberSince: "2024", shapeScore: 7150, tier: "Gold", allowMessages: "everyone" },
+      { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused. Running a half marathon", favoriteTrainer: "Damon Clarke", recentWorkout: "Sprint Intervals", memberSince: "2025", shapeScore: 4200, tier: "Silver", allowMessages: "friends" },
+      { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts only. Love Nina's programs", favoriteTrainer: "Nina Brooks", recentWorkout: "Living Room HIIT", memberSince: "2026", shapeScore: 1850, tier: "Bronze", allowMessages: "everyone" },
+      { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast. Sophie Turner fan", favoriteTrainer: "Sophie Turner", recentWorkout: "Full Body Mobility Flow", memberSince: "2025", shapeScore: 5320, tier: "Gold", allowMessages: "friends" },
+      { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape. Looking for workout buddies", favoriteTrainer: "Nina Brooks", recentWorkout: "Band & Bodyweight Burn", memberSince: "2026", shapeScore: 620, tier: "Bronze", allowMessages: "everyone" },
+      { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Strength training 5x/week. Competing soon", favoriteTrainer: "Marcus Johnson", recentWorkout: "Deadlift Domination", memberSince: "2024", shapeScore: 11200, tier: "Platinum", allowMessages: "friends" },
+      { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen. Getting into strength training", favoriteTrainer: "Damon Clarke", recentWorkout: "Metabolic Blast", memberSince: "2025", shapeScore: 3100, tier: "Silver", allowMessages: "everyone" },
     ];
+
+    // Pre-built DM conversation data for each user
+    const dmConversations = {
+      1: [
+        { from: 'them', text: "Hey! Have you tried 5x5 Foundation? It's Marcus Johnson's best program imo", time: "Yesterday, 2:15 PM" },
+        { from: 'you', text: "Not yet! Is it good for the gym?", time: "Yesterday, 2:20 PM" },
+        { from: 'them', text: "Absolutely. Marcus is my favorite trainer on Shape. Totally worth subscribing", time: "Yesterday, 3:05 PM" },
+        { from: 'you', text: "Might give it a shot this week. Thanks!", time: "Yesterday, 3:10 PM" },
+        { from: 'them', text: "Do it! Let me know how your first session goes", time: "Today, 9:30 AM" },
+      ],
+      2: [
+        { from: 'them', text: "Have you done Tabata Inferno yet? I just finished it and I'm dead", time: "Today, 7:45 AM" },
+        { from: 'you', text: "Not yet but I keep hearing about it! How long is it?", time: "Today, 8:00 AM" },
+        { from: 'them', text: "30 min but feels like an hour. Aisha doesn't mess around", time: "Today, 8:02 AM" },
+        { from: 'you', text: "I'll try it tomorrow morning. Wish me luck", time: "Today, 8:10 AM" },
+        { from: 'them', text: "You'll need it! But seriously it's so good", time: "Today, 8:12 AM" },
+      ],
+      3: [
+        { from: 'them', text: "Training for a half marathon. Damon's Sprint Intervals are getting me there", time: "2 days ago, 6:00 PM" },
+        { from: 'you', text: "That's awesome! When's the race?", time: "2 days ago, 6:15 PM" },
+        { from: 'them', text: "Next month. Nervous but excited", time: "2 days ago, 6:20 PM" },
+        { from: 'you', text: "You got this! How many miles are you at now?", time: "Yesterday, 10:00 AM" },
+        { from: 'them', text: "Did 10 miles last weekend. Legs were done after", time: "Yesterday, 10:30 AM" },
+      ],
+      4: [
+        { from: 'them', text: "Just finished Living Room HIIT. No equipment and still destroyed me!", time: "Today, 6:30 AM" },
+        { from: 'you', text: "Nina Brooks is the real deal. Do you do all her at-home stuff?", time: "Today, 6:45 AM" },
+        { from: 'them', text: "Every single program. Band & Bodyweight Burn is great too", time: "Today, 6:48 AM" },
+        { from: 'you', text: "I might switch to at-home workouts. The gym is far from me", time: "Today, 7:00 AM" },
+        { from: 'them', text: "Do it! You don't need a gym to get in shape", time: "Today, 7:05 AM" },
+      ],
+      5: [
+        { from: 'them', text: "If you're not doing mobility work you're missing out. Sophie Turner changed my life", time: "3 days ago, 4:00 PM" },
+        { from: 'you', text: "I keep skipping stretching honestly. Where do I start?", time: "3 days ago, 4:30 PM" },
+        { from: 'them', text: "Full Body Mobility Flow. 30 min, 3x a week. You'll feel like a new person", time: "3 days ago, 4:35 PM" },
+      ],
+      6: [
+        { from: 'them', text: "Hi! I'm new to Shape. Any trainer recommendations for beginners?", time: "Today, 11:00 AM" },
+        { from: 'you', text: "Welcome! Nina Brooks is great for at-home. Marcus Johnson for gym stuff", time: "Today, 11:05 AM" },
+        { from: 'them', text: "Thank you! I'll check them both out", time: "Today, 11:08 AM" },
+      ],
+      7: [
+        { from: 'them', text: "Hit a 500lb deadlift today. Marcus Johnson's programming is elite", time: "Yesterday, 5:00 PM" },
+        { from: 'you', text: "That's insane! How long have you been training?", time: "Yesterday, 5:15 PM" },
+        { from: 'them', text: "6 years. Competing in my first meet next month", time: "Yesterday, 5:20 PM" },
+      ],
+      8: [
+        { from: 'them', text: "Just did Metabolic Blast with Damon. Cardio has never been this fun", time: "Today, 9:00 AM" },
+        { from: 'you', text: "I need to try more cardio. I always skip it", time: "Today, 9:10 AM" },
+        { from: 'them', text: "Damon makes it enjoyable honestly. Give it a shot!", time: "Today, 9:15 AM" },
+      ],
+    };
 
     const trainerChatUsers = [
       { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED" },
@@ -678,7 +789,10 @@
         return a.name.localeCompare(b.name);
       });
 
-      list.innerHTML = users.map(u => `
+      list.innerHTML = users.map(u => {
+        // Determine if we can message this user
+        const canMessage = u.allowMessages === 'everyone' || u.friend;
+        return `
         <div class="community-user ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
           <div class="community-user-avatar" style="background:${u.color};">${u.initials}</div>
           <div class="community-user-info">
@@ -691,13 +805,16 @@
               ${u.tier} · ${u.shapeScore.toLocaleString()} pts
             </div>
           </div>
-          <div class="community-user-action">
+          <div class="community-user-action" style="display:flex;gap:6px;align-items:center;">
+            <button class="btn-dm" onclick="openDM(${u.id}, event)" title="${canMessage ? 'Send message' : u.name + ' only accepts messages from friends'}">
+              ${canMessage ? 'Message' : '<span style="opacity:0.4;">Message</span>'}
+            </button>
             <button class="btn-follow ${u.friend ? 'following' : ''}" onclick="toggleFriend(${u.id}, event)">
               ${u.friend ? 'Friends' : 'Follow'}
             </button>
           </div>
         </div>
-      `).join('');
+      `}).join('');
     }
 
     function renderChat() {
@@ -764,6 +881,11 @@
       document.querySelectorAll('#mainChatTabs .chat-channel').forEach(c => c.classList.remove('active'));
       event.target.classList.add('active');
       selectedUser = null;
+      // Close any open DM
+      dmUser = null;
+      document.getElementById('dmHeader').style.display = 'none';
+      document.getElementById('mainChatTabs').style.display = '';
+      document.querySelector('.community-layout').classList.remove('mobile-dm');
       renderChat();
     }
 
@@ -772,13 +894,7 @@
       selectedUser = user;
       renderUserList();
 
-      // On mobile, switch to chat view when a user is tapped
-      if (window.innerWidth <= 768) {
-        const chatBtn = document.querySelector('.mobile-view-tab');
-        switchMobileView('chat', chatBtn);
-      }
-
-      // Show profile in activity panel
+      // Show profile in activity panel (desktop)
       const profile = document.getElementById('activityProfile');
       const tierColor = user.tier==='Platinum'?'#E5E4E2':user.tier==='Gold'?'#FFD700':user.tier==='Silver'?'#C0C0C0':'#CD7F32';
       profile.innerHTML = `
@@ -804,41 +920,8 @@
         </div>
       `;
 
-      // Update chat to DM view
-      document.getElementById('chatTitle').textContent = user.name;
-      document.getElementById('chatSubtitle').textContent = user.online ? 'Online now' : 'Offline';
-      document.getElementById('chatAvatar').textContent = user.initials;
-      document.getElementById('chatAvatar').style.background = user.color;
-
-      // Show DM messages
-      const container = document.getElementById('chatMessages');
-      container.innerHTML = `
-        <div class="chat-msg">
-          <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-name">${user.name}</div>
-            <div class="chat-msg-text">Hey! Have you tried ${user.recentWorkout}? It's ${user.favoriteTrainer}'s best program imo</div>
-            <div class="chat-msg-time">Yesterday</div>
-          </div>
-        </div>
-        <div class="chat-msg own">
-          <div class="chat-msg-avatar" style="background:#2DD4BF;">You</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-name">You</div>
-            <div class="chat-msg-text">Not yet! Is it good for ${user.favoriteTrainer === 'Nina Brooks' ? 'at home' : 'the gym'}?</div>
-            <div class="chat-msg-time">Yesterday</div>
-          </div>
-        </div>
-        <div class="chat-msg">
-          <div class="chat-msg-avatar" style="background:${user.color};">${user.initials}</div>
-          <div class="chat-msg-body">
-            <div class="chat-msg-name">${user.name}</div>
-            <div class="chat-msg-text">Absolutely. ${user.favoriteTrainer} is my favorite trainer on Shape. Totally worth subscribing</div>
-            <div class="chat-msg-time">Today</div>
-          </div>
-        </div>
-      `;
-      container.scrollTop = container.scrollHeight;
+      // Open DM with this user
+      openDM(id);
     }
 
     function toggleFriend(id, e) {
@@ -931,6 +1014,11 @@
       `);
       container.scrollTop = container.scrollHeight;
       input.value = '';
+
+      // If in DM mode, store the message in the conversation
+      if (dmUser && dmConversations[dmUser.id]) {
+        dmConversations[dmUser.id].push({ from: 'you', text: text, time: 'Just now' });
+      }
     };
 
     function renderFriendScores() {
@@ -950,6 +1038,88 @@
           <span style="font-size:0.7rem;font-weight:500;color:${tierColor};">${u.shapeScore.toLocaleString()}</span>
         </div>`;
       }).join('');
+    }
+
+    // === Direct Message Functions ===
+    let dmUser = null; // currently open DM user
+
+    function openDM(id, e) {
+      if (e) e.stopPropagation();
+      const user = communityUsers.find(u => u.id === id);
+      if (!user) return;
+
+      // Check if user allows messages
+      const canMessage = user.allowMessages === 'everyone' || user.friend;
+      if (!canMessage) {
+        const toast = document.getElementById('toast');
+        toast.textContent = `${user.name} only accepts messages from friends`;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+        return;
+      }
+
+      dmUser = user;
+
+      // Show DM header, hide channel tabs
+      document.getElementById('dmHeader').style.display = 'flex';
+      document.getElementById('mainChatTabs').style.display = 'none';
+      document.getElementById('dmAvatar').style.background = user.color;
+      document.getElementById('dmAvatar').textContent = user.initials;
+      document.getElementById('dmName').textContent = user.name;
+      document.getElementById('dmStatus').textContent = user.online ? 'Online now' : 'Offline';
+
+      // On mobile, switch to chat view and add dm class
+      if (window.innerWidth <= 768) {
+        const layout = document.querySelector('.community-layout');
+        layout.classList.remove('mobile-friends', 'mobile-discover');
+        layout.classList.add('mobile-dm');
+        // Update mobile tabs
+        document.querySelectorAll('.mobile-view-tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.mobile-view-tab').classList.add('active');
+      }
+
+      // Render DM conversation
+      renderDMChat(user);
+    }
+
+    function renderDMChat(user) {
+      const container = document.getElementById('chatMessages');
+      const messages = dmConversations[user.id] || [];
+      const displayName = myProfile.name === 'Your Profile' ? 'You' : myProfile.name;
+      const myAvatarContent = myProfile.photo
+        ? `<img src="${myProfile.photo}" alt="You">`
+        : (myProfile.name === 'Your Profile' ? 'You' : myProfile.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2));
+
+      container.innerHTML = messages.map(m => {
+        const isOwn = m.from === 'you';
+        return `
+          <div class="chat-msg ${isOwn ? 'own' : ''}">
+            <div class="chat-msg-avatar" style="background:${isOwn ? (myProfile.photo ? 'none' : '#2DD4BF') : user.color};">${isOwn ? myAvatarContent : user.initials}</div>
+            <div class="chat-msg-body">
+              <div class="chat-msg-name">${isOwn ? displayName : user.name}</div>
+              <div class="chat-msg-text">${m.text}</div>
+              <div class="chat-msg-time">${m.time}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function closeDM() {
+      dmUser = null;
+
+      // Hide DM header, show channel tabs
+      document.getElementById('dmHeader').style.display = 'none';
+      document.getElementById('mainChatTabs').style.display = '';
+
+      // Remove mobile-dm class
+      const layout = document.querySelector('.community-layout');
+      layout.classList.remove('mobile-dm');
+
+      // Go back to the group chat
+      renderChat();
     }
 
     // === Mobile View Switcher ===
