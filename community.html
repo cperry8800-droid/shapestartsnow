@@ -924,7 +924,7 @@
 
       list.innerHTML = users.map(u => {
         // Determine if we can message this user
-        const canMessage = u.allowMessages === 'everyone' || u.friend;
+        const canMessage = u.allowMessages !== 'noone' && (u.allowMessages === 'everyone' || u.friend);
         return `
         <div class="community-user ${selectedUser?.id === u.id ? 'active' : ''}" onclick="selectUser(${u.id})">
           <div class="community-user-avatar" style="background:${u.color};cursor:pointer;" onclick="event.stopPropagation();showProfile(${u.id})">${u.initials}</div>
@@ -1127,6 +1127,13 @@
 
     // Use profile photo/name in sent messages
     sendMessage = function() {
+      if (myMessagingSetting === 'noone') {
+        const toast = document.getElementById('toast');
+        toast.textContent = 'You have disabled direct messages. Update in your profile settings.';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+        return;
+      }
       const input = document.getElementById('chatInput');
       const text = input.value.trim();
       if (!text) return;
@@ -1183,10 +1190,10 @@
       if (!user) return;
 
       // Check if user allows messages
-      const canMessage = user.allowMessages === 'everyone' || user.friend;
+      const canMessage = user.allowMessages !== 'noone' && (user.allowMessages === 'everyone' || user.friend);
       if (!canMessage) {
         const toast = document.getElementById('toast');
-        toast.textContent = `${user.name} only accepts messages from friends`;
+        toast.textContent = user.allowMessages === 'noone' ? `${user.name} has disabled direct messages` : `${user.name} only accepts messages from friends`;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 3000);
         return;
@@ -1413,7 +1420,7 @@
       }
 
       // Action buttons
-      const canMessage = user.allowMessages === 'everyone' || user.friend;
+      const canMessage = user.allowMessages !== 'noone' && (user.allowMessages === 'everyone' || user.friend);
       html += `<div class="profile-modal-actions">`;
       if (canMessage) {
         html += `<button class="profile-modal-msg-btn" onclick="closeProfileModal();openDM(${user.id}, event)">Message</button>`;
