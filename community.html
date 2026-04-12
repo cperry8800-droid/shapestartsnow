@@ -243,17 +243,92 @@
       .community-activity { display: none; }
     }
     @media (max-width: 768px) {
+      /* Hide page hero on mobile — go straight to chat */
+      .page-hero { display: none !important; }
+
+      /* Remove section padding and container constraints */
       .community-layout {
-        display: flex; flex-direction: column; height: auto; min-height: calc(100vh - 80px);
+        display: flex; flex-direction: column;
+        height: calc(100vh - 80px); min-height: calc(100vh - 80px);
+        border: none; border-radius: 0;
       }
+      .section { padding: 0 !important; }
+      .section > .container { max-width: 100%; padding: 0; margin: 0; width: 100%; }
+
+      /* Hide sidebars */
       .community-sidebar { display: none; }
-      .community-chat { min-height: 400px; flex: 1; }
       .community-activity { display: none; }
-      .chat-msg { max-width: 95%; }
+
+      /* Full-screen chat */
+      .community-chat {
+        flex: 1; display: flex; flex-direction: column;
+        height: 100%; min-height: 0;
+      }
+
+      /* iMessage-style channel toggle tabs */
+      .chat-channel-tabs {
+        display: flex; gap: 0; padding: 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-card);
+        flex-shrink: 0; overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .chat-channel {
+        flex: 1; min-width: 0;
+        padding: 12px 6px; font-size: 0.72rem; font-weight: 600;
+        border: none; border-radius: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent; color: var(--text-muted);
+        text-align: center; white-space: nowrap;
+      }
+      .chat-channel.active {
+        background: transparent; color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .chat-channel:hover:not(.active) {
+        border-color: transparent; color: var(--text);
+      }
+
+      /* Messages fill available space */
+      .chat-messages {
+        flex: 1; min-height: 0;
+        padding: 12px 12px; gap: 10px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* iMessage-style bubbles */
+      .chat-msg { max-width: 80%; }
+      .chat-msg-avatar { display: none; }
+      .chat-msg-body {
+        border-radius: 18px; border-top-left-radius: 4px;
+        padding: 10px 14px;
+      }
+      .chat-msg.own .chat-msg-body {
+        border-radius: 18px; border-top-right-radius: 4px;
+        background: var(--accent); border-color: var(--accent);
+      }
+      .chat-msg-name { font-size: 0.68rem; }
+      .chat-msg-text { font-size: 0.88rem; }
+
+      /* Input pinned at bottom */
+      .chat-input-area {
+        padding: 10px 12px; gap: 8px;
+        border-top: 1px solid var(--border);
+        background: var(--bg-card); flex-shrink: 0;
+      }
+      .chat-input-area input {
+        border-radius: 20px; padding: 10px 16px;
+        font-size: 0.88rem;
+      }
+      .chat-send-btn {
+        border-radius: 20px; padding: 10px 18px;
+        font-size: 0.78rem;
+      }
+
+      /* General mobile cleanup */
       .community-user { padding: 10px 16px; }
       .friend-btn { font-size: 0.65rem; padding: 4px 10px; }
-      .chat-channel-tabs { flex-wrap: wrap; }
-      .chat-channel { font-size: 0.7rem; padding: 6px 10px; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
