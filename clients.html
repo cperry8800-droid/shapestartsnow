@@ -155,8 +155,8 @@
     }
     .cl-view-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     .cl-view-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
-    .cl-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-    .cl-cal-header h4 { font-size: 0.88rem; font-weight: 500; margin: 0; }
+    .cl-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .cl-cal-header h4 { font-size: 1rem; font-weight: 600; margin: 0; }
     .cl-cal-nav { display: flex; gap: 6px; }
     .cl-cal-nav button {
       width: 28px; height: 28px; border: 1px solid var(--border); background: transparent;
@@ -164,37 +164,38 @@
       display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
     }
     .cl-cal-nav button:hover { border-color: var(--text); color: var(--text); }
-    .cl-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cl-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
     .cl-cal-head {
-      text-align: center; font-size: 0.65rem; font-weight: 500;
-      color: var(--text-muted); text-transform: uppercase; padding: 6px 0; letter-spacing: 0.06em;
+      text-align: center; font-size: 0.75rem; font-weight: 500;
+      color: var(--text-muted); text-transform: uppercase; padding: 8px 0; letter-spacing: 0.06em;
     }
     .cl-cal-day {
       aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 0.72rem; background: var(--bg-alt); border-radius: 4px; position: relative; transition: all 0.2s;
-      cursor: pointer; min-height: 44px; -webkit-tap-highlight-color: transparent; border: 1px solid transparent;
+      font-size: 0.85rem; background: var(--bg-alt); border-radius: 6px; position: relative; transition: all 0.2s;
+      cursor: pointer; min-height: 70px; -webkit-tap-highlight-color: transparent; border: 1px solid transparent;
+      padding: 6px 4px;
     }
     .cl-cal-day:active:not(.empty) { background: var(--border); }
     .cl-cal-day.empty { background: transparent; cursor: default; }
     .cl-cal-day.today { border-color: var(--text-muted); }
     .cl-cal-day.selected { border-color: var(--accent); background: rgba(108,58,237,0.08); }
-    .cl-cal-day-num { font-weight: 500; margin-bottom: 1px; }
-    .cl-cal-day-dot { width: 6px; height: 6px; border-radius: 50%; }
+    .cl-cal-day-num { font-weight: 600; font-size: 0.85rem; margin-bottom: 3px; }
+    .cl-cal-day-dot { width: 7px; height: 7px; border-radius: 50%; margin-bottom: 2px; }
     .cl-cal-day-dot.workout { background: #10B981; }
     .cl-cal-day-dot.scheduled { background: #6C3AED; }
     .cl-cal-day-dot.rest { background: var(--border); }
     .cl-cal-day-dot.logged { background: #10B981; }
     .cl-cal-day-dot.planned { background: #6C3AED; }
-    .cl-cal-day-info { font-size: 0.52rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 2px; }
+    .cl-cal-day-info { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 4px; }
 
     /* Inline day detail panel */
     .cl-cal-detail {
-      margin-top: 12px; padding: 14px 16px; background: var(--bg-alt); border-radius: 8px;
+      margin-top: 16px; padding: 18px 20px; background: var(--bg-alt); border-radius: 8px;
       border-left: 3px solid var(--accent); display: none;
     }
     .cl-cal-detail.active { display: block; }
-    .cl-cal-detail-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; }
-    .cl-cal-detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.78rem; }
+    .cl-cal-detail-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; }
+    .cl-cal-detail-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 0.88rem; }
     .cl-cal-detail-row .dl { color: var(--text-muted); }
     .cl-cal-detail-row .dv { font-weight: 500; }
 
@@ -923,17 +924,13 @@
           if (type === 'workout') {
             const cls = data.type === 'scheduled' ? 'scheduled' : 'workout';
             dot = '<div class="cl-cal-day-dot ' + cls + '"></div>';
-            // Show short workout name preview
-            const shortName = (data.name || '').length > 10 ? (data.name || '').substring(0, 9) + '…' : (data.name || '');
-            preview = '<div class="cl-cal-day-info">' + shortName + '</div>';
+            preview = '<div class="cl-cal-day-info">' + (data.name || data.label) + '</div>';
           } else {
             const mealCls = data.type === 'scheduled' ? 'planned' : 'logged';
             dot = '<div class="cl-cal-day-dot ' + mealCls + '"></div>';
-            // Show first meal name as preview, with count
             let mealPreview = data.label;
             if (data.meals && data.meals.length > 0) {
-              const firstName = data.meals[0];
-              mealPreview = firstName.length > 10 ? firstName.substring(0, 9) + '…' : firstName;
+              mealPreview = data.meals[0];
               if (data.count > 1) mealPreview += ' +' + (data.count - 1);
             }
             preview = '<div class="cl-cal-day-info">' + mealPreview + '</div>';
