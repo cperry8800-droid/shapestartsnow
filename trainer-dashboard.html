@@ -795,14 +795,6 @@
                 <button class="td-sales-toggle-btn" onclick="tdSalesToggle('annual',this)">Annual</button>
               </div>
               <div class="td-sales-chart" id="tdSalesChart"></div>
-              <div class="td-sales-goal-row">
-                <span class="td-sales-goal-label">Set Goal:</span>
-                <button class="td-sales-goal-type-btn active" id="tdGoalTypeMonthly" onclick="tdSetGoalType('monthly')">Monthly</button>
-                <button class="td-sales-goal-type-btn" id="tdGoalTypeAnnual" onclick="tdSetGoalType('annual')">Annual</button>
-                <input type="number" class="td-sales-goal-input" id="tdGoalInput" placeholder="$ amount">
-                <button class="td-sales-goal-save" onclick="tdSaveGoal()">Save</button>
-              </div>
-              <div class="td-sales-goal-progress" id="tdGoalProgress" style="display:none;"></div>
               <!-- Legacy sales list (hidden, kept for JS compatibility) -->
               <div style="display:none;" id="salesList"></div>
             </div>
