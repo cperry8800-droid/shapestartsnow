@@ -43,6 +43,54 @@
     .streak-dot-circle.future { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
     .streak-dot-day { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
 
+    /* ===== Workout Tracker ===== */
+    .wk-day-card { background: var(--bg-card); border: 1px solid var(--border); padding: 20px; cursor: pointer; transition: all 0.3s; }
+    .wk-day-card:hover { border-color: var(--accent); }
+    .wk-day-card.today { border-color: var(--accent); }
+    .wk-day-card.rest, .wk-day-card.upcoming { opacity: 0.5; }
+    .wk-day-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+    .wk-badge { font-size: 0.65rem; padding: 3px 8px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+    .wk-badge-done { background: rgba(16,185,129,0.15); color: #10B981; }
+    .wk-badge-next { background: rgba(45,212,191,0.15); color: var(--accent); }
+    .wk-rating-badge { font-size: 0.72rem; color: var(--accent-dark); font-weight: 500; }
+
+    /* Exercise card in detail view */
+    .wk-exercise { background: var(--bg-card); border: 1px solid var(--border); margin-bottom: 12px; }
+    .wk-exercise-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; cursor: pointer; }
+    .wk-exercise-header:hover { background: var(--bg-alt); }
+    .wk-exercise-name { font-weight: 500; font-size: 0.95rem; }
+    .wk-exercise-meta { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; }
+    .wk-exercise-body { padding: 0 20px 16px; }
+
+    /* Set table */
+    .wk-set-table { width: 100%; border-collapse: collapse; }
+    .wk-set-table th { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 500; padding: 8px 0; text-align: center; border-bottom: 1px solid var(--border); }
+    .wk-set-table th:first-child { text-align: left; width: 50px; }
+    .wk-set-table td { padding: 8px 4px; text-align: center; vertical-align: middle; }
+    .wk-set-table td:first-child { text-align: left; font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+    .wk-set-table input[type="number"] { width: 70px; padding: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; font-size: 0.85rem; text-align: center; outline: none; transition: border-color 0.3s; -moz-appearance: textfield; }
+    .wk-set-table input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+    .wk-set-table input[type="number"]:focus { border-color: var(--accent); }
+    .wk-set-table select { padding: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-family: inherit; font-size: 0.78rem; outline: none; cursor: pointer; }
+    .wk-set-table select:focus { border-color: var(--accent); }
+    .wk-set-done { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border); background: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+    .wk-set-done.checked { background: #10B981; border-color: #10B981; color: #fff; }
+    .wk-add-set { font-size: 0.78rem; color: var(--accent-dark); cursor: pointer; padding: 8px 0; font-weight: 500; background: none; border: none; font-family: inherit; }
+    .wk-add-set:hover { opacity: 0.7; }
+    .wk-remove-exercise { font-size: 0.72rem; color: var(--text-muted); cursor: pointer; background: none; border: none; font-family: inherit; transition: color 0.3s; }
+    .wk-remove-exercise:hover { color: #EF4444; }
+
+    /* Rating buttons */
+    .wk-rate-btn { padding: 10px 18px; border: 1px solid var(--border); background: none; color: var(--text-muted); font-family: inherit; font-size: 0.78rem; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+    .wk-rate-btn:hover { border-color: var(--text); color: var(--text); }
+    .wk-rate-btn.selected { border-color: var(--accent); background: rgba(45,212,191,0.15); color: var(--accent); }
+
+    @media (max-width: 768px) {
+      .wk-set-table input[type="number"] { width: 56px; padding: 6px; font-size: 0.8rem; }
+      .wk-set-table select { padding: 6px; font-size: 0.72rem; }
+      .wk-rate-btn { padding: 8px 12px; font-size: 0.72rem; }
+    }
+
     /* ===== Dashboard Tab Bar (below navbar) ===== */
     .dash-tab-bar {
       position: sticky; top: 88px; z-index: 900;
@@ -864,48 +912,50 @@
 
             <!-- This Week's Schedule -->
             <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">This Week</h3>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px;">
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px;" id="weekScheduleGrid">
 
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+              <div class="wk-day-card completed" onclick="openWorkoutDetail(0)">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Monday</span>
-                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(16,185,129,0.15);color:#10B981;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Completed</span>
+                  <span class="wk-day-label">Monday</span>
+                  <span class="wk-badge wk-badge-done">Completed</span>
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Upper Body Push</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Bench Press, OHP, Incline DB, Tricep Dips</div>
+                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Perfect</div>
               </div>
 
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+              <div class="wk-day-card completed" onclick="openWorkoutDetail(1)">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Tuesday</span>
-                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(16,185,129,0.15);color:#10B981;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Completed</span>
+                  <span class="wk-day-label">Tuesday</span>
+                  <span class="wk-badge wk-badge-done">Completed</span>
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Lower Body</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Squats, RDL, Leg Press, Calf Raises</div>
+                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Challenging</div>
               </div>
 
-              <div style="background:var(--bg-card);border:1px solid var(--accent);padding:20px;">
+              <div class="wk-day-card today" onclick="openWorkoutDetail(2)">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);">Wednesday — Today</span>
-                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(45,212,191,0.15);color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Up Next</span>
+                  <span class="wk-day-label" style="color:var(--accent-dark);">Wednesday — Today</span>
+                  <span class="wk-badge wk-badge-next">Up Next</span>
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Upper Body Pull</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Pull-ups, Barbell Rows, Face Pulls, Curls</div>
-                <button class="btn btn-primary btn-sm" style="margin-top:12px;">Start Workout</button>
+                <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation();openWorkoutDetail(2)">Start Workout</button>
               </div>
 
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;opacity:0.5;">
+              <div class="wk-day-card rest" onclick="openWorkoutDetail(3)">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Thursday</span>
+                  <span class="wk-day-label">Thursday</span>
                   <span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Rest Day</span>
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Active Recovery</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Light stretching, mobility work</div>
               </div>
 
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;opacity:0.5;">
+              <div class="wk-day-card upcoming" onclick="openWorkoutDetail(4)">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Friday</span>
+                  <span class="wk-day-label">Friday</span>
                 </div>
                 <div style="font-weight:500;margin-bottom:4px;">Full Body Power</div>
                 <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Deadlifts, Clean & Press, Box Jumps, Planks</div>
@@ -913,18 +963,49 @@
 
             </div>
 
+            <!-- WORKOUT DETAIL VIEW (hidden by default) -->
+            <div id="workoutDetailView" style="display:none;margin-bottom:40px;">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                <button onclick="closeWorkoutDetail()" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;font-size:0.78rem;font-family:inherit;cursor:pointer;transition:all 0.3s;">&#8592; Back</button>
+                <div>
+                  <h3 id="wkDetailTitle" style="font-size:1.1rem;font-weight:500;"></h3>
+                  <div id="wkDetailDay" style="font-size:0.78rem;color:var(--text-muted);font-weight:300;"></div>
+                </div>
+              </div>
+
+              <!-- Exercises with set-by-set tracking -->
+              <div id="wkExerciseList"></div>
+
+              <!-- Add Exercise Button -->
+              <button onclick="addExerciseToWorkout()" style="margin-top:16px;background:none;border:1px dashed var(--border);color:var(--text-muted);padding:12px 20px;font-size:0.82rem;font-family:inherit;cursor:pointer;width:100%;transition:all 0.3s;">+ Add Exercise</button>
+
+              <!-- Complete Workout & Rating -->
+              <div id="wkCompleteSection" style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);padding:28px;">
+                <h4 style="font-size:0.92rem;font-weight:500;margin-bottom:16px;">How was this workout?</h4>
+                <div id="wkRatingBtns" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+                  <button class="wk-rate-btn" data-rating="easy" onclick="selectRating(this)">Easy</button>
+                  <button class="wk-rate-btn" data-rating="push" onclick="selectRating(this)">Could Push More</button>
+                  <button class="wk-rate-btn" data-rating="perfect" onclick="selectRating(this)">Perfect</button>
+                  <button class="wk-rate-btn" data-rating="challenging" onclick="selectRating(this)">Challenging</button>
+                  <button class="wk-rate-btn" data-rating="struggling" onclick="selectRating(this)">I'm Struggling</button>
+                </div>
+                <button onclick="completeWorkout()" class="btn btn-primary" style="width:100%;">Complete Workout</button>
+              </div>
+            </div>
+
             <!-- Recent Activity -->
-            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">Recent Activity</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:40px;">
+            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;" id="recentActivityHeader">Recent Activity</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:40px;" id="recentActivityList">
 
               <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                 <div>
                   <div style="font-weight:500;">Upper Body Push</div>
                   <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Monday, Apr 14</div>
                 </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
                   <span><strong style="color:var(--text);">52 min</strong> duration</span>
                   <span><strong style="color:var(--text);">18,400 lbs</strong> volume</span>
+                  <span style="color:#10B981;font-weight:500;">Perfect</span>
                   <span style="color:#10B981;font-weight:500;">+25 Shape Score</span>
                 </div>
               </div>
@@ -934,9 +1015,10 @@
                   <div style="font-weight:500;">Lower Body</div>
                   <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Tuesday, Apr 15</div>
                 </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
                   <span><strong style="color:var(--text);">48 min</strong> duration</span>
                   <span><strong style="color:var(--text);">22,100 lbs</strong> volume</span>
+                  <span style="color:#F59E0B;font-weight:500;">Challenging</span>
                   <span style="color:#10B981;font-weight:500;">+30 Shape Score</span>
                 </div>
               </div>
@@ -946,9 +1028,10 @@
                   <div style="font-weight:500;">Full Body Power</div>
                   <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Friday, Apr 11</div>
                 </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
                   <span><strong style="color:var(--text);">55 min</strong> duration</span>
                   <span><strong style="color:var(--text);">24,600 lbs</strong> volume</span>
+                  <span style="color:#10B981;font-weight:500;">Perfect</span>
                   <span style="color:#10B981;font-weight:500;">+35 Shape Score</span>
                 </div>
               </div>
@@ -1624,6 +1707,183 @@
       const hash = location.hash.replace('#', '');
       if (hash && tabMap[hash]) switchDashTab(hash, null);
     });
+  </script>
+  <script>
+    // ===== WORKOUT TRACKER =====
+    var workoutData = [
+      { day: 'Monday', title: 'Upper Body Push', completed: true, rating: 'perfect',
+        exercises: [
+          { name: 'Bench Press', sets: [{reps:10,weight:185,difficulty:'moderate',done:true},{reps:8,weight:195,difficulty:'moderate',done:true},{reps:6,weight:205,difficulty:'hard',done:true},{reps:6,weight:205,difficulty:'hard',done:true}]},
+          { name: 'Overhead Press', sets: [{reps:10,weight:95,difficulty:'moderate',done:true},{reps:8,weight:105,difficulty:'moderate',done:true},{reps:8,weight:105,difficulty:'hard',done:true}]},
+          { name: 'Incline DB Press', sets: [{reps:12,weight:60,difficulty:'easy',done:true},{reps:10,weight:65,difficulty:'moderate',done:true},{reps:10,weight:65,difficulty:'moderate',done:true}]},
+          { name: 'Tricep Dips', sets: [{reps:12,weight:0,difficulty:'easy',done:true},{reps:10,weight:0,difficulty:'moderate',done:true},{reps:10,weight:0,difficulty:'moderate',done:true}]}
+        ]},
+      { day: 'Tuesday', title: 'Lower Body', completed: true, rating: 'challenging',
+        exercises: [
+          { name: 'Barbell Squat', sets: [{reps:8,weight:275,difficulty:'moderate',done:true},{reps:6,weight:295,difficulty:'hard',done:true},{reps:6,weight:295,difficulty:'hard',done:true},{reps:4,weight:315,difficulty:'hard',done:true}]},
+          { name: 'Romanian Deadlift', sets: [{reps:10,weight:185,difficulty:'moderate',done:true},{reps:8,weight:205,difficulty:'moderate',done:true},{reps:8,weight:205,difficulty:'hard',done:true}]},
+          { name: 'Leg Press', sets: [{reps:12,weight:360,difficulty:'easy',done:true},{reps:10,weight:400,difficulty:'moderate',done:true},{reps:10,weight:400,difficulty:'moderate',done:true}]},
+          { name: 'Calf Raises', sets: [{reps:15,weight:180,difficulty:'easy',done:true},{reps:15,weight:180,difficulty:'easy',done:true},{reps:12,weight:200,difficulty:'moderate',done:true}]}
+        ]},
+      { day: 'Wednesday — Today', title: 'Upper Body Pull', completed: false, rating: null,
+        exercises: [
+          { name: 'Pull-ups', sets: [{reps:10,weight:0,difficulty:'',done:false},{reps:8,weight:0,difficulty:'',done:false},{reps:8,weight:0,difficulty:'',done:false},{reps:6,weight:0,difficulty:'',done:false}]},
+          { name: 'Barbell Rows', sets: [{reps:10,weight:155,difficulty:'',done:false},{reps:8,weight:175,difficulty:'',done:false},{reps:8,weight:175,difficulty:'',done:false}]},
+          { name: 'Face Pulls', sets: [{reps:15,weight:40,difficulty:'',done:false},{reps:15,weight:40,difficulty:'',done:false},{reps:12,weight:45,difficulty:'',done:false}]},
+          { name: 'Barbell Curls', sets: [{reps:12,weight:65,difficulty:'',done:false},{reps:10,weight:75,difficulty:'',done:false},{reps:10,weight:75,difficulty:'',done:false}]}
+        ]},
+      { day: 'Thursday', title: 'Active Recovery', completed: false, rating: null,
+        exercises: [
+          { name: 'Light Stretching', sets: [{reps:1,weight:0,difficulty:'',done:false}]},
+          { name: 'Foam Rolling', sets: [{reps:1,weight:0,difficulty:'',done:false}]},
+          { name: 'Mobility Work', sets: [{reps:1,weight:0,difficulty:'',done:false}]}
+        ]},
+      { day: 'Friday', title: 'Full Body Power', completed: false, rating: null,
+        exercises: [
+          { name: 'Deadlift', sets: [{reps:6,weight:315,difficulty:'',done:false},{reps:5,weight:335,difficulty:'',done:false},{reps:3,weight:355,difficulty:'',done:false}]},
+          { name: 'Clean & Press', sets: [{reps:8,weight:115,difficulty:'',done:false},{reps:6,weight:135,difficulty:'',done:false},{reps:6,weight:135,difficulty:'',done:false}]},
+          { name: 'Box Jumps', sets: [{reps:10,weight:0,difficulty:'',done:false},{reps:10,weight:0,difficulty:'',done:false},{reps:8,weight:0,difficulty:'',done:false}]},
+          { name: 'Plank Hold', sets: [{reps:60,weight:0,difficulty:'',done:false},{reps:60,weight:0,difficulty:'',done:false}]}
+        ]}
+    ];
+
+    var currentWorkoutIdx = null;
+    var selectedRating = null;
+
+    function openWorkoutDetail(idx) {
+      currentWorkoutIdx = idx;
+      var w = workoutData[idx];
+      document.getElementById('wkDetailTitle').textContent = w.title;
+      document.getElementById('wkDetailDay').textContent = w.day;
+      renderExercises(w);
+      selectedRating = w.rating;
+      document.querySelectorAll('.wk-rate-btn').forEach(function(b) {
+        b.classList.toggle('selected', b.getAttribute('data-rating') === selectedRating);
+      });
+      document.getElementById('workoutDetailView').style.display = 'block';
+      document.getElementById('weekScheduleGrid').style.display = 'none';
+      document.getElementById('recentActivityHeader').style.display = 'none';
+      document.getElementById('recentActivityList').style.display = 'none';
+    }
+
+    function closeWorkoutDetail() {
+      document.getElementById('workoutDetailView').style.display = 'none';
+      document.getElementById('weekScheduleGrid').style.display = '';
+      document.getElementById('recentActivityHeader').style.display = '';
+      document.getElementById('recentActivityList').style.display = '';
+      currentWorkoutIdx = null;
+    }
+
+    function renderExercises(w) {
+      var el = document.getElementById('wkExerciseList');
+      var html = '';
+      w.exercises.forEach(function(ex, ei) {
+        html += '<div class="wk-exercise" id="wkEx' + ei + '">';
+        html += '<div class="wk-exercise-header" onclick="toggleExercise(' + ei + ')">';
+        html += '<div><div class="wk-exercise-name">' + ex.name + '</div>';
+        html += '<div class="wk-exercise-meta">' + ex.sets.length + ' sets &middot; ' + (ex.sets.filter(function(s){return s.done;}).length) + ' completed</div></div>';
+        html += '<button class="wk-remove-exercise" onclick="event.stopPropagation();removeExercise(' + ei + ')">Remove</button>';
+        html += '</div>';
+        html += '<div class="wk-exercise-body" id="wkExBody' + ei + '">';
+        html += '<table class="wk-set-table">';
+        html += '<thead><tr><th>Set</th><th>Reps</th><th>Weight (lbs)</th><th>Difficulty</th><th>Done</th></tr></thead><tbody>';
+        ex.sets.forEach(function(s, si) {
+          html += '<tr>';
+          html += '<td>' + (si + 1) + '</td>';
+          html += '<td><input type="number" value="' + s.reps + '" min="0" onchange="updateSet(' + ei + ',' + si + ',\'reps\',this.value)"></td>';
+          html += '<td><input type="number" value="' + s.weight + '" min="0" step="5" onchange="updateSet(' + ei + ',' + si + ',\'weight\',this.value)"></td>';
+          html += '<td><select onchange="updateSet(' + ei + ',' + si + ',\'difficulty\',this.value)">';
+          html += '<option value=""' + (s.difficulty===''?' selected':'') + '>--</option>';
+          html += '<option value="easy"' + (s.difficulty==='easy'?' selected':'') + '>Easy</option>';
+          html += '<option value="moderate"' + (s.difficulty==='moderate'?' selected':'') + '>Moderate</option>';
+          html += '<option value="hard"' + (s.difficulty==='hard'?' selected':'') + '>Hard</option>';
+          html += '</select></td>';
+          html += '<td><button class="wk-set-done' + (s.done?' checked':'') + '" onclick="toggleSetDone(' + ei + ',' + si + ',this)">' + (s.done?'&#10003;':'') + '</button></td>';
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        html += '<button class="wk-add-set" onclick="addSet(' + ei + ')">+ Add Set</button>';
+        html += '</div></div>';
+      });
+      el.innerHTML = html;
+    }
+
+    function toggleExercise(ei) {
+      var body = document.getElementById('wkExBody' + ei);
+      body.style.display = body.style.display === 'none' ? '' : 'none';
+    }
+
+    function updateSet(ei, si, field, val) {
+      var w = workoutData[currentWorkoutIdx];
+      if (field === 'reps' || field === 'weight') val = parseInt(val) || 0;
+      w.exercises[ei].sets[si][field] = val;
+    }
+
+    function toggleSetDone(ei, si, btn) {
+      var w = workoutData[currentWorkoutIdx];
+      w.exercises[ei].sets[si].done = !w.exercises[ei].sets[si].done;
+      btn.classList.toggle('checked');
+      btn.innerHTML = w.exercises[ei].sets[si].done ? '&#10003;' : '';
+      // Update meta
+      var ex = w.exercises[ei];
+      var header = document.querySelector('#wkEx' + ei + ' .wk-exercise-meta');
+      if (header) header.textContent = ex.sets.length + ' sets \u00B7 ' + ex.sets.filter(function(s){return s.done;}).length + ' completed';
+    }
+
+    function addSet(ei) {
+      var w = workoutData[currentWorkoutIdx];
+      var lastSet = w.exercises[ei].sets[w.exercises[ei].sets.length - 1];
+      w.exercises[ei].sets.push({ reps: lastSet.reps, weight: lastSet.weight, difficulty: '', done: false });
+      renderExercises(w);
+    }
+
+    function removeExercise(ei) {
+      var w = workoutData[currentWorkoutIdx];
+      w.exercises.splice(ei, 1);
+      renderExercises(w);
+    }
+
+    function addExerciseToWorkout() {
+      var name = prompt('Exercise name:');
+      if (!name) return;
+      var w = workoutData[currentWorkoutIdx];
+      w.exercises.push({ name: name, sets: [{reps:10,weight:0,difficulty:'',done:false},{reps:10,weight:0,difficulty:'',done:false},{reps:10,weight:0,difficulty:'',done:false}]});
+      renderExercises(w);
+    }
+
+    function selectRating(btn) {
+      selectedRating = btn.getAttribute('data-rating');
+      document.querySelectorAll('.wk-rate-btn').forEach(function(b) { b.classList.remove('selected'); });
+      btn.classList.add('selected');
+    }
+
+    function completeWorkout() {
+      if (!selectedRating) { alert('Please rate your workout before completing.'); return; }
+      var w = workoutData[currentWorkoutIdx];
+      w.completed = true;
+      w.rating = selectedRating;
+      alert('Workout completed! Rating: ' + selectedRating.charAt(0).toUpperCase() + selectedRating.slice(1));
+      closeWorkoutDetail();
+      // Update the card visually
+      var cards = document.querySelectorAll('.wk-day-card');
+      if (cards[currentWorkoutIdx]) {
+        cards[currentWorkoutIdx].classList.remove('today','upcoming');
+        cards[currentWorkoutIdx].classList.add('completed');
+        var badge = cards[currentWorkoutIdx].querySelector('.wk-badge');
+        if (badge) { badge.className = 'wk-badge wk-badge-done'; badge.textContent = 'Completed'; }
+        var startBtn = cards[currentWorkoutIdx].querySelector('.btn');
+        if (startBtn) startBtn.remove();
+        var ratingLabels = {easy:'Easy',push:'Could Push More',perfect:'Perfect',challenging:'Challenging',struggling:"I'm Struggling"};
+        var existing = cards[currentWorkoutIdx].querySelector('.wk-rating-badge');
+        if (!existing) {
+          var rb = document.createElement('div');
+          rb.className = 'wk-rating-badge';
+          rb.style.marginTop = '8px';
+          rb.textContent = 'Rating: ' + (ratingLabels[selectedRating] || selectedRating);
+          cards[currentWorkoutIdx].appendChild(rb);
+        }
+      }
+    }
   </script>
   <script>
     // ===== Upcoming Check-Ins =====
