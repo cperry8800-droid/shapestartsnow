@@ -641,6 +641,44 @@
   .nd-cal-detail-row .dl { color: var(--text-muted); }
   .nd-cal-detail-row .dv { font-weight: 500; }
 
+  /* ===== Nutritionist Home Calendar (nd-home-cal-) ===== */
+  .nd-home-cal-section { margin-bottom: 32px; }
+  .nd-home-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .nd-home-cal-header h2 { font-size: 1rem; font-weight: 600; margin: 0; letter-spacing: -0.02em; }
+  .nd-home-cal-nav { display: flex; gap: 6px; }
+  .nd-home-cal-nav button {
+    width: 28px; height: 28px; border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
+  }
+  .nd-home-cal-nav button:hover { border-color: var(--text); color: var(--text); }
+  .nd-home-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .nd-home-cal-head {
+    text-align: center; font-size: 0.68rem; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase; padding: 8px 0; letter-spacing: 0.06em;
+  }
+  .nd-home-cal-day {
+    min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 0.82rem; background: var(--bg-alt); border-radius: 6px; position: relative;
+    transition: all 0.2s; cursor: default; border: 1px solid transparent; padding: 4px 2px; gap: 3px;
+  }
+  .nd-home-cal-day.empty { background: transparent; }
+  .nd-home-cal-day.has-meal { cursor: pointer; }
+  .nd-home-cal-day.has-meal:hover { border-color: var(--accent); }
+  .nd-home-cal-day.is-today { border-color: var(--accent) !important; }
+  .nd-home-cal-day-num { font-weight: 600; font-size: 0.78rem; line-height: 1; }
+  .nd-home-cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .nd-home-cal-dot.checkin { background: var(--accent); }
+  .nd-home-cal-dot.planned { background: #F59E0B; }
+  .nd-home-cal-count { font-size: 0.6rem; color: var(--accent); font-weight: 600; }
+  .nd-home-cal-legend { display: flex; gap: 14px; margin-bottom: 10px; font-size: 0.68rem; color: var(--text-muted); }
+  .nd-home-cal-legend span { display: flex; align-items: center; gap: 4px; }
+  @media (max-width: 768px) {
+    .nd-home-cal-day { min-height: 40px; }
+    .nd-home-cal-day-num { font-size: 0.66rem; }
+    .nd-home-cal-dot { width: 5px; height: 5px; }
+  }
+
   /* ===== Plan Sales Section (nd-sales-) ===== */
   .nd-sales-section { margin-bottom: 32px; }
   .nd-sales-toggle {
@@ -807,6 +845,11 @@
               <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="ndDashMealLog"></div>
             </div>
           </div>
+        </div>
+
+        <!-- Monthly Client Calendar -->
+        <div class="td-section nd-home-cal-section">
+          <div id="ndHomeCalContainer" style="margin-top:4px;"></div>
         </div>
 
         <!-- Plan Sales Section -->
@@ -2301,6 +2344,98 @@
     setTimeout(function() { confirm.style.display = 'none'; }, 3000);
     if (typeof ndRenderGoalProgress === 'function') ndRenderGoalProgress('monthly');
   }
+  </script>
+
+  <script>
+  // ===== Nutritionist Home Calendar =====
+  (function() {
+    var today = new Date();
+    var _ndHCalMonth = today.getMonth();
+    var _ndHCalYear = today.getFullYear();
+    var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    function _ndGetMealData(month, year) {
+      var data = {};
+      var t = new Date();
+      // Sample client check-in / meal adherence data
+      var sampleDays = [1,2,3,5,6,7,8,10,11,12,14,15,16,17,19,20,21,22,24,25,26,28,29,30];
+      sampleDays.forEach(function(d) {
+        var date = new Date(year, month, d);
+        if (date.getMonth() !== month) return;
+        var isPast = date <= t;
+        data[d] = {
+          type: isPast ? 'checkin' : 'planned',
+          count: isPast ? Math.floor(Math.random() * 8) + 10 : Math.floor(Math.random() * 6) + 12,
+          label: isPast ? 'clients logged' : 'clients planned'
+        };
+      });
+      return data;
+    }
+
+    window._ndHCalData = {};
+
+    function ndHomeBuildCal(month, year) {
+      var firstDay = new Date(year, month, 1).getDay();
+      var daysInMonth = new Date(year, month + 1, 0).getDate();
+      var mealData = _ndGetMealData(month, year);
+      window._ndHCalData[year + '_' + month] = mealData;
+
+      var cells = '';
+      ['S','M','T','W','T','F','S'].forEach(function(d) { cells += '<div class="nd-home-cal-head">' + d + '</div>'; });
+      for (var i = 0; i < firstDay; i++) cells += '<div class="nd-home-cal-day empty"></div>';
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        var entry = mealData[d];
+        var dot = '', count = '';
+        if (entry) {
+          dot = '<div class="nd-home-cal-dot ' + entry.type + '"></div>';
+          count = '<div class="nd-home-cal-count">' + entry.count + ' clients</div>';
+        }
+        var clickAttr = entry ? ' onclick="ndHomCalDayClick(' + year + ',' + month + ',' + d + ')"' : '';
+        cells += '<div class="nd-home-cal-day' + (isToday ? ' is-today' : '') + (entry ? ' has-meal' : '') + '"' + clickAttr + '>'
+          + '<div class="nd-home-cal-day-num">' + d + '</div>'
+          + dot + count + '</div>';
+      }
+
+      return '<div class="nd-home-cal-header">'
+        + '<h2>Client Check-ins — ' + monthNames[month] + ' ' + year + '</h2>'
+        + '<div class="nd-home-cal-nav">'
+        + '<button onclick="ndHomCalNav(-1)">&#8249;</button>'
+        + '<button onclick="ndHomCalNav(1)">&#8250;</button>'
+        + '</div></div>'
+        + '<div class="nd-home-cal-legend">'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:2px;"></span>Logged</span>'
+        + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:2px;"></span>Planned</span>'
+        + '</div>'
+        + '<div class="nd-home-cal-grid">' + cells + '</div>';
+    }
+
+    window.ndHomCalNav = function(dir) {
+      _ndHCalMonth += dir;
+      if (_ndHCalMonth > 11) { _ndHCalMonth = 0; _ndHCalYear++; }
+      if (_ndHCalMonth < 0) { _ndHCalMonth = 11; _ndHCalYear--; }
+      var c = document.getElementById('ndHomeCalContainer');
+      if (c) c.innerHTML = ndHomeBuildCal(_ndHCalMonth, _ndHCalYear);
+    };
+
+    window.ndHomCalDayClick = function(year, month, day) {
+      var entry = (window._ndHCalData[year + '_' + month] || {})[day];
+      if (!entry) return;
+      var overlay = document.getElementById('ndCalPopupOverlay');
+      var body = document.getElementById('ndCalPopupBody');
+      if (!overlay || !body) return;
+      var mNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      body.innerHTML = '<div class="nd-cal-detail-title">' + mNames[month] + ' ' + day + ', ' + year + '</div>'
+        + '<div class="nd-cal-detail-row"><span class="dl">Status</span><span class="dv">' + (entry.type === 'checkin' ? 'Logged' : 'Planned') + '</span></div>'
+        + '<div class="nd-cal-detail-row"><span class="dl">Clients</span><span class="dv">' + entry.count + ' ' + entry.label + '</span></div>';
+      overlay.classList.add('active');
+    };
+
+    // Init on load
+    var container = document.getElementById('ndHomeCalContainer');
+    if (container) container.innerHTML = ndHomeBuildCal(_ndHCalMonth, _ndHCalYear);
+  })();
   </script>
 
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
