@@ -37,7 +37,7 @@
   .td-tab-btn.active { opacity: 1; border-bottom: 2px solid var(--accent); }
 
   .td-tab-content { display: none; }
-  .td-tab-content.active { display: block; }
+  .td-tab-content.active { display: block; padding-top: 32px; }
 
   @media (max-width: 768px) {
     .td-tab-bar { padding: 0 16px; gap: 0; top: 88px; }
@@ -570,11 +570,11 @@
   </nav>
 
   <!-- Page Hero -->
-  <section class="page-hero">
+  <section class="page-hero" style="padding-top:110px;padding-bottom:16px;">
     <div class="container">
       <span class="tag">Trainer Dashboard</span>
       <h1>Your <span class="gradient-text">clients</span></h1>
-      <p class="page-hero-sub">Monitor client progress, track workout completion, and manage your training business.</p>
+      <p class="page-hero-sub" style="margin-bottom:0;">Monitor client progress, track workout completion, and manage your training business.</p>
     </div>
   </section>
 
@@ -589,7 +589,7 @@
   </div>
 
   <!-- ========== TAB: HOME ========== -->
-  <section class="section">
+  <section class="section" style="padding-top:0;padding-bottom:48px;">
   <div class="container">
     <div class="td-tab-content active" id="tab-home">
       <!-- Trainer Stats -->
@@ -603,7 +603,7 @@
           <div class="progress-stat-label">Total Sales This Month</div>
         </div>
         <div class="progress-stat-card">
-          <div class="progress-stat-number">$4,385</div>
+          <div class="progress-stat-number" style="color:#10B981;">$4,385</div>
           <div class="progress-stat-label">Your Earnings (85%)</div>
         </div>
         <div class="progress-stat-card">

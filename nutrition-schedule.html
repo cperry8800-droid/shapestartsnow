@@ -34,6 +34,8 @@
   }
   .nd-tab-content { display: none; }
   .nd-tab-content.active { display: block; }
+  .nd-tab-content.active > .section:first-child,
+  .nd-tab-content.active > section:first-child { padding-top: 32px; }
 
   @media (max-width: 768px) {
     .nd-tab-bar { top: 60px; }
@@ -663,11 +665,11 @@
   </nav>
 
   <!-- Page Hero -->
-  <section class="page-hero">
+  <section class="page-hero" style="padding-top:110px;padding-bottom:16px;">
     <div class="container">
       <span class="tag">Nutritionist Dashboard</span>
       <h1>Your <span class="gradient-text">clients</span></h1>
-      <p class="page-hero-sub">Track client nutrition progress, manage meal plans, and grow your practice on Shape.</p>
+      <p class="page-hero-sub" style="margin-bottom:0;">Track client nutrition progress, manage meal plans, and grow your practice on Shape.</p>
     </div>
   </section>
 
