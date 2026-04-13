@@ -133,6 +133,58 @@
       .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
     }
 
+    /* ===== Monthly Calendar View ===== */
+    .cl-view-toggle { display: flex; gap: 6px; }
+    .cl-view-btn {
+      padding: 5px 14px; font-size: 0.72rem; font-weight: 500;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .cl-view-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .cl-view-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+    .cl-cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .cl-cal-header h4 { font-size: 0.88rem; font-weight: 500; margin: 0; }
+    .cl-cal-nav { display: flex; gap: 6px; }
+    .cl-cal-nav button {
+      width: 28px; height: 28px; border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; font-size: 0.75rem;
+      display: flex; align-items: center; justify-content: center; font-family: inherit; transition: all 0.2s;
+    }
+    .cl-cal-nav button:hover { border-color: var(--text); color: var(--text); }
+    .cl-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .cl-cal-head {
+      text-align: center; font-size: 0.65rem; font-weight: 500;
+      color: var(--text-muted); text-transform: uppercase; padding: 6px 0; letter-spacing: 0.06em;
+    }
+    .cl-cal-day {
+      aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 0.72rem; background: var(--bg-alt); border-radius: 4px; position: relative; transition: background 0.2s;
+    }
+    .cl-cal-day.empty { background: transparent; }
+    .cl-cal-day.today { border: 1px solid var(--accent); }
+    .cl-cal-day-num { font-weight: 500; margin-bottom: 2px; }
+    .cl-cal-day-dot { width: 5px; height: 5px; border-radius: 50%; }
+    .cl-cal-day-dot.workout { background: #10B981; }
+    .cl-cal-day-dot.rest { background: var(--border); }
+    .cl-cal-day-dot.on-plan { background: #10B981; }
+    .cl-cal-day-dot.off-plan { background: #EF4444; }
+    .cl-cal-day-dot.mixed { background: #F59E0B; }
+    .cl-cal-day-info { font-size: 0.55rem; color: var(--text-muted); margin-top: 1px; }
+
+    /* ===== Compact Meal Log ===== */
+    .cl-meal-row {
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: 0.8rem;
+    }
+    .cl-meal-row:last-child { border-bottom: none; }
+    .cl-meal-date { font-size: 0.72rem; color: var(--text-muted); min-width: 52px; }
+    .cl-meal-name { flex: 1; font-weight: 500; font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cl-meal-meta { display: flex; align-items: center; gap: 10px; font-size: 0.72rem; color: var(--text-muted); }
+    .cl-meal-type {
+      padding: 2px 8px; background: var(--bg-alt); border-radius: 3px;
+      font-size: 0.65rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
     /* ===== Upcoming Check-Ins ===== */
     .checkin-section { margin-bottom: 40px; }
     .checkin-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
@@ -271,18 +323,29 @@
           <div class="streak-dots" id="streakDots"></div>
         </div>
 
-        <!-- Weekly Schedule -->
+        <!-- Workout Schedule -->
         <div class="schedule-section">
           <div class="schedule-header">
-            <h2>Weekly Schedule</h2>
-            <div class="schedule-nav">
-              <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
-              <span id="weekLabel" class="schedule-week-label"></span>
-              <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
+            <h2>Workout Schedule</h2>
+            <div style="display:flex;align-items:center;gap:16px;">
+              <div class="cl-view-toggle">
+                <button class="cl-view-btn active" onclick="clSwitchWorkoutView('weekly', this)">Weekly</button>
+                <button class="cl-view-btn" onclick="clSwitchWorkoutView('monthly', this)">Monthly</button>
+              </div>
+              <div class="schedule-nav" id="workoutWeekNav">
+                <button class="btn btn-sm btn-outline" onclick="changeWeek(-1)">&larr; Prev</button>
+                <span id="weekLabel" class="schedule-week-label"></span>
+                <button class="btn btn-sm btn-outline" onclick="changeWeek(1)">Next &rarr;</button>
+              </div>
             </div>
           </div>
-          <div class="schedule-grid" id="scheduleGrid">
-            <!-- Days populated by JS -->
+          <div id="workoutWeeklyView">
+            <div class="schedule-grid" id="scheduleGrid">
+              <!-- Days populated by JS -->
+            </div>
+          </div>
+          <div id="workoutMonthlyView" style="display:none;">
+            <div id="workoutCalContainer"></div>
           </div>
         </div>
 
@@ -416,17 +479,28 @@
             <div id="weeklyCalChart" class="progress-bar-chart"></div>
           </div>
 
-          <!-- Weekly Meal Schedule -->
+          <!-- Meal Schedule -->
           <div class="meal-schedule-section">
             <div class="meal-schedule-header">
               <h2>Meal Schedule</h2>
-              <div class="schedule-nav">
-                <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
-                <span id="mealWeekLabel" class="schedule-week-label"></span>
-                <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <div class="cl-view-toggle">
+                  <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>
+                  <button class="cl-view-btn" onclick="clSwitchMealView('monthly', this)">Monthly</button>
+                </div>
+                <div class="schedule-nav" id="mealWeekNav">
+                  <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
+                  <span id="mealWeekLabel" class="schedule-week-label"></span>
+                  <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
+                </div>
               </div>
             </div>
-            <div class="meal-day-grid" id="mealDayGrid"></div>
+            <div id="mealWeeklyView">
+              <div class="meal-day-grid" id="mealDayGrid"></div>
+            </div>
+            <div id="mealMonthlyView" style="display:none;">
+              <div id="mealCalContainer"></div>
+            </div>
           </div>
 
           <!-- Meal Log -->
@@ -435,7 +509,7 @@
               <h2>Meal Log</h2>
               <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
             </div>
-            <div class="meal-log-list" id="mealLogList"></div>
+            <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="mealLogList"></div>
           </div>
 
           <!-- Upcoming Check-Ins (Nutrition) -->
@@ -728,6 +802,120 @@
     // Render on page load
     renderClientCheckIns('trainer');
     renderClientCheckIns('nutritionist');
+  </script>
+  <script>
+    // ===== Monthly Calendar Views =====
+    let _clWorkoutMonth = new Date().getMonth();
+    let _clWorkoutYear = new Date().getFullYear();
+    let _clMealMonth = new Date().getMonth();
+    let _clMealYear = new Date().getFullYear();
+
+    function _clBuildCal(month, year, type) {
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+      const monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const prefix = type === 'workout' ? 'clWorkoutCal' : 'clMealCal';
+
+      // Generate demo data for calendar
+      const dayData = {};
+      for (let d = 1; d <= Math.min(daysInMonth, today.getMonth() === month && today.getFullYear() === year ? today.getDate() : daysInMonth); d++) {
+        const checkDate = new Date(year, month, d);
+        if (checkDate > today) break;
+        if (type === 'workout') {
+          // Workouts: some days have workouts, some rest
+          const hasWorkout = Math.random() > 0.35;
+          if (hasWorkout) {
+            const mins = Math.floor(Math.random() * 45) + 20;
+            dayData[d] = { type: 'workout', label: mins + 'm' };
+          }
+        } else {
+          // Meals: most days have meals
+          if (Math.random() > 0.15) {
+            const count = Math.floor(Math.random() * 3) + 2;
+            const onPlan = Math.floor(count * (0.6 + Math.random() * 0.4));
+            const offPlan = count - onPlan;
+            let dotClass = offPlan === 0 ? 'on-plan' : onPlan === 0 ? 'off-plan' : 'mixed';
+            dayData[d] = { dotClass, label: count + 'm' };
+          }
+        }
+      }
+
+      let cells = '';
+      ['S','M','T','W','T','F','S'].forEach(d => { cells += '<div class="cl-cal-head">' + d + '</div>'; });
+      for (let i = 0; i < firstDay; i++) cells += '<div class="cl-cal-day empty"></div>';
+      for (let d = 1; d <= daysInMonth; d++) {
+        const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+        const data = dayData[d];
+        let dot = '';
+        if (data) {
+          if (type === 'workout') {
+            dot = '<div class="cl-cal-day-dot workout"></div>';
+          } else {
+            dot = '<div class="cl-cal-day-dot ' + data.dotClass + '"></div>';
+          }
+        }
+        cells += '<div class="cl-cal-day' + (isToday ? ' today' : '') + '">'
+          + '<div class="cl-cal-day-num">' + d + '</div>'
+          + dot
+          + (data ? '<div class="cl-cal-day-info">' + data.label + '</div>' : '')
+          + '</div>';
+      }
+
+      const legendHtml = type === 'workout'
+        ? '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Workout</span>'
+        : '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>On Plan</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Mixed</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-right:4px;"></span>Off Plan</span>';
+
+      return '<div class="cl-cal-header"><h4>' + monthName + '</h4>'
+        + '<div class="cl-cal-nav">'
+        + '<button onclick="clCalNav(\'' + type + '\',-1)">&#8249;</button>'
+        + '<button onclick="clCalNav(\'' + type + '\',1)">&#8250;</button>'
+        + '</div></div>'
+        + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);">' + legendHtml + '</div>'
+        + '<div class="cl-cal-grid">' + cells + '</div>';
+    }
+
+    function clCalNav(type, dir) {
+      if (type === 'workout') {
+        _clWorkoutMonth += dir;
+        if (_clWorkoutMonth > 11) { _clWorkoutMonth = 0; _clWorkoutYear++; }
+        if (_clWorkoutMonth < 0) { _clWorkoutMonth = 11; _clWorkoutYear--; }
+        document.getElementById('workoutCalContainer').innerHTML = _clBuildCal(_clWorkoutMonth, _clWorkoutYear, 'workout');
+      } else {
+        _clMealMonth += dir;
+        if (_clMealMonth > 11) { _clMealMonth = 0; _clMealYear++; }
+        if (_clMealMonth < 0) { _clMealMonth = 11; _clMealYear--; }
+        document.getElementById('mealCalContainer').innerHTML = _clBuildCal(_clMealMonth, _clMealYear, 'meal');
+      }
+    }
+
+    function clSwitchWorkoutView(view, btn) {
+      btn.parentElement.querySelectorAll('.cl-view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('workoutWeeklyView').style.display = view === 'weekly' ? '' : 'none';
+      document.getElementById('workoutMonthlyView').style.display = view === 'monthly' ? '' : 'none';
+      document.getElementById('workoutWeekNav').style.display = view === 'weekly' ? '' : 'none';
+      if (view === 'monthly' && !document.getElementById('workoutCalContainer').innerHTML) {
+        document.getElementById('workoutCalContainer').innerHTML = _clBuildCal(_clWorkoutMonth, _clWorkoutYear, 'workout');
+      }
+    }
+
+    function clSwitchMealView(view, btn) {
+      btn.parentElement.querySelectorAll('.cl-view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('mealWeeklyView').style.display = view === 'weekly' ? '' : 'none';
+      document.getElementById('mealMonthlyView').style.display = view === 'monthly' ? '' : 'none';
+      document.getElementById('mealWeekNav').style.display = view === 'weekly' ? '' : 'none';
+      if (view === 'monthly' && !document.getElementById('mealCalContainer').innerHTML) {
+        document.getElementById('mealCalContainer').innerHTML = _clBuildCal(_clMealMonth, _clMealYear, 'meal');
+      }
+    }
+
+    // Pre-render calendars
+    document.getElementById('workoutCalContainer').innerHTML = _clBuildCal(_clWorkoutMonth, _clWorkoutYear, 'workout');
+    document.getElementById('mealCalContainer').innerHTML = _clBuildCal(_clMealMonth, _clMealYear, 'meal');
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>

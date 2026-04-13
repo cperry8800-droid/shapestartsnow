@@ -296,20 +296,16 @@ function renderMealLog() {
 
   list.innerHTML = log.slice(0, 15).map(m => {
     const d = new Date(m.date + 'T00:00:00');
-    const dateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     return `
-      <div class="meal-log-entry">
-        <div class="meal-log-date">${dateStr}</div>
-        <div class="meal-log-info">
-          <h4>${m.name}</h4>
-          <div class="meal-log-meta">
-            <span class="meal-tag">${m.type}</span>
-            <span>${m.protein || 0}g P</span>
-            <span>${m.carbs || 0}g C</span>
-            <span>${m.fat || 0}g F</span>
-          </div>
+      <div class="cl-meal-row">
+        <div class="cl-meal-date">${dateStr}</div>
+        <div class="cl-meal-name">${m.name}</div>
+        <div class="cl-meal-meta">
+          <span>${m.calories} cal</span>
+          <span class="cl-meal-type">${m.type}</span>
+          <span>${m.protein || 0}P / ${m.carbs || 0}C / ${m.fat || 0}F</span>
         </div>
-        <div class="meal-log-cals">${m.calories} cal</div>
         <button class="meal-log-delete" onclick="deleteMealEntry('${m.date}', '${m.name}')" title="Remove">&times;</button>
       </div>
     `;
