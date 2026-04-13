@@ -914,7 +914,7 @@ function createTrainerCard(trainer) {
           </div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-          ${trainer.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${trainer.credential}</span>` : ''}
+          ${trainer.credential ? `<span class="cred-tip" data-tip="${trainer.credentialFull || trainer.credential}" style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${trainer.credential}</span>` : ''}
           ${trainer.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${trainer.specialtyType}</span>` : ''}
         </div>
         <p class="card-desc">${trainer.bio}</p>
@@ -948,7 +948,7 @@ function createNutritionistCard(nutritionist) {
           </div>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">
-          ${nutritionist.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${nutritionist.credential}</span>` : ''}
+          ${nutritionist.credential ? `<span class="cred-tip" data-tip="${nutritionist.credentialFull || nutritionist.credential}" style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${nutritionist.credential}</span>` : ''}
           ${nutritionist.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${nutritionist.specialtyType}</span>` : ''}
         </div>
         <p class="card-desc">${nutritionist.bio}</p>
@@ -1313,7 +1313,7 @@ function openTrainerModal(id) {
         <h2>${t.name}</h2>
         <div class="card-specialty">${t.specialty}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;">
-          ${t.credential ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${t.credential}</span>` : ''}
+          ${t.credential ? `<span class="cred-tip" data-tip="${t.credentialFull || t.credential}" style="padding:3px 8px;font-size:0.62rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${t.credential}</span>` : ''}
           ${t.credentialFull ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${t.credentialFull}</span>` : ''}
           ${t.specialtyType ? `<span style="padding:3px 8px;font-size:0.62rem;font-weight:500;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${t.specialtyType}</span>` : ''}
         </div>
@@ -1383,7 +1383,7 @@ function openNutritionistModal(id) {
         <h2>${n.name}</h2>
         <div class="card-specialty">${n.specialty}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0;">
-          ${n.credential ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${n.credential}</span>` : ''}
+          ${n.credential ? `<span class="cred-tip" data-tip="${n.credentialFull || n.credential}" style="padding:3px 10px;font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;border:1px solid var(--accent);color:var(--accent-dark);border-radius:3px;">${n.credential}</span>` : ''}
           ${n.credentialFull ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:400;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${n.credentialFull}</span>` : ''}
           ${n.specialtyType ? `<span style="padding:3px 10px;font-size:0.68rem;font-weight:400;color:var(--text-muted);border:1px solid var(--border);border-radius:3px;">${n.specialtyType}</span>` : ''}
         </div>
