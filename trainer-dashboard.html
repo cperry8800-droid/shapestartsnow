@@ -142,11 +142,11 @@
     </div>
   </section>
 
-  <!-- Plan Builder Section -->
+  <!-- Program Builder Section -->
   <section class="section" id="planBuilderSection">
     <div class="container">
       <style>
-        /* Plan Builder Styles */
+        /* Program Builder Styles */
         .pb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .pb-header h2 { font-size: 1.1rem; font-weight: 600; }
         .pb-builder { display: none; margin-bottom: 36px; }
@@ -247,14 +247,15 @@
         }
         .pb-badge-draft { background: rgba(245,158,11,0.15); color: #F59E0B; }
         .pb-badge-published { background: rgba(16,185,129,0.15); color: #10B981; }
+        .pb-badge-profile { background: rgba(99,102,241,0.15); color: #818CF8; }
         .pb-empty { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.82rem; }
       </style>
 
-      <!-- Plan Builder Header -->
+      <!-- Program Builder Header -->
       <div class="td-section">
         <div class="pb-header">
-          <h2>Plan Builder</h2>
-          <button class="btn btn-primary" id="pbCreateBtn" onclick="pbToggleBuilder()">+ Create New Plan</button>
+          <h2>Program Builder</h2>
+          <button class="btn btn-primary" id="pbCreateBtn" onclick="pbToggleBuilder()">+ Create New Program</button>
         </div>
 
         <!-- Builder Area -->
@@ -264,11 +265,11 @@
             <div class="pb-type-chooser">
               <div class="pb-type-card" onclick="pbSelectType('template')">
                 <h3>Use Shape Template</h3>
-                <p>Pre-structured day-by-day workout plan with exercises, sets, reps, and rest periods.</p>
+                <p>Pre-structured day-by-day workout program with exercises, sets, reps, and rest periods.</p>
               </div>
               <div class="pb-type-card" onclick="pbSelectType('custom')">
                 <h3>Upload Custom Plan</h3>
-                <p>Upload your own workout plan as a PDF, image, or document and assign it to a client.</p>
+                <p>Upload your own workout program as a PDF, image, or document and assign it to a client.</p>
               </div>
             </div>
           </div>
@@ -322,7 +323,7 @@
             <div id="pbDaysContainer"></div>
             <button class="btn btn-sm btn-outline" onclick="pbAddDay()" style="margin-top:12px;">+ Add Day</button>
 
-            <!-- Assign Bar -->
+            <!-- Assign & Actions Bar -->
             <div class="pb-assign-bar">
               <div class="pb-field">
                 <label class="pb-label">Assign to Client</label>
@@ -332,16 +333,12 @@
                   <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
                 </select>
               </div>
-              <div class="pb-field">
-                <label class="pb-label">Status</label>
-                <div class="pb-status-toggle">
-                  <span>Draft</span>
-                  <div class="pb-toggle" id="pbTplToggle" onclick="this.classList.toggle('active')"></div>
-                  <span>Published</span>
-                </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="pbSaveDraft('template')" style="border-color:var(--accent);color:var(--accent-dark);">Save Draft</button>
+                <button class="btn btn-accent" onclick="pbSavePlan('template')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="pbPublishToProfile('template')">Publish to Profile</button>
+                <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
               </div>
-              <button class="btn btn-accent" onclick="pbSavePlan('template')">Publish &amp; Send to Client</button>
-              <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
             </div>
           </div>
 
@@ -383,32 +380,28 @@
                   <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
                 </select>
               </div>
-              <div class="pb-field">
-                <label class="pb-label">Status</label>
-                <div class="pb-status-toggle">
-                  <span>Draft</span>
-                  <div class="pb-toggle" id="pbCustToggle" onclick="this.classList.toggle('active')"></div>
-                  <span>Published</span>
-                </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="pbSaveDraft('custom')" style="border-color:var(--accent);color:var(--accent-dark);">Save Draft</button>
+                <button class="btn btn-accent" onclick="pbSavePlan('custom')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="pbPublishToProfile('custom')">Publish to Profile</button>
+                <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
               </div>
-              <button class="btn btn-accent" onclick="pbSavePlan('custom')">Publish &amp; Send to Client</button>
-              <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
             </div>
           </div>
         </div>
 
-        <!-- My Plans List -->
+        <!-- My Programs List -->
         <div class="pb-header" style="margin-top:12px;">
-          <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">My Plans</h3>
+          <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">My Programs</h3>
         </div>
         <div class="pb-plan-list" id="pbPlanList">
-          <div class="pb-empty">No plans yet. Create your first workout plan above.</div>
+          <div class="pb-empty">No programs yet. Create your first workout program above.</div>
         </div>
       </div>
     </div>
 
     <script>
-    // ===== Plan Builder Script =====
+    // ===== Program Builder Script =====
     (function() {
       const STORAGE_KEY = 'shapeTrainerPlans';
       const CLIENT_STORAGE_KEY = 'shapeClientAssignedPlans';
@@ -437,7 +430,7 @@
         const isOpen = b.classList.contains('active');
         if (isOpen) {
           b.classList.remove('active');
-          document.getElementById('pbCreateBtn').textContent = '+ Create New Plan';
+          document.getElementById('pbCreateBtn').textContent = '+ Create New Program';
           pbEditId = null;
           pbResetForms();
         } else {
@@ -674,8 +667,7 @@
           daysPerWeek: document.getElementById('pbTplDays').value,
           description: document.getElementById('pbTplDesc').value,
           days: days,
-          client: document.getElementById('pbTplClient').value,
-          status: document.getElementById('pbTplToggle').classList.contains('active') ? 'Published' : 'Draft'
+          client: document.getElementById('pbTplClient').value
         };
       }
 
@@ -686,44 +678,79 @@
           name: document.getElementById('pbCustName').value,
           description: document.getElementById('pbCustDesc').value,
           files: pbUploadedFiles.map(f => ({ name: f.name, type: f.type, size: f.size, data: f.data })),
-          client: document.getElementById('pbCustClient').value,
-          status: document.getElementById('pbCustToggle').classList.contains('active') ? 'Published' : 'Draft'
+          client: document.getElementById('pbCustClient').value
         };
       }
 
-      // Save plan
-      window.pbSavePlan = function(type) {
-        const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
-
-        if (!plan.name) { showToast('Please enter a plan name.'); return; }
-
+      // Core save helper
+      function pbCoreSave(plan) {
         plan.id = pbEditId || Date.now().toString();
-        plan.createdAt = new Date().toISOString();
-
+        plan.createdAt = plan.createdAt || new Date().toISOString();
+        plan.updatedAt = new Date().toISOString();
         const plans = getPlans();
         const existingIdx = plans.findIndex(p => p.id === plan.id);
-        if (existingIdx >= 0) {
-          plans[existingIdx] = plan;
-        } else {
-          plans.push(plan);
-        }
+        if (existingIdx >= 0) plans[existingIdx] = plan;
+        else plans.push(plan);
         savePlans(plans);
+        return plan;
+      }
 
-        // If published with a client, also save to client assigned plans
-        if (plan.status === 'Published' && plan.client) {
-          const clientPlans = getClientPlans();
-          const cIdx = clientPlans.findIndex(p => p.id === plan.id);
-          if (cIdx >= 0) {
-            clientPlans[cIdx] = plan;
-          } else {
-            clientPlans.push(plan);
-          }
-          saveClientPlans(clientPlans);
-          showToast('Plan published and sent to ' + plan.client + '!');
-        } else {
-          showToast('Plan saved as ' + plan.status.toLowerCase() + '.');
-        }
+      // Save Draft — saves without publishing
+      window.pbSaveDraft = function(type) {
+        const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+        if (!plan.name) { showToast('Please enter a program name.'); return; }
+        plan.status = 'Draft';
+        pbCoreSave(plan);
+        showToast('Draft saved! You can continue editing anytime.');
+        pbToggleBuilder();
+        pbRenderPlans();
+      };
 
+      // Publish & Send to Client
+      window.pbSavePlan = function(type) {
+        const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+        if (!plan.name) { showToast('Please enter a program name.'); return; }
+        if (!plan.client) { showToast('Please assign a client first.'); return; }
+        plan.status = 'Published';
+        pbCoreSave(plan);
+        // Save to client assigned plans
+        const clientPlans = getClientPlans();
+        const cIdx = clientPlans.findIndex(p => p.id === plan.id);
+        if (cIdx >= 0) clientPlans[cIdx] = plan;
+        else clientPlans.push(plan);
+        saveClientPlans(clientPlans);
+        showToast('Program published and sent to ' + plan.client + '!');
+        pbToggleBuilder();
+        pbRenderPlans();
+      };
+
+      // Publish to Profile — adds to trainer's profile page programs list
+      window.pbPublishToProfile = function(type) {
+        const plan = type === 'template' ? collectTemplatePlan() : collectCustomPlan();
+        if (!plan.name) { showToast('Please enter a program name.'); return; }
+        plan.status = 'On Profile';
+        pbCoreSave(plan);
+        // Save to trainer profile programs via localStorage
+        try {
+          const profileRaw = localStorage.getItem('shapeTrainerProfile');
+          let profile = profileRaw ? JSON.parse(profileRaw) : {};
+          if (!profile.programs) profile.programs = [];
+          // Check if already on profile
+          const existing = profile.programs.findIndex(p => p.pbId === plan.id);
+          const profileProgram = {
+            pbId: plan.id,
+            name: plan.name,
+            type: plan.category || plan.type || 'Custom',
+            duration: plan.duration || '',
+            difficulty: plan.difficulty || '',
+            desc: plan.description || '',
+            price: ''
+          };
+          if (existing >= 0) profile.programs[existing] = profileProgram;
+          else profile.programs.push(profileProgram);
+          localStorage.setItem('shapeTrainerProfile', JSON.stringify(profile));
+        } catch(e) {}
+        showToast('Program published to your profile!');
         pbToggleBuilder();
         pbRenderPlans();
       };
@@ -736,8 +763,6 @@
         ['pbTplCategory','pbTplDifficulty','pbTplDuration','pbTplDays','pbTplClient','pbCustClient'].forEach(id => {
           const el = document.getElementById(id); if (el) el.value = '';
         });
-        document.getElementById('pbTplToggle').classList.remove('active');
-        document.getElementById('pbCustToggle').classList.remove('active');
         document.getElementById('pbDaysContainer').innerHTML = '';
         pbUploadedFiles = [];
         pbRenderFileList();
@@ -751,12 +776,12 @@
         const list = document.getElementById('pbPlanList');
 
         if (plans.length === 0) {
-          list.innerHTML = '<div class="pb-empty">No plans yet. Create your first workout plan above.</div>';
+          list.innerHTML = '<div class="pb-empty">No programs yet. Create your first workout program above.</div>';
           return;
         }
 
         list.innerHTML = plans.map(p => {
-          const badgeClass = p.status === 'Published' ? 'pb-badge-published' : 'pb-badge-draft';
+          const badgeClass = p.status === 'Published' ? 'pb-badge-published' : p.status === 'On Profile' ? 'pb-badge-profile' : 'pb-badge-draft';
           const clientStr = p.client ? ' &middot; Assigned to ' + p.client : '';
           const typeLabel = p.type === 'template' ? 'Shape Template' : 'Uploaded Plan';
           const meta = [typeLabel, p.category, p.difficulty, p.duration].filter(Boolean).join(' &middot; ');
@@ -800,7 +825,7 @@
           document.getElementById('pbTplDays').value = plan.daysPerWeek || '';
           document.getElementById('pbTplDesc').value = plan.description || '';
           document.getElementById('pbTplClient').value = plan.client || '';
-          if (plan.status === 'Published') document.getElementById('pbTplToggle').classList.add('active');
+          // status is set by button click, not a toggle
 
           (plan.days || []).forEach(function(day, idx) {
             pbAddDay();
@@ -842,7 +867,6 @@
           document.getElementById('pbCustName').value = plan.name || '';
           document.getElementById('pbCustDesc').value = plan.description || '';
           document.getElementById('pbCustClient').value = plan.client || '';
-          if (plan.status === 'Published') document.getElementById('pbCustToggle').classList.add('active');
 
           // Restore uploaded files
           pbUploadedFiles = (plan.files || []).map(f => ({ name: f.name, type: f.type, size: f.size, data: f.data }));
@@ -854,7 +878,7 @@
 
       // Delete plan
       window.pbDeletePlan = function(id) {
-        if (!confirm('Delete this plan?')) return;
+        if (!confirm('Delete this program?')) return;
         let plans = getPlans();
         plans = plans.filter(p => p.id !== id);
         savePlans(plans);
@@ -863,7 +887,7 @@
         clientPlans = clientPlans.filter(p => p.id !== id);
         saveClientPlans(clientPlans);
 
-        showToast('Plan deleted.');
+        showToast('Program deleted.');
         pbRenderPlans();
       };
 
