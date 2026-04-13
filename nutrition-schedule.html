@@ -2117,6 +2117,84 @@
       var cc=document.getElementById('mpbCustClient');if(cc)cc.selectedIndex=0;
     }
 
+    // Seed demo meal plans on first visit
+    if (!mpbGetPlans().length) {
+      var _now = new Date().toISOString();
+      var _days = DAYS;
+      var _meals = MEALS;
+      // Helper to build a full 7-day plan with consistent meals
+      function _buildDays(meals) {
+        return _days.map(function(day, d) {
+          return { day: day, meals: _meals.map(function(mt, m) {
+            var md = meals[d % meals.length][m] || {};
+            return { mealType: mt, name: md.name||'', calories: md.cal||'', protein: md.p||'', carbs: md.c||'', fat: md.f||'', ingredients: md.ing||'', prep: md.prep||'' };
+          })};
+        });
+      }
+      var _plan1Meals = [
+        [ {name:'Greek Yogurt & Berries',cal:'320',p:'28',c:'35',f:'6',ing:'Non-fat Greek yogurt, blueberries, granola',prep:'Top yogurt with berries & granola'},
+          {name:'Apple & Almond Butter',cal:'180',p:'4',c:'24',f:'8',ing:'1 apple, 1 tbsp almond butter',prep:'Slice & serve'},
+          {name:'Grilled Chicken Salad',cal:'480',p:'42',c:'28',f:'16',ing:'Chicken breast, mixed greens, cherry tomatoes, olive oil dressing',prep:'Grill chicken 6 min each side, toss with salad'},
+          {name:'Protein Shake',cal:'160',p:'30',c:'8',f:'3',ing:'Whey protein, water or almond milk',prep:'Shake & serve'},
+          {name:'Salmon & Roasted Veg',cal:'520',p:'44',c:'30',f:'18',ing:'Salmon fillet, broccoli, sweet potato, olive oil',prep:'Bake 400°F 18 min'} ],
+        [ {name:'Oats & Banana',cal:'380',p:'14',c:'65',f:'6',ing:'Rolled oats, banana, almond milk, chia seeds',prep:'Cook oats 5 min, top with banana & chia'},
+          {name:'Mixed Nuts',cal:'160',p:'5',c:'7',f:'14',ing:'Almonds, cashews, walnuts',prep:'1 oz serving'},
+          {name:'Turkey & Avocado Wrap',cal:'490',p:'38',c:'38',f:'18',ing:'Turkey breast, whole wheat wrap, avocado, spinach, mustard',prep:'Assemble & wrap'},
+          {name:'Cottage Cheese',cal:'150',p:'22',c:'6',f:'3',ing:'Low-fat cottage cheese, cucumber',prep:'Serve chilled'},
+          {name:'Lean Beef Stir Fry',cal:'540',p:'40',c:'48',f:'14',ing:'Lean beef strips, broccoli, peppers, brown rice, low-sodium soy sauce',prep:'Wok 8 min over high heat'} ]
+      ];
+      var _plan2Meals = [
+        [ {name:'Eggs & Oatmeal',cal:'520',p:'34',c:'60',f:'12',ing:'4 eggs scrambled, 1 cup oats, almond milk',prep:'Cook eggs over medium, oats in microwave 2 min'},
+          {name:'Protein Bar',cal:'240',p:'20',c:'28',f:'7',ing:'Store-bought or homemade protein bar',prep:'Ready to eat'},
+          {name:'Chicken Rice Bowl',cal:'680',p:'52',c:'72',f:'12',ing:'200g chicken breast, 1.5 cups brown rice, steamed broccoli',prep:'Meal prep ahead or cook fresh'},
+          {name:'Rice Cakes & Peanut Butter',cal:'220',p:'7',c:'26',f:'9',ing:'2 rice cakes, 1.5 tbsp natural peanut butter',prep:'Spread & serve'},
+          {name:'Pasta & Ground Turkey',cal:'740',p:'56',c:'80',f:'14',ing:'Whole wheat pasta, lean ground turkey, marinara sauce, parmesan',prep:'Cook pasta al dente, brown turkey, combine with sauce'} ],
+        [ {name:'Protein Pancakes',cal:'480',p:'40',c:'52',f:'9',ing:'Oat flour, protein powder, eggs, banana, baking powder',prep:'Blend & cook on griddle 3 min each side'},
+          {name:'Greek Yogurt Parfait',cal:'260',p:'24',c:'28',f:'4',ing:'Greek yogurt, granola, strawberries',prep:'Layer in cup'},
+          {name:'Tuna & Quinoa Bowl',cal:'600',p:'50',c:'58',f:'12',ing:'Canned tuna, cooked quinoa, cucumber, lemon, olive oil',prep:'Mix & serve chilled'},
+          {name:'Handful Almonds',cal:'160',p:'6',c:'6',f:'14',ing:'Raw almonds',prep:'Pre-portioned bag'},
+          {name:'Steak & Sweet Potato',cal:'720',p:'58',c:'54',f:'18',ing:'Sirloin steak 200g, large sweet potato, green beans',prep:'Pan-sear steak 4 min each side, bake potato 40 min'} ]
+      ];
+      mpbSavePlans([
+        {
+          id: Date.now()-3000, type:'template', status:'Published',
+          name:'7-Day Clean Eating Reset', goal:'Weight Loss', dietType:'Standard',
+          duration:'1', calories:'1800',
+          description:'A structured 7-day reset built around whole foods, lean protein, and balanced macros. Designed to reduce inflammation, improve energy, and kick-start fat loss without feeling deprived.',
+          macros:{protein:40,carbs:35,fat:25},
+          days:_buildDays(_plan1Meals),
+          shoppingList:'Chicken breast, salmon, lean ground turkey, Greek yogurt (non-fat), eggs, oats, brown rice, sweet potatoes, broccoli, mixed greens, avocado, almond butter, mixed nuts, blueberries, bananas, apples, olive oil, whole wheat wraps',
+          client:'Christopher Perry', createdAt:_now, updatedAt:_now
+        },
+        {
+          id: Date.now()-2000, type:'template', status:'Published',
+          name:'Lean Bulk 8-Week Plan', goal:'Muscle Gain', dietType:'Standard',
+          duration:'8', calories:'3200',
+          description:'A high-calorie, protein-first plan designed for clients in a lean bulk phase. Prioritizes whole food carb sources around workouts for performance, with healthy fats supporting hormone production.',
+          macros:{protein:35,carbs:45,fat:20},
+          days:_buildDays(_plan2Meals),
+          shoppingList:'Chicken breast (bulk), steak, ground turkey, whole wheat pasta, brown rice, quinoa, oats, eggs, Greek yogurt, protein powder, sweet potatoes, broccoli, peppers, spinach, almond butter, olive oil, peanut butter',
+          client:'Marcus Thompson', createdAt:_now, updatedAt:_now
+        },
+        {
+          id: Date.now()-1000, type:'template', status:'Draft',
+          name:'Keto Kickstart 4-Week Plan', goal:'Weight Loss', dietType:'Keto',
+          duration:'4', calories:'1700',
+          description:'A strict ketogenic meal plan for clients looking to enter and maintain ketosis. Under 30g net carbs daily with emphasis on healthy fats, quality protein, and electrolyte balance.',
+          macros:{protein:30,carbs:5,fat:65},
+          days:_buildDays([[
+            {name:'Bacon & Eggs',cal:'420',p:'30',c:'2',f:'32',ing:'3 eggs, 3 strips bacon, spinach',prep:'Pan-fry 6 min'},
+            {name:'Cheese & Nuts',cal:'200',p:'8',c:'3',f:'18',ing:'Cheddar cubes, almonds',prep:'Pre-portioned'},
+            {name:'Bunless Burger & Salad',cal:'520',p:'38',c:'6',f:'38',ing:'Beef patty, lettuce bun, avocado, side salad with ranch',prep:'Grill 4 min each side'},
+            {name:'Pork Rinds',cal:'120',p:'14',c:'0',f:'7',ing:'Pork rinds',prep:'Ready to eat'},
+            {name:'Salmon & Asparagus',cal:'490',p:'44',c:'4',f:'32',ing:'Salmon, asparagus, butter, lemon, garlic',prep:'Pan-sear salmon 4 min each side, roast asparagus'}
+          ]]),
+          shoppingList:'Ground beef, salmon, bacon, eggs, avocados, cheese (cheddar, cream cheese), almonds, pecans, leafy greens, asparagus, broccoli, cauliflower, olive oil, butter, heavy cream',
+          client:'Sofia Rodriguez', createdAt:_now, updatedAt:_now
+        }
+      ]);
+    }
+
     // Init - render the plans list on page load
     mpbRenderList();
   })();

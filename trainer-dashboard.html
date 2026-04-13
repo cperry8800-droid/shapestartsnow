@@ -1984,6 +1984,137 @@
   }
 
   function initProgramsTab() {
+    // Seed demo programs on first visit
+    if (_getPbPrograms().length === 0) {
+      var now = new Date().toISOString();
+      _savePbPrograms([
+        {
+          id: 'demo-prog-1', type: 'template', status: 'Published',
+          name: '12-Week Hypertrophy Program', category: 'Bodybuilding',
+          difficulty: 'Intermediate', duration: '12 weeks', daysPerWeek: '4',
+          client: 'Christopher Perry', createdAt: now, updatedAt: now,
+          description: 'A 4-day push/pull/legs split designed to maximize muscle growth through progressive overload, controlled volume, and structured rest. Ideal for clients with 1+ year of training experience.',
+          days: [
+            { name: 'Day 1 - Push (Chest, Shoulders, Triceps)',
+              warmup: [{exercise:'Band Pull-Aparts',duration:'2 min'},{exercise:'Shoulder Circles',duration:'1 min'}],
+              exercises: [
+                {name:'Barbell Bench Press',sets:'4',reps:'8–10',rest:'90s',notes:'Controlled descent, 1s pause at chest'},
+                {name:'Incline Dumbbell Press',sets:'3',reps:'10–12',rest:'60s',notes:''},
+                {name:'Cable Lateral Raises',sets:'4',reps:'12–15',rest:'45s',notes:'Slow negatives'},
+                {name:'Overhead Tricep Extension',sets:'3',reps:'12',rest:'60s',notes:''},
+                {name:'Tricep Pushdowns',sets:'3',reps:'15',rest:'45s',notes:''}
+              ],
+              cooldown: [{exercise:'Chest Doorway Stretch',duration:'2 min'},{exercise:'Shoulder Cross-Body Stretch',duration:'1 min'}]
+            },
+            { name: 'Day 2 - Pull (Back, Biceps)',
+              warmup: [{exercise:'Arm Circles',duration:'1 min'},{exercise:'Cat-Cow Stretch',duration:'2 min'}],
+              exercises: [
+                {name:'Weighted Pull-Ups',sets:'4',reps:'6–8',rest:'90s',notes:'Full extension at bottom'},
+                {name:'Barbell Bent-Over Row',sets:'4',reps:'8–10',rest:'90s',notes:''},
+                {name:'Seated Cable Row',sets:'3',reps:'10–12',rest:'60s',notes:'Squeeze shoulder blades'},
+                {name:'Face Pulls',sets:'3',reps:'15',rest:'45s',notes:''},
+                {name:'Barbell Curl',sets:'3',reps:'10',rest:'60s',notes:''},
+                {name:'Hammer Curls',sets:'3',reps:'12',rest:'45s',notes:''}
+              ],
+              cooldown: [{exercise:'Lats Hang Stretch',duration:'1 min'},{exercise:'Bicep Wall Stretch',duration:'1 min'}]
+            },
+            { name: 'Day 3 - Legs',
+              warmup: [{exercise:'Bodyweight Squats',duration:'2 min'},{exercise:'Hip Circles',duration:'1 min'}],
+              exercises: [
+                {name:'Barbell Back Squat',sets:'4',reps:'8–10',rest:'120s',notes:'Depth below parallel'},
+                {name:'Romanian Deadlift',sets:'4',reps:'10',rest:'90s',notes:'Hinge at hips, slight knee bend'},
+                {name:'Leg Press',sets:'3',reps:'12–15',rest:'90s',notes:''},
+                {name:'Leg Curl (Machine)',sets:'3',reps:'12',rest:'60s',notes:''},
+                {name:'Standing Calf Raise',sets:'4',reps:'15–20',rest:'45s',notes:'Full range of motion'}
+              ],
+              cooldown: [{exercise:'Quad Stretch',duration:'1 min'},{exercise:'Hamstring Floor Stretch',duration:'2 min'}]
+            },
+            { name: 'Day 4 - Full Body / Accessory',
+              warmup: [{exercise:'Light Cardio',duration:'5 min'}],
+              exercises: [
+                {name:'Deadlift',sets:'3',reps:'5',rest:'120s',notes:'Heavy — focus on form'},
+                {name:'Dumbbell Shoulder Press',sets:'3',reps:'10–12',rest:'60s',notes:''},
+                {name:'Dumbbell Lunges',sets:'3',reps:'10 each leg',rest:'60s',notes:''},
+                {name:'Plank',sets:'3',reps:'45s hold',rest:'30s',notes:''},
+                {name:'Cable Crunches',sets:'3',reps:'15',rest:'30s',notes:''}
+              ],
+              cooldown: [{exercise:'Full Body Foam Roll',duration:'5 min'}]
+            }
+          ]
+        },
+        {
+          id: 'demo-prog-2', type: 'template', status: 'Published',
+          name: '6-Week HIIT Fat Burner', category: 'HIIT',
+          difficulty: 'Advanced', duration: '6 weeks', daysPerWeek: '5',
+          client: 'Emma Chen', createdAt: now, updatedAt: now,
+          description: 'A high-intensity 5-day program combining metabolic conditioning, plyometrics, and functional movements to maximize calorie burn and improve cardiovascular endurance.',
+          days: [
+            { name: 'Day 1 - Metabolic Conditioning',
+              warmup: [{exercise:'Jump Rope',duration:'3 min'}],
+              exercises: [
+                {name:'Burpees',sets:'5',reps:'10',rest:'30s',notes:'Explosive jump at top'},
+                {name:'Kettlebell Swings',sets:'5',reps:'15',rest:'30s',notes:'Hip drive, not arms'},
+                {name:'Box Jumps',sets:'4',reps:'10',rest:'45s',notes:'Soft landing'},
+                {name:'Battle Ropes',sets:'4',reps:'30s max',rest:'30s',notes:'Alternate wave pattern'},
+                {name:'Mountain Climbers',sets:'4',reps:'40',rest:'20s',notes:''}
+              ],
+              cooldown: [{exercise:'Walking Cool Down',duration:'3 min'},{exercise:'Full Stretch Routine',duration:'5 min'}]
+            },
+            { name: 'Day 2 - Lower Body Power',
+              warmup: [{exercise:'High Knees',duration:'2 min'}],
+              exercises: [
+                {name:'Jump Squats',sets:'4',reps:'12',rest:'30s',notes:''},
+                {name:'Lateral Bounds',sets:'4',reps:'10 each side',rest:'30s',notes:''},
+                {name:'Split Jumps',sets:'4',reps:'10 each leg',rest:'45s',notes:''},
+                {name:'Glute Bridge Pulse',sets:'3',reps:'20',rest:'20s',notes:''},
+                {name:'Wall Sit',sets:'3',reps:'45s hold',rest:'30s',notes:''}
+              ],
+              cooldown: [{exercise:'Hip Flexor Stretch',duration:'2 min'}]
+            },
+            { name: 'Day 3 - Upper Body Circuit',
+              warmup: [{exercise:'Arm Swings',duration:'1 min'}],
+              exercises: [
+                {name:'Push-Up Variations',sets:'4',reps:'15',rest:'20s',notes:'Wide / narrow / diamond rotation'},
+                {name:'TRX Row',sets:'4',reps:'12',rest:'30s',notes:''},
+                {name:'Dumbbell Thrusters',sets:'4',reps:'12',rest:'30s',notes:''},
+                {name:'Plank to Push-Up',sets:'3',reps:'10',rest:'30s',notes:''},
+                {name:'Tricep Dips',sets:'3',reps:'15',rest:'20s',notes:''}
+              ],
+              cooldown: [{exercise:'Shoulder & Chest Stretch',duration:'3 min'}]
+            }
+          ]
+        },
+        {
+          id: 'demo-prog-3', type: 'template', status: 'Draft',
+          name: '4-Week Beginner Strength', category: 'Strength',
+          difficulty: 'Beginner', duration: '4 weeks', daysPerWeek: '3',
+          client: '', createdAt: now, updatedAt: now,
+          description: 'A simple 3-day full-body routine for clients new to resistance training. Focuses on movement patterns, form fundamentals, and building a consistent gym habit.',
+          days: [
+            { name: 'Day 1 - Full Body A',
+              warmup: [{exercise:'Treadmill Walk',duration:'5 min'}],
+              exercises: [
+                {name:'Goblet Squat',sets:'3',reps:'10',rest:'60s',notes:'Focus on depth and posture'},
+                {name:'Dumbbell Bench Press',sets:'3',reps:'10',rest:'60s',notes:''},
+                {name:'Dumbbell Row',sets:'3',reps:'10 each',rest:'60s',notes:''},
+                {name:'Plank',sets:'3',reps:'20s hold',rest:'30s',notes:''}
+              ],
+              cooldown: [{exercise:'Full Body Stretch',duration:'5 min'}]
+            },
+            { name: 'Day 2 - Full Body B',
+              warmup: [{exercise:'Stationary Bike',duration:'5 min'}],
+              exercises: [
+                {name:'Romanian Deadlift',sets:'3',reps:'10',rest:'60s',notes:'Light weight, focus on hinge'},
+                {name:'Dumbbell Shoulder Press',sets:'3',reps:'10',rest:'60s',notes:''},
+                {name:'Lat Pulldown',sets:'3',reps:'12',rest:'60s',notes:''},
+                {name:'Leg Press',sets:'3',reps:'12',rest:'60s',notes:''}
+              ],
+              cooldown: [{exercise:'Static Stretching',duration:'5 min'}]
+            }
+          ]
+        }
+      ]);
+    }
     renderPbPlanList();
   }
 
