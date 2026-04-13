@@ -417,7 +417,7 @@
       </div>
       <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;">Offer free or paid 1-on-1 consultations. Set your availability and let clients book directly from your profile.</p>
       <div id="consultDisplay">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
             <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Session Length</div>
             <div style="font-size:1.1rem;font-weight:600;" id="consultDurationDisplay">15 min</div>
@@ -425,6 +425,10 @@
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
             <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Price</div>
             <div style="font-size:1.1rem;font-weight:600;" id="consultPriceDisplay">Free</div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Format</div>
+            <div style="font-size:1.1rem;font-weight:600;" id="consultFormatDisplay">Video</div>
           </div>
         </div>
         <div style="margin-bottom:20px;">
@@ -436,7 +440,7 @@
         <button class="btn btn-primary" onclick="openBookingModal()" style="width:100%;">Book a 1-on-1 Consultation</button>
       </div>
       <div style="display:none;" id="consultEditFields">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
           <div>
             <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Session Length</label>
             <select class="tp-edit-input" id="consultDuration" style="margin-top:4px;">
@@ -444,6 +448,14 @@
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
               <option value="60">60 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Format</label>
+            <select class="tp-edit-input" id="consultFormat" style="margin-top:4px;">
+              <option value="Video">Video Call</option>
+              <option value="Phone">Phone Call</option>
+              <option value="Both">Video or Phone</option>
             </select>
           </div>
           <div>
@@ -610,7 +622,7 @@ let trainerData = {
   introVideoUrl: '',
   photos: [],
   videos: [],
-  consult: { duration: '15', priceType: 'free', price: '', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your fitness goals and find the right program for you.' }
+  consult: { duration: '15', priceType: 'free', price: '', format: 'Video', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your fitness goals and find the right program for you.' }
 };
 
 function showToast(msg) {
@@ -1049,14 +1061,16 @@ function saveConsult() {
   const dur = document.getElementById('consultDuration').value;
   const priceType = document.querySelector('input[name="consultPriceType"]:checked').value;
   const price = document.getElementById('consultPriceInput').value;
+  const format = document.getElementById('consultFormat').value;
   const days = Array.from(document.querySelectorAll('#availDays input:checked')).map(cb => cb.value);
   const timeFrom = document.getElementById('consultTimeFrom').value;
   const timeTo = document.getElementById('consultTimeTo').value;
   const desc = document.getElementById('consultDesc').value;
-  trainerData.consult = { duration: dur, priceType: priceType, price: price, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
+  trainerData.consult = { duration: dur, priceType: priceType, price: price, format: format, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
   // Update display
   document.getElementById('consultDurationDisplay').textContent = dur + ' min';
   document.getElementById('consultPriceDisplay').textContent = priceType === 'free' ? 'Free' : '$' + price;
+  document.getElementById('consultFormatDisplay').textContent = format;
   const availDisp = document.getElementById('availabilityDisplay');
   if (days.length === 0) {
     availDisp.innerHTML = '<span class="tp-tag" style="opacity:0.4;">No availability set</span>';
@@ -1094,7 +1108,7 @@ function openBookingModal() {
     <div style="background:var(--bg-card,#fff);border:1px solid var(--border);max-width:480px;width:90%;padding:32px;position:relative;">\
       <button onclick="document.getElementById(\'bookingOverlay\').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;color:var(--text-muted);cursor:pointer;">&times;</button>\
       <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:4px;">Book a 1-on-1 Consultation</h3>\
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + '</p>\
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + ' &middot; ' + (c.format || 'Video') + '</p>\
       <div style="margin-bottom:16px;">\
         <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Day</label>\
         <div style="display:flex;flex-wrap:wrap;gap:8px;" id="bookingDays">' +
@@ -1212,7 +1226,9 @@ function loadFromStorage() {
       const c = trainerData.consult;
       document.getElementById('consultDurationDisplay').textContent = (c.duration || '15') + ' min';
       document.getElementById('consultPriceDisplay').textContent = c.priceType === 'paid' ? '$' + c.price : 'Free';
+      document.getElementById('consultFormatDisplay').textContent = c.format || 'Video';
       document.getElementById('consultDuration').value = c.duration || '15';
+      document.getElementById('consultFormat').value = c.format || 'Video';
       document.getElementById('consultDesc').value = c.desc || '';
       document.getElementById('consultTimeFrom').value = c.timeFrom || '09:00';
       document.getElementById('consultTimeTo').value = c.timeTo || '17:00';

@@ -452,7 +452,7 @@
       </div>
       <p style="font-size:0.88rem;color:var(--text-muted);font-weight:300;margin-bottom:20px;">Offer free or paid 1-on-1 nutrition consultations. Set your availability and let clients book directly from your profile.</p>
       <div id="nConsultDisplay">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
             <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Session Length</div>
             <div style="font-size:1.1rem;font-weight:600;" id="nConsultDurationDisplay">15 min</div>
@@ -460,6 +460,10 @@
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
             <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Price</div>
             <div style="font-size:1.1rem;font-weight:600;" id="nConsultPriceDisplay">Free</div>
+          </div>
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px;">Format</div>
+            <div style="font-size:1.1rem;font-weight:600;" id="nConsultFormatDisplay">Video</div>
           </div>
         </div>
         <div style="margin-bottom:20px;">
@@ -471,7 +475,7 @@
         <button class="btn btn-primary" onclick="openNBookingModal()" style="width:100%;">Book a 1-on-1 Consultation</button>
       </div>
       <div style="display:none;" id="nConsultEditFields">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px;">
           <div>
             <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Session Length</label>
             <select class="tp-edit-input" id="nConsultDuration" style="margin-top:4px;">
@@ -479,6 +483,14 @@
               <option value="30">30 minutes</option>
               <option value="45">45 minutes</option>
               <option value="60">60 minutes</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Format</label>
+            <select class="tp-edit-input" id="nConsultFormat" style="margin-top:4px;">
+              <option value="Video">Video Call</option>
+              <option value="Phone">Phone Call</option>
+              <option value="Both">Video or Phone</option>
             </select>
           </div>
           <div>
@@ -663,7 +675,7 @@
         introVideoUrl: '',
         photos: [],
         videos: [],
-        consult: { duration: '15', priceType: 'free', price: '', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your nutrition goals and find the right plan for you.' }
+        consult: { duration: '15', priceType: 'free', price: '', format: 'Video', days: [], timeFrom: '09:00', timeTo: '17:00', desc: 'Free 15-minute intro call to discuss your nutrition goals and find the right plan for you.' }
       };
     }
 
@@ -1263,9 +1275,11 @@
       const timeFrom = document.getElementById('nConsultTimeFrom').value;
       const timeTo = document.getElementById('nConsultTimeTo').value;
       const desc = document.getElementById('nConsultDesc').value;
-      nutritionistData.consult = { duration: dur, priceType: priceType, price: price, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
+      const format = document.getElementById('nConsultFormat').value;
+      nutritionistData.consult = { duration: dur, priceType: priceType, price: price, format: format, days: days, timeFrom: timeFrom, timeTo: timeTo, desc: desc };
       document.getElementById('nConsultDurationDisplay').textContent = dur + ' min';
       document.getElementById('nConsultPriceDisplay').textContent = priceType === 'free' ? 'Free' : '$' + price;
+      document.getElementById('nConsultFormatDisplay').textContent = format;
       const availDisp = document.getElementById('nAvailabilityDisplay');
       if (days.length === 0) {
         availDisp.innerHTML = '<span class="tp-tag" style="opacity:0.4;">No availability set</span>';
@@ -1307,7 +1321,7 @@
         <div style="background:var(--bg-card,#fff);border:1px solid var(--border);max-width:480px;width:90%;padding:32px;position:relative;">\
           <button onclick="document.getElementById(\'nBookingOverlay\').remove()" style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.4rem;color:var(--text-muted);cursor:pointer;">&times;</button>\
           <h3 style="font-size:1.1rem;font-weight:600;margin-bottom:4px;">Book a 1-on-1 Nutrition Consultation</h3>\
-          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + '</p>\
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:20px;">' + c.duration + ' min &middot; ' + priceLabel + ' &middot; ' + (c.format || 'Video') + '</p>\
           <div style="margin-bottom:16px;">\
             <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);display:block;margin-bottom:6px;">Select a Day</label>\
             <div style="display:flex;flex-wrap:wrap;gap:8px;" id="nBookingDays">' +
@@ -1406,7 +1420,9 @@
         const c = nutritionistData.consult;
         document.getElementById('nConsultDurationDisplay').textContent = (c.duration || '15') + ' min';
         document.getElementById('nConsultPriceDisplay').textContent = c.priceType === 'paid' ? '$' + c.price : 'Free';
+        document.getElementById('nConsultFormatDisplay').textContent = c.format || 'Video';
         document.getElementById('nConsultDuration').value = c.duration || '15';
+        document.getElementById('nConsultFormat').value = c.format || 'Video';
         document.getElementById('nConsultDesc').value = c.desc || '';
         document.getElementById('nConsultTimeFrom').value = c.timeFrom || '09:00';
         document.getElementById('nConsultTimeTo').value = c.timeTo || '17:00';
