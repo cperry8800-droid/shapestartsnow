@@ -722,6 +722,15 @@
     }, 1600);
   }
 
+  // Kill audio when leaving/closing page
+  window.addEventListener('beforeunload', () => {
+    if (audioCtx) {
+      try { audioCtx.close(); } catch(e) {}
+      audioCtx = null;
+      ambientNodes = null;
+    }
+  });
+
   // Start engine sound on first interaction
   let audioStarted = false;
   const AUDIO_EVENTS = ['click','touchstart','touchend','mousedown','keydown','pointerdown'];
