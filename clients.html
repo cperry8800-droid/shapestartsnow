@@ -132,15 +132,18 @@
       .appointment-card { flex-wrap: wrap; gap: 12px; }
       .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
       .cl-cal-grid { gap: 1px; }
-      .cl-cal-day { min-height: 36px; aspect-ratio: auto; font-size: 0.62rem; padding: 4px 0; }
+      .cl-cal-day { min-height: 40px; aspect-ratio: auto; font-size: 0.62rem; padding: 4px 2px; }
       .cl-cal-day-num { font-size: 0.62rem; margin-bottom: 1px; }
       .cl-cal-day-dot { width: 5px; height: 5px; }
-      .cl-cal-day-info { font-size: 0.45rem; }
+      .cl-cal-day-info { font-size: 0.42rem; max-width: 100%; }
       .cl-cal-head { font-size: 0.58rem; padding: 4px 0; }
       .cl-cal-header h4 { font-size: 0.82rem; }
       .cl-view-toggle { width: 100%; }
       .cl-view-btn { flex: 1; text-align: center; }
       .cl-cal-nav button { width: 26px; height: 26px; font-size: 0.7rem; }
+      .cl-cal-detail { padding: 12px; }
+      .cl-cal-detail-title { font-size: 0.78rem; }
+      .cl-cal-detail-row { font-size: 0.74rem; }
     }
 
     /* ===== Monthly Calendar View ===== */
@@ -168,44 +171,33 @@
     }
     .cl-cal-day {
       aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 0.72rem; background: var(--bg-alt); border-radius: 4px; position: relative; transition: background 0.2s;
-      cursor: pointer; min-height: 44px; -webkit-tap-highlight-color: transparent;
+      font-size: 0.72rem; background: var(--bg-alt); border-radius: 4px; position: relative; transition: all 0.2s;
+      cursor: pointer; min-height: 44px; -webkit-tap-highlight-color: transparent; border: 1px solid transparent;
     }
     .cl-cal-day:active:not(.empty) { background: var(--border); }
     .cl-cal-day.empty { background: transparent; cursor: default; }
-    .cl-cal-day.today { border: 1px solid var(--accent); }
-    .cl-cal-day-num { font-weight: 500; margin-bottom: 2px; }
+    .cl-cal-day.today { border-color: var(--text-muted); }
+    .cl-cal-day.selected { border-color: var(--accent); background: rgba(108,58,237,0.08); }
+    .cl-cal-day-num { font-weight: 500; margin-bottom: 1px; }
     .cl-cal-day-dot { width: 6px; height: 6px; border-radius: 50%; }
     .cl-cal-day-dot.workout { background: #10B981; }
     .cl-cal-day-dot.scheduled { background: #6C3AED; }
     .cl-cal-day-dot.rest { background: var(--border); }
     .cl-cal-day-dot.logged { background: #10B981; }
     .cl-cal-day-dot.planned { background: #6C3AED; }
-    .cl-cal-day-info { font-size: 0.55rem; color: var(--text-muted); margin-top: 1px; }
+    .cl-cal-day-info { font-size: 0.52rem; color: var(--text-muted); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; padding: 0 2px; }
 
-    /* Day detail popup */
-    .cl-day-popup-overlay {
-      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.4); z-index: 9998; align-items: center; justify-content: center;
+    /* Inline day detail panel */
+    .cl-cal-detail {
+      margin-top: 12px; padding: 14px 16px; background: var(--bg-alt); border-radius: 8px;
+      border-left: 3px solid var(--accent); display: none;
     }
-    .cl-day-popup-overlay.active { display: flex; }
-    .cl-day-popup {
-      background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
-      padding: 20px; max-width: 320px; width: 90%; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    }
-    .cl-day-popup h4 { margin: 0 0 12px; font-size: 0.95rem; font-weight: 600; }
-    .cl-day-popup-item {
-      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.82rem;
-    }
-    .cl-day-popup-item:last-child { border-bottom: none; }
-    .cl-day-popup-item .label { color: var(--text-muted); font-size: 0.72rem; }
-    .cl-day-popup-item .value { font-weight: 500; margin-top: 2px; }
-    .cl-day-popup-close {
-      margin-top: 14px; width: 100%; padding: 10px; border: 1px solid var(--border);
-      background: transparent; color: var(--text); border-radius: 6px; cursor: pointer;
-      font-size: 0.82rem; font-family: inherit;
-    }
-    .cl-day-popup-close:hover { background: var(--bg-alt); }
+    .cl-cal-detail.active { display: block; }
+    .cl-cal-detail-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; }
+    .cl-cal-detail-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 0.78rem; }
+    .cl-cal-detail-row .dl { color: var(--text-muted); }
+    .cl-cal-detail-row .dv { font-weight: 500; }
+
 
     /* ===== Compact Meal Log ===== */
     .cl-meal-row {
@@ -748,15 +740,6 @@
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- Day detail popup -->
-  <div class="cl-day-popup-overlay" id="clDayPopup" onclick="clCloseDayPopup(event)">
-    <div class="cl-day-popup" onclick="event.stopPropagation()">
-      <h4 id="clDayPopupTitle"></h4>
-      <div id="clDayPopupContent"></div>
-      <button class="cl-day-popup-close" onclick="clCloseDayPopup()">Close</button>
-    </div>
-  </div>
-
   <script src="app.js"></script>
   <script src="progress.js"></script>
   <script src="nutrition-schedule.js"></script>
@@ -935,20 +918,25 @@
         const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
         const data = dayData[d];
         let dot = '';
+        let preview = '';
         if (data) {
           if (type === 'workout') {
             const cls = data.type === 'scheduled' ? 'scheduled' : 'workout';
             dot = '<div class="cl-cal-day-dot ' + cls + '"></div>';
+            // Show short workout name preview
+            const shortName = (data.name || '').length > 10 ? (data.name || '').substring(0, 9) + '…' : (data.name || '');
+            preview = '<div class="cl-cal-day-info">' + shortName + '</div>';
           } else {
             const mealCls = data.type === 'scheduled' ? 'planned' : 'logged';
             dot = '<div class="cl-cal-day-dot ' + mealCls + '"></div>';
+            preview = '<div class="cl-cal-day-info">' + data.label + '</div>';
           }
         }
-        const clickAttr = data ? ' onclick="clShowDayPopup(\'' + type + '\',' + year + ',' + month + ',' + d + ')"' : '';
+        const clickAttr = ' onclick="clSelectDay(this,\'' + type + '\',' + year + ',' + month + ',' + d + ')"';
         cells += '<div class="cl-cal-day' + (isToday ? ' today' : '') + (data ? ' has-data' : '') + '"' + clickAttr + '>'
           + '<div class="cl-cal-day-num">' + d + '</div>'
           + dot
-          + (data ? '<div class="cl-cal-day-info">' + data.label + '</div>' : '')
+          + preview
           + '</div>';
       }
 
@@ -958,13 +946,15 @@
         : '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Logged</span>'
           + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6C3AED;margin-right:4px;"></span>Planned</span>';
 
+      const detailId = type === 'workout' ? 'clWorkoutDetail' : 'clMealDetail';
       return '<div class="cl-cal-header"><h4>' + monthName + '</h4>'
         + '<div class="cl-cal-nav">'
         + '<button onclick="clCalNav(\'' + type + '\',-1)">&#8249;</button>'
         + '<button onclick="clCalNav(\'' + type + '\',1)">&#8250;</button>'
         + '</div></div>'
         + '<div style="display:flex;gap:12px;margin-bottom:12px;font-size:0.68rem;color:var(--text-muted);">' + legendHtml + '</div>'
-        + '<div class="cl-cal-grid">' + cells + '</div>';
+        + '<div class="cl-cal-grid">' + cells + '</div>'
+        + '<div class="cl-cal-detail" id="' + detailId + '"></div>';
     }
 
     function clCalNav(type, dir) {
@@ -1003,51 +993,58 @@
       }
     }
 
-    // Day popup functions
-    function clShowDayPopup(type, year, month, day) {
+    // Day selection + inline detail panel
+    function clSelectDay(el, type, year, month, day) {
+      // Move selected highlight to clicked day
+      const grid = el.closest('.cl-cal-grid');
+      grid.querySelectorAll('.cl-cal-day.selected').forEach(function(d) { d.classList.remove('selected'); });
+      el.classList.add('selected');
+
+      // Get data for this day
       const calKey = type + '_' + year + '_' + month;
       const data = (window._clCalData && window._clCalData[calKey]) ? window._clCalData[calKey][day] : null;
-      if (!data) return;
+      const detailId = type === 'workout' ? 'clWorkoutDetail' : 'clMealDetail';
+      const detailEl = document.getElementById(detailId);
 
-      const dateStr = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-      document.getElementById('clDayPopupTitle').textContent = dateStr;
+      if (!data) {
+        const dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+        detailEl.innerHTML = '<div class="cl-cal-detail-title">' + dateLabel + '</div>'
+          + '<div style="font-size:0.78rem;color:var(--text-muted);">' + (type === 'workout' ? 'No workout recorded' : 'No meals recorded') + '</div>';
+        detailEl.classList.add('active');
+        return;
+      }
 
-      let html = '';
+      const dateLabel = new Date(year, month, day).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+      let html = '<div class="cl-cal-detail-title">' + dateLabel + '</div>';
+
       if (type === 'workout') {
-        const statusLabel = data.type === 'scheduled' ? 'Scheduled' : 'Completed';
-        html += '<div class="cl-day-popup-item"><div class="label">' + statusLabel + ' Workout</div><div class="value">' + (data.name || 'Workout') + '</div></div>';
-        if (data.workoutType) html += '<div class="cl-day-popup-item"><div class="label">Type</div><div class="value">' + data.workoutType + '</div></div>';
+        const statusLabel = data.type === 'scheduled' ? '📅 Scheduled' : '✅ Completed';
+        html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
+        html += '<div class="cl-cal-detail-row"><span class="dl">Workout</span><span class="dv">' + (data.name || 'Workout') + '</span></div>';
+        if (data.workoutType) html += '<div class="cl-cal-detail-row"><span class="dl">Type</span><span class="dv">' + data.workoutType + '</span></div>';
         if (data.type === 'scheduled' && data.label) {
-          html += '<div class="cl-day-popup-item"><div class="label">Time</div><div class="value">' + data.label + '</div></div>';
+          html += '<div class="cl-cal-detail-row"><span class="dl">Time</span><span class="dv">' + data.label + '</span></div>';
         } else if (data.type === 'workout') {
-          html += '<div class="cl-day-popup-item"><div class="label">Duration</div><div class="value">' + data.label + '</div></div>';
-          if (data.difficulty) html += '<div class="cl-day-popup-item"><div class="label">Difficulty</div><div class="value">' + data.difficulty + '</div></div>';
+          html += '<div class="cl-cal-detail-row"><span class="dl">Duration</span><span class="dv">' + data.label + '</span></div>';
+          if (data.difficulty) html += '<div class="cl-cal-detail-row"><span class="dl">Difficulty</span><span class="dv">' + data.difficulty + '</span></div>';
         }
-        if (data.trainer) html += '<div class="cl-day-popup-item"><div class="label">Trainer</div><div class="value">' + data.trainer + '</div></div>';
+        if (data.trainer) html += '<div class="cl-cal-detail-row"><span class="dl">Trainer</span><span class="dv">' + data.trainer + '</span></div>';
       } else {
-        if (data.type === 'scheduled') {
-          html += '<div class="cl-day-popup-item"><div class="label">Planned Meals</div><div class="value">' + data.count + ' meal' + (data.count > 1 ? 's' : '') + '</div></div>';
-        } else {
-          html += '<div class="cl-day-popup-item"><div class="label">Logged Meals</div><div class="value">' + data.count + ' meal' + (data.count > 1 ? 's' : '') + '</div></div>';
-          if (data.cals) html += '<div class="cl-day-popup-item"><div class="label">Total Calories</div><div class="value">' + data.cals + ' cal</div></div>';
-        }
+        const statusLabel = data.type === 'scheduled' ? '📅 Planned' : '✅ Logged';
+        html += '<div class="cl-cal-detail-row"><span class="dl">Status</span><span class="dv">' + statusLabel + '</span></div>';
+        html += '<div class="cl-cal-detail-row"><span class="dl">Meals</span><span class="dv">' + data.count + ' meal' + (data.count > 1 ? 's' : '') + '</span></div>';
+        if (data.cals) html += '<div class="cl-cal-detail-row"><span class="dl">Calories</span><span class="dv">' + data.cals + ' cal</span></div>';
         if (data.meals && data.meals.length > 0) {
-          html += '<div class="cl-day-popup-item"><div class="label">Meals</div>';
+          html += '<div style="margin-top:6px;font-size:0.78rem;">';
           data.meals.forEach(function(name) {
-            html += '<div class="value" style="margin-top:4px;">• ' + name + '</div>';
+            html += '<div style="padding:2px 0;color:var(--text);">• ' + name + '</div>';
           });
           html += '</div>';
         }
       }
 
-      document.getElementById('clDayPopupContent').innerHTML = html;
-      document.getElementById('clDayPopup').classList.add('active');
-    }
-
-    function clCloseDayPopup(e) {
-      if (!e || e.target === document.getElementById('clDayPopup')) {
-        document.getElementById('clDayPopup').classList.remove('active');
-      }
+      detailEl.innerHTML = html;
+      detailEl.classList.add('active');
     }
 
     // Pre-render calendars
