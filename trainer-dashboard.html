@@ -40,8 +40,63 @@
   .td-tab-content.active { display: block; padding-top: 32px; }
 
   @media (max-width: 768px) {
-    .td-tab-bar { padding: 0 16px; gap: 0; top: 88px; }
-    .td-tab-btn { padding: 9px 12px; font-size: 0.7rem; }
+    /* ===== Bottom tab bar on mobile ===== */
+    .td-tab-bar {
+      position: fixed; top: auto; bottom: 0; left: 0; right: 0;
+      z-index: 1100;
+      background: rgba(10,10,10,0.92);
+      -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+      border-top: 1px solid var(--border); border-bottom: none;
+      padding: 6px 4px env(safe-area-inset-bottom,0);
+      gap: 0; justify-content: space-around; overflow-x: visible;
+    }
+    .td-tab-btn {
+      flex: 1; min-width: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
+      letter-spacing: 0.02em; opacity: 0.55;
+      white-space: nowrap; overflow: hidden;
+      border-bottom: none; position: relative;
+    }
+    .td-tab-btn::before {
+      content: attr(data-icon); font-size: 1.1rem; font-weight: 400;
+      letter-spacing: 0; line-height: 1; text-transform: none;
+    }
+    .td-tab-btn.active { opacity: 1; color: var(--accent); border-bottom: none; }
+    .td-tab-btn.active::after {
+      content: ''; position: absolute; top: 0; left: 30%; right: 30%;
+      height: 2px; background: var(--accent);
+    }
+    .td-tab-content.active { padding-top: 12px; padding-bottom: 90px; }
+    .page-hero { padding-top: 88px !important; }
+
+    /* Today-first hero */
+    .td-today-hero {
+      background: linear-gradient(135deg, rgba(45,212,191,0.12) 0%, rgba(108,58,237,0.08) 100%);
+      border: 1px solid rgba(45,212,191,0.3);
+      padding: 24px; margin-bottom: 20px; position: relative; overflow: hidden;
+    }
+    .td-today-hero::before {
+      content: ''; position: absolute; top: -40%; right: -20%; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(45,212,191,0.15) 0%, transparent 65%); pointer-events: none;
+    }
+    .td-today-hero-label { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 10px; position: relative; }
+    .td-today-hero-title { font-size: clamp(1.4rem, 3.2vw, 1.9rem); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 16px; position: relative; }
+    .td-today-hero-meta { display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 20px; position: relative; }
+    .td-today-hero-cta { background: var(--accent); color: #fff; border: none; padding: 14px 26px; font-size: 0.82rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; font-family: inherit; transition: all 0.2s; position: relative; }
+    .td-today-hero-cta:hover { background: var(--accent-dark); }
+
+    /* Check-in banner */
+    .td-checkin-banner { display: flex; align-items: center; gap: 14px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); padding: 12px 16px; margin-bottom: 16px; }
+    .td-checkin-banner-icon { font-size: 1.2rem; color: #F59E0B; flex-shrink: 0; }
+    .td-checkin-banner-body { flex: 1; min-width: 0; }
+    .td-checkin-banner-title { font-size: 0.88rem; font-weight: 600; margin-bottom: 2px; }
+    .td-checkin-banner-meta { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+    .td-checkin-banner-action { background: #F59E0B; color: #fff; border: none; padding: 8px 14px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; font-family: inherit; flex-shrink: 0; }
+    .td-checkin-banner-close { background: none; border: none; color: var(--text-muted); font-size: 1.3rem; line-height: 1; cursor: pointer; padding: 4px 8px; flex-shrink: 0; }
+  }
+  @media (min-width: 769px) {
+    .td-today-hero, .td-checkin-banner { display: none; }
   }
 
   /* ===== Messages Panel ===== */
@@ -845,19 +900,34 @@
 
   <!-- Tab Bar -->
   <div class="td-tab-bar" id="tdTabBar">
-    <button class="td-tab-btn active" data-tab="home" onclick="switchTrainerTab('home', this)">Home</button>
-    <button class="td-tab-btn" data-tab="clients" onclick="switchTrainerTab('clients', this)">Clients</button>
-    <button class="td-tab-btn" data-tab="programs" onclick="switchTrainerTab('programs', this)">Programs</button>
-    <button class="td-tab-btn" data-tab="messages" onclick="switchTrainerTab('messages', this)">Messages</button>
-    <button class="td-tab-btn" data-tab="community" onclick="switchTrainerTab('community', this)">Community</button>
-    <button class="td-tab-btn" data-tab="profile" onclick="switchTrainerTab('profile', this)">Profile</button>
-    <button class="td-tab-btn" data-tab="goalcalc" onclick="switchTrainerTab('goalcalc', this)">Goal Calculator</button>
+    <button class="td-tab-btn active" data-tab="home" data-icon="☉" onclick="switchTrainerTab('home', this)">Home</button>
+    <button class="td-tab-btn" data-tab="clients" data-icon="◉" onclick="switchTrainerTab('clients', this)">Clients</button>
+    <button class="td-tab-btn" data-tab="programs" data-icon="▤" onclick="switchTrainerTab('programs', this)">Programs</button>
+    <button class="td-tab-btn" data-tab="messages" data-icon="✉" onclick="switchTrainerTab('messages', this)">Messages</button>
+    <button class="td-tab-btn" data-tab="community" data-icon="◈" onclick="switchTrainerTab('community', this)">Community</button>
+    <button class="td-tab-btn" data-tab="profile" data-icon="◐" onclick="switchTrainerTab('profile', this)">Profile</button>
+    <button class="td-tab-btn" data-tab="goalcalc" data-icon="∑" onclick="switchTrainerTab('goalcalc', this)">Calc</button>
   </div>
 
   <!-- ========== TAB: HOME ========== -->
   <section class="section" style="padding-top:0;padding-bottom:48px;">
   <div class="container">
     <div class="td-tab-content active" id="tab-home">
+      <div class="td-checkin-banner" id="tdCheckinBanner">
+        <div class="td-checkin-banner-icon">⏰</div>
+        <div class="td-checkin-banner-body">
+          <div class="td-checkin-banner-title">3 clients need attention</div>
+          <div class="td-checkin-banner-sub">Sarah missed 2 sessions · Mike hasn't logged weight in 8 days · Jake's check-in is due</div>
+        </div>
+        <button class="td-checkin-banner-action" onclick="switchTrainerTab('clients', document.querySelector('.td-tab-btn[data-tab=clients]'))">Review</button>
+        <button class="td-checkin-banner-close" onclick="this.parentElement.style.display='none'">×</button>
+      </div>
+      <div class="td-today-hero">
+        <div class="td-today-hero-label">Today · <span id="tdTodayDateLabel"></span></div>
+        <div class="td-today-hero-title">6 sessions scheduled</div>
+        <div class="td-today-hero-meta">Next: Sarah K. at 10:30 AM · Upper Body</div>
+        <button class="td-today-hero-cta" onclick="switchTrainerTab('clients', document.querySelector('.td-tab-btn[data-tab=clients]'))">Open today's sessions →</button>
+      </div>
       <div class="widget-grid" id="tdWidgetGrid">
 
         <!-- Widget: Trainer Stats -->
@@ -4403,6 +4473,13 @@
 
     document.addEventListener('DOMContentLoaded', initDrag);
     setTimeout(initDrag, 300);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const el = document.getElementById('tdTodayDateLabel');
+      if (el) {
+        el.textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+      }
+    });
   })();
   </script>
 
