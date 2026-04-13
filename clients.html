@@ -1048,181 +1048,224 @@
       <!-- TRAINING TAB -->
       <div class="dash-tab-content" id="tabTraining">
 
-            <!-- Current Program -->
-            <span class="tag">Current Program</span>
-            <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:24px;">Your active training plan</h2>
+        <div class="widget-grid" id="clTrainingWidgetGrid">
 
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:32px;">
-              <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
-                <div>
-                  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);font-weight:500;margin-bottom:6px;">Active Program</div>
-                  <div style="font-size:1.3rem;font-weight:400;letter-spacing:-0.02em;">12-Week Strength Builder</div>
-                  <div style="font-size:0.85rem;color:var(--text-muted);font-weight:300;margin-top:4px;">By Coach Marcus Rivera</div>
+          <!-- Widget: Current Program -->
+          <div class="widget" data-widget-id="cl-tr-program" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Current Program</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <span class="tag">Current Program</span>
+              <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Your active training plan</h2>
+              <div style="background:var(--bg-alt);border:1px solid var(--border);padding:28px;">
+                <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+                  <div>
+                    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);font-weight:500;margin-bottom:6px;">Active Program</div>
+                    <div style="font-size:1.3rem;font-weight:400;letter-spacing:-0.02em;">12-Week Strength Builder</div>
+                    <div style="font-size:0.85rem;color:var(--text-muted);font-weight:300;margin-top:4px;">By Coach Marcus Rivera</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Progress</div>
+                    <div style="font-size:1.5rem;font-weight:300;">Week 6 <span style="font-size:0.85rem;color:var(--text-muted);">/ 12</span></div>
+                  </div>
                 </div>
-                <div style="text-align:right;">
-                  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Progress</div>
-                  <div style="font-size:1.5rem;font-weight:300;">Week 6 <span style="font-size:0.85rem;color:var(--text-muted);">/ 12</span></div>
+                <div style="margin-top:20px;height:4px;background:var(--border);position:relative;">
+                  <div style="height:100%;width:50%;background:var(--accent);"></div>
                 </div>
-              </div>
-              <div style="margin-top:20px;height:4px;background:var(--border);position:relative;">
-                <div style="height:100%;width:50%;background:var(--accent);"></div>
               </div>
             </div>
+          </div>
 
-            <!-- Month Calendar View -->
-            <div class="training-month-cal" id="trainingMonthCal"></div>
-
-            <!-- This Week's Schedule -->
-            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">This Week</h3>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px;" id="weekScheduleGrid">
-
-              <div class="wk-day-card completed" onclick="openWorkoutDetail(0)">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="wk-day-label">Monday</span>
-                  <span class="wk-badge wk-badge-done">Completed</span>
-                </div>
-                <div style="font-weight:500;margin-bottom:4px;">Upper Body Push</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Bench Press, OHP, Incline DB, Tricep Dips</div>
-                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Perfect</div>
-              </div>
-
-              <div class="wk-day-card completed" onclick="openWorkoutDetail(1)">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="wk-day-label">Tuesday</span>
-                  <span class="wk-badge wk-badge-done">Completed</span>
-                </div>
-                <div style="font-weight:500;margin-bottom:4px;">Lower Body</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Squats, RDL, Leg Press, Calf Raises</div>
-                <div class="wk-rating-badge" style="margin-top:8px;">Rating: Could Push More</div>
-              </div>
-
-              <div class="wk-day-card today" onclick="openWorkoutDetail(2)">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="wk-day-label" style="color:var(--accent-dark);">Wednesday — Today</span>
-                  <span class="wk-badge wk-badge-next">Up Next</span>
-                </div>
-                <div style="font-weight:500;margin-bottom:4px;">Upper Body Pull</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Pull-ups, Barbell Rows, Face Pulls, Curls</div>
-                <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation();openWorkoutDetail(2)">Start Workout</button>
-              </div>
-
-              <div class="wk-day-card rest" onclick="openWorkoutDetail(3)">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="wk-day-label">Thursday</span>
-                  <span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Rest Day</span>
-                </div>
-                <div style="font-weight:500;margin-bottom:4px;">Active Recovery</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Light stretching, mobility work</div>
-              </div>
-
-              <div class="wk-day-card upcoming" onclick="openWorkoutDetail(4)">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                  <span class="wk-day-label">Friday</span>
-                </div>
-                <div style="font-weight:500;margin-bottom:4px;">Full Body Power</div>
-                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Deadlifts, Clean & Press, Box Jumps, Planks</div>
-              </div>
-
+          <!-- Widget: Training Calendar -->
+          <div class="widget" data-widget-id="cl-tr-calendar" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Training Calendar</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
+            <div class="widget-body">
+              <div class="training-month-cal" id="trainingMonthCal"></div>
+            </div>
+          </div>
 
-            <!-- WORKOUT DETAIL VIEW (hidden by default) -->
-            <div id="workoutDetailView" style="display:none;margin-bottom:40px;">
-              <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-                <button onclick="closeWorkoutDetail()" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;font-size:0.78rem;font-family:inherit;cursor:pointer;transition:all 0.3s;">&#8592; Back</button>
-                <div>
-                  <h3 id="wkDetailTitle" style="font-size:1.1rem;font-weight:500;"></h3>
-                  <div id="wkDetailDay" style="font-size:0.78rem;color:var(--text-muted);font-weight:300;"></div>
+          <!-- Widget: This Week's Schedule -->
+          <div class="widget" data-widget-id="cl-tr-schedule" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">This Week's Schedule</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">This Week</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;" id="weekScheduleGrid">
+
+                <div class="wk-day-card completed" onclick="openWorkoutDetail(0)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span class="wk-day-label">Monday</span>
+                    <span class="wk-badge wk-badge-done">Completed</span>
+                  </div>
+                  <div style="font-weight:500;margin-bottom:4px;">Upper Body Push</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Bench Press, OHP, Incline DB, Tricep Dips</div>
+                  <div class="wk-rating-badge" style="margin-top:8px;">Rating: Perfect</div>
                 </div>
-              </div>
 
-              <!-- Exercises with set-by-set tracking -->
-              <div id="wkExerciseList"></div>
-
-              <!-- Add Exercise Button -->
-              <button onclick="addExerciseToWorkout()" style="margin-top:16px;background:none;border:1px dashed var(--border);color:var(--text-muted);padding:12px 20px;font-size:0.82rem;font-family:inherit;cursor:pointer;width:100%;transition:all 0.3s;">+ Add Exercise</button>
-
-              <!-- Complete Workout & Rating -->
-              <div id="wkCompleteSection" style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);padding:28px;">
-                <h4 style="font-size:0.92rem;font-weight:500;margin-bottom:16px;">How was this workout?</h4>
-                <div id="wkRatingBtns" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
-                  <button class="wk-rate-btn" data-rating="easy" onclick="selectRating(this)">Easy</button>
-                  <button class="wk-rate-btn" data-rating="push" onclick="selectRating(this)">Could Push More</button>
-                  <button class="wk-rate-btn" data-rating="perfect" onclick="selectRating(this)">Perfect</button>
-                  <button class="wk-rate-btn" data-rating="struggling" onclick="selectRating(this)">I'm Struggling</button>
+                <div class="wk-day-card completed" onclick="openWorkoutDetail(1)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span class="wk-day-label">Tuesday</span>
+                    <span class="wk-badge wk-badge-done">Completed</span>
+                  </div>
+                  <div style="font-weight:500;margin-bottom:4px;">Lower Body</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Squats, RDL, Leg Press, Calf Raises</div>
+                  <div class="wk-rating-badge" style="margin-top:8px;">Rating: Could Push More</div>
                 </div>
-                <button onclick="completeWorkout()" class="btn btn-primary" style="width:100%;">Complete Workout</button>
+
+                <div class="wk-day-card today" onclick="openWorkoutDetail(2)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span class="wk-day-label" style="color:var(--accent-dark);">Wednesday — Today</span>
+                    <span class="wk-badge wk-badge-next">Up Next</span>
+                  </div>
+                  <div style="font-weight:500;margin-bottom:4px;">Upper Body Pull</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Pull-ups, Barbell Rows, Face Pulls, Curls</div>
+                  <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation();openWorkoutDetail(2)">Start Workout</button>
+                </div>
+
+                <div class="wk-day-card rest" onclick="openWorkoutDetail(3)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span class="wk-day-label">Thursday</span>
+                    <span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Rest Day</span>
+                  </div>
+                  <div style="font-weight:500;margin-bottom:4px;">Active Recovery</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Light stretching, mobility work</div>
+                </div>
+
+                <div class="wk-day-card upcoming" onclick="openWorkoutDetail(4)">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                    <span class="wk-day-label">Friday</span>
+                  </div>
+                  <div style="font-weight:500;margin-bottom:4px;">Full Body Power</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Deadlifts, Clean & Press, Box Jumps, Planks</div>
+                </div>
+
               </div>
             </div>
+          </div>
 
-            <!-- Recent Activity -->
-            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;" id="recentActivityHeader">Recent Activity</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:40px;" id="recentActivityList">
-
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-                <div>
-                  <div style="font-weight:500;">Upper Body Push</div>
-                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Monday, Apr 14</div>
-                </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
-                  <span><strong style="color:var(--text);">52 min</strong> duration</span>
-                  <span><strong style="color:var(--text);">18,400 lbs</strong> volume</span>
-                  <span style="color:#10B981;font-weight:500;">Perfect</span>
-                  <span style="color:#10B981;font-weight:500;">+25 Shape Score</span>
-                </div>
-              </div>
-
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-                <div>
-                  <div style="font-weight:500;">Lower Body</div>
-                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Tuesday, Apr 15</div>
-                </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
-                  <span><strong style="color:var(--text);">48 min</strong> duration</span>
-                  <span><strong style="color:var(--text);">22,100 lbs</strong> volume</span>
-                  <span style="color:#F59E0B;font-weight:500;">Could Push More</span>
-                  <span style="color:#10B981;font-weight:500;">+30 Shape Score</span>
-                </div>
-              </div>
-
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-                <div>
-                  <div style="font-weight:500;">Full Body Power</div>
-                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Friday, Apr 11</div>
-                </div>
-                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
-                  <span><strong style="color:var(--text);">55 min</strong> duration</span>
-                  <span><strong style="color:var(--text);">24,600 lbs</strong> volume</span>
-                  <span style="color:#10B981;font-weight:500;">Perfect</span>
-                  <span style="color:#10B981;font-weight:500;">+35 Shape Score</span>
-                </div>
-              </div>
-
+          <!-- Widget: Recent Activity -->
+          <div class="widget" data-widget-id="cl-tr-activity" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Recent Activity</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
+            <div class="widget-body">
+              <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;" id="recentActivityHeader">Recent Activity</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;" id="recentActivityList">
 
-            <!-- Personal Records -->
-            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">Personal Records</h3>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
-                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Bench Press</div>
-                <div style="font-size:1.5rem;font-weight:300;">225 lbs</div>
-                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 7</div>
-              </div>
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
-                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Squat</div>
-                <div style="font-size:1.5rem;font-weight:300;">315 lbs</div>
-                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Mar 28</div>
-              </div>
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
-                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Deadlift</div>
-                <div style="font-size:1.5rem;font-weight:300;">365 lbs</div>
-                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 11</div>
-              </div>
-              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
-                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Pull-ups</div>
-                <div style="font-size:1.5rem;font-weight:300;">18 reps</div>
-                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 1</div>
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                  <div>
+                    <div style="font-weight:500;">Upper Body Push</div>
+                    <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Monday, Apr 14</div>
+                  </div>
+                  <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
+                    <span><strong style="color:var(--text);">52 min</strong> duration</span>
+                    <span><strong style="color:var(--text);">18,400 lbs</strong> volume</span>
+                    <span style="color:#10B981;font-weight:500;">Perfect</span>
+                    <span style="color:#10B981;font-weight:500;">+25 Shape Score</span>
+                  </div>
+                </div>
+
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                  <div>
+                    <div style="font-weight:500;">Lower Body</div>
+                    <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Tuesday, Apr 15</div>
+                  </div>
+                  <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
+                    <span><strong style="color:var(--text);">48 min</strong> duration</span>
+                    <span><strong style="color:var(--text);">22,100 lbs</strong> volume</span>
+                    <span style="color:#F59E0B;font-weight:500;">Could Push More</span>
+                    <span style="color:#10B981;font-weight:500;">+30 Shape Score</span>
+                  </div>
+                </div>
+
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                  <div>
+                    <div style="font-weight:500;">Full Body Power</div>
+                    <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Friday, Apr 11</div>
+                  </div>
+                  <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);flex-wrap:wrap;">
+                    <span><strong style="color:var(--text);">55 min</strong> duration</span>
+                    <span><strong style="color:var(--text);">24,600 lbs</strong> volume</span>
+                    <span style="color:#10B981;font-weight:500;">Perfect</span>
+                    <span style="color:#10B981;font-weight:500;">+35 Shape Score</span>
+                  </div>
+                </div>
+
               </div>
             </div>
+          </div>
+
+          <!-- Widget: Personal Records -->
+          <div class="widget" data-widget-id="cl-tr-records" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Personal Records</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">Personal Records</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:20px;text-align:center;">
+                  <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Bench Press</div>
+                  <div style="font-size:1.5rem;font-weight:300;">225 lbs</div>
+                  <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 7</div>
+                </div>
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:20px;text-align:center;">
+                  <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Squat</div>
+                  <div style="font-size:1.5rem;font-weight:300;">315 lbs</div>
+                  <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Mar 28</div>
+                </div>
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:20px;text-align:center;">
+                  <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Deadlift</div>
+                  <div style="font-size:1.5rem;font-weight:300;">365 lbs</div>
+                  <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 11</div>
+                </div>
+                <div style="background:var(--bg-alt);border:1px solid var(--border);padding:20px;text-align:center;">
+                  <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Pull-ups</div>
+                  <div style="font-size:1.5rem;font-weight:300;">18 reps</div>
+                  <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 1</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /clTrainingWidgetGrid -->
+
+        <!-- WORKOUT DETAIL VIEW (hidden by default, outside widget grid) -->
+        <div id="workoutDetailView" style="display:none;margin-bottom:40px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+            <button onclick="closeWorkoutDetail()" style="background:none;border:1px solid var(--border);color:var(--text);padding:6px 14px;font-size:0.78rem;font-family:inherit;cursor:pointer;transition:all 0.3s;">&#8592; Back</button>
+            <div>
+              <h3 id="wkDetailTitle" style="font-size:1.1rem;font-weight:500;"></h3>
+              <div id="wkDetailDay" style="font-size:0.78rem;color:var(--text-muted);font-weight:300;"></div>
+            </div>
+          </div>
+
+          <!-- Exercises with set-by-set tracking -->
+          <div id="wkExerciseList"></div>
+
+          <!-- Add Exercise Button -->
+          <button onclick="addExerciseToWorkout()" style="margin-top:16px;background:none;border:1px dashed var(--border);color:var(--text-muted);padding:12px 20px;font-size:0.82rem;font-family:inherit;cursor:pointer;width:100%;transition:all 0.3s;">+ Add Exercise</button>
+
+          <!-- Complete Workout & Rating -->
+          <div id="wkCompleteSection" style="margin-top:32px;background:var(--bg-card);border:1px solid var(--border);padding:28px;">
+            <h4 style="font-size:0.92rem;font-weight:500;margin-bottom:16px;">How was this workout?</h4>
+            <div id="wkRatingBtns" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;">
+              <button class="wk-rate-btn" data-rating="easy" onclick="selectRating(this)">Easy</button>
+              <button class="wk-rate-btn" data-rating="push" onclick="selectRating(this)">Could Push More</button>
+              <button class="wk-rate-btn" data-rating="perfect" onclick="selectRating(this)">Perfect</button>
+              <button class="wk-rate-btn" data-rating="struggling" onclick="selectRating(this)">I'm Struggling</button>
+            </div>
+            <button onclick="completeWorkout()" class="btn btn-primary" style="width:100%;">Complete Workout</button>
+          </div>
+        </div>
 
       </div>
 
@@ -1230,91 +1273,141 @@
       <div class="dash-tab-content" id="tabNutrition">
         <div class="nutrition-dashboard">
 
-          <!-- Today's Macro Summary -->
-          <div class="macro-row" id="macroRow">
-            <div class="macro-card">
-              <div class="macro-value" id="macroCalories">0</div>
-              <div class="macro-label">Calories</div>
-              <div class="macro-bar"><div class="macro-bar-fill" id="barCalories" style="background:#10B981;width:0%;"></div></div>
-            </div>
-            <div class="macro-card">
-              <div class="macro-value" id="macroProtein">0g</div>
-              <div class="macro-label">Protein</div>
-              <div class="macro-bar"><div class="macro-bar-fill" id="barProtein" style="background:#6C3AED;width:0%;"></div></div>
-            </div>
-            <div class="macro-card">
-              <div class="macro-value" id="macroCarbs">0g</div>
-              <div class="macro-label">Carbs</div>
-              <div class="macro-bar"><div class="macro-bar-fill" id="barCarbs" style="background:#F59E0B;width:0%;"></div></div>
-            </div>
-            <div class="macro-card">
-              <div class="macro-value" id="macroFat">0g</div>
-              <div class="macro-label">Fat</div>
-              <div class="macro-bar"><div class="macro-bar-fill" id="barFat" style="background:#EC4899;width:0%;"></div></div>
-            </div>
-          </div>
+        <div class="widget-grid" id="clNutritionWidgetGrid">
 
-          <!-- Water Tracker -->
-          <div class="water-section">
-            <h2>Water Intake</h2>
-            <div class="water-tracker">
-              <div class="water-count"><span id="waterCount">0</span><span>of 8 glasses</span></div>
-              <div class="water-glasses" id="waterGlasses"></div>
+          <!-- Widget: Macro Summary -->
+          <div class="widget" data-widget-id="cl-nu-macros" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Macro Summary</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
-          </div>
-
-          <!-- Weekly Calorie Chart -->
-          <div class="meal-schedule-section" style="margin-bottom:40px;">
-            <div class="meal-schedule-header">
-              <h2>Weekly Calories</h2>
-            </div>
-            <div id="weeklyCalChart" class="progress-bar-chart"></div>
-          </div>
-
-          <!-- Meal Schedule -->
-          <div class="meal-schedule-section">
-            <div class="meal-schedule-header">
-              <h2>Meal Schedule</h2>
-              <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                <div class="cl-view-toggle">
-                  <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>
-                  <button class="cl-view-btn" onclick="clSwitchMealView('monthly', this)">Monthly</button>
+            <div class="widget-body">
+              <div class="macro-row" id="macroRow">
+                <div class="macro-card">
+                  <div class="macro-value" id="macroCalories">0</div>
+                  <div class="macro-label">Calories</div>
+                  <div class="macro-bar"><div class="macro-bar-fill" id="barCalories" style="background:#10B981;width:0%;"></div></div>
                 </div>
-                <div class="schedule-nav" id="mealWeekNav">
-                  <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
-                  <span id="mealWeekLabel" class="schedule-week-label"></span>
-                  <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
+                <div class="macro-card">
+                  <div class="macro-value" id="macroProtein">0g</div>
+                  <div class="macro-label">Protein</div>
+                  <div class="macro-bar"><div class="macro-bar-fill" id="barProtein" style="background:#6C3AED;width:0%;"></div></div>
+                </div>
+                <div class="macro-card">
+                  <div class="macro-value" id="macroCarbs">0g</div>
+                  <div class="macro-label">Carbs</div>
+                  <div class="macro-bar"><div class="macro-bar-fill" id="barCarbs" style="background:#F59E0B;width:0%;"></div></div>
+                </div>
+                <div class="macro-card">
+                  <div class="macro-value" id="macroFat">0g</div>
+                  <div class="macro-label">Fat</div>
+                  <div class="macro-bar"><div class="macro-bar-fill" id="barFat" style="background:#EC4899;width:0%;"></div></div>
                 </div>
               </div>
             </div>
-            <div id="mealWeeklyView">
-              <div class="meal-day-grid" id="mealDayGrid"></div>
+          </div>
+
+          <!-- Widget: Water Intake -->
+          <div class="widget" data-widget-id="cl-nu-water" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Water Intake</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
-            <div id="mealMonthlyView" style="display:none;">
-              <div id="mealCalContainer"></div>
+            <div class="widget-body">
+              <div class="water-section" style="margin-bottom:0;">
+                <h2>Water Intake</h2>
+                <div class="water-tracker">
+                  <div class="water-count"><span id="waterCount">0</span><span>of 8 glasses</span></div>
+                  <div class="water-glasses" id="waterGlasses"></div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Meal Log -->
-          <div class="meal-log-section">
-            <div class="meal-log-header">
-              <h2>Meal Log</h2>
-              <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
+          <!-- Widget: Weekly Calories -->
+          <div class="widget" data-widget-id="cl-nu-calories" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Weekly Calories</span>
+              <span class="widget-drag-handle">&#10783;</span>
             </div>
-            <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="mealLogList"></div>
+            <div class="widget-body">
+              <div class="meal-schedule-section" style="margin-bottom:0;">
+                <div class="meal-schedule-header">
+                  <h2>Weekly Calories</h2>
+                </div>
+                <div id="weeklyCalChart" class="progress-bar-chart"></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Upcoming Check-Ins (Nutrition) -->
-          <div class="checkin-section">
-            <h2>Upcoming Check-Ins</h2>
-            <div class="checkin-list" id="nutritionistCheckInList"></div>
+          <!-- Widget: Meal Schedule -->
+          <div class="widget" data-widget-id="cl-nu-mealschedule" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Meal Schedule</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="meal-schedule-section" style="margin-bottom:0;">
+                <div class="meal-schedule-header">
+                  <h2>Meal Schedule</h2>
+                  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                    <div class="cl-view-toggle">
+                      <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>
+                      <button class="cl-view-btn" onclick="clSwitchMealView('monthly', this)">Monthly</button>
+                    </div>
+                    <div class="schedule-nav" id="mealWeekNav">
+                      <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
+                      <span id="mealWeekLabel" class="schedule-week-label"></span>
+                      <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
+                    </div>
+                  </div>
+                </div>
+                <div id="mealWeeklyView">
+                  <div class="meal-day-grid" id="mealDayGrid"></div>
+                </div>
+                <div id="mealMonthlyView" style="display:none;">
+                  <div id="mealCalContainer"></div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Upcoming Check-ins -->
-          <div class="appointments-section">
-            <h2>Upcoming Check-ins</h2>
-            <div class="appointment-list" id="appointmentList"></div>
+          <!-- Widget: Meal Log -->
+          <div class="widget" data-widget-id="cl-nu-meallog" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Meal Log</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="meal-log-section" style="margin-bottom:0;">
+                <div class="meal-log-header">
+                  <h2>Meal Log</h2>
+                  <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
+                </div>
+                <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="mealLogList"></div>
+              </div>
+            </div>
           </div>
+
+          <!-- Widget: Upcoming Check-Ins -->
+          <div class="widget" data-widget-id="cl-nu-checkins" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Upcoming Check-Ins</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="checkin-section" style="margin-bottom:0;">
+                <h2>Upcoming Check-Ins</h2>
+                <div class="checkin-list" id="nutritionistCheckInList"></div>
+              </div>
+              <div class="appointments-section" style="margin-bottom:0;margin-top:24px;">
+                <h2>Upcoming Check-ins</h2>
+                <div class="appointment-list" id="appointmentList"></div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /clNutritionWidgetGrid -->
 
         </div>
       </div>
@@ -3335,6 +3428,274 @@
     var STORAGE_KEY = 'shapeWidgetOrder_client';
     var SIZE_KEY = 'shapeWidgetSize_client';
     var gridId = 'clWidgetGrid';
+
+    function saveSizes() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var sizes = {};
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        sizes[w.dataset.widgetId] = w.classList.contains('widget-full') ? 'full' : 'square';
+      });
+      localStorage.setItem(SIZE_KEY, JSON.stringify(sizes));
+    }
+
+    function restoreSizes() {
+      var saved = localStorage.getItem(SIZE_KEY);
+      if (!saved) return;
+      var sizes;
+      try { sizes = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      Object.keys(sizes).forEach(function(id) {
+        var w = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (!w) return;
+        if (sizes[id] === 'full') {
+          w.classList.add('widget-full');
+          var btn = w.querySelector('.widget-expand-btn');
+          if (btn) btn.textContent = '⊟ Collapse';
+        }
+      });
+    }
+
+    function injectExpandButtons() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        var header = w.querySelector('.widget-header');
+        if (!header || header.querySelector('.widget-controls')) return;
+        var handle = header.querySelector('.widget-drag-handle');
+        var controls = document.createElement('div');
+        controls.className = 'widget-controls';
+        var btn = document.createElement('button');
+        btn.className = 'widget-expand-btn';
+        btn.textContent = '⊞ Expand';
+        btn.title = 'Toggle full width';
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          w.classList.toggle('widget-full');
+          btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
+          saveSizes();
+        });
+        controls.appendChild(btn);
+        if (handle) controls.appendChild(handle);
+        header.appendChild(controls);
+      });
+    }
+
+    function saveOrder() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var order = Array.from(grid.children).map(function(w) { return w.dataset.widgetId; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    function restoreOrder() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      var order;
+      try { order = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      order.forEach(function(id) {
+        var el = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+
+    var _dragSrc = null;
+
+    function initDrag() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      grid.addEventListener('dragstart', function(e) {
+        var widget = e.target.closest('.widget');
+        var handle = e.target.closest('.widget-drag-handle');
+        if (!widget || !handle) { e.preventDefault(); return; }
+        _dragSrc = widget;
+        widget.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      grid.addEventListener('dragend', function(e) {
+        var widget = e.target.closest('.widget');
+        if (widget) widget.classList.remove('dragging');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        saveOrder();
+      });
+
+      grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var widget = e.target.closest('.widget');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        if (widget && widget !== _dragSrc) widget.classList.add('drag-over');
+      });
+
+      grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var target = e.target.closest('.widget');
+        if (!target || target === _dragSrc || !_dragSrc) return;
+        var rect = target.getBoundingClientRect();
+        var midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          grid.insertBefore(_dragSrc, target);
+        } else {
+          grid.insertBefore(_dragSrc, target.nextSibling);
+        }
+        _dragSrc = null;
+      });
+
+      injectExpandButtons();
+      restoreOrder();
+      restoreSizes();
+    }
+
+    document.addEventListener('DOMContentLoaded', initDrag);
+    setTimeout(initDrag, 300);
+  })();
+  </script>
+
+  <script>
+  // Widget system — client Training tab
+  (function() {
+    var STORAGE_KEY = 'shapeWidgetOrder_clientTraining';
+    var SIZE_KEY = 'shapeWidgetSize_clientTraining';
+    var gridId = 'clTrainingWidgetGrid';
+
+    function saveSizes() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var sizes = {};
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        sizes[w.dataset.widgetId] = w.classList.contains('widget-full') ? 'full' : 'square';
+      });
+      localStorage.setItem(SIZE_KEY, JSON.stringify(sizes));
+    }
+
+    function restoreSizes() {
+      var saved = localStorage.getItem(SIZE_KEY);
+      if (!saved) return;
+      var sizes;
+      try { sizes = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      Object.keys(sizes).forEach(function(id) {
+        var w = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (!w) return;
+        if (sizes[id] === 'full') {
+          w.classList.add('widget-full');
+          var btn = w.querySelector('.widget-expand-btn');
+          if (btn) btn.textContent = '⊟ Collapse';
+        }
+      });
+    }
+
+    function injectExpandButtons() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      grid.querySelectorAll('.widget').forEach(function(w) {
+        var header = w.querySelector('.widget-header');
+        if (!header || header.querySelector('.widget-controls')) return;
+        var handle = header.querySelector('.widget-drag-handle');
+        var controls = document.createElement('div');
+        controls.className = 'widget-controls';
+        var btn = document.createElement('button');
+        btn.className = 'widget-expand-btn';
+        btn.textContent = '⊞ Expand';
+        btn.title = 'Toggle full width';
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          w.classList.toggle('widget-full');
+          btn.textContent = w.classList.contains('widget-full') ? '⊟ Collapse' : '⊞ Expand';
+          saveSizes();
+        });
+        controls.appendChild(btn);
+        if (handle) controls.appendChild(handle);
+        header.appendChild(controls);
+      });
+    }
+
+    function saveOrder() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      var order = Array.from(grid.children).map(function(w) { return w.dataset.widgetId; });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(order));
+    }
+
+    function restoreOrder() {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (!saved) return;
+      var order;
+      try { order = JSON.parse(saved); } catch(e) { return; }
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+      order.forEach(function(id) {
+        var el = grid.querySelector('[data-widget-id="' + id + '"]');
+        if (el) grid.appendChild(el);
+      });
+    }
+
+    var _dragSrc = null;
+
+    function initDrag() {
+      var grid = document.getElementById(gridId);
+      if (!grid) return;
+
+      grid.addEventListener('dragstart', function(e) {
+        var widget = e.target.closest('.widget');
+        var handle = e.target.closest('.widget-drag-handle');
+        if (!widget || !handle) { e.preventDefault(); return; }
+        _dragSrc = widget;
+        widget.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      grid.addEventListener('dragend', function(e) {
+        var widget = e.target.closest('.widget');
+        if (widget) widget.classList.remove('dragging');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        saveOrder();
+      });
+
+      grid.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        var widget = e.target.closest('.widget');
+        grid.querySelectorAll('.widget').forEach(function(w) { w.classList.remove('drag-over'); });
+        if (widget && widget !== _dragSrc) widget.classList.add('drag-over');
+      });
+
+      grid.addEventListener('drop', function(e) {
+        e.preventDefault();
+        var target = e.target.closest('.widget');
+        if (!target || target === _dragSrc || !_dragSrc) return;
+        var rect = target.getBoundingClientRect();
+        var midY = rect.top + rect.height / 2;
+        if (e.clientY < midY) {
+          grid.insertBefore(_dragSrc, target);
+        } else {
+          grid.insertBefore(_dragSrc, target.nextSibling);
+        }
+        _dragSrc = null;
+      });
+
+      injectExpandButtons();
+      restoreOrder();
+      restoreSizes();
+    }
+
+    document.addEventListener('DOMContentLoaded', initDrag);
+    setTimeout(initDrag, 300);
+  })();
+  </script>
+
+  <script>
+  // Widget system — client Nutrition tab
+  (function() {
+    var STORAGE_KEY = 'shapeWidgetOrder_clientNutrition';
+    var SIZE_KEY = 'shapeWidgetSize_clientNutrition';
+    var gridId = 'clNutritionWidgetGrid';
 
     function saveSizes() {
       var grid = document.getElementById(gridId);
