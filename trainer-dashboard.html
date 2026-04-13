@@ -635,7 +635,7 @@
   .td-sales-goal-progress-label { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
 
   /* ===== Widget Drag-and-Drop ===== */
-  .widget-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start; }
+  .widget-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-items: start; }
   .widget { background: var(--bg-card); border: 1px solid var(--border); transition: opacity 0.2s; display: flex; flex-direction: column; aspect-ratio: 1; overflow: hidden; }
   .widget.widget-full { grid-column: 1 / -1; aspect-ratio: auto; }
   .widget.dragging { opacity: 0.4; }
@@ -650,7 +650,6 @@
   .widget-body { padding: 16px; overflow-y: auto; flex: 1; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
-  @media (max-width: 900px) { .widget-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 600px) { .widget-grid { grid-template-columns: 1fr; } .widget { aspect-ratio: auto; min-height: 260px; } }
 </style>
 </head>
