@@ -133,6 +133,31 @@
       .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
     }
 
+    /* ===== Upcoming Check-Ins ===== */
+    .checkin-section { margin-bottom: 40px; }
+    .checkin-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .checkin-list { display: flex; flex-direction: column; gap: 10px; }
+    .checkin-card {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 20px 24px;
+      display: flex; align-items: center; gap: 20px; transition: border-color 0.3s;
+    }
+    .checkin-card:hover { border-color: var(--text-muted); }
+    .checkin-badge {
+      font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 4px 12px; border-radius: 999px; flex-shrink: 0;
+    }
+    .checkin-badge.weekly { background: rgba(45,212,191,0.15); color: #2DD4BF; }
+    .checkin-badge.bi-weekly { background: rgba(139,92,246,0.15); color: #8B5CF6; }
+    .checkin-badge.monthly { background: rgba(59,130,246,0.15); color: #3B82F6; }
+    .checkin-info { flex: 1; }
+    .checkin-day-time { font-size: 0.95rem; font-weight: 500; margin-bottom: 2px; }
+    .checkin-next { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+    .checkin-notes { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; font-style: italic; margin-top: 4px; }
+    .checkin-empty {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 32px 24px;
+      text-align: center; color: var(--text-muted); font-size: 0.88rem; font-weight: 300;
+    }
+
     /* ===== My Team Messaging ===== */
     .team-section { margin-bottom: 40px; }
     .team-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
@@ -449,6 +474,12 @@
           </div>
         </div>
 
+        <!-- Upcoming Check-Ins (Training) -->
+        <div class="checkin-section">
+          <h2>Upcoming Check-Ins</h2>
+          <div class="checkin-list" id="trainerCheckInList"></div>
+        </div>
+
         <!-- My Team -->
         <div class="team-section">
           <h2>My Team</h2>
@@ -534,6 +565,12 @@
               <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
             </div>
             <div class="meal-log-list" id="mealLogList"></div>
+          </div>
+
+          <!-- Upcoming Check-Ins (Nutrition) -->
+          <div class="checkin-section">
+            <h2>Upcoming Check-Ins</h2>
+            <div class="checkin-list" id="nutritionistCheckInList"></div>
           </div>
 
           <!-- Upcoming Check-ins -->
@@ -739,6 +776,9 @@
       btn.classList.add('active');
       document.getElementById(tab === 'training' ? 'tabTraining' : 'tabNutrition').classList.add('active');
       if (tab === 'nutrition' && typeof renderAll === 'function') renderAll();
+      if (typeof renderClientCheckIns === 'function') {
+        renderClientCheckIns(tab === 'training' ? 'trainer' : 'nutritionist');
+      }
     }
   </script>
   <script>
@@ -839,6 +879,82 @@
 
     // Load initial chat without scrolling page
     renderTeamChat();
+  </script>
+  <script>
+    // ===== Upcoming Check-Ins =====
+    function getNextOccurrence(dayName, frequency) {
+      const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      const targetDay = days.indexOf(dayName);
+      if (targetDay === -1) return null;
+
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      let next = new Date(today);
+      const currentDay = next.getDay();
+      let diff = targetDay - currentDay;
+      if (diff < 0) diff += 7;
+      if (diff === 0) diff = 7; // next week if today
+      next.setDate(next.getDate() + diff);
+
+      if (frequency === 'bi-weekly') {
+        // If the next occurrence is less than 7 days away, push it another week
+        // to approximate bi-weekly spacing
+        const daysDiff = Math.ceil((next - today) / (1000*60*60*24));
+        if (daysDiff < 7) next.setDate(next.getDate() + 7);
+      } else if (frequency === 'monthly') {
+        // Find the next occurrence of that day that is at least 25 days away
+        while ((next - today) / (1000*60*60*24) < 25) {
+          next.setDate(next.getDate() + 7);
+        }
+      }
+      return next;
+    }
+
+    function formatCheckInDate(date) {
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+      return days[date.getDay()] + ', ' + months[date.getMonth()] + ' ' + date.getDate();
+    }
+
+    function renderClientCheckIns(type) {
+      const key = type === 'trainer' ? 'shapeTrainerCheckIns' : 'shapeNutritionistCheckIns';
+      const containerId = type === 'trainer' ? 'trainerCheckInList' : 'nutritionistCheckInList';
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      let checkIns = [];
+      try { checkIns = JSON.parse(localStorage.getItem(key)) || []; } catch(e) { checkIns = []; }
+
+      // Filter for active check-ins for client 1
+      const active = checkIns.filter(c => c.active && c.clientId === 1);
+
+      if (active.length === 0) {
+        container.innerHTML = '<div class="checkin-empty">No check-ins scheduled yet</div>';
+        return;
+      }
+
+      container.innerHTML = active.map(c => {
+        const freq = (c.frequency || 'weekly').toLowerCase();
+        const badgeClass = freq === 'bi-weekly' ? 'bi-weekly' : freq;
+        const badgeLabel = freq === 'bi-weekly' ? 'Bi-Weekly' : freq.charAt(0).toUpperCase() + freq.slice(1);
+        const nextDate = getNextOccurrence(c.day, freq);
+        const nextStr = nextDate ? formatCheckInDate(nextDate) : '';
+        const notesHtml = c.notes ? '<div class="checkin-notes">' + c.notes + '</div>' : '';
+
+        return '<div class="checkin-card">'
+          + '<span class="checkin-badge ' + badgeClass + '">' + badgeLabel + '</span>'
+          + '<div class="checkin-info">'
+          + '<div class="checkin-day-time">' + c.day + ' at ' + c.time + '</div>'
+          + (nextStr ? '<div class="checkin-next">Next: ' + nextStr + '</div>' : '')
+          + notesHtml
+          + '</div>'
+          + '</div>';
+      }).join('');
+    }
+
+    // Render on page load
+    renderClientCheckIns('trainer');
+    renderClientCheckIns('nutritionist');
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
