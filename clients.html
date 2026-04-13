@@ -67,7 +67,7 @@
     }
     .dash-tab:hover { opacity: 0.8; }
     .dash-tab.active { opacity: 1; border-bottom-color: var(--accent); }
-    .dash-tab-content { display: none; }
+    .dash-tab-content { display: none; position: relative; z-index: 1; }
     .dash-tab-content.active { display: block; padding-top: 32px; }
 
     /* ===== Nutrition Tab Styles ===== */
@@ -613,7 +613,7 @@
       .rewards-cat-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
       /* Team chat responsive */
-      .team-chat-container { height: 400px; }
+      .team-chat-container { height: auto; max-height: 400px; }
       .team-chat-input-area input { padding: 10px 12px; font-size: 0.82rem; }
       .team-chat-input-area button { padding: 10px 16px; font-size: 0.75rem; }
     }
