@@ -987,6 +987,9 @@
                 <p>Upload your own meal plan as a PDF, image, or document and assign it to a client.</p>
               </button>
             </div>
+            <div style="text-align:right;margin-bottom:16px;">
+              <button class="btn btn-outline" onclick="mpbResetBuilder();document.getElementById('mpbBuilderArea').classList.remove('mpb-open');" style="font-size:0.78rem;padding:8px 16px;">Cancel</button>
+            </div>
 
             <!-- Template Form -->
             <div class="mpb-form" id="mpbTemplateForm">
@@ -1074,6 +1077,7 @@
                   <button class="btn btn-outline" onclick="mpbSaveDraft('template')" style="border-color:var(--accent);color:var(--accent-dark);font-size:0.78rem;padding:8px 16px;">Save Draft</button>
                   <button class="mpb-publish-btn" onclick="mpbSavePlan('template')">Publish &amp; Send to Client</button>
                   <button class="btn btn-primary" onclick="mpbPublishToProfile('template')" style="font-size:0.78rem;padding:8px 16px;">Publish to Profile</button>
+                  <button class="btn btn-outline" onclick="mpbResetBuilder();document.getElementById('mpbBuilderArea').classList.remove('mpb-open');" style="font-size:0.78rem;padding:8px 16px;">Cancel</button>
                 </div>
               </div>
             </div>
@@ -1123,6 +1127,7 @@
                   <button class="btn btn-outline" onclick="mpbSaveDraft('custom')" style="border-color:var(--accent);color:var(--accent-dark);font-size:0.78rem;padding:8px 16px;">Save Draft</button>
                   <button class="mpb-publish-btn" onclick="mpbSavePlan('custom')">Publish &amp; Send to Client</button>
                   <button class="btn btn-primary" onclick="mpbPublishToProfile('custom')" style="font-size:0.78rem;padding:8px 16px;">Publish to Profile</button>
+                  <button class="btn btn-outline" onclick="mpbResetBuilder();document.getElementById('mpbBuilderArea').classList.remove('mpb-open');" style="font-size:0.78rem;padding:8px 16px;">Cancel</button>
                 </div>
               </div>
             </div>
