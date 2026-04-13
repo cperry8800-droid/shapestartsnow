@@ -124,7 +124,9 @@
     .chat-messages {
       flex: 1; overflow-y: auto; padding: 24px;
       display: flex; flex-direction: column; gap: 16px;
+      scrollbar-width: none; -ms-overflow-style: none;
     }
+    .chat-messages::-webkit-scrollbar { display: none; }
     .chat-msg {
       display: flex; gap: 12px; max-width: 85%;
     }
@@ -652,6 +654,8 @@
       </div>
       <div class="chat-channel-tabs" id="mainChatTabs">
         <button class="chat-channel active" onclick="switchMainTab('client')">Client Chat</button>
+        <button class="chat-channel" onclick="switchMainTab('trainer')">Trainer Chat</button>
+        <button class="chat-channel" onclick="switchMainTab('nutritionist')">Nutritionist Chat</button>
         <button class="chat-channel" onclick="switchMainTab('shape')">Shape Chat</button>
       </div>
       <div class="chat-messages" id="chatMessages">
@@ -829,6 +833,18 @@
     ];
 
     const chatChannels = {
+      trainer: [
+        { user: trainerChatUsers[0], text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you all think", time: "9:10 AM" },
+        { user: trainerChatUsers[4], text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients. Seeing great results", time: "9:18 AM" },
+        { user: trainerChatUsers[1], text: "Anyone else noticing more clients asking for shorter sessions? I'm building a 15-min HIIT series", time: "9:25 AM" },
+        { user: trainerChatUsers[2], text: "Definitely. Attention spans are shorter but intensity can stay high. My Sprint Intervals are only 20 min", time: "9:30 AM" },
+        { user: trainerChatUsers[3], text: "I keep mine at 30-40 min for functional training. Clients need warm-up and mobility time", time: "9:35 AM" },
+        { user: trainerChatUsers[0], text: "Good point Sophie. I never skip warm-ups even in short sessions. Safety first", time: "9:40 AM" },
+        { user: trainerChatUsers[4], text: "For at-home clients I always include a 5 min cool-down. They tend to skip it otherwise", time: "9:44 AM" },
+        { user: trainerChatUsers[1], text: "Love this community. Great to bounce ideas off each other", time: "9:50 AM" },
+        { user: trainerChatUsers[2], text: "Agreed! Anyone going to the Shape trainer summit next month?", time: "9:55 AM" },
+        { user: trainerChatUsers[3], text: "Wouldn't miss it! Looking forward to meeting everyone in person", time: "10:00 AM" },
+      ],
       client: [
         { user: communityUsers[0], text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
         { user: communityUsers[1], text: "Anyone tried the new Tabata Inferno workout? It's insane", time: "10:31 AM" },
@@ -845,6 +861,18 @@
         { user: communityUsers[9], text: "Core & Stretch with Nina is no joke. My abs are shaking", time: "11:25 AM" },
         { user: communityUsers[10], text: "Park workout done. 100 pull ups, 200 dips. Calisthenics never gets old", time: "11:30 AM" },
         { user: communityUsers[8], text: "Charlie you're a machine. I need to try outdoor training sometime", time: "11:38 AM" },
+      ],
+      nutritionist: [
+        { user: nutritionistChatUsers[0], text: "Just updated my High Protein Performance plan with new breakfast options. Clients were asking for more variety", time: "8:00 AM" },
+        { user: nutritionistChatUsers[1], text: "Great idea Sarah! I've been adding more plant-based protein sources to my vegan plans too", time: "8:10 AM" },
+        { user: nutritionistChatUsers[2], text: "Anyone else dealing with clients who want results but won't meal prep? I created a no-prep plan and it's my best seller now", time: "8:18 AM" },
+        { user: nutritionistChatUsers[3], text: "That's smart Alex. I've been focusing on simple swaps instead of full overhauls. Less intimidating for beginners", time: "8:25 AM" },
+        { user: nutritionistChatUsers[0], text: "Totally agree James. Small changes stick better than drastic diet shifts", time: "8:30 AM" },
+        { user: nutritionistChatUsers[1], text: "Has anyone tried integrating macro tracking with the Shape nutrition schedule? My clients love the visual progress", time: "8:38 AM" },
+        { user: nutritionistChatUsers[2], text: "Yes! The nutrition schedule feature is a game changer. I build all my weekly plans around it", time: "8:42 AM" },
+        { user: nutritionistChatUsers[3], text: "Same here. Being able to share plans directly with clients through the platform saves so much time", time: "8:48 AM" },
+        { user: nutritionistChatUsers[0], text: "Love collaborating with you all. Having a nutritionist community makes such a difference", time: "8:55 AM" },
+        { user: nutritionistChatUsers[1], text: "Agreed! Looking forward to the next Shape nutritionist roundtable", time: "9:00 AM" },
       ],
       shape: [
         { user: trainerChatUsers[0], text: "Happy Monday Shape fam! Who's getting after it today?", time: "7:00 AM" },
