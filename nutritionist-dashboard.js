@@ -468,6 +468,182 @@ renderNdClients = function(filter) {
   });
 };
 
+// ===== Schedule Check-Ins =====
+const ND_CHECKIN_KEY = 'shapeNutritionistCheckIns';
+
+function getNdCheckIns() {
+  try { return JSON.parse(localStorage.getItem(ND_CHECKIN_KEY)) || []; } catch(e) { return []; }
+}
+function saveNdCheckIns(data) { localStorage.setItem(ND_CHECKIN_KEY, JSON.stringify(data)); }
+
+// Seed demo check-in data
+(function initNdCheckIns() {
+  const existing = getNdCheckIns();
+  if (existing.length > 0) return;
+  const demo = [
+    { clientId: 1, frequency: 'weekly', day: 'Tuesday', time: '11:00 AM', notes: 'Review food log and adjust macros', createdAt: _ndDate(14), active: true },
+    { clientId: 2, frequency: 'monthly', day: 'Thursday', time: '3:00 PM', notes: 'Monthly progress review', createdAt: _ndDate(20), active: true },
+    { clientId: 4, frequency: 'bi-weekly', day: 'Monday', time: '9:00 AM', notes: 'Performance nutrition check', createdAt: _ndDate(10), active: true },
+    { clientId: 8, frequency: 'weekly', day: 'Friday', time: '2:00 PM', notes: '', createdAt: _ndDate(5), active: true },
+  ];
+  saveNdCheckIns(demo);
+})();
+
+let _ndCheckInClientId = null;
+
+function openNdCheckInModal(clientId) {
+  _ndCheckInClientId = clientId;
+  const c = ndClients.find(cl => cl.id === clientId);
+  if (!c) return;
+
+  document.getElementById('ndCheckInClientName').textContent = c.name;
+  // Reset selections
+  document.querySelectorAll('.nd-checkin-freq-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nd-checkin-day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('ndCheckInTime').value = '10:00';
+  document.getElementById('ndCheckInNotes').value = '';
+
+  document.getElementById('ndCheckInModal').classList.add('active');
+}
+
+function closeNdCheckInModal() {
+  document.getElementById('ndCheckInModal').classList.remove('active');
+  _ndCheckInClientId = null;
+}
+
+function selectNdFreq(btn) {
+  document.querySelectorAll('.nd-checkin-freq-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function selectNdDay(btn) {
+  document.querySelectorAll('.nd-checkin-day-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function _ndFormatTime(timeVal) {
+  if (!timeVal) return '10:00 AM';
+  const [h, m] = timeVal.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+}
+
+function saveNdCheckIn() {
+  if (!_ndCheckInClientId) return;
+
+  const freqBtn = document.querySelector('.nd-checkin-freq-btn.active');
+  const dayBtn = document.querySelector('.nd-checkin-day-btn.active');
+  const timeVal = document.getElementById('ndCheckInTime').value;
+  const notes = document.getElementById('ndCheckInNotes').value.trim();
+
+  if (!freqBtn) { showToast('Please select a frequency'); return; }
+  if (!dayBtn) { showToast('Please select a day'); return; }
+
+  const checkIns = getNdCheckIns();
+  checkIns.push({
+    clientId: _ndCheckInClientId,
+    frequency: freqBtn.dataset.freq,
+    day: dayBtn.dataset.day,
+    time: _ndFormatTime(timeVal),
+    notes: notes,
+    createdAt: new Date().toISOString().split('T')[0],
+    active: true
+  });
+  saveNdCheckIns(checkIns);
+  closeNdCheckInModal();
+  showToast('Check-in scheduled!');
+
+  // Refresh detail view if open
+  const detailSection = document.getElementById('ndClientDetailSection');
+  if (detailSection && detailSection.style.display !== 'none') {
+    showNdClientDetail(_ndCheckInClientId);
+  }
+}
+
+function cancelNdCheckIn(clientId, index) {
+  const checkIns = getNdCheckIns();
+  const clientCheckIns = checkIns.filter(ci => ci.clientId === clientId && ci.active);
+  if (index >= 0 && index < clientCheckIns.length) {
+    // Find the actual index in the full array
+    let count = -1;
+    for (let i = 0; i < checkIns.length; i++) {
+      if (checkIns[i].clientId === clientId && checkIns[i].active) {
+        count++;
+        if (count === index) {
+          checkIns[i].active = false;
+          break;
+        }
+      }
+    }
+    saveNdCheckIns(checkIns);
+    showToast('Check-in cancelled');
+    showNdClientDetail(clientId);
+  }
+}
+
+// Monkey-patch renderNdClients to add "Schedule Check-In" button alongside Message
+const _origRenderNdClientsForCheckIn = renderNdClients;
+renderNdClients = function(filter) {
+  _origRenderNdClientsForCheckIn(filter);
+  document.querySelectorAll('.td-client-row').forEach(row => {
+    const onclick = row.getAttribute('onclick');
+    const idMatch = onclick && onclick.match(/showNdClientDetail\((\d+)\)/);
+    if (idMatch) {
+      const id = idMatch[1];
+      // Find the actions div that was added by the Message monkey-patch
+      const existingActions = row.querySelector('div[style*="margin-left"]');
+      if (existingActions) {
+        const checkInBtn = document.createElement('button');
+        checkInBtn.className = 'btn btn-sm btn-outline';
+        checkInBtn.style.cssText = 'font-size:0.72rem;padding:6px 14px;margin-left:6px;border-color:var(--accent);color:var(--accent);';
+        checkInBtn.textContent = 'Schedule Check-In';
+        checkInBtn.onclick = function(e) { e.stopPropagation(); openNdCheckInModal(Number(id)); };
+        existingActions.appendChild(checkInBtn);
+      }
+    }
+  });
+};
+
+// Monkey-patch showNdClientDetail to inject Upcoming Check-Ins section
+const _origShowNdClientDetail = showNdClientDetail;
+showNdClientDetail = function(id) {
+  _origShowNdClientDetail(id);
+
+  const checkIns = getNdCheckIns().filter(ci => ci.clientId === id && ci.active);
+  const content = document.getElementById('ndClientDetailContent');
+  if (!content) return;
+
+  // Find the member-since footer div and inject check-ins section before it
+  const footer = content.querySelector('div[style*="border-top"]');
+
+  const checkInHtml = `
+    <div style="margin-top:36px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin:0;">Upcoming Check-Ins</h3>
+        <button class="btn btn-sm btn-outline" onclick="openNdCheckInModal(${id})" style="font-size:0.72rem;padding:5px 14px;border-color:var(--accent);color:var(--accent);">+ Schedule</button>
+      </div>
+      ${checkIns.length === 0 ? '<div style="font-size:0.82rem;color:var(--text-muted);padding:16px;background:var(--bg-alt);border-radius:8px;">No check-ins scheduled. Click "+ Schedule" to add one.</div>' :
+        checkIns.map((ci, idx) => `
+          <div class="nd-checkin-item">
+            <div class="nd-checkin-item-info">
+              <div class="nd-checkin-item-freq">${ci.frequency} &mdash; ${ci.day}s at ${ci.time}</div>
+              <div class="nd-checkin-item-detail">Scheduled ${new Date(ci.createdAt + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+              ${ci.notes ? '<div class="nd-checkin-item-notes">' + ci.notes + '</div>' : ''}
+            </div>
+            <button class="nd-checkin-cancel-btn" onclick="cancelNdCheckIn(${id}, ${idx})">Cancel</button>
+          </div>
+        `).join('')
+      }
+    </div>
+  `;
+
+  if (footer) {
+    footer.insertAdjacentHTML('beforebegin', checkInHtml);
+  } else {
+    content.insertAdjacentHTML('beforeend', checkInHtml);
+  }
+};
+
 // Init messages
 renderNdMsgSidebar();
 renderNdClients('all');
