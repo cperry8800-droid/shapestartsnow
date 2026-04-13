@@ -42,6 +42,95 @@
     .streak-dot-circle.today { background: var(--accent); color: #fff; font-weight: 700; }
     .streak-dot-circle.future { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
     .streak-dot-day { font-size: 0.6rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+    /* ===== Dashboard Tabs ===== */
+    .dash-tabs {
+      display: flex; gap: 0; margin-bottom: 36px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dash-tab {
+      padding: 14px 32px; font-size: 0.88rem; font-weight: 500;
+      color: var(--text-muted); cursor: pointer; border: none;
+      background: none; font-family: inherit; letter-spacing: -0.01em;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .dash-tab:hover { color: var(--text); }
+    .dash-tab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+    .dash-tab-content { display: none; }
+    .dash-tab-content.active { display: block; }
+
+    /* ===== Nutrition Tab Styles ===== */
+    .nutrition-dashboard { max-width: 1000px; margin: 0 auto; }
+    .macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+    .macro-card { background: var(--bg-card); border: 1px solid var(--border); padding: 24px; text-align: center; }
+    .macro-value { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+    .macro-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); margin-top: 6px; font-weight: 500; }
+    .macro-bar { height: 4px; background: var(--border); margin-top: 12px; position: relative; }
+    .macro-bar-fill { height: 100%; position: absolute; left: 0; top: 0; transition: width 0.6s; }
+    .meal-schedule-section { margin-bottom: 40px; }
+    .meal-schedule-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .meal-schedule-header h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; }
+    .meal-day-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .meal-day { background: var(--bg-card); border: 1px solid var(--border); padding: 16px 12px; min-height: 160px; cursor: pointer; transition: all 0.3s; }
+    .meal-day:hover { border-color: var(--text); }
+    .meal-day.today { border-color: var(--accent-dark); }
+    .meal-day-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .meal-day-name { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; color: var(--text-muted); }
+    .meal-day-date { font-size: 0.85rem; font-weight: 600; }
+    .meal-day.today .meal-day-date { color: var(--accent-dark); }
+    .meal-entry { padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+    .meal-entry:last-child { border-bottom: none; }
+    .meal-entry-type { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent-dark); font-weight: 600; }
+    .meal-entry-name { font-weight: 400; color: var(--text); margin-top: 2px; }
+    .meal-entry-cal { font-size: 0.7rem; color: var(--text-muted); font-weight: 300; }
+    .meal-day-empty { display: flex; align-items: center; justify-content: center; height: 80px; color: var(--text-muted); font-size: 0.78rem; font-weight: 300; }
+    .meal-day-add { font-size: 0.72rem; color: var(--accent-dark); cursor: pointer; margin-top: 8px; font-weight: 500; }
+    .meal-log-section { margin-bottom: 40px; }
+    .meal-log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .meal-log-header h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; }
+    .meal-log-list { display: flex; flex-direction: column; gap: 8px; }
+    .meal-log-entry { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--bg-card); border: 1px solid var(--border); }
+    .meal-log-date { font-size: 0.78rem; font-weight: 500; color: var(--text-muted); min-width: 90px; }
+    .meal-log-info { flex: 1; }
+    .meal-log-info h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 2px; }
+    .meal-log-meta { display: flex; gap: 12px; font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+    .meal-log-meta .meal-tag { padding: 2px 10px; background: var(--bg-alt); font-size: 0.7rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+    .meal-log-cals { font-size: 0.92rem; font-weight: 600; min-width: 70px; text-align: right; }
+    .meal-log-delete { background: none; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; padding: 4px 8px; font-family: inherit; transition: color 0.2s; }
+    .meal-log-delete:hover { color: #EF4444; }
+    .appointments-section { margin-bottom: 40px; }
+    .appointments-section h2 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .appointment-list { display: flex; flex-direction: column; gap: 8px; }
+    .appointment-card { display: flex; align-items: center; gap: 16px; padding: 20px; background: var(--bg-card); border: 1px solid var(--border); }
+    .appointment-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: #fff; font-size: 0.85rem; flex-shrink: 0; }
+    .appointment-info { flex: 1; }
+    .appointment-info h4 { font-size: 0.92rem; font-weight: 500; margin-bottom: 2px; }
+    .appointment-info span { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+    .appointment-time { text-align: right; font-size: 0.85rem; font-weight: 500; }
+    .appointment-time span { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 300; }
+    .water-section { margin-bottom: 40px; }
+    .water-section h2 { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .water-tracker { display: flex; align-items: center; gap: 16px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); }
+    .water-glasses { display: flex; gap: 8px; flex-wrap: wrap; }
+    .water-glass { width: 36px; height: 44px; border: 2px solid var(--border); cursor: pointer; display: flex; align-items: flex-end; justify-content: center; transition: all 0.3s; position: relative; background: var(--bg-card); }
+    .water-glass.filled { border-color: #38BDF8; }
+    .water-glass.filled::after { content: ''; position: absolute; bottom: 2px; left: 2px; right: 2px; top: 30%; background: rgba(56, 189, 248, 0.3); }
+    .water-count { font-size: 1.5rem; font-weight: 700; min-width: 80px; }
+    .water-count span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    @media (max-width: 900px) { .meal-day-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 768px) {
+      .macro-row { grid-template-columns: repeat(2, 1fr); }
+      .meal-day-grid { grid-template-columns: 1fr; }
+      .meal-day { min-height: auto; }
+      .meal-schedule-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+      .meal-log-entry { flex-wrap: wrap; gap: 8px; }
+      .meal-log-date { width: 100%; min-width: auto; }
+      .meal-log-cals { min-width: auto; text-align: left; }
+      .water-tracker { flex-direction: column; text-align: center; }
+      .water-count { min-width: auto; }
+      .appointment-card { flex-wrap: wrap; gap: 12px; }
+      .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -115,10 +204,19 @@
     </div>
   </section>
 
-  <!-- Monthly Overview -->
+  <!-- Dashboard -->
   <section class="section">
     <div class="container">
-      <div class="progress-dashboard">
+
+      <!-- Tab Bar -->
+      <div class="dash-tabs">
+        <button class="dash-tab active" onclick="switchDashTab('training', this)">Training</button>
+        <button class="dash-tab" onclick="switchDashTab('nutrition', this)">Nutrition</button>
+      </div>
+
+      <!-- TRAINING TAB -->
+      <div class="dash-tab-content active" id="tabTraining">
+        <div class="progress-dashboard">
         <!-- Stats Row -->
         <div class="progress-stats-row">
           <div class="progress-stat-card">
@@ -237,6 +335,84 @@
           </div>
         </div>
       </div>
+      </div>
+
+      <!-- NUTRITION TAB -->
+      <div class="dash-tab-content" id="tabNutrition">
+        <div class="nutrition-dashboard">
+
+          <!-- Today's Macro Summary -->
+          <div class="macro-row" id="macroRow">
+            <div class="macro-card">
+              <div class="macro-value" id="macroCalories">0</div>
+              <div class="macro-label">Calories</div>
+              <div class="macro-bar"><div class="macro-bar-fill" id="barCalories" style="background:#10B981;width:0%;"></div></div>
+            </div>
+            <div class="macro-card">
+              <div class="macro-value" id="macroProtein">0g</div>
+              <div class="macro-label">Protein</div>
+              <div class="macro-bar"><div class="macro-bar-fill" id="barProtein" style="background:#6C3AED;width:0%;"></div></div>
+            </div>
+            <div class="macro-card">
+              <div class="macro-value" id="macroCarbs">0g</div>
+              <div class="macro-label">Carbs</div>
+              <div class="macro-bar"><div class="macro-bar-fill" id="barCarbs" style="background:#F59E0B;width:0%;"></div></div>
+            </div>
+            <div class="macro-card">
+              <div class="macro-value" id="macroFat">0g</div>
+              <div class="macro-label">Fat</div>
+              <div class="macro-bar"><div class="macro-bar-fill" id="barFat" style="background:#EC4899;width:0%;"></div></div>
+            </div>
+          </div>
+
+          <!-- Water Tracker -->
+          <div class="water-section">
+            <h2>Water Intake</h2>
+            <div class="water-tracker">
+              <div class="water-count"><span id="waterCount">0</span><span>of 8 glasses</span></div>
+              <div class="water-glasses" id="waterGlasses"></div>
+            </div>
+          </div>
+
+          <!-- Weekly Calorie Chart -->
+          <div class="meal-schedule-section" style="margin-bottom:40px;">
+            <div class="meal-schedule-header">
+              <h2>Weekly Calories</h2>
+            </div>
+            <div id="weeklyCalChart" class="progress-bar-chart"></div>
+          </div>
+
+          <!-- Weekly Meal Schedule -->
+          <div class="meal-schedule-section">
+            <div class="meal-schedule-header">
+              <h2>Meal Schedule</h2>
+              <div class="schedule-nav">
+                <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
+                <span id="mealWeekLabel" class="schedule-week-label"></span>
+                <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
+              </div>
+            </div>
+            <div class="meal-day-grid" id="mealDayGrid"></div>
+          </div>
+
+          <!-- Meal Log -->
+          <div class="meal-log-section">
+            <div class="meal-log-header">
+              <h2>Meal Log</h2>
+              <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
+            </div>
+            <div class="meal-log-list" id="mealLogList"></div>
+          </div>
+
+          <!-- Upcoming Check-ins -->
+          <div class="appointments-section">
+            <h2>Upcoming Check-ins</h2>
+            <div class="appointment-list" id="appointmentList"></div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -352,11 +528,87 @@
     </div>
   </div>
 
+  <!-- Log Meal Modal -->
+  <div class="modal-overlay" id="logMealModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">&times;</button>
+      <h2>Log a Meal</h2>
+      <p class="subtitle">Track your nutrition</p>
+      <div class="form-group">
+        <label>Meal Name</label>
+        <input type="text" id="mealName" placeholder="e.g. Grilled Chicken & Rice">
+      </div>
+      <div class="form-group">
+        <label>Meal Type</label>
+        <select id="mealType">
+          <option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+          <option>Snack</option><option>Pre-Workout</option><option>Post-Workout</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Calories</label>
+        <input type="number" id="mealCalories" placeholder="500" min="0">
+      </div>
+      <div class="form-group">
+        <label>Protein (g)</label>
+        <input type="number" id="mealProtein" placeholder="30" min="0">
+      </div>
+      <div class="form-group">
+        <label>Carbs (g)</label>
+        <input type="number" id="mealCarbs" placeholder="50" min="0">
+      </div>
+      <div class="form-group">
+        <label>Fat (g)</label>
+        <input type="number" id="mealFat" placeholder="15" min="0">
+      </div>
+      <div class="form-group">
+        <label>Notes (optional)</label>
+        <input type="text" id="mealNotes" placeholder="Any details...">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="saveLoggedMeal()">Save Meal</button>
+    </div>
+  </div>
+
+  <!-- Schedule Meal Modal -->
+  <div class="modal-overlay" id="scheduleMealModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">&times;</button>
+      <h2>Schedule a Meal</h2>
+      <p class="subtitle" id="scheduleMealDayLabel"></p>
+      <div class="form-group">
+        <label>Meal Name</label>
+        <input type="text" id="scheduleMealName" placeholder="e.g. Chicken Bowl">
+      </div>
+      <div class="form-group">
+        <label>Meal Type</label>
+        <select id="scheduleMealType">
+          <option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+          <option>Snack</option><option>Pre-Workout</option><option>Post-Workout</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Estimated Calories</label>
+        <input type="number" id="scheduleMealCal" placeholder="500" min="0">
+      </div>
+      <button class="btn btn-primary btn-block" onclick="saveScheduledMeal()">Add to Schedule</button>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
   <script src="progress.js"></script>
+  <script src="nutrition-schedule.js"></script>
+  <script>
+    function switchDashTab(tab, btn) {
+      document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.dash-tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(tab === 'training' ? 'tabTraining' : 'tabNutrition').classList.add('active');
+      if (tab === 'nutrition' && typeof renderAll === 'function') renderAll();
+    }
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
