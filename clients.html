@@ -833,8 +833,12 @@
       if (typeof showToast === 'function') showToast('Message sent!');
     }
 
-    // Auto-open trainer chat
-    openTeamChat('trainer');
+    // Pre-select trainer chat without scrolling page
+    (function() {
+      const origScroll = window.scrollY;
+      openTeamChat('trainer');
+      window.scrollTo(0, 0);
+    })();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
