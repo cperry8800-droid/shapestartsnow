@@ -47,6 +47,7 @@
     .dash-tabs {
       display: flex; gap: 0; margin-bottom: 36px;
       border-bottom: 1px solid var(--border);
+      justify-content: center;
     }
     .dash-tab {
       padding: 14px 32px; font-size: 0.88rem; font-weight: 500;
@@ -130,6 +131,84 @@
       .water-count { min-width: auto; }
       .appointment-card { flex-wrap: wrap; gap: 12px; }
       .appointment-time { text-align: left; width: 100%; display: flex; gap: 8px; }
+    }
+
+    /* ===== My Team Messaging ===== */
+    .team-section { margin-bottom: 40px; }
+    .team-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+    .team-card {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .team-card-avatar {
+      width: 48px; height: 48px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 600;
+      color: #fff; font-size: 0.85rem; flex-shrink: 0;
+    }
+    .team-card-info { flex: 1; }
+    .team-card-info h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 2px; }
+    .team-card-info span { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+    .team-msg-panel {
+      display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--border);
+      min-height: 380px; background: var(--bg-card);
+    }
+    .team-msg-contact {
+      display: flex; align-items: center; gap: 10px; padding: 16px;
+      cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+    }
+    .team-msg-contact:hover, .team-msg-contact.active { background: var(--bg-alt); }
+    .team-msg-contact-avatar {
+      width: 36px; height: 36px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; font-weight: 600;
+      color: #fff; font-size: 0.65rem; flex-shrink: 0;
+    }
+    .team-msg-contact-info h4 { font-size: 0.82rem; font-weight: 500; }
+    .team-msg-contact-info span { font-size: 0.68rem; color: var(--text-muted); }
+    .team-msg-chat { display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+    .team-msg-chat-header {
+      display: flex; align-items: center; gap: 12px; padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .team-msg-chat-header h4 { font-size: 0.92rem; font-weight: 500; }
+    .team-msg-chat-header span { font-size: 0.75rem; color: var(--text-muted); }
+    .team-msg-body {
+      flex: 1; overflow-y: auto; padding: 20px; display: flex;
+      flex-direction: column; gap: 12px; max-height: 260px;
+    }
+    .team-msg-bubble {
+      max-width: 70%; padding: 10px 16px; font-size: 0.85rem; line-height: 1.5;
+    }
+    .team-msg-bubble.sent {
+      align-self: flex-end; background: var(--accent); color: #fff;
+      border-radius: 16px 16px 4px 16px;
+    }
+    .team-msg-bubble.received {
+      align-self: flex-start; background: var(--bg-alt); color: var(--text);
+      border-radius: 16px 16px 16px 4px;
+    }
+    .team-msg-bubble-time { font-size: 0.65rem; opacity: 0.7; margin-top: 4px; }
+    .team-msg-input-area {
+      display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border);
+    }
+    .team-msg-input-area input {
+      flex: 1; padding: 10px 16px; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 0.85rem; outline: none;
+    }
+    .team-msg-input-area input:focus { border-color: var(--accent); }
+    .team-msg-input-area button {
+      padding: 10px 20px; background: var(--accent); color: #fff; border: none;
+      font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+    .team-msg-empty {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); font-size: 0.88rem; font-weight: 300;
+    }
+    @media (max-width: 768px) {
+      .team-grid { grid-template-columns: 1fr; }
+      .team-msg-panel { grid-template-columns: 1fr; }
+      .team-msg-chat { border-left: none; border-top: 1px solid var(--border); }
+      .team-msg-body { max-height: 200px; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -331,6 +410,50 @@
                 <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
               </div>
               <button class="btn btn-sm btn-outline">Start Workout</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Team -->
+        <div class="team-section">
+          <h2>My Team</h2>
+          <div class="team-grid">
+            <div class="team-card">
+              <div class="team-card-avatar" style="background:#6C3AED;">MJ</div>
+              <div class="team-card-info">
+                <h4>Marcus Johnson</h4>
+                <span>Personal Trainer</span>
+              </div>
+              <button class="btn btn-sm btn-primary" onclick="openTeamChat('trainer')">Message</button>
+            </div>
+            <div class="team-card">
+              <div class="team-card-avatar" style="background:#10B981;">SM</div>
+              <div class="team-card-info">
+                <h4>Dr. Sarah Mitchell</h4>
+                <span>Nutritionist</span>
+              </div>
+              <button class="btn btn-sm btn-primary" onclick="openTeamChat('nutritionist')">Message</button>
+            </div>
+          </div>
+          <div class="team-msg-panel" id="teamMsgPanel">
+            <div id="teamMsgSidebar">
+              <div class="team-msg-contact active" onclick="openTeamChat('trainer')">
+                <div class="team-msg-contact-avatar" style="background:#6C3AED;">MJ</div>
+                <div class="team-msg-contact-info">
+                  <h4>Marcus Johnson</h4>
+                  <span>Trainer</span>
+                </div>
+              </div>
+              <div class="team-msg-contact" onclick="openTeamChat('nutritionist')">
+                <div class="team-msg-contact-avatar" style="background:#10B981;">SM</div>
+                <div class="team-msg-contact-info">
+                  <h4>Dr. Sarah Mitchell</h4>
+                  <span>Nutritionist</span>
+                </div>
+              </div>
+            </div>
+            <div class="team-msg-chat" id="teamMsgChat">
+              <div class="team-msg-empty">Select a team member to start messaging</div>
             </div>
           </div>
         </div>
@@ -608,6 +731,110 @@
       document.getElementById(tab === 'training' ? 'tabTraining' : 'tabNutrition').classList.add('active');
       if (tab === 'nutrition' && typeof renderAll === 'function') renderAll();
     }
+  </script>
+  <script>
+    // ===== My Team Messaging =====
+    const TEAM_MSG_KEY = 'shapeClientTeamMessages';
+
+    const teamContacts = {
+      trainer: { name: 'Marcus Johnson', role: 'Personal Trainer', color: '#6C3AED', initials: 'MJ' },
+      nutritionist: { name: 'Dr. Sarah Mitchell', role: 'Nutritionist', color: '#10B981', initials: 'SM' }
+    };
+
+    function getTeamMessages() {
+      try { return JSON.parse(localStorage.getItem(TEAM_MSG_KEY)) || {}; } catch(e) { return {}; }
+    }
+    function saveTeamMessages(msgs) { localStorage.setItem(TEAM_MSG_KEY, JSON.stringify(msgs)); }
+
+    // Demo messages
+    (function initTeamMessages() {
+      const existing = getTeamMessages();
+      if (Object.keys(existing).length > 0) return;
+      const demo = {
+        trainer: [
+          { from: 'them', text: 'Great session today! Remember to stretch after your workout.', time: '6:30 PM', date: new Date().toISOString().split('T')[0] },
+          { from: 'me', text: 'Thanks coach! Will do. See you Thursday!', time: '6:45 PM', date: new Date().toISOString().split('T')[0] },
+          { from: 'them', text: 'Perfect, we\'ll work on your squat form. Come ready!', time: '6:48 PM', date: new Date().toISOString().split('T')[0] },
+        ],
+        nutritionist: [
+          { from: 'them', text: 'I reviewed your meal log. Your protein intake looks great this week!', time: '10:00 AM', date: new Date().toISOString().split('T')[0] },
+          { from: 'me', text: 'Thanks! I\'ve been trying those Greek yogurt bowls you suggested.', time: '10:15 AM', date: new Date().toISOString().split('T')[0] },
+          { from: 'them', text: 'Love it! Let\'s keep that going. I\'ll update your plan for next week.', time: '10:20 AM', date: new Date().toISOString().split('T')[0] },
+        ]
+      };
+      saveTeamMessages(demo);
+    })();
+
+    let activeTeamChat = null;
+
+    function openTeamChat(type) {
+      activeTeamChat = type;
+      const contact = teamContacts[type];
+      const msgs = getTeamMessages();
+      const convo = msgs[type] || [];
+
+      // Update sidebar active state
+      document.querySelectorAll('.team-msg-contact').forEach((el, i) => {
+        el.classList.toggle('active', (i === 0 && type === 'trainer') || (i === 1 && type === 'nutritionist'));
+      });
+
+      const chatDiv = document.getElementById('teamMsgChat');
+      chatDiv.innerHTML = `
+        <div class="team-msg-chat-header">
+          <div class="team-msg-contact-avatar" style="background:${contact.color};">${contact.initials}</div>
+          <div>
+            <h4>${contact.name}</h4>
+            <span>${contact.role}</span>
+          </div>
+        </div>
+        <div class="team-msg-body" id="teamMsgBody">
+          ${convo.length === 0 ? '<div class="team-msg-empty">Start a conversation with ' + contact.name + '</div>' :
+            convo.map(m => `
+              <div class="team-msg-bubble ${m.from === 'me' ? 'sent' : 'received'}">
+                <div>${m.text}</div>
+                <div class="team-msg-bubble-time">${m.time}</div>
+              </div>
+            `).join('')
+          }
+        </div>
+        <div class="team-msg-input-area">
+          <input type="text" id="teamMsgInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendTeamMessage()">
+          <button onclick="sendTeamMessage()">Send</button>
+        </div>
+      `;
+
+      const body = document.getElementById('teamMsgBody');
+      body.scrollTop = body.scrollHeight;
+      document.getElementById('teamMsgInput').focus();
+    }
+
+    function sendTeamMessage() {
+      if (!activeTeamChat) return;
+      const input = document.getElementById('teamMsgInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const msgs = getTeamMessages();
+      if (!msgs[activeTeamChat]) msgs[activeTeamChat] = [];
+
+      const now = new Date();
+      const hours = now.getHours();
+      const mins = now.getMinutes();
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const timeStr = (hours % 12 || 12) + ':' + (mins < 10 ? '0' : '') + mins + ' ' + ampm;
+
+      msgs[activeTeamChat].push({
+        from: 'me', text: text, time: timeStr, date: new Date().toISOString().split('T')[0]
+      });
+      saveTeamMessages(msgs);
+
+      input.value = '';
+      openTeamChat(activeTeamChat);
+      if (typeof showToast === 'function') showToast('Message sent!');
+    }
+
+    // Auto-open trainer chat
+    openTeamChat('trainer');
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>

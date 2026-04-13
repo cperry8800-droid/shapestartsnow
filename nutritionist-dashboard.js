@@ -326,3 +326,148 @@ function renderNdSales() {
 // Init
 renderNdClients('all');
 renderNdSales();
+
+// ===== Direct Messages =====
+const ND_MSG_KEY = 'shapeNutritionistMessages';
+
+function getNdMessages() {
+  try { return JSON.parse(localStorage.getItem(ND_MSG_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveNdMessages(msgs) { localStorage.setItem(ND_MSG_KEY, JSON.stringify(msgs)); }
+
+(function initNdMessages() {
+  const existing = getNdMessages();
+  if (Object.keys(existing).length > 0) return;
+  const demo = {
+    1: [
+      { from: 'them', text: 'Hi! Quick question - can I swap the brown rice for quinoa in my meal plan?', time: '10:30 AM', date: _ndDate(1) },
+      { from: 'me', text: 'Absolutely! Quinoa is a great swap - similar calories with more protein. Go for it!', time: '10:45 AM', date: _ndDate(1) },
+      { from: 'them', text: 'Perfect, thanks! \u{1F64C}', time: '10:47 AM', date: _ndDate(1) },
+    ],
+    2: [
+      { from: 'them', text: 'I\'ve been struggling to hit my protein goal. Any easy snack ideas?', time: '3:00 PM', date: _ndDate(0) },
+      { from: 'me', text: 'Try Greek yogurt with nuts, protein shakes, or cottage cheese with berries. All easy and high protein!', time: '3:20 PM', date: _ndDate(0) },
+    ],
+    4: [
+      { from: 'me', text: 'Great job on your meal prep this week Jasmine! Your adherence is 96% \u{1F389}', time: '5:00 PM', date: _ndDate(0) },
+      { from: 'them', text: 'Thank you! The meal plan templates make it so much easier', time: '5:15 PM', date: _ndDate(0) },
+    ],
+    6: [
+      { from: 'them', text: 'Is it ok to have a cheat meal this weekend? It\'s my birthday', time: '11:00 AM', date: _ndDate(2) },
+      { from: 'me', text: 'Happy birthday! Of course! One meal won\'t derail your progress. Enjoy it guilt-free!', time: '11:30 AM', date: _ndDate(2) },
+    ],
+  };
+  saveNdMessages(demo);
+})();
+
+let ndActiveChat = null;
+
+function renderNdMsgSidebar() {
+  const msgs = getNdMessages();
+  const sidebar = document.getElementById('ndMsgSidebar');
+
+  sidebar.innerHTML = ndClients.map(c => {
+    const convo = msgs[c.id] || [];
+    const lastMsg = convo.length > 0 ? convo[convo.length - 1] : null;
+    const initials = c.name.split(' ').map(n => n[0]).join('');
+    const preview = lastMsg ? (lastMsg.from === 'me' ? 'You: ' : '') + lastMsg.text : 'No messages yet';
+    const time = lastMsg ? lastMsg.time : '';
+
+    return `
+      <div class="td-msg-contact ${ndActiveChat === c.id ? 'active' : ''}" onclick="openNdChat(${c.id})">
+        <div class="avatar">${initials}</div>
+        <div class="td-msg-contact-info">
+          <div class="td-msg-contact-name">${c.name}</div>
+          <div class="td-msg-contact-preview">${preview}</div>
+        </div>
+        <div class="td-msg-contact-time">${time}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openNdChat(clientId) {
+  ndActiveChat = clientId;
+  const c = ndClients.find(cl => cl.id === clientId);
+  if (!c) return;
+
+  const msgs = getNdMessages();
+  const convo = msgs[clientId] || [];
+  const initials = c.name.split(' ').map(n => n[0]).join('');
+
+  const chatDiv = document.getElementById('ndMsgChat');
+  chatDiv.innerHTML = `
+    <div class="td-msg-chat-header">
+      <div class="avatar">${initials}</div>
+      <div>
+        <h4>${c.name}</h4>
+        <span>${c.plan}</span>
+      </div>
+    </div>
+    <div class="td-msg-chat-body" id="ndMsgBody">
+      ${convo.length === 0 ? '<div class="td-msg-empty">Start a conversation with ' + c.name + '</div>' :
+        convo.map(m => `
+          <div class="td-msg-bubble ${m.from === 'me' ? 'sent' : 'received'}">
+            <div>${m.text}</div>
+            <div class="td-msg-bubble-time">${m.time}</div>
+          </div>
+        `).join('')
+      }
+    </div>
+    <div class="td-msg-input-area">
+      <input type="text" id="ndMsgInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendNdMessage()">
+      <button onclick="sendNdMessage()">Send</button>
+    </div>
+  `;
+
+  const body = document.getElementById('ndMsgBody');
+  body.scrollTop = body.scrollHeight;
+  document.getElementById('ndMsgInput').focus();
+  renderNdMsgSidebar();
+}
+
+function sendNdMessage() {
+  if (!ndActiveChat) return;
+  const input = document.getElementById('ndMsgInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const msgs = getNdMessages();
+  if (!msgs[ndActiveChat]) msgs[ndActiveChat] = [];
+
+  const now = new Date();
+  const hours = now.getHours();
+  const mins = now.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const timeStr = (hours % 12 || 12) + ':' + (mins < 10 ? '0' : '') + mins + ' ' + ampm;
+
+  msgs[ndActiveChat].push({
+    from: 'me', text: text, time: timeStr, date: new Date().toISOString().split('T')[0]
+  });
+  saveNdMessages(msgs);
+
+  input.value = '';
+  openNdChat(ndActiveChat);
+  showToast('Message sent!');
+}
+
+// Add "Message" button to client rows
+const origRenderNdClients = renderNdClients;
+renderNdClients = function(filter) {
+  origRenderNdClients(filter);
+  document.querySelectorAll('.td-client-row').forEach(row => {
+    const onclick = row.getAttribute('onclick');
+    const idMatch = onclick && onclick.match(/showNdClientDetail\((\d+)\)/);
+    if (idMatch) {
+      const id = idMatch[1];
+      const actionsDiv = document.createElement('div');
+      actionsDiv.style.cssText = 'margin-left:auto;';
+      actionsDiv.innerHTML = '<button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openNdChat(' + id + ');document.getElementById(\'ndMessagesPanel\').scrollIntoView({behavior:\'smooth\'})" style="font-size:0.72rem;padding:6px 14px;">Message</button>';
+      row.appendChild(actionsDiv);
+    }
+  });
+};
+
+// Init messages
+renderNdMsgSidebar();
+renderNdClients('all');

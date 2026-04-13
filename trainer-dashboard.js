@@ -325,3 +325,157 @@ function renderSales() {
 // Init
 renderClients('all');
 renderSales();
+
+// ===== Direct Messages =====
+const TD_MSG_KEY = 'shapeTrainerMessages';
+
+function getTdMessages() {
+  try { return JSON.parse(localStorage.getItem(TD_MSG_KEY)) || {}; } catch(e) { return {}; }
+}
+function saveTdMessages(msgs) { localStorage.setItem(TD_MSG_KEY, JSON.stringify(msgs)); }
+
+// Demo messages for some clients
+(function initTdMessages() {
+  const existing = getTdMessages();
+  if (Object.keys(existing).length > 0) return;
+  const demo = {
+    1: [
+      { from: 'them', text: 'Hey coach, should I increase weight on squats this week?', time: '9:15 AM', date: _tdDate(1) },
+      { from: 'me', text: 'Yes! Go up 10lbs. You handled last week\'s sets great.', time: '9:22 AM', date: _tdDate(1) },
+      { from: 'them', text: 'Got it, thanks! Feeling strong 💪', time: '9:24 AM', date: _tdDate(1) },
+    ],
+    2: [
+      { from: 'them', text: 'I\'m feeling sore from yesterday\'s HIIT session', time: '8:00 AM', date: _tdDate(0) },
+      { from: 'me', text: 'That\'s normal! Make sure you\'re stretching and staying hydrated. Take it easy today.', time: '8:15 AM', date: _tdDate(0) },
+    ],
+    4: [
+      { from: 'me', text: 'Great work on your deadlift PR today Priya!', time: '6:30 PM', date: _tdDate(0) },
+      { from: 'them', text: 'Thank you!! Couldn\'t have done it without your programming 🙏', time: '6:45 PM', date: _tdDate(0) },
+    ],
+    5: [
+      { from: 'me', text: 'Hey Tom, noticed you haven\'t logged in a while. Everything ok?', time: '10:00 AM', date: _tdDate(3) },
+      { from: 'them', text: 'Yeah been busy with work. I\'ll try to get back this week.', time: '2:30 PM', date: _tdDate(3) },
+      { from: 'me', text: 'No pressure! Even a 20 min session counts. Let me know if you need a modified plan.', time: '2:45 PM', date: _tdDate(3) },
+    ],
+    8: [
+      { from: 'them', text: 'Can we adjust my program to focus more on glutes?', time: '7:00 PM', date: _tdDate(2) },
+      { from: 'me', text: 'Absolutely! I\'ll update your next week\'s plan with more hip thrusts and RDLs.', time: '7:15 PM', date: _tdDate(2) },
+    ],
+  };
+  saveTdMessages(demo);
+})();
+
+let tdActiveChat = null;
+
+function renderTdMsgSidebar() {
+  const msgs = getTdMessages();
+  const sidebar = document.getElementById('tdMsgSidebar');
+
+  sidebar.innerHTML = clients.map(c => {
+    const convo = msgs[c.id] || [];
+    const lastMsg = convo.length > 0 ? convo[convo.length - 1] : null;
+    const initials = c.name.split(' ').map(n => n[0]).join('');
+    const preview = lastMsg ? (lastMsg.from === 'me' ? 'You: ' : '') + lastMsg.text : 'No messages yet';
+    const time = lastMsg ? lastMsg.time : '';
+
+    return `
+      <div class="td-msg-contact ${tdActiveChat === c.id ? 'active' : ''}" onclick="openTdChat(${c.id})">
+        <div class="avatar">${initials}</div>
+        <div class="td-msg-contact-info">
+          <div class="td-msg-contact-name">${c.name}</div>
+          <div class="td-msg-contact-preview">${preview}</div>
+        </div>
+        <div class="td-msg-contact-time">${time}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openTdChat(clientId) {
+  tdActiveChat = clientId;
+  const c = clients.find(cl => cl.id === clientId);
+  if (!c) return;
+
+  const msgs = getTdMessages();
+  const convo = msgs[clientId] || [];
+  const initials = c.name.split(' ').map(n => n[0]).join('');
+
+  const chatDiv = document.getElementById('tdMsgChat');
+  chatDiv.innerHTML = `
+    <div class="td-msg-chat-header">
+      <div class="avatar">${initials}</div>
+      <div>
+        <h4>${c.name}</h4>
+        <span>${c.plan}</span>
+      </div>
+    </div>
+    <div class="td-msg-chat-body" id="tdMsgBody">
+      ${convo.length === 0 ? '<div class="td-msg-empty">Start a conversation with ' + c.name + '</div>' :
+        convo.map(m => `
+          <div class="td-msg-bubble ${m.from === 'me' ? 'sent' : 'received'}">
+            <div>${m.text}</div>
+            <div class="td-msg-bubble-time">${m.time}</div>
+          </div>
+        `).join('')
+      }
+    </div>
+    <div class="td-msg-input-area">
+      <input type="text" id="tdMsgInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendTdMessage()">
+      <button onclick="sendTdMessage()">Send</button>
+    </div>
+  `;
+
+  const body = document.getElementById('tdMsgBody');
+  body.scrollTop = body.scrollHeight;
+  document.getElementById('tdMsgInput').focus();
+  renderTdMsgSidebar();
+}
+
+function sendTdMessage() {
+  if (!tdActiveChat) return;
+  const input = document.getElementById('tdMsgInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const msgs = getTdMessages();
+  if (!msgs[tdActiveChat]) msgs[tdActiveChat] = [];
+
+  const now = new Date();
+  const hours = now.getHours();
+  const mins = now.getMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const timeStr = (hours % 12 || 12) + ':' + (mins < 10 ? '0' : '') + mins + ' ' + ampm;
+
+  msgs[tdActiveChat].push({
+    from: 'me', text: text, time: timeStr, date: new Date().toISOString().split('T')[0]
+  });
+  saveTdMessages(msgs);
+
+  input.value = '';
+  openTdChat(tdActiveChat);
+  showToast('Message sent!');
+}
+
+// Also add "Message" button to client rows
+const origRenderClients = renderClients;
+renderClients = function(filter) {
+  origRenderClients(filter);
+  // Add message buttons to each client row
+  document.querySelectorAll('.td-client-row').forEach(row => {
+    const onclick = row.getAttribute('onclick');
+    const idMatch = onclick && onclick.match(/showClientDetail\((\d+)\)/);
+    if (idMatch) {
+      const id = idMatch[1];
+      const actionsDiv = document.createElement('div');
+      actionsDiv.style.cssText = 'margin-left:auto;';
+      actionsDiv.innerHTML = '<button class="btn btn-sm btn-outline" onclick="event.stopPropagation();openTdChat(' + id + ');document.getElementById(\'tdMessagesPanel\').scrollIntoView({behavior:\'smooth\'})" style="font-size:0.72rem;padding:6px 14px;">Message</button>';
+      row.appendChild(actionsDiv);
+    }
+  });
+};
+
+// Init messages
+renderTdMsgSidebar();
+
+// Re-render clients to add message buttons
+renderClients('all');
