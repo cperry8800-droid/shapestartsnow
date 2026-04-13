@@ -162,14 +162,8 @@
       animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .intro-logo.show {
-      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-                 logoPulse 2.5s ease-in-out 1.5s infinite;
+      animation: fadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       filter: brightness(0) invert(1);
-    }
-
-    @keyframes logoPulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.15; }
     }
 
     .intro-tagline {
