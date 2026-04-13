@@ -650,7 +650,12 @@
   .widget-body { padding: 16px; }
   .widget-body > *:first-child { margin-top: 0 !important; }
   .widget-body > *:last-child { margin-bottom: 0 !important; }
-  @media (max-width: 600px) { .widget-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) {
+    .widget-grid { grid-template-columns: 1fr; gap: 12px; }
+    .widget-expand-btn { display: none; }
+    .widget-drag-handle { display: none; }
+    .widget-body { padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
 </style>
 </head>
 <body>
@@ -3866,6 +3871,7 @@
     var _dragFromHandle = false;
 
     function initDrag() {
+      if ('ontouchstart' in window) return; // disable drag on touch devices
       var grid = document.getElementById(gridId);
       if (!grid) return;
 
