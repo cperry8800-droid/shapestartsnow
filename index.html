@@ -68,11 +68,18 @@
     }
     .loader-triangles {
       display: flex; align-items: center; justify-content: center;
+      position: relative;
     }
     .loader-triangles svg {
       height: 48px; width: auto;
       filter: brightness(0) invert(1);
       animation: trianglePulse 2s ease-in-out infinite;
+    }
+    .loader-lightning {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
     }
     @keyframes trianglePulse {
       0%, 100% { opacity: 0.15; }
@@ -274,6 +281,7 @@
           <!-- Right triangle pointing left (upper position, overlapping horizontally to form S) -->
           <polygon points="87,2 87,72 35,37" fill="#fff"/>
         </svg>
+        <canvas class="loader-lightning" id="lightningCanvas"></canvas>
       </div>
       <div class="loader-track">
         <div class="loader-fill" id="loaderFill"></div>
@@ -368,6 +376,166 @@
     }
 
     draw();
+
+    // ===== Lightning S-Curve Effect =====
+    (function initLightning() {
+      const lc = document.getElementById('lightningCanvas');
+      const lctx = lc.getContext('2d');
+      const container = document.querySelector('.loader-triangles');
+      let lW, lH, lightningActive = true;
+
+      function resizeLightning() {
+        const rect = container.getBoundingClientRect();
+        lW = lc.width = rect.width;
+        lH = lc.height = rect.height;
+      }
+      resizeLightning();
+      window.addEventListener('resize', resizeLightning);
+
+      // S-curve control points (normalized 0-1, mapped to canvas)
+      function getS() {
+        return [
+          { x: 0.62, y: 0.08 },
+          { x: 0.72, y: 0.22 },
+          { x: 0.58, y: 0.34 },
+          { x: 0.48, y: 0.45 },
+          { x: 0.38, y: 0.56 },
+          { x: 0.28, y: 0.68 },
+          { x: 0.42, y: 0.82 },
+          { x: 0.52, y: 0.95 },
+        ];
+      }
+
+      // Interpolate along the S path
+      function interpS(points, t) {
+        const idx = t * (points.length - 1);
+        const i = Math.floor(idx);
+        const f = idx - i;
+        const a = points[Math.min(i, points.length - 1)];
+        const b = points[Math.min(i + 1, points.length - 1)];
+        return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+      }
+
+      // Generate a jagged lightning bolt along the S path
+      function genBolt(points, segments, jitter) {
+        const bolt = [];
+        for (let i = 0; i <= segments; i++) {
+          const t = i / segments;
+          const p = interpS(points, t);
+          const jx = (i === 0 || i === segments) ? 0 : (Math.random() - 0.5) * jitter;
+          const jy = (i === 0 || i === segments) ? 0 : (Math.random() - 0.5) * jitter * 0.5;
+          bolt.push({ x: p.x * lW + jx, y: p.y * lH + jy });
+        }
+        return bolt;
+      }
+
+      let bolts = [];
+      let sparks = [];
+      let nextBolt = 0;
+
+      function spawnBolt() {
+        const s = getS();
+        // Main bolt
+        bolts.push({ pts: genBolt(s, 18, 8), life: 1.0, decay: 0.035, width: 1.8 });
+        // Secondary thinner bolt with more jitter
+        if (Math.random() > 0.3) {
+          bolts.push({ pts: genBolt(s, 22, 12), life: 0.7, decay: 0.05, width: 0.8 });
+        }
+        // Sparks at random points along the S
+        for (let i = 0; i < 6; i++) {
+          const t = Math.random();
+          const p = interpS(s, t);
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 1.5 + 0.5;
+          sparks.push({
+            x: p.x * lW, y: p.y * lH,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            life: 1.0, decay: 0.04 + Math.random() * 0.03,
+            size: Math.random() * 1.5 + 0.5
+          });
+        }
+      }
+
+      function drawLightning() {
+        if (!lightningActive) return;
+        lctx.clearRect(0, 0, lW, lH);
+
+        const now = performance.now();
+        // Spawn bolts at random intervals
+        if (now > nextBolt) {
+          spawnBolt();
+          nextBolt = now + 400 + Math.random() * 800;
+        }
+
+        // Draw bolts
+        for (let b = bolts.length - 1; b >= 0; b--) {
+          const bolt = bolts[b];
+          bolt.life -= bolt.decay;
+          if (bolt.life <= 0) { bolts.splice(b, 1); continue; }
+
+          lctx.save();
+          lctx.globalAlpha = bolt.life * 0.9;
+          lctx.strokeStyle = `rgba(45, 212, 191, ${bolt.life})`;
+          lctx.lineWidth = bolt.width;
+          lctx.shadowColor = '#2DD4BF';
+          lctx.shadowBlur = 8;
+          lctx.beginPath();
+          lctx.moveTo(bolt.pts[0].x, bolt.pts[0].y);
+          for (let i = 1; i < bolt.pts.length; i++) {
+            lctx.lineTo(bolt.pts[i].x, bolt.pts[i].y);
+          }
+          lctx.stroke();
+
+          // Brighter core
+          lctx.globalAlpha = bolt.life * 0.5;
+          lctx.strokeStyle = '#fff';
+          lctx.lineWidth = bolt.width * 0.4;
+          lctx.shadowBlur = 4;
+          lctx.beginPath();
+          lctx.moveTo(bolt.pts[0].x, bolt.pts[0].y);
+          for (let i = 1; i < bolt.pts.length; i++) {
+            lctx.lineTo(bolt.pts[i].x, bolt.pts[i].y);
+          }
+          lctx.stroke();
+          lctx.restore();
+        }
+
+        // Draw sparks
+        for (let s = sparks.length - 1; s >= 0; s--) {
+          const sp = sparks[s];
+          sp.life -= sp.decay;
+          if (sp.life <= 0) { sparks.splice(s, 1); continue; }
+          sp.x += sp.vx;
+          sp.y += sp.vy;
+          sp.vx *= 0.96;
+          sp.vy *= 0.96;
+
+          lctx.save();
+          lctx.globalAlpha = sp.life * 0.8;
+          lctx.fillStyle = '#2DD4BF';
+          lctx.shadowColor = '#2DD4BF';
+          lctx.shadowBlur = 4;
+          lctx.beginPath();
+          lctx.arc(sp.x, sp.y, sp.size, 0, Math.PI * 2);
+          lctx.fill();
+          lctx.restore();
+        }
+
+        requestAnimationFrame(drawLightning);
+      }
+
+      drawLightning();
+
+      // Stop lightning when loader finishes
+      const obs = new MutationObserver(() => {
+        if (document.getElementById('loaderOverlay').classList.contains('done')) {
+          lightningActive = false;
+          obs.disconnect();
+        }
+      });
+      obs.observe(document.getElementById('loaderOverlay'), { attributes: true });
+    })();
 
     // ===== Loading Sequence =====
     (function runLoader() {
