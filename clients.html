@@ -50,9 +50,10 @@
       justify-content: center;
     }
     .dash-tab {
-      padding: 14px 32px; font-size: 0.88rem; font-weight: 500;
+      padding: 14px 32px; font-size: 0.72rem; font-weight: 600;
       color: var(--text-muted); cursor: pointer; border: none;
-      background: none; font-family: inherit; letter-spacing: -0.01em;
+      background: none; font-family: inherit; letter-spacing: 0.08em;
+      text-transform: uppercase;
       border-bottom: 2px solid transparent; transition: all 0.2s;
     }
     .dash-tab:hover { color: var(--text); }
@@ -524,7 +525,7 @@
     /* ===== Tab responsiveness ===== */
     @media (max-width: 768px) {
       .dash-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .dash-tab { padding: 14px 16px; white-space: nowrap; font-size: 0.78rem; }
+      .dash-tab { padding: 14px 16px; white-space: nowrap; font-size: 0.68rem; }
     }
 
   </style>
@@ -565,15 +566,6 @@
             <a href="nutritionist-profile.html">Nutritionist Profile</a>
             <a href="nutrition-schedule.html">Nutritionist Dashboard</a>
             <a href="nutritionists.html">Nutritionist Marketplace</a>
-          </div>
-        </div>
-        <div class="nav-dropdown">
-          <a href="for-gyms.html">Shape Pass</a>
-          <div class="nav-dropdown-menu">
-            <a href="gym-dashboard.html">Gym Dashboard</a>
-            <a href="gyms.html">Gym Marketplace</a>
-            <a href="for-gym-owners.html">For Gym Owners</a>
-            <a href="signup-gym.html">Partner With Us</a>
           </div>
         </div>
         <a href="shape-score.html">Shape Score</a>
@@ -1181,7 +1173,6 @@
           <a href="signup-client.html">Sign Up as Client</a>
           <a href="signup-trainer.html">Apply as Trainer</a>
           <a href="signup-nutritionist.html">Apply as Nutritionist</a>
-          <a href="signup-gym.html">Partner as Gym</a>
         </div>
         <div class="footer-col">
           <h4>Support</h4>
@@ -1359,8 +1350,15 @@
     function switchDashTab(tab, btn) {
       document.querySelectorAll('.dash-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.dash-tab-content').forEach(c => c.classList.remove('active'));
+      if (!btn) {
+        const btns = document.querySelectorAll('.dash-tab');
+        btns.forEach(b => { if (b.textContent.trim().toLowerCase().replace(/\s+/g,'') === tab.replace(/\s+/g,'')) btn = b; });
+        if (!btn) btn = btns[0];
+      }
       btn.classList.add('active');
       document.getElementById(tabMap[tab]).classList.add('active');
+      sessionStorage.setItem('shapeDashTab', tab);
+      history.replaceState(null, '', '#' + tab);
       if (tab === 'nutrition' && typeof renderAll === 'function') renderAll();
       if (tab === 'home' && typeof renderClientCheckIns === 'function') renderClientCheckIns('trainer');
       if (tab === 'nutrition' && typeof renderClientCheckIns === 'function') renderClientCheckIns('nutritionist');
@@ -1369,6 +1367,22 @@
       if (tab === 'profile' && !_profileInited) { _profileInited = true; initProfile(); }
       if (tab === 'shapescore' && !_shapeScoreInited) { _shapeScoreInited = true; initShapeScore(); }
     }
+
+    // Restore tab from hash or sessionStorage on load
+    (function() {
+      const hash = location.hash.replace('#', '');
+      const saved = sessionStorage.getItem('shapeDashTab');
+      const tab = (hash && tabMap[hash]) ? hash : (saved && tabMap[saved]) ? saved : null;
+      if (tab && tab !== 'home') {
+        switchDashTab(tab, null);
+      }
+    })();
+
+    // Handle back/forward navigation
+    window.addEventListener('hashchange', function() {
+      const hash = location.hash.replace('#', '');
+      if (hash && tabMap[hash]) switchDashTab(hash, null);
+    });
   </script>
   <script>
     // ===== Upcoming Check-Ins =====

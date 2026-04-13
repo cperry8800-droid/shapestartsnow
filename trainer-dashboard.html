@@ -13,6 +13,37 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 <style>
+  /* ===== Dashboard Tab Bar ===== */
+  .td-tab-bar {
+    display: flex; align-items: center; gap: 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 0 48px;
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .td-tab-bar::-webkit-scrollbar { display: none; }
+  .td-tab-btn {
+    padding: 16px 24px; border: none; background: none;
+    font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap; transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .td-tab-btn:hover { color: var(--text); }
+  .td-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .td-tab-content { display: none; }
+  .td-tab-content.active { display: block; }
+
+  @media (max-width: 768px) {
+    .td-tab-bar { padding: 0 16px; gap: 0; }
+    .td-tab-btn { padding: 14px 16px; font-size: 0.68rem; }
+  }
+
+  /* ===== Messages Panel ===== */
   .td-messages-panel {
     display: grid; grid-template-columns: 260px 1fr; border: 1px solid var(--border);
     min-height: 420px; background: var(--bg-card);
@@ -35,9 +66,7 @@
     color: #fff; font-size: 0.6rem; font-weight: 700; display: flex;
     align-items: center; justify-content: center;
   }
-  .td-msg-chat {
-    display: flex; flex-direction: column;
-  }
+  .td-msg-chat { display: flex; flex-direction: column; }
   .td-msg-chat-header {
     display: flex; align-items: center; gap: 12px; padding: 14px 20px;
     border-bottom: 1px solid var(--border);
@@ -83,7 +112,7 @@
     .td-msg-chat-body { max-height: 250px; }
   }
 
-  /* Check-In Modal */
+  /* ===== Check-In Modal ===== */
   .td-checkin-overlay {
     position: fixed; inset: 0; z-index: 9999;
     background: rgba(0,0,0,0.65); display: flex;
@@ -91,26 +120,19 @@
     opacity: 0; pointer-events: none; transition: opacity 0.25s;
   }
   .td-checkin-overlay.active { opacity: 1; pointer-events: auto; }
-
   .td-checkin-modal {
     background: var(--bg-card); border: 1px solid var(--border);
     border-radius: 12px; width: 460px; max-width: 92vw;
     padding: 32px; font-family: inherit; box-shadow: 0 24px 64px rgba(0,0,0,0.4);
   }
-  .td-checkin-modal h3 {
-    font-size: 1.1rem; font-weight: 600; margin: 0 0 4px;
-  }
-  .td-checkin-modal .td-checkin-client-name {
-    font-size: 0.82rem; color: var(--accent); margin-bottom: 24px;
-  }
+  .td-checkin-modal h3 { font-size: 1.1rem; font-weight: 600; margin: 0 0 4px; }
+  .td-checkin-modal .td-checkin-client-name { font-size: 0.82rem; color: var(--accent); margin-bottom: 24px; }
   .td-checkin-label {
     display: block; font-size: 0.72rem; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.08em;
     color: var(--text-muted); margin-bottom: 10px;
   }
   .td-checkin-group { margin-bottom: 20px; }
-
-  /* Frequency pills */
   .td-checkin-freq-btns { display: flex; gap: 8px; flex-wrap: wrap; }
   .td-checkin-freq-btn {
     padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border);
@@ -118,11 +140,7 @@
     font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
   }
   .td-checkin-freq-btn:hover { border-color: var(--accent); }
-  .td-checkin-freq-btn.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-
-  /* Day pills */
+  .td-checkin-freq-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   .td-checkin-day-btns { display: flex; gap: 6px; flex-wrap: wrap; }
   .td-checkin-day-btn {
     width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
@@ -131,19 +149,13 @@
     display: flex; align-items: center; justify-content: center;
   }
   .td-checkin-day-btn:hover { border-color: var(--accent); }
-  .td-checkin-day-btn.active {
-    background: var(--accent); color: #fff; border-color: var(--accent);
-  }
-
-  /* Time input */
+  .td-checkin-day-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
   .td-checkin-time {
     padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
     color: var(--text); font-family: inherit; font-size: 0.85rem;
     border-radius: 6px; outline: none; width: 160px;
   }
   .td-checkin-time:focus { border-color: var(--accent); }
-
-  /* Notes textarea */
   .td-checkin-notes {
     width: 100%; padding: 10px 14px; background: var(--bg);
     border: 1px solid var(--border); color: var(--text); font-family: inherit;
@@ -151,8 +163,6 @@
     resize: vertical; min-height: 60px;
   }
   .td-checkin-notes:focus { border-color: var(--accent); }
-
-  /* Modal actions */
   .td-checkin-actions {
     display: flex; gap: 10px; justify-content: flex-end; margin-top: 28px;
   }
@@ -168,29 +178,348 @@
     border-radius: 6px; cursor: pointer; transition: opacity 0.2s;
   }
   .td-checkin-actions .btn-save:hover { opacity: 0.85; }
-
-  /* Check-in cards in detail view */
   .td-checkin-card {
     display: flex; align-items: center; gap: 16px;
     padding: 14px 16px; background: var(--bg-alt); border-radius: 8px;
     margin-bottom: 8px;
   }
   .td-checkin-card-info { flex: 1; }
-  .td-checkin-card-info .td-ci-freq {
-    font-size: 0.85rem; font-weight: 500; color: var(--text);
-  }
-  .td-checkin-card-info .td-ci-detail {
-    font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;
-  }
-  .td-checkin-card-info .td-ci-notes {
-    font-size: 0.72rem; color: var(--text-muted); font-style: italic; margin-top: 4px;
-  }
+  .td-checkin-card-info .td-ci-freq { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+  .td-checkin-card-info .td-ci-detail { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+  .td-checkin-card-info .td-ci-notes { font-size: 0.72rem; color: var(--text-muted); font-style: italic; margin-top: 4px; }
   .td-checkin-cancel-btn {
     padding: 6px 14px; background: transparent; border: 1px solid var(--border);
     color: #EF4444; font-family: inherit; font-size: 0.72rem;
     border-radius: 6px; cursor: pointer; transition: all 0.2s;
   }
   .td-checkin-cancel-btn:hover { border-color: #EF4444; background: rgba(239,68,68,0.1); }
+
+  /* ===== Programs Tab Styles ===== */
+  .pb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+  .pb-header h2 { font-size: 1.1rem; font-weight: 600; }
+  .pb-builder { display: none; margin-bottom: 36px; }
+  .pb-builder.active { display: block; }
+  .pb-type-chooser { display: flex; gap: 16px; margin-bottom: 28px; }
+  .pb-type-card {
+    flex: 1; padding: 28px; background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius-lg, 12px); cursor: pointer; transition: all 0.3s ease; text-align: center;
+  }
+  .pb-type-card:hover, .pb-type-card.selected { border-color: var(--accent); }
+  .pb-type-card h3 { font-size: 0.92rem; font-weight: 600; margin-bottom: 6px; }
+  .pb-type-card p { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+  .pb-form { display: none; }
+  .pb-form.active { display: block; }
+  .pb-label {
+    display: block; font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px;
+  }
+  .pb-input, .pb-select, .pb-textarea {
+    width: 100%; padding: 10px 14px; background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius, 6px); color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 0.82rem; outline: none; transition: border-color 0.2s; box-sizing: border-box;
+  }
+  .pb-input:focus, .pb-select:focus, .pb-textarea:focus { border-color: var(--accent); }
+  .pb-textarea { resize: vertical; min-height: 80px; }
+  .pb-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 16px; }
+  .pb-field { margin-bottom: 16px; }
+  .pb-day {
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg, 12px);
+    margin-bottom: 16px; overflow: hidden;
+  }
+  .pb-day-header {
+    display: flex; justify-content: space-between; align-items: center; padding: 14px 18px;
+    cursor: pointer; user-select: none;
+  }
+  .pb-day-header h4 { font-size: 0.85rem; font-weight: 600; }
+  .pb-day-header .pb-chevron { font-size: 0.7rem; color: var(--text-muted); transition: transform 0.2s; }
+  .pb-day-header .pb-chevron.open { transform: rotate(180deg); }
+  .pb-day-body { padding: 0 18px 18px; display: none; }
+  .pb-day-body.open { display: block; }
+  .pb-exercise-row {
+    display: grid; grid-template-columns: 2fr 0.7fr 0.7fr 0.7fr 1.5fr 40px;
+    gap: 8px; margin-bottom: 8px; align-items: end;
+  }
+  .pb-exercise-row .pb-input { padding: 8px 10px; font-size: 0.78rem; }
+  .pb-remove-btn {
+    background: none; border: none; color: var(--text-muted); cursor: pointer;
+    font-size: 1rem; padding: 8px; transition: color 0.2s;
+  }
+  .pb-remove-btn:hover { color: #EF4444; }
+  .pb-sub-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .pb-sub-section h5 {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .pb-warmup-row {
+    display: grid; grid-template-columns: 2fr 1fr 40px; gap: 8px; margin-bottom: 8px; align-items: end;
+  }
+  .pb-warmup-row .pb-input { padding: 8px 10px; font-size: 0.78rem; }
+  .pb-actions-row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+  .pb-assign-bar {
+    display: flex; gap: 16px; align-items: end; margin-top: 24px; padding-top: 24px;
+    border-top: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .pb-assign-bar .pb-field { margin-bottom: 0; flex: 1; min-width: 180px; }
+  .pb-plan-list { margin-top: 12px; }
+  .pb-plan-item {
+    display: flex; align-items: center; gap: 16px; padding: 16px 18px;
+    background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius, 6px);
+    margin-bottom: 10px; transition: border-color 0.2s;
+  }
+  .pb-plan-item:hover { border-color: rgba(255,255,255,0.18); }
+  .pb-plan-item-info { flex: 1; }
+  .pb-plan-item-info h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
+  .pb-plan-item-info span { font-size: 0.75rem; color: var(--text-muted); }
+  .pb-plan-item-actions { display: flex; gap: 8px; }
+  .pb-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .pb-badge-draft { background: rgba(245,158,11,0.15); color: #F59E0B; }
+  .pb-badge-published { background: rgba(16,185,129,0.15); color: #10B981; }
+  .pb-badge-profile { background: rgba(99,102,241,0.15); color: #818CF8; }
+  .pb-empty { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.82rem; }
+
+  /* ===== Community Tab Styles ===== */
+  .td-community-layout {
+    display: grid; grid-template-columns: 280px 1fr 300px;
+    border: 1px solid var(--border); min-height: 600px;
+  }
+  .td-community-sidebar {
+    border-right: 1px solid var(--border); display: flex;
+    flex-direction: column; background: var(--bg-card); overflow: hidden;
+  }
+  .td-community-sidebar-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .td-community-sidebar-header h3 { font-size: 1.05rem; font-weight: 600; }
+  .td-community-tabs {
+    display: flex; border-bottom: 1px solid var(--border);
+  }
+  .td-community-tab {
+    flex: 1; padding: 12px; text-align: center; font-size: 0.78rem;
+    font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted); cursor: pointer; border: none; background: none;
+    border-bottom: 2px solid transparent; transition: all 0.3s; font-family: inherit;
+  }
+  .td-community-tab.active { color: var(--text); border-bottom-color: var(--accent); }
+  .td-community-tab:hover { color: var(--text); }
+  .td-community-search { padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .td-community-search input {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-family: inherit;
+    font-size: 0.82rem; outline: none; transition: border-color 0.3s;
+  }
+  .td-community-search input:focus { border-color: var(--accent); }
+  .td-community-list { flex: 1; overflow-y: auto; }
+  .td-community-user {
+    display: flex; align-items: center; gap: 10px; padding: 14px 16px;
+    cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+  }
+  .td-community-user:hover { background: var(--bg-alt); }
+  .td-community-user-avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.68rem; color: #fff;
+  }
+  .td-community-user-info { flex: 1; min-width: 0; }
+  .td-community-user-name { font-size: 0.82rem; font-weight: 500; margin-bottom: 2px; }
+  .td-community-user-status { font-size: 0.72rem; color: var(--text-muted); font-weight: 300; }
+  .td-community-chat {
+    display: flex; flex-direction: column; background: var(--bg);
+  }
+  .td-community-chat-header {
+    padding: 16px 24px; border-bottom: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+  .td-community-chat-header h3 { font-size: 0.95rem; font-weight: 600; }
+  .td-community-chat-tabs {
+    display: flex; gap: 8px; padding: 12px 24px;
+    border-bottom: 1px solid var(--border); background: var(--bg-card);
+  }
+  .td-community-channel {
+    padding: 6px 16px; font-size: 0.75rem; font-weight: 500;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--text-muted); cursor: pointer; transition: all 0.3s; font-family: inherit;
+  }
+  .td-community-channel.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .td-community-channel:hover:not(.active) { border-color: var(--text); color: var(--text); }
+  .td-community-messages {
+    flex: 1; overflow-y: auto; padding: 24px;
+    display: flex; flex-direction: column; gap: 16px;
+    max-height: 400px;
+  }
+  .td-community-msg { display: flex; gap: 12px; max-width: 85%; }
+  .td-community-msg.own { margin-left: auto; flex-direction: row-reverse; }
+  .td-community-msg-avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.6rem; color: #fff;
+  }
+  .td-community-msg-body {
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 12px 16px; border-radius: 12px; border-top-left-radius: 4px;
+  }
+  .td-community-msg.own .td-community-msg-body {
+    background: var(--accent); color: #fff; border-color: var(--accent);
+    border-top-left-radius: 12px; border-top-right-radius: 4px;
+  }
+  .td-community-msg-name { font-size: 0.72rem; font-weight: 600; margin-bottom: 4px; }
+  .td-community-msg.own .td-community-msg-name { color: rgba(255,255,255,0.7); }
+  .td-community-msg-text { font-size: 0.85rem; line-height: 1.5; font-weight: 300; }
+  .td-community-msg-time { font-size: 0.65rem; color: var(--text-muted); margin-top: 6px; }
+  .td-community-msg.own .td-community-msg-time { color: rgba(255,255,255,0.5); }
+  .td-community-input-area {
+    padding: 16px 24px; border-top: 1px solid var(--border);
+    background: var(--bg-card); display: flex; gap: 12px;
+  }
+  .td-community-input-area input {
+    flex: 1; padding: 12px 16px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-family: inherit;
+    font-size: 0.85rem; outline: none;
+  }
+  .td-community-input-area input:focus { border-color: var(--accent); }
+  .td-community-send-btn {
+    padding: 12px 24px; background: var(--accent); color: #fff;
+    border: none; font-family: inherit; font-weight: 600; font-size: 0.8rem;
+    text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer;
+  }
+  .td-community-activity {
+    border-left: 1px solid var(--border); display: flex;
+    flex-direction: column; background: var(--bg-card); overflow-y: auto;
+  }
+  .td-community-activity-header {
+    padding: 20px; text-align: center; border-bottom: 1px solid var(--border);
+  }
+  .td-community-activity-header h4 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+  .td-community-activity-header p { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
+  .td-activity-section-title {
+    padding: 16px 20px 8px; font-size: 0.72rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);
+  }
+  .td-activity-item {
+    padding: 12px 20px; border-bottom: 1px solid var(--border);
+  }
+  .td-activity-item-header {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+  }
+  .td-activity-item-avatar {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 0.55rem; color: #fff;
+  }
+  .td-activity-item-name { font-size: 0.8rem; font-weight: 500; }
+  .td-activity-item-time { font-size: 0.68rem; color: var(--text-muted); margin-left: auto; }
+  .td-activity-item-text {
+    font-size: 0.78rem; color: var(--text-muted); font-weight: 300; line-height: 1.5;
+    padding-left: 38px;
+  }
+  @media (max-width: 1100px) {
+    .td-community-layout { grid-template-columns: 260px 1fr; }
+    .td-community-activity { display: none; }
+  }
+  @media (max-width: 768px) {
+    .td-community-layout { grid-template-columns: 1fr; min-height: auto; }
+    .td-community-sidebar { max-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
+    .td-community-messages { max-height: 300px; }
+  }
+
+  /* ===== Profile Tab Styles ===== */
+  .tp-section { margin-bottom: 40px; }
+  .tp-section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .tp-section h2 { font-size: 1.1rem; font-weight: 600; }
+  .tp-bio { color: var(--text-muted); font-size: 0.95rem; font-weight: 300; line-height: 1.8; }
+  .tp-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tp-tag {
+    padding: 6px 16px; background: var(--bg-alt, #f5f5f5); font-size: 0.78rem;
+    font-weight: 500; color: var(--text-muted); border: 1px solid var(--border);
+  }
+  .tp-certs-list { list-style: none; padding: 0; }
+  .tp-certs-list li {
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    font-size: 0.92rem; display: flex; align-items: center; gap: 10px;
+  }
+  .tp-certs-list li:last-child { border-bottom: none; }
+  .tp-cert-icon { color: var(--text-muted); font-weight: 400; }
+  .tp-social-links { display: flex; gap: 16px; flex-wrap: wrap; }
+  .tp-social-link {
+    padding: 10px 20px; border: 1px solid var(--border); font-size: 0.82rem;
+    font-weight: 500; color: var(--text-muted); transition: all 0.3s; text-decoration: none;
+  }
+  .tp-social-link:hover { border-color: var(--text); color: var(--text); }
+  .tp-gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .tp-gallery-item {
+    height: 140px; background: var(--bg-alt, #f5f5f5); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; color: var(--text-muted);
+  }
+  .tp-edit-btn {
+    font-size: 0.7rem; font-weight: 500; color: var(--accent);
+    border: 1px solid var(--accent); padding: 4px 12px; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em; background: transparent;
+    transition: all 0.3s;
+  }
+  .tp-edit-btn:hover { background: var(--accent); color: #fff; }
+  .tp-save-btn {
+    font-size: 0.72rem; font-weight: 500; padding: 6px 18px;
+    background: var(--accent); color: #fff; border: none; cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tp-cancel-btn {
+    font-size: 0.72rem; font-weight: 500; padding: 6px 18px;
+    background: transparent; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tp-save-actions { display: none; gap: 8px; margin-top: 12px; }
+  .tp-section.editing .tp-save-actions { display: flex; }
+  .tp-section.editing .tp-edit-btn { display: none; }
+  .tp-section .tp-edit-input,
+  .tp-section .tp-edit-textarea { display: none; }
+  .tp-section.editing .tp-edit-input,
+  .tp-section.editing .tp-edit-textarea { display: block; }
+  .tp-section.editing .tp-display-value { display: none; }
+  .tp-edit-input, .tp-edit-textarea {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif;
+    font-size: 0.88rem; outline: none; margin-top: 4px; box-sizing: border-box;
+  }
+  .tp-edit-textarea { min-height: 100px; resize: vertical; }
+  .tp-edit-input:focus, .tp-edit-textarea:focus { border-color: var(--accent); }
+  .tp-tag.removable { cursor: pointer; position: relative; }
+  .tp-tag.removable:hover { border-color: #EF4444; color: #EF4444; }
+  .tp-add-tag-row { display: none; gap: 8px; margin-top: 10px; align-items: center; }
+  .tp-section.editing .tp-add-tag-row { display: flex; }
+  .tp-cert-input-row { display: none; gap: 8px; margin-top: 10px; align-items: center; }
+  .tp-section.editing .tp-cert-input-row { display: flex; }
+  .tp-stats-row {
+    display: flex; gap: 32px; margin-bottom: 40px; padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tp-stat { text-align: center; }
+  .tp-stat-value { font-size: 1.4rem; font-weight: 700; margin-bottom: 2px; }
+  .tp-stat-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .tp-avatar-area {
+    display: flex; align-items: flex-end; gap: 28px; margin-bottom: 32px;
+  }
+  .tp-avatar {
+    width: 100px; height: 100px; border-radius: 50%; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    position: relative; cursor: pointer;
+  }
+  .tp-name-block h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
+  .tp-name-block .tp-specialty {
+    font-size: 0.82rem; color: var(--accent); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  @media (max-width: 900px) {
+    .tp-stats-row { flex-wrap: wrap; gap: 20px; }
+    .tp-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
@@ -226,15 +555,6 @@
             <a href="nutritionists.html">Nutritionist Marketplace</a>
           </div>
         </div>
-        <div class="nav-dropdown">
-          <a href="for-gyms.html">Shape Pass</a>
-          <div class="nav-dropdown-menu">
-            <a href="gym-dashboard.html">Gym Dashboard</a>
-            <a href="gyms.html">Gym Marketplace</a>
-            <a href="for-gym-owners.html">For Gym Owners</a>
-            <a href="signup-gym.html">Partner With Us</a>
-          </div>
-        </div>
         <a href="shape-score.html">Shape Score</a>
         <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
@@ -259,9 +579,20 @@
     </div>
   </section>
 
-  <!-- Dashboard Overview -->
+  <!-- Tab Bar -->
+  <div class="td-tab-bar" id="tdTabBar">
+    <button class="td-tab-btn active" data-tab="home" onclick="switchDashTab('home', this)">Home</button>
+    <button class="td-tab-btn" data-tab="clients" onclick="switchDashTab('clients', this)">Clients</button>
+    <button class="td-tab-btn" data-tab="programs" onclick="switchDashTab('programs', this)">Programs</button>
+    <button class="td-tab-btn" data-tab="messages" onclick="switchDashTab('messages', this)">Messages</button>
+    <button class="td-tab-btn" data-tab="community" onclick="switchDashTab('community', this)">Community</button>
+    <button class="td-tab-btn" data-tab="profile" onclick="switchDashTab('profile', this)">Profile</button>
+  </div>
+
+  <!-- ========== TAB: HOME ========== -->
   <section class="section">
-    <div class="container">
+  <div class="container">
+    <div class="td-tab-content active" id="tab-home">
       <!-- Trainer Stats -->
       <div class="progress-stats-row" style="grid-template-columns:repeat(5,1fr)">
         <div class="progress-stat-card">
@@ -286,6 +617,19 @@
         </div>
       </div>
 
+      <!-- Recent Plan Sales -->
+      <div class="td-section">
+        <div class="td-section-header">
+          <h2>Recent Plan Sales</h2>
+        </div>
+        <div class="td-sales-list" id="salesList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: CLIENTS ========== -->
+    <div class="td-tab-content" id="tab-clients">
       <!-- Client List -->
       <div class="td-section">
         <div class="td-section-header">
@@ -309,18 +653,158 @@
         </div>
         <div id="clientDetailContent"></div>
       </div>
+    </div>
 
-      <!-- Plan Sales -->
-      <div class="td-section">
-        <div class="td-section-header">
-          <h2>Recent Plan Sales</h2>
+    <!-- ========== TAB: PROGRAMS ========== -->
+    <div class="td-tab-content" id="tab-programs">
+      <div class="pb-header">
+        <h2>Program Builder</h2>
+        <button class="btn btn-primary" id="pbCreateBtn" onclick="pbToggleBuilder()">+ Create New Program</button>
+      </div>
+
+      <!-- Builder Area -->
+      <div class="pb-builder" id="pbBuilder">
+        <!-- Step 1: Choose Type -->
+        <div id="pbStep1">
+          <div class="pb-type-chooser">
+            <div class="pb-type-card" onclick="pbSelectType('template')">
+              <h3>Use Shape Template</h3>
+              <p>Pre-structured day-by-day workout program with exercises, sets, reps, and rest periods.</p>
+            </div>
+            <div class="pb-type-card" onclick="pbSelectType('custom')">
+              <h3>Upload Custom Plan</h3>
+              <p>Upload your own workout program as a PDF, image, or document and assign it to a client.</p>
+            </div>
+          </div>
         </div>
-        <div class="td-sales-list" id="salesList">
-          <!-- Populated by JS -->
+
+        <!-- Template Form -->
+        <div class="pb-form" id="pbTemplateForm">
+          <div class="pb-row">
+            <div class="pb-field">
+              <label class="pb-label">Plan Name</label>
+              <input type="text" class="pb-input" id="pbTplName" placeholder="e.g. 12-Week Hypertrophy">
+            </div>
+            <div class="pb-field">
+              <label class="pb-label">Category</label>
+              <select class="pb-select" id="pbTplCategory">
+                <option value="">Select...</option>
+                <option>Strength</option><option>HIIT</option><option>Bodybuilding</option>
+                <option>Full-Body</option><option>Cardio</option><option>Powerlifting</option>
+                <option>Mobility</option><option>Sport-Specific</option>
+              </select>
+            </div>
+            <div class="pb-field">
+              <label class="pb-label">Difficulty</label>
+              <select class="pb-select" id="pbTplDifficulty">
+                <option value="">Select...</option>
+                <option>Beginner</option><option>Intermediate</option><option>Advanced</option>
+              </select>
+            </div>
+          </div>
+          <div class="pb-row">
+            <div class="pb-field">
+              <label class="pb-label">Duration</label>
+              <select class="pb-select" id="pbTplDuration">
+                <option value="">Select...</option>
+                <option>4 weeks</option><option>6 weeks</option><option>8 weeks</option><option>12 weeks</option>
+              </select>
+            </div>
+            <div class="pb-field">
+              <label class="pb-label">Days per Week</label>
+              <select class="pb-select" id="pbTplDays">
+                <option value="">Select...</option>
+                <option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+              </select>
+            </div>
+          </div>
+          <div class="pb-field">
+            <label class="pb-label">Description</label>
+            <textarea class="pb-textarea" id="pbTplDesc" placeholder="Describe this plan's goals and approach..."></textarea>
+          </div>
+
+          <!-- Days Container -->
+          <div id="pbDaysContainer"></div>
+          <button class="btn btn-sm btn-outline" onclick="pbAddDay()" style="margin-top:12px;">+ Add Day</button>
+
+          <!-- Assign & Actions Bar -->
+          <div class="pb-assign-bar">
+            <div class="pb-field">
+              <label class="pb-label">Assign to Client</label>
+              <select class="pb-select" id="pbTplClient">
+                <option value="">None</option>
+                <option>Christopher Perry</option><option>Emma Chen</option><option>David Kim</option>
+                <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+              <button class="btn btn-outline" onclick="pbSaveDraft('template')" style="border-color:var(--accent);color:var(--accent);">Save Draft</button>
+              <button class="btn btn-accent" onclick="pbSavePlan('template')">Publish &amp; Send to Client</button>
+              <button class="btn btn-primary" onclick="pbPublishToProfile('template')">Publish to Profile</button>
+              <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Upload Custom Plan Form -->
+        <div class="pb-form" id="pbCustomForm">
+          <div class="pb-field">
+            <label class="pb-label">Plan Name</label>
+            <input type="text" class="pb-input" id="pbCustName" placeholder="e.g. Custom Training Program">
+          </div>
+          <div class="pb-field">
+            <label class="pb-label">Description</label>
+            <textarea class="pb-textarea" id="pbCustDesc" placeholder="Brief overview of the plan..."></textarea>
+          </div>
+
+          <!-- File Upload Area -->
+          <div class="pb-field">
+            <label class="pb-label">Upload Your Plan</label>
+            <div id="pbUploadZone" style="border:2px dashed var(--border);padding:40px 20px;text-align:center;cursor:pointer;transition:all 0.3s;background:var(--bg);border-radius:var(--radius-lg,12px);" onclick="document.getElementById('pbFileInput').click()" ondragover="event.preventDefault();this.style.borderColor='var(--accent)';this.style.background='rgba(45,212,191,0.04)'" ondragleave="this.style.borderColor='var(--border)';this.style.background='var(--bg)'" ondrop="event.preventDefault();this.style.borderColor='var(--border)';this.style.background='var(--bg)';pbHandleFiles(event.dataTransfer.files)">
+              <div style="font-size:1.6rem;margin-bottom:8px;color:var(--text-muted);">&#8593;</div>
+              <div style="font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:4px;">Drag & drop your file here or click to browse</div>
+              <div style="font-size:0.72rem;color:var(--text-muted);">Supports PDF, PNG, JPG, DOCX, or TXT — max 10MB</div>
+            </div>
+            <input type="file" id="pbFileInput" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx,.txt" style="display:none" onchange="pbHandleFiles(this.files)">
+          </div>
+
+          <!-- Uploaded File Preview -->
+          <div id="pbUploadedFiles" style="display:none;margin-top:12px;">
+            <div style="font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:8px;">Uploaded Files</div>
+            <div id="pbFileList"></div>
+          </div>
+
+          <!-- Assign Bar -->
+          <div class="pb-assign-bar">
+            <div class="pb-field">
+              <label class="pb-label">Assign to Client</label>
+              <select class="pb-select" id="pbCustClient">
+                <option value="">None</option>
+                <option>Christopher Perry</option><option>Emma Chen</option><option>David Kim</option>
+                <option>Sofia Rodriguez</option><option>Marcus Thompson</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+              <button class="btn btn-outline" onclick="pbSaveDraft('custom')" style="border-color:var(--accent);color:var(--accent);">Save Draft</button>
+              <button class="btn btn-accent" onclick="pbSavePlan('custom')">Publish &amp; Send to Client</button>
+              <button class="btn btn-primary" onclick="pbPublishToProfile('custom')">Publish to Profile</button>
+              <button class="btn btn-outline" onclick="pbToggleBuilder()">Cancel</button>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- Messages -->
+      <!-- My Programs List -->
+      <div class="pb-header" style="margin-top:12px;">
+        <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">My Programs</h3>
+      </div>
+      <div class="pb-plan-list" id="pbPlanList">
+        <div class="pb-empty">No programs yet. Create your first workout program above.</div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: MESSAGES ========== -->
+    <div class="td-tab-content" id="tab-messages">
       <div class="td-section">
         <div class="td-section-header">
           <h2>Messages</h2>
@@ -335,6 +819,211 @@
         </div>
       </div>
     </div>
+
+    <!-- ========== TAB: COMMUNITY ========== -->
+    <div class="td-tab-content" id="tab-community">
+      <div class="td-community-layout" id="tdCommunityLayout">
+        <!-- Left Sidebar: People -->
+        <div class="td-community-sidebar">
+          <div class="td-community-sidebar-header">
+            <h3>Community</h3>
+          </div>
+          <div class="td-community-tabs">
+            <button class="td-community-tab active" onclick="tdCommSwitchTab('friends', this)">Friends</button>
+            <button class="td-community-tab" onclick="tdCommSwitchTab('discover', this)">Discover</button>
+          </div>
+          <div class="td-community-search">
+            <input type="text" placeholder="Search people..." id="tdCommSearch" oninput="tdCommFilterUsers()">
+          </div>
+          <div class="td-community-list" id="tdCommList">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Center: Chat -->
+        <div class="td-community-chat">
+          <div class="td-community-chat-header">
+            <h3>Trainer Community Chat</h3>
+          </div>
+          <div class="td-community-chat-tabs">
+            <button class="td-community-channel active" onclick="tdCommSwitchChannel('trainer', this)">Trainer Chat</button>
+            <button class="td-community-channel" onclick="tdCommSwitchChannel('general', this)">General</button>
+            <button class="td-community-channel" onclick="tdCommSwitchChannel('tips', this)">Tips & Tricks</button>
+          </div>
+          <div class="td-community-messages" id="tdCommMessages">
+            <!-- Populated by JS -->
+          </div>
+          <div class="td-community-input-area">
+            <input type="text" placeholder="Type a message..." id="tdCommInput" onkeydown="if(event.key==='Enter')tdCommSend()">
+            <button class="td-community-send-btn" onclick="tdCommSend()">Send</button>
+          </div>
+        </div>
+
+        <!-- Right: Activity Feed -->
+        <div class="td-community-activity">
+          <div class="td-community-activity-header">
+            <h4>Your Network</h4>
+            <p>Trainer community activity</p>
+          </div>
+          <div class="td-activity-section-title">Recent Activity</div>
+          <div id="tdCommActivityFeed">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== TAB: PROFILE ========== -->
+    <div class="td-tab-content" id="tab-profile">
+      <!-- Avatar & Name -->
+      <div class="tp-avatar-area">
+        <div class="tp-avatar" id="tpAvatar" onclick="document.getElementById('avatarUpload').click()">
+          <span id="tpInitials">YN</span>
+          <div style="position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--text);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);font-size:0.65rem;color:#fff;">+</div>
+          <input type="file" id="avatarUpload" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+        </div>
+        <div class="tp-name-block">
+          <h1 id="tpName" onclick="editNameInline(this)" style="cursor:pointer;" title="Click to edit">Your Name</h1>
+          <div class="tp-specialty" id="tpSpecialty" onclick="editSpecialtyInline(this)" style="cursor:pointer;" title="Click to edit">Your Specialty</div>
+          <div style="font-size:0.72rem;color:var(--text-muted);margin-top:4px;">Click name or specialty to edit</div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="tp-stats-row">
+        <div class="tp-stat" onclick="editStat(this, 'subscribers')" style="cursor:pointer;" title="Click to edit">
+          <div class="tp-stat-value tp-display-value" id="statSubscribers">0</div>
+          <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="0" data-stat="subscribers">
+          <div class="tp-stat-label">Subscribers</div>
+        </div>
+        <div class="tp-stat" onclick="editStat(this, 'rating')" style="cursor:pointer;" title="Click to edit">
+          <div class="tp-stat-value tp-display-value" id="statRating">--</div>
+          <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="rating" placeholder="4.8">
+          <div class="tp-stat-label">Rating</div>
+        </div>
+        <div class="tp-stat" onclick="editStat(this, 'price')" style="cursor:pointer;" title="Click to edit">
+          <div class="tp-stat-value tp-display-value" id="statPrice">$--/mo</div>
+          <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="price" placeholder="49.99">
+          <div class="tp-stat-label">Your Price</div>
+        </div>
+        <div class="tp-stat" onclick="editStat(this, 'experience')" style="cursor:pointer;" title="Click to edit">
+          <div class="tp-stat-value tp-display-value" id="statExperience">--</div>
+          <input class="tp-edit-input" style="display:none;width:80px;text-align:center;" value="" data-stat="experience" placeholder="5 yrs">
+          <div class="tp-stat-label">Experience</div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="tp-section" id="sectionBio">
+        <div class="tp-section-header">
+          <h2>About You</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionBio')">Edit</button>
+        </div>
+        <p class="tp-bio tp-display-value" id="bioText">Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you.</p>
+        <textarea class="tp-edit-textarea" id="bioInput">Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you.</textarea>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveBio()">Save</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionBio')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Specialties & Tags -->
+      <div class="tp-section" id="sectionTags">
+        <div class="tp-section-header">
+          <h2>Specialties & Tags</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionTags')">Edit</button>
+        </div>
+        <div class="tp-tags" id="tagsContainer">
+          <span class="tp-tag" data-tag="Strength">Strength</span>
+          <span class="tp-tag" data-tag="Hypertrophy">Hypertrophy</span>
+          <span class="tp-tag" data-tag="Fat Loss">Fat Loss</span>
+          <span class="tp-tag" data-tag="At Home">At Home</span>
+        </div>
+        <div class="tp-add-tag-row">
+          <input class="tp-edit-input" id="newTagInput" placeholder="New tag..." style="width:160px;margin-top:0;">
+          <button class="tp-save-btn" onclick="addTag()" style="padding:8px 14px;">Add</button>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveTags()">Done</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionTags')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="tp-section" id="sectionCerts">
+        <div class="tp-section-header">
+          <h2>Certifications</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionCerts')">Edit</button>
+        </div>
+        <ul class="tp-certs-list" id="certsContainer">
+          <li><span class="tp-cert-icon">&mdash;</span> <span>Add your certifications (e.g. NASM, ACE, ISSA, ACSM)</span></li>
+        </ul>
+        <div class="tp-cert-input-row">
+          <input class="tp-edit-input" id="newCertInput" placeholder="e.g. NASM Certified Personal Trainer" style="margin-top:0;">
+          <button class="tp-save-btn" onclick="addCert()" style="padding:8px 14px;">Add</button>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveCerts()">Done</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionCerts')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Photos & Videos Gallery -->
+      <div class="tp-section" id="sectionMedia">
+        <div class="tp-section-header">
+          <h2>Photos & Videos</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionMedia')">Edit</button>
+        </div>
+        <div class="tp-gallery-grid" id="photoGallery">
+          <div class="tp-gallery-item" style="cursor:pointer;" onclick="document.getElementById('photoUpload').click()">+ Upload Photo</div>
+        </div>
+        <input type="file" id="photoUpload" accept="image/*" multiple style="display:none" onchange="handlePhotoUpload(event)">
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveMedia()">Save</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionMedia')">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Social Links -->
+      <div class="tp-section" id="sectionSocial">
+        <div class="tp-section-header">
+          <h2>Social Links</h2>
+          <button class="tp-edit-btn" onclick="toggleSection('sectionSocial')">Edit</button>
+        </div>
+        <div class="tp-social-links tp-display-value" id="socialDisplay">
+          <span class="tp-social-link" id="socialIG">Instagram</span>
+          <span class="tp-social-link" id="socialYT">YouTube</span>
+          <span class="tp-social-link" id="socialTT">TikTok</span>
+          <span class="tp-social-link" id="socialWeb">Website</span>
+        </div>
+        <div class="tp-edit-fields" style="display:none;" id="socialEditFields">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Instagram</label>
+              <input class="tp-edit-input" id="inputIG" placeholder="@yourhandle" value="">
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">YouTube</label>
+              <input class="tp-edit-input" id="inputYT" placeholder="youtube.com/c/..." value="">
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">TikTok</label>
+              <input class="tp-edit-input" id="inputTT" placeholder="@yourhandle" value="">
+            </div>
+            <div>
+              <label style="font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Website</label>
+              <input class="tp-edit-input" id="inputWeb" placeholder="https://..." value="">
+            </div>
+          </div>
+        </div>
+        <div class="tp-save-actions">
+          <button class="tp-save-btn" onclick="saveSocial()">Save</button>
+          <button class="tp-cancel-btn" onclick="cancelSection('sectionSocial')">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
   </section>
 
   <!-- Footer -->
@@ -362,7 +1051,6 @@
           <a href="signup-client.html">Sign Up as Client</a>
           <a href="signup-trainer.html">Apply as Trainer</a>
           <a href="signup-nutritionist.html">Apply as Nutritionist</a>
-          <a href="signup-gym.html">Partner as Gym</a>
         </div>
         <div class="footer-col">
           <h4>Support</h4>
@@ -429,6 +1117,630 @@
 
   <script src="app.js"></script>
   <script src="trainer-dashboard.js"></script>
+
+  <script>
+  // ===== Tab Switching with Lazy Init =====
+  const _tdTabsInitialized = {};
+
+  function switchDashTab(tabName, btn) {
+    // Update tab buttons
+    document.querySelectorAll('.td-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    else {
+      const target = document.querySelector('.td-tab-btn[data-tab="' + tabName + '"]');
+      if (target) target.classList.add('active');
+    }
+
+    // Show/hide tab content
+    document.querySelectorAll('.td-tab-content').forEach(tc => tc.classList.remove('active'));
+    const tabEl = document.getElementById('tab-' + tabName);
+    if (tabEl) tabEl.classList.add('active');
+
+    // Lazy init on first visit
+    if (!_tdTabsInitialized[tabName]) {
+      _tdTabsInitialized[tabName] = true;
+      initTab(tabName);
+    }
+  }
+
+  function initTab(tabName) {
+    switch(tabName) {
+      case 'home':
+        // Already initialized by trainer-dashboard.js (renderSales)
+        break;
+      case 'clients':
+        // Already initialized by trainer-dashboard.js (renderClients)
+        break;
+      case 'messages':
+        // Already initialized by trainer-dashboard.js (renderTdMsgSidebar)
+        break;
+      case 'programs':
+        initProgramsTab();
+        break;
+      case 'community':
+        initCommunityTab();
+        break;
+      case 'profile':
+        initProfileTab();
+        break;
+    }
+  }
+
+  // Mark initial tabs as initialized
+  _tdTabsInitialized['home'] = true;
+  _tdTabsInitialized['clients'] = true;
+  _tdTabsInitialized['messages'] = true;
+
+  // ===== Programs Tab (reuse from trainer-profile.html logic) =====
+  // The pbToggleBuilder, pbSelectType, etc. are defined in trainer-profile's inline script.
+  // We provide stub implementations here for the dashboard context.
+  const PB_KEY = 'shapeTrainerPrograms';
+
+  function _getPbPrograms() {
+    try { return JSON.parse(localStorage.getItem(PB_KEY)) || []; } catch(e) { return []; }
+  }
+  function _savePbPrograms(data) { localStorage.setItem(PB_KEY, JSON.stringify(data)); }
+
+  let _pbDayCount = 0;
+  let _pbBuilderOpen = false;
+  let _pbUploadedFiles = [];
+
+  function pbToggleBuilder() {
+    _pbBuilderOpen = !_pbBuilderOpen;
+    const builder = document.getElementById('pbBuilder');
+    const btn = document.getElementById('pbCreateBtn');
+    if (_pbBuilderOpen) {
+      builder.classList.add('active');
+      btn.textContent = 'Cancel';
+      // Reset
+      document.getElementById('pbStep1').style.display = '';
+      document.getElementById('pbTemplateForm').classList.remove('active');
+      document.getElementById('pbCustomForm').classList.remove('active');
+      document.querySelectorAll('.pb-type-card').forEach(c => c.classList.remove('selected'));
+    } else {
+      builder.classList.remove('active');
+      btn.textContent = '+ Create New Program';
+    }
+  }
+
+  function pbSelectType(type) {
+    document.querySelectorAll('.pb-type-card').forEach(c => c.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('pbStep1').style.display = 'none';
+    if (type === 'template') {
+      document.getElementById('pbTemplateForm').classList.add('active');
+      document.getElementById('pbCustomForm').classList.remove('active');
+    } else {
+      document.getElementById('pbCustomForm').classList.add('active');
+      document.getElementById('pbTemplateForm').classList.remove('active');
+    }
+  }
+
+  function pbAddDay() {
+    _pbDayCount++;
+    const container = document.getElementById('pbDaysContainer');
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'pb-day';
+    dayDiv.innerHTML = `
+      <div class="pb-day-header" onclick="this.querySelector('.pb-chevron').classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+        <h4>Day ${_pbDayCount}</h4>
+        <span class="pb-chevron">&#9660;</span>
+      </div>
+      <div class="pb-day-body">
+        <div class="pb-sub-section">
+          <h5>Exercises</h5>
+          <div class="pb-exercises-list">
+            <div class="pb-exercise-row">
+              <input class="pb-input" placeholder="Exercise name">
+              <input class="pb-input" placeholder="Sets">
+              <input class="pb-input" placeholder="Reps">
+              <input class="pb-input" placeholder="Rest">
+              <input class="pb-input" placeholder="Notes">
+              <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+          </div>
+          <div class="pb-actions-row">
+            <button class="btn btn-sm btn-outline" onclick="pbAddExercise(this)">+ Exercise</button>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(dayDiv);
+  }
+
+  function pbAddExercise(btn) {
+    const list = btn.closest('.pb-day-body').querySelector('.pb-exercises-list');
+    const row = document.createElement('div');
+    row.className = 'pb-exercise-row';
+    row.innerHTML = `
+      <input class="pb-input" placeholder="Exercise name">
+      <input class="pb-input" placeholder="Sets">
+      <input class="pb-input" placeholder="Reps">
+      <input class="pb-input" placeholder="Rest">
+      <input class="pb-input" placeholder="Notes">
+      <button class="pb-remove-btn" onclick="this.parentElement.remove()">&times;</button>
+    `;
+    list.appendChild(row);
+  }
+
+  function pbHandleFiles(files) {
+    if (!files || files.length === 0) return;
+    const preview = document.getElementById('pbUploadedFiles');
+    const list = document.getElementById('pbFileList');
+    preview.style.display = '';
+    for (let f of files) {
+      _pbUploadedFiles.push(f);
+      const item = document.createElement('div');
+      item.style.cssText = 'display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-alt);border-radius:6px;margin-bottom:6px;';
+      item.innerHTML = `
+        <span style="font-size:0.82rem;flex:1;">${f.name}</span>
+        <span style="font-size:0.72rem;color:var(--text-muted);">${(f.size/1024).toFixed(0)} KB</span>
+        <button class="pb-remove-btn" onclick="this.parentElement.remove()" style="font-size:0.85rem;">&times;</button>
+      `;
+      list.appendChild(item);
+    }
+    if (typeof showToast === 'function') showToast('File uploaded!');
+  }
+
+  function pbSaveDraft(type) {
+    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
+    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
+    const programs = _getPbPrograms();
+    programs.push({ name, type, status: 'draft', createdAt: new Date().toISOString() });
+    _savePbPrograms(programs);
+    pbToggleBuilder();
+    renderPbPlanList();
+    if (typeof showToast === 'function') showToast('Draft saved!');
+  }
+
+  function pbSavePlan(type) {
+    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
+    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
+    const programs = _getPbPrograms();
+    programs.push({ name, type, status: 'published', createdAt: new Date().toISOString() });
+    _savePbPrograms(programs);
+    pbToggleBuilder();
+    renderPbPlanList();
+    if (typeof showToast === 'function') showToast('Program published!');
+  }
+
+  function pbPublishToProfile(type) {
+    const name = type === 'template' ? document.getElementById('pbTplName').value : document.getElementById('pbCustName').value;
+    if (!name) { if (typeof showToast === 'function') showToast('Please enter a plan name'); return; }
+    const programs = _getPbPrograms();
+    programs.push({ name, type, status: 'profile', createdAt: new Date().toISOString() });
+    _savePbPrograms(programs);
+    pbToggleBuilder();
+    renderPbPlanList();
+    if (typeof showToast === 'function') showToast('Published to profile!');
+  }
+
+  function pbDeletePlan(index) {
+    const programs = _getPbPrograms();
+    programs.splice(index, 1);
+    _savePbPrograms(programs);
+    renderPbPlanList();
+    if (typeof showToast === 'function') showToast('Program deleted');
+  }
+
+  function renderPbPlanList() {
+    const programs = _getPbPrograms();
+    const list = document.getElementById('pbPlanList');
+    if (programs.length === 0) {
+      list.innerHTML = '<div class="pb-empty">No programs yet. Create your first workout program above.</div>';
+      return;
+    }
+    list.innerHTML = programs.map((p, i) => {
+      const badge = p.status === 'draft' ? '<span class="pb-badge pb-badge-draft">Draft</span>' :
+                    p.status === 'profile' ? '<span class="pb-badge pb-badge-profile">On Profile</span>' :
+                    '<span class="pb-badge pb-badge-published">Published</span>';
+      const date = new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return `
+        <div class="pb-plan-item">
+          <div class="pb-plan-item-info">
+            <h4>${p.name}</h4>
+            <span>${p.type === 'template' ? 'Template' : 'Custom'} &middot; ${date}</span>
+          </div>
+          <div class="pb-plan-item-actions">
+            ${badge}
+            <button class="btn btn-sm btn-outline" onclick="pbDeletePlan(${i})" style="font-size:0.68rem;padding:4px 10px;color:#EF4444;border-color:#EF4444;">Delete</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function initProgramsTab() {
+    renderPbPlanList();
+  }
+
+  // ===== Community Tab =====
+  const _tdCommUsers = [
+    { id: 1, name: "Jake R.", initials: "JR", color: "#6C3AED", online: true, friend: true, bio: "Strength training enthusiast" },
+    { id: 2, name: "Aisha L.", initials: "AL", color: "#EC4899", online: true, friend: true, bio: "HIIT addict" },
+    { id: 3, name: "Carlos M.", initials: "CM", color: "#F59E0B", online: false, friend: true, bio: "Cardio & endurance focused" },
+    { id: 4, name: "Priya S.", initials: "PS", color: "#10B981", online: true, friend: true, bio: "At home workouts" },
+    { id: 5, name: "Tyler K.", initials: "TK", color: "#EF4444", online: false, friend: false, bio: "Mobility enthusiast" },
+    { id: 6, name: "Mia W.", initials: "MW", color: "#8B5CF6", online: true, friend: false, bio: "New to Shape" },
+    { id: 7, name: "Devon J.", initials: "DJ", color: "#14B8A6", online: false, friend: false, bio: "Competitive lifter" },
+    { id: 8, name: "Emma T.", initials: "ET", color: "#F97316", online: true, friend: false, bio: "Cardio queen" },
+  ];
+
+  const _tdCommChannels = {
+    trainer: [
+      { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED", text: "Just dropped a new 5x5 variation for intermediate lifters. Let me know what you think", time: "9:10 AM" },
+      { name: "Nina Brooks", initials: "NB", color: "#10B981", text: "Nice Marcus! I've been experimenting with bodyweight progressions for my at-home clients", time: "9:18 AM" },
+      { name: "Aisha Patel", initials: "AP", color: "#EC4899", text: "Anyone else noticing more clients asking for shorter sessions? I'm building a 15-min HIIT series", time: "9:25 AM" },
+      { name: "Damon Clarke", initials: "DC", color: "#EF4444", text: "Definitely. Attention spans are shorter but intensity can stay high", time: "9:30 AM" },
+      { name: "Sophie Turner", initials: "ST", color: "#F59E0B", text: "I keep mine at 30-40 min for functional training. Clients need warm-up and mobility time", time: "9:35 AM" },
+      { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED", text: "Good point Sophie. I never skip warm-ups even in short sessions. Safety first", time: "9:40 AM" },
+    ],
+    general: [
+      { name: "Jake R.", initials: "JR", color: "#6C3AED", text: "Just finished a killer leg day. Marcus Johnson never disappoints!", time: "10:24 AM" },
+      { name: "Aisha L.", initials: "AL", color: "#EC4899", text: "Has anyone tried the new Tabata Inferno? I'm dead", time: "10:30 AM" },
+      { name: "Devon J.", initials: "DJ", color: "#14B8A6", text: "Hit a 500lb deadlift today. Feeling unstoppable", time: "10:45 AM" },
+    ],
+    tips: [
+      { name: "Sophie Turner", initials: "ST", color: "#F59E0B", text: "Tip: Always include a 5-min cool-down in your programs. Clients tend to skip it otherwise", time: "8:00 AM" },
+      { name: "Nina Brooks", initials: "NB", color: "#10B981", text: "For at-home clients, resistance bands are underrated. Cheap and incredibly versatile", time: "8:15 AM" },
+      { name: "Marcus Johnson", initials: "MJ", color: "#6C3AED", text: "Progressive overload is king. Track everything and increase volume systematically", time: "8:30 AM" },
+    ]
+  };
+
+  let _tdCommCurrentTab = 'friends';
+  let _tdCommCurrentChannel = 'trainer';
+
+  function initCommunityTab() {
+    tdCommRenderUsers();
+    tdCommRenderMessages();
+    tdCommRenderActivity();
+  }
+
+  function tdCommSwitchTab(tab, btn) {
+    _tdCommCurrentTab = tab;
+    document.querySelectorAll('.td-community-tab').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    tdCommRenderUsers();
+  }
+
+  function tdCommFilterUsers() {
+    tdCommRenderUsers();
+  }
+
+  function tdCommRenderUsers() {
+    const search = (document.getElementById('tdCommSearch')?.value || '').toLowerCase();
+    const list = document.getElementById('tdCommList');
+    let users = _tdCommUsers;
+    if (_tdCommCurrentTab === 'friends') users = users.filter(u => u.friend);
+    if (search) users = users.filter(u => u.name.toLowerCase().includes(search));
+
+    list.innerHTML = users.map(u => `
+      <div class="td-community-user">
+        <div class="td-community-user-avatar" style="background:${u.color};">${u.initials}</div>
+        <div class="td-community-user-info">
+          <div class="td-community-user-name">${u.online ? '<span style="width:8px;height:8px;border-radius:50%;background:#22C55E;display:inline-block;margin-right:4px;"></span>' : ''}${u.name}</div>
+          <div class="td-community-user-status">${u.bio}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function tdCommSwitchChannel(channel, btn) {
+    _tdCommCurrentChannel = channel;
+    document.querySelectorAll('.td-community-channel').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    tdCommRenderMessages();
+  }
+
+  function tdCommRenderMessages() {
+    const msgs = _tdCommChannels[_tdCommCurrentChannel] || [];
+    const container = document.getElementById('tdCommMessages');
+    container.innerHTML = msgs.map(m => `
+      <div class="td-community-msg">
+        <div class="td-community-msg-avatar" style="background:${m.color};">${m.initials}</div>
+        <div class="td-community-msg-body">
+          <div class="td-community-msg-name">${m.name}</div>
+          <div class="td-community-msg-text">${m.text}</div>
+          <div class="td-community-msg-time">${m.time}</div>
+        </div>
+      </div>
+    `).join('');
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function tdCommSend() {
+    const input = document.getElementById('tdCommInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const now = new Date();
+    const hours = now.getHours();
+    const mins = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const timeStr = (hours % 12 || 12) + ':' + (mins < 10 ? '0' : '') + mins + ' ' + ampm;
+
+    if (!_tdCommChannels[_tdCommCurrentChannel]) _tdCommChannels[_tdCommCurrentChannel] = [];
+    _tdCommChannels[_tdCommCurrentChannel].push({
+      name: "You", initials: "YN", color: "#2DD4BF", text: text, time: timeStr, own: true
+    });
+    input.value = '';
+    tdCommRenderMessages();
+    if (typeof showToast === 'function') showToast('Message sent!');
+  }
+
+  function tdCommRenderActivity() {
+    const feed = document.getElementById('tdCommActivityFeed');
+    const activities = [
+      { name: "Jake R.", initials: "JR", color: "#6C3AED", text: "Completed 5x5 Foundation", time: "2h ago" },
+      { name: "Priya S.", initials: "PS", color: "#10B981", text: "Started Living Room HIIT", time: "3h ago" },
+      { name: "Aisha L.", initials: "AL", color: "#EC4899", text: "Hit a new PR on squats", time: "4h ago" },
+      { name: "Devon J.", initials: "DJ", color: "#14B8A6", text: "500lb deadlift PR!", time: "5h ago" },
+      { name: "Emma T.", initials: "ET", color: "#F97316", text: "Finished Metabolic Blast", time: "6h ago" },
+    ];
+    feed.innerHTML = activities.map(a => `
+      <div class="td-activity-item">
+        <div class="td-activity-item-header">
+          <div class="td-activity-item-avatar" style="background:${a.color};">${a.initials}</div>
+          <div class="td-activity-item-name">${a.name}</div>
+          <div class="td-activity-item-time">${a.time}</div>
+        </div>
+        <div class="td-activity-item-text">${a.text}</div>
+      </div>
+    `).join('');
+  }
+
+  // ===== Profile Tab =====
+  let _profileData = {
+    name: 'Your Name', specialty: 'Your Specialty',
+    subscribers: '0', rating: '', price: '', experience: '',
+    bio: 'Write your personal bio here. Tell potential clients about your training philosophy, what sets you apart, your background, and why they should train with you.',
+    tags: ['Strength', 'Hypertrophy', 'Fat Loss', 'At Home'],
+    certs: [],
+    social: { ig: '', yt: '', tt: '', web: '' },
+    photos: []
+  };
+
+  // Load saved profile data
+  const _PROFILE_KEY = 'shapeTrainerProfileData';
+  function _loadProfileData() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(_PROFILE_KEY));
+      if (saved) _profileData = { ..._profileData, ...saved };
+    } catch(e) {}
+  }
+  function _saveProfileData() {
+    localStorage.setItem(_PROFILE_KEY, JSON.stringify(_profileData));
+  }
+
+  function initProfileTab() {
+    _loadProfileData();
+    // Apply saved data to DOM
+    document.getElementById('tpName').textContent = _profileData.name;
+    document.getElementById('tpSpecialty').textContent = _profileData.specialty;
+    document.getElementById('tpInitials').textContent = _profileData.name.split(' ').map(w => w[0] || '').join('').substring(0, 2).toUpperCase() || 'YN';
+    document.getElementById('statSubscribers').textContent = _profileData.subscribers;
+    document.getElementById('statRating').textContent = _profileData.rating || '--';
+    document.getElementById('statPrice').textContent = _profileData.price ? '$' + _profileData.price + '/mo' : '$--/mo';
+    document.getElementById('statExperience').textContent = _profileData.experience || '--';
+    document.getElementById('bioText').textContent = _profileData.bio;
+    document.getElementById('bioInput').value = _profileData.bio;
+
+    // Render tags
+    renderProfileTags();
+    // Render certs
+    renderProfileCerts();
+  }
+
+  function renderProfileTags() {
+    const container = document.getElementById('tagsContainer');
+    container.innerHTML = _profileData.tags.map(t =>
+      `<span class="tp-tag" data-tag="${t}">${t}</span>`
+    ).join('');
+  }
+
+  function renderProfileCerts() {
+    const container = document.getElementById('certsContainer');
+    if (_profileData.certs.length === 0) {
+      container.innerHTML = '<li><span class="tp-cert-icon">&mdash;</span> <span>Add your certifications (e.g. NASM, ACE, ISSA, ACSM)</span></li>';
+    } else {
+      container.innerHTML = _profileData.certs.map(c =>
+        `<li><span class="tp-cert-icon">&check;</span> <span>${c}</span></li>`
+      ).join('');
+    }
+  }
+
+  function toggleSection(sectionId) {
+    const section = document.getElementById(sectionId);
+    section.classList.toggle('editing');
+    if (sectionId === 'sectionSocial') {
+      const fields = document.getElementById('socialEditFields');
+      fields.style.display = section.classList.contains('editing') ? '' : 'none';
+    }
+  }
+
+  function cancelSection(sectionId) {
+    document.getElementById(sectionId).classList.remove('editing');
+    if (sectionId === 'sectionSocial') {
+      document.getElementById('socialEditFields').style.display = 'none';
+    }
+  }
+
+  function saveBio() {
+    _profileData.bio = document.getElementById('bioInput').value;
+    document.getElementById('bioText').textContent = _profileData.bio;
+    cancelSection('sectionBio');
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Bio saved!');
+  }
+
+  function addTag() {
+    const input = document.getElementById('newTagInput');
+    const val = input.value.trim();
+    if (!val) return;
+    _profileData.tags.push(val);
+    input.value = '';
+    renderProfileTags();
+    // Make tags removable while editing
+    document.querySelectorAll('#tagsContainer .tp-tag').forEach(tag => {
+      tag.classList.add('removable');
+      tag.onclick = function() { removeTag(this.dataset.tag); };
+    });
+  }
+
+  function removeTag(tagName) {
+    _profileData.tags = _profileData.tags.filter(t => t !== tagName);
+    renderProfileTags();
+    document.querySelectorAll('#tagsContainer .tp-tag').forEach(tag => {
+      tag.classList.add('removable');
+      tag.onclick = function() { removeTag(this.dataset.tag); };
+    });
+  }
+
+  function saveTags() {
+    cancelSection('sectionTags');
+    renderProfileTags();
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Tags saved!');
+  }
+
+  function addCert() {
+    const input = document.getElementById('newCertInput');
+    const val = input.value.trim();
+    if (!val) return;
+    _profileData.certs.push(val);
+    input.value = '';
+    renderProfileCerts();
+  }
+
+  function saveCerts() {
+    cancelSection('sectionCerts');
+    _saveProfileData();
+    if (typeof showToast === 'function') showToast('Certifications saved!');
+  }
+
+  function editNameInline(el) {
+    const current = el.textContent;
+    const input = document.createElement('input');
+    input.value = current;
+    input.className = 'tp-edit-input';
+    input.style.cssText = 'font-size:1.6rem;font-weight:700;margin:0;padding:4px 8px;';
+    el.replaceWith(input);
+    input.focus();
+    input.select();
+    input.onblur = function() {
+      _profileData.name = input.value || 'Your Name';
+      _saveProfileData();
+      const h1 = document.createElement('h1');
+      h1.id = 'tpName';
+      h1.textContent = _profileData.name;
+      h1.onclick = function() { editNameInline(h1); };
+      h1.style.cursor = 'pointer';
+      h1.title = 'Click to edit';
+      input.replaceWith(h1);
+      document.getElementById('tpInitials').textContent = _profileData.name.split(' ').map(w => w[0] || '').join('').substring(0, 2).toUpperCase();
+    };
+    input.onkeydown = function(e) { if (e.key === 'Enter') input.blur(); };
+  }
+
+  function editSpecialtyInline(el) {
+    const current = el.textContent;
+    const input = document.createElement('input');
+    input.value = current;
+    input.className = 'tp-edit-input';
+    input.style.cssText = 'font-size:0.82rem;margin:0;padding:4px 8px;';
+    el.replaceWith(input);
+    input.focus();
+    input.select();
+    input.onblur = function() {
+      _profileData.specialty = input.value || 'Your Specialty';
+      _saveProfileData();
+      const div = document.createElement('div');
+      div.className = 'tp-specialty';
+      div.id = 'tpSpecialty';
+      div.textContent = _profileData.specialty;
+      div.onclick = function() { editSpecialtyInline(div); };
+      div.style.cursor = 'pointer';
+      div.title = 'Click to edit';
+      input.replaceWith(div);
+    };
+    input.onkeydown = function(e) { if (e.key === 'Enter') input.blur(); };
+  }
+
+  function editStat(el, stat) {
+    const display = el.querySelector('.tp-display-value');
+    const input = el.querySelector('.tp-edit-input');
+    if (!display || !input) return;
+    display.style.display = 'none';
+    input.style.display = '';
+    input.focus();
+    input.select();
+    input.onblur = function() {
+      _profileData[stat] = input.value;
+      _saveProfileData();
+      display.style.display = '';
+      input.style.display = 'none';
+      if (stat === 'subscribers') display.textContent = input.value || '0';
+      else if (stat === 'price') display.textContent = input.value ? '$' + input.value + '/mo' : '$--/mo';
+      else display.textContent = input.value || '--';
+    };
+    input.onkeydown = function(e) { if (e.key === 'Enter') input.blur(); };
+  }
+
+  function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const avatar = document.getElementById('tpAvatar');
+      avatar.style.backgroundImage = 'url(' + e.target.result + ')';
+      avatar.style.backgroundSize = 'cover';
+      avatar.style.backgroundPosition = 'center';
+      document.getElementById('tpInitials').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+    if (typeof showToast === 'function') showToast('Avatar uploaded!');
+  }
+
+  function handlePhotoUpload(event) {
+    const files = event.target.files;
+    if (!files) return;
+    const gallery = document.getElementById('photoGallery');
+    for (let f of files) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const item = document.createElement('div');
+        item.className = 'tp-gallery-item';
+        item.style.backgroundImage = 'url(' + e.target.result + ')';
+        item.style.backgroundSize = 'cover';
+        item.style.backgroundPosition = 'center';
+        gallery.insertBefore(item, gallery.lastElementChild);
+      };
+      reader.readAsDataURL(f);
+    }
+    if (typeof showToast === 'function') showToast('Photos uploaded!');
+  }
+
+  function saveMedia() {
+    cancelSection('sectionMedia');
+    if (typeof showToast === 'function') showToast('Media saved!');
+  }
+
+  function saveSocial() {
+    _profileData.social.ig = document.getElementById('inputIG').value;
+    _profileData.social.yt = document.getElementById('inputYT').value;
+    _profileData.social.tt = document.getElementById('inputTT').value;
+    _profileData.social.web = document.getElementById('inputWeb').value;
+    _saveProfileData();
+    cancelSection('sectionSocial');
+    // Update display
+    document.getElementById('socialIG').textContent = _profileData.social.ig || 'Instagram';
+    document.getElementById('socialYT').textContent = _profileData.social.yt || 'YouTube';
+    document.getElementById('socialTT').textContent = _profileData.social.tt || 'TikTok';
+    document.getElementById('socialWeb').textContent = _profileData.social.web || 'Website';
+    if (typeof showToast === 'function') showToast('Social links saved!');
+  }
+  </script>
+
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
