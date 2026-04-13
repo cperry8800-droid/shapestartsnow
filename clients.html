@@ -165,6 +165,7 @@
     .cl-cal-day-num { font-weight: 500; margin-bottom: 2px; }
     .cl-cal-day-dot { width: 5px; height: 5px; border-radius: 50%; }
     .cl-cal-day-dot.workout { background: #10B981; }
+    .cl-cal-day-dot.scheduled { background: #6C3AED; }
     .cl-cal-day-dot.rest { background: var(--border); }
     .cl-cal-day-dot.on-plan { background: #10B981; }
     .cl-cal-day-dot.off-plan { background: #EF4444; }
@@ -817,26 +818,61 @@
       const monthName = new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
       const prefix = type === 'workout' ? 'clWorkoutCal' : 'clMealCal';
 
-      // Generate demo data for calendar
+      // Build calendar data from actual logs
       const dayData = {};
-      for (let d = 1; d <= Math.min(daysInMonth, today.getMonth() === month && today.getFullYear() === year ? today.getDate() : daysInMonth); d++) {
-        const checkDate = new Date(year, month, d);
-        if (checkDate > today) break;
-        if (type === 'workout') {
-          // Workouts: some days have workouts, some rest
-          const hasWorkout = Math.random() > 0.35;
-          if (hasWorkout) {
-            const mins = Math.floor(Math.random() * 45) + 20;
-            dayData[d] = { type: 'workout', label: mins + 'm' };
+      if (type === 'workout') {
+        // Get actual workout log and schedule from progress.js
+        const workoutLog = getWorkoutLog();
+        const schedule = getSchedule();
+        // Map completed workouts to calendar days
+        workoutLog.forEach(function(w) {
+          const wd = new Date(w.date);
+          if (wd.getMonth() === month && wd.getFullYear() === year) {
+            const d = wd.getDate();
+            dayData[d] = { type: 'workout', label: (w.duration || 0) + 'm', name: w.name };
           }
+        });
+        // Map scheduled workouts (future) to calendar days
+        Object.keys(schedule).forEach(function(dateStr) {
+          const sd = new Date(dateStr);
+          if (sd.getMonth() === month && sd.getFullYear() === year) {
+            const d = sd.getDate();
+            if (!dayData[d] && schedule[dateStr].type !== 'Rest Day') {
+              dayData[d] = { type: 'scheduled', label: schedule[dateStr].time || '', name: schedule[dateStr].name };
+            }
+          }
+        });
+      } else {
+        // Meals: use nutrition data from localStorage
+        const mealLog = JSON.parse(localStorage.getItem('shapeMealLog') || '[]');
+        if (mealLog.length > 0) {
+          mealLog.forEach(function(m) {
+            const md = new Date(m.date);
+            if (md.getMonth() === month && md.getFullYear() === year) {
+              const d = md.getDate();
+              if (!dayData[d]) dayData[d] = { count: 0, onPlan: 0 };
+              dayData[d].count++;
+              if (m.onPlan) dayData[d].onPlan++;
+            }
+          });
+          Object.keys(dayData).forEach(function(d) {
+            const entry = dayData[d];
+            const offPlan = entry.count - entry.onPlan;
+            entry.dotClass = offPlan === 0 ? 'on-plan' : entry.onPlan === 0 ? 'off-plan' : 'mixed';
+            entry.label = entry.count + 'm';
+          });
         } else {
-          // Meals: most days have meals
-          if (Math.random() > 0.15) {
-            const count = Math.floor(Math.random() * 3) + 2;
-            const onPlan = Math.floor(count * (0.6 + Math.random() * 0.4));
-            const offPlan = count - onPlan;
-            let dotClass = offPlan === 0 ? 'on-plan' : onPlan === 0 ? 'off-plan' : 'mixed';
-            dayData[d] = { dotClass, label: count + 'm' };
+          // Demo meal data for days up to today
+          for (let d = 1; d <= Math.min(daysInMonth, today.getMonth() === month && today.getFullYear() === year ? today.getDate() : daysInMonth); d++) {
+            const checkDate = new Date(year, month, d);
+            if (checkDate > today) break;
+            if (Math.random() > 0.15) {
+              const count = Math.floor(Math.random() * 3) + 2;
+              const onPlan = Math.floor(count * (0.6 + Math.random() * 0.4));
+              const offPlan = count - onPlan;
+              let dotClass = offPlan === 0 ? 'on-plan' : onPlan === 0 ? 'off-plan' : 'mixed';
+              dayData[d] = { dotClass, label: count + 'm' };
+            }
           }
         }
       }
@@ -850,7 +886,8 @@
         let dot = '';
         if (data) {
           if (type === 'workout') {
-            dot = '<div class="cl-cal-day-dot workout"></div>';
+            const cls = data.type === 'scheduled' ? 'scheduled' : 'workout';
+            dot = '<div class="cl-cal-day-dot ' + cls + '" title="' + (data.name || '') + '"></div>';
           } else {
             dot = '<div class="cl-cal-day-dot ' + data.dotClass + '"></div>';
           }
@@ -863,7 +900,8 @@
       }
 
       const legendHtml = type === 'workout'
-        ? '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Workout</span>'
+        ? '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>Completed</span>'
+          + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#6C3AED;margin-right:4px;"></span>Scheduled</span>'
         : '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10B981;margin-right:4px;"></span>On Plan</span>'
           + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Mixed</span>'
           + '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#EF4444;margin-right:4px;"></span>Off Plan</span>';
