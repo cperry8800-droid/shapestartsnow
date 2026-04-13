@@ -417,6 +417,26 @@
     }
 
     /* ===== My Team Tab Styles ===== */
+    .team-chat-single { max-width: 760px; margin: 0 auto; }
+    .team-coach-tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .team-coach-tab {
+      flex: 1; display: flex; align-items: center; gap: 12px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 14px 16px; cursor: pointer; font-family: inherit;
+      text-align: left; transition: all 0.2s; position: relative; min-width: 0;
+    }
+    .team-coach-tab:hover { border-color: var(--text-muted); }
+    .team-coach-tab.active { border-color: var(--accent); background: rgba(45,212,191,0.06); }
+    .team-coach-tab-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.68rem; color: #fff; flex-shrink: 0;
+    }
+    .team-coach-tab-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+    .team-coach-tab-name { font-size: 0.85rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .team-coach-tab-role { font-size: 0.68rem; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
+    .team-coach-tab-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; flex-shrink: 0; }
+    .team-chat-header-status { margin-left: auto; font-size: 0.68rem; color: var(--text-muted); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
     .team-coaches-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
     .coach-panel { display: flex; flex-direction: column; gap: 0; }
     .coach-card { display: flex; align-items: center; gap: 16px; padding: 24px; background: var(--bg-card); border: 1px solid var(--border); border-bottom: none; }
@@ -1677,47 +1697,38 @@
 
       <!-- MY TEAM TAB -->
       <div class="dash-tab-content" id="tabMyteam">
-        <div class="team-coaches-grid">
-          <div class="coach-panel">
-            <div class="coach-card">
-              <div class="coach-avatar" style="background: #6C3AED;">MJ</div>
-              <div class="coach-info">
-                <div class="coach-name">Marcus Johnson</div>
-                <div class="coach-role">Personal Trainer</div>
-                <div class="coach-status"><span class="coach-status-dot"></span> Online</div>
-              </div>
-            </div>
-            <div class="team-chat-container">
-              <div class="team-chat-header">
-                <div class="team-chat-header-avatar" style="background: #6C3AED;">MJ</div>
-                <div class="team-chat-header-info"><h4>Marcus Johnson</h4><p>Personal Trainer</p></div>
-              </div>
-              <div class="team-chat-messages" id="trainerChatMessages"></div>
-              <div class="team-chat-input-area">
-                <input type="text" id="trainerMsgInput" placeholder="Message Marcus..." onkeydown="if(event.key==='Enter')sendTeamMessage('trainer')">
-                <button onclick="sendTeamMessage('trainer')">Send</button>
-              </div>
-            </div>
+        <div class="team-chat-single">
+          <div class="team-coach-tabs" id="teamCoachTabs">
+            <button class="team-coach-tab active" data-coach="trainer" onclick="switchTeamCoach('trainer')">
+              <span class="team-coach-tab-avatar" style="background:#6C3AED;">MJ</span>
+              <span class="team-coach-tab-info">
+                <span class="team-coach-tab-name">Marcus Johnson</span>
+                <span class="team-coach-tab-role">Personal Trainer</span>
+              </span>
+              <span class="team-coach-tab-dot"></span>
+            </button>
+            <button class="team-coach-tab" data-coach="nutritionist" onclick="switchTeamCoach('nutritionist')">
+              <span class="team-coach-tab-avatar" style="background:#10B981;">SM</span>
+              <span class="team-coach-tab-info">
+                <span class="team-coach-tab-name">Dr. Sarah Mitchell</span>
+                <span class="team-coach-tab-role">Nutritionist</span>
+              </span>
+              <span class="team-coach-tab-dot"></span>
+            </button>
           </div>
-          <div class="coach-panel">
-            <div class="coach-card">
-              <div class="coach-avatar" style="background: #10B981;">SM</div>
-              <div class="coach-info">
-                <div class="coach-name">Dr. Sarah Mitchell</div>
-                <div class="coach-role">Nutritionist</div>
-                <div class="coach-status"><span class="coach-status-dot"></span> Online</div>
+          <div class="team-chat-container">
+            <div class="team-chat-header">
+              <div class="team-chat-header-avatar" id="activeCoachAvatar" style="background:#6C3AED;">MJ</div>
+              <div class="team-chat-header-info">
+                <h4 id="activeCoachName">Marcus Johnson</h4>
+                <p id="activeCoachRole">Personal Trainer</p>
               </div>
+              <div class="team-chat-header-status"><span class="coach-status-dot"></span> Online</div>
             </div>
-            <div class="team-chat-container">
-              <div class="team-chat-header">
-                <div class="team-chat-header-avatar" style="background: #10B981;">SM</div>
-                <div class="team-chat-header-info"><h4>Dr. Sarah Mitchell</h4><p>Nutritionist</p></div>
-              </div>
-              <div class="team-chat-messages" id="nutritionistChatMessages"></div>
-              <div class="team-chat-input-area">
-                <input type="text" id="nutritionistMsgInput" placeholder="Message Dr. Mitchell..." onkeydown="if(event.key==='Enter')sendTeamMessage('nutritionist')">
-                <button onclick="sendTeamMessage('nutritionist')">Send</button>
-              </div>
+            <div class="team-chat-messages" id="activeChatMessages"></div>
+            <div class="team-chat-input-area">
+              <input type="text" id="activeMsgInput" placeholder="Message Marcus..." onkeydown="if(event.key==='Enter')sendTeamMessage()">
+              <button onclick="sendTeamMessage()">Send</button>
             </div>
           </div>
         </div>
@@ -3067,12 +3078,22 @@
       return demo;
     }
 
-    function renderTeamChat(type) {
+    let activeCoach = 'trainer';
+
+    function renderTeamChat() {
       const data = getTeamMessages();
-      const messages = data[type] || [];
-      const coach = teamCoaches[type];
-      const container = document.getElementById(type + 'ChatMessages');
+      const messages = data[activeCoach] || [];
+      const coach = teamCoaches[activeCoach];
+      const container = document.getElementById('activeChatMessages');
       if (!container) return;
+      // Update header
+      const av = document.getElementById('activeCoachAvatar');
+      av.textContent = coach.initials; av.style.background = coach.color;
+      document.getElementById('activeCoachName').textContent = coach.name;
+      document.getElementById('activeCoachRole').textContent = coach.role;
+      const input = document.getElementById('activeMsgInput');
+      if (input) input.placeholder = 'Message ' + coach.name.split(' ')[0] + '...';
+      // Render messages
       container.innerHTML = '';
       messages.forEach(function(msg) {
         const isOwn = msg.from === 'me';
@@ -3090,8 +3111,16 @@
       container.scrollTop = container.scrollHeight;
     }
 
-    function sendTeamMessage(type) {
-      const input = document.getElementById(type + 'MsgInput');
+    function switchTeamCoach(type) {
+      activeCoach = type;
+      document.querySelectorAll('#teamCoachTabs .team-coach-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.coach === type);
+      });
+      renderTeamChat();
+    }
+
+    function sendTeamMessage() {
+      const input = document.getElementById('activeMsgInput');
       const text = input.value.trim();
       if (!text) return;
       const data = getTeamMessages();
@@ -3100,15 +3129,14 @@
       const minutes = now.getMinutes().toString().padStart(2, '0');
       const ampm = hours >= 12 ? 'PM' : 'AM';
       const hour12 = hours % 12 || 12;
-      data[type].push({ from: 'me', text: text, time: hour12 + ':' + minutes + ' ' + ampm, date: new Date().toLocaleDateString() });
+      data[activeCoach].push({ from: 'me', text: text, time: hour12 + ':' + minutes + ' ' + ampm, date: new Date().toLocaleDateString() });
       localStorage.setItem(TEAM_STORAGE_KEY, JSON.stringify(data));
       input.value = '';
-      renderTeamChat(type);
+      renderTeamChat();
     }
 
     function initTeamChat() {
-      renderTeamChat('trainer');
-      renderTeamChat('nutritionist');
+      renderTeamChat();
     }
   </script>
 
