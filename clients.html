@@ -773,9 +773,35 @@
     .redeemed-item { background: var(--bg-card); border: 1px solid var(--border); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .redeemed-code { font-family: 'Courier New', monospace; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; color: var(--accent-dark); background: rgba(45,212,191,0.08); padding: 4px 10px; border: 1px solid rgba(45,212,191,0.2); }
     @media (max-width: 768px) {
-      .shape-score-grid { grid-template-columns: 1fr !important; }
-      .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .reward-grid { grid-template-columns: 1fr !important; }
+      .shape-score-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 28px !important;
+      }
+      .shape-score-grid > div { min-width: 0; }
+      .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 6px !important; }
+      .reward-grid { grid-template-columns: 1fr 1fr !important; }
+      /* Balance card — stack on mobile */
+      #tabShapescore .shape-score-grid > div > div[style*="justify-content:space-between"] {
+        flex-wrap: wrap; gap: 10px; padding: 20px !important;
+      }
+      /* Earn/leaderboard/friends rows — allow wrapping of long labels */
+      #tabShapescore .shape-score-grid > div > div > div[style*="justify-content:space-between"] {
+        flex-wrap: wrap; row-gap: 4px;
+      }
+      /* Earn-point rows padding tighten */
+      #tabShapescore .shape-score-grid div[style*="padding:16px 20px"] { padding: 12px 14px !important; }
+      /* Status banner — let "Bronze — 50 pts to Silver" wrap */
+      #tabShapescore [style*="rgba(205,127,50,0.08)"],
+      #tabShapescore [style*="rgba(45,212,191,0.08)"] {
+        padding: 10px 14px !important;
+        flex-wrap: wrap; gap: 6px;
+      }
+      /* Section headings — cap font-size so clamp doesn't overshoot */
+      #tabShapescore h2 { font-size: 1.15rem !important; padding: 0 4px; }
+      /* Rewards category tabs — horizontal scroll */
+      #tabShapescore .rewards-cat-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex-wrap: nowrap; padding-bottom: 4px; }
+      #tabShapescore .rewards-cat-tabs::-webkit-scrollbar { display: none; }
+      #tabShapescore .rewards-cat-btn { flex-shrink: 0; }
     }
 
     /* ===== General responsive overrides ===== */
