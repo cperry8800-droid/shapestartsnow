@@ -897,6 +897,13 @@
 
       <!-- HOME TAB -->
       <div class="dash-tab-content active" id="tabHome">
+        <section class="page-hero" style="padding-top:24px;padding-bottom:16px;">
+          <div class="container">
+            <span class="tag">Client Dashboard</span>
+            <h1>Your <span class="gradient-text">progress</span></h1>
+            <p class="page-hero-sub" style="margin-bottom:0;">Track your workouts, nutrition, and goals all in one place on Shape.</p>
+          </div>
+        </section>
         <div class="progress-dashboard">
         <div class="widget-grid" id="clWidgetGrid">
 
@@ -1418,22 +1425,16 @@
               <div class="meal-schedule-section" style="margin-bottom:0;">
                 <div class="meal-schedule-header">
                   <h2>Nutrition Calendar</h2>
-                  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-                    <div class="cl-view-toggle">
-                      <button class="cl-view-btn active" onclick="clSwitchMealView('weekly', this)">Weekly</button>
-                      <button class="cl-view-btn" onclick="clSwitchMealView('monthly', this)">Monthly</button>
-                    </div>
-                    <div class="schedule-nav" id="mealWeekNav">
-                      <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
-                      <span id="mealWeekLabel" class="schedule-week-label"></span>
-                      <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
-                    </div>
+                  <div class="schedule-nav" id="mealWeekNav">
+                    <button class="btn btn-sm btn-outline" onclick="changeMealWeek(-1)">&larr; Prev</button>
+                    <span id="mealWeekLabel" class="schedule-week-label"></span>
+                    <button class="btn btn-sm btn-outline" onclick="changeMealWeek(1)">Next &rarr;</button>
                   </div>
                 </div>
-                <div id="mealWeeklyView">
+                <div id="mealWeeklyView" style="margin-bottom:24px;">
                   <div class="meal-day-grid" id="mealDayGrid"></div>
                 </div>
-                <div id="mealMonthlyView" style="display:none;">
+                <div id="mealMonthlyView">
                   <div id="mealCalContainer"></div>
                 </div>
               </div>
