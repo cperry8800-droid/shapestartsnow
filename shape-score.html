@@ -13,6 +13,53 @@
       .shape-score-grid .tier-grid { grid-template-columns: repeat(2, 1fr) !important; }
       .redeem-card { flex-direction: column !important; align-items: flex-start !important; gap: 12px; }
       .redeem-card > div:last-child { text-align: left !important; }
+      .rewards-cat-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .reward-grid { grid-template-columns: 1fr !important; }
+    }
+    .rewards-cat-tabs { display: flex; gap: 6px; margin-bottom: 18px; }
+    .rewards-cat-btn {
+      padding: 6px 16px; font-size: 0.72rem; font-weight: 500; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); cursor: pointer; font-family: inherit;
+      transition: all 0.2s; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .rewards-cat-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .rewards-cat-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+    .reward-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
+    .reward-item {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 20px;
+      display: flex; flex-direction: column; transition: border-color 0.2s; position: relative;
+    }
+    .reward-item:hover { border-color: var(--accent); }
+    .reward-item.locked { opacity: 0.5; }
+    .reward-brand { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-bottom: 6px; }
+    .reward-name { font-size: 0.92rem; font-weight: 500; margin-bottom: 4px; }
+    .reward-desc { font-size: 0.75rem; color: var(--text-muted); font-weight: 300; margin-bottom: 12px; line-height: 1.4; }
+    .reward-val { font-size: 1.1rem; font-weight: 600; color: var(--accent-dark); margin-bottom: 2px; }
+    .reward-cost { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 14px; }
+    .reward-btn {
+      padding: 8px 0; width: 100%; border: 1px solid var(--accent); background: transparent;
+      color: var(--accent-dark); font-size: 0.75rem; font-weight: 500; cursor: pointer;
+      font-family: inherit; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .reward-btn:hover { background: var(--accent); color: #fff; }
+    .reward-btn:disabled { opacity: 0.4; cursor: not-allowed; border-color: var(--border); color: var(--text-muted); }
+    .reward-btn:disabled:hover { background: transparent; color: var(--text-muted); }
+    .reward-badge {
+      position: absolute; top: 12px; right: 12px; font-size: 0.58rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px;
+    }
+    .reward-badge.popular { background: rgba(16,185,129,0.1); color: #10B981; }
+    .reward-badge.new { background: rgba(108,58,237,0.1); color: #6C3AED; }
+    .reward-badge.premium { background: rgba(245,158,11,0.1); color: #F59E0B; }
+    .redeemed-list { margin-top: 16px; }
+    .redeemed-item {
+      background: var(--bg-card); border: 1px solid var(--border); padding: 14px 18px;
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+    }
+    .redeemed-code {
+      font-family: 'Courier New', monospace; font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.08em; color: var(--accent-dark); background: rgba(45,212,191,0.08);
+      padding: 4px 10px; border: 1px solid rgba(45,212,191,0.2);
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -164,52 +211,27 @@
 
         <!-- Right: Redeem & Leaderboard -->
         <div>
-          <!-- Redeem -->
+          <!-- Rewards Shop -->
           <div style="text-align:center;margin-bottom:16px;">
-            <span class="tag">Redeem</span>
+            <span class="tag">Rewards</span>
             <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:16px;">Spend your points</h2>
           </div>
-          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:40px;">
-            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">10% off any program</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Works on any trainer or nutritionist program.</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);margin-bottom:6px;">500 pts</div>
-                <button class="btn btn-sm btn-outline">Redeem</button>
-              </div>
-            </div>
-            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">Free session unlock</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Unlock any single session from any trainer.</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);margin-bottom:6px;">1,000 pts</div>
-                <button class="btn btn-sm btn-outline">Redeem</button>
-              </div>
-            </div>
-            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">25% off next month</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">Save on any subscription renewal.</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);margin-bottom:6px;">2,000 pts</div>
-                <button class="btn btn-sm btn-outline">Redeem</button>
-              </div>
-            </div>
-            <div class="redeem-card" style="background:var(--bg-card);border:1px solid var(--border);padding:20px;display:flex;justify-content:space-between;align-items:center;">
-              <div>
-                <div style="font-size:0.92rem;font-weight:500;margin-bottom:4px;">1 month free</div>
-                <div style="font-size:0.78rem;color:var(--text-muted);font-weight:300;">A full month of any subscription — on us.</div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);margin-bottom:6px;">5,000 pts</div>
-                <button class="btn btn-sm btn-outline">Redeem</button>
-              </div>
-            </div>
+
+          <!-- Category Tabs -->
+          <div class="rewards-cat-tabs">
+            <button class="rewards-cat-btn active" onclick="filterRewards('all', this)">All</button>
+            <button class="rewards-cat-btn" onclick="filterRewards('gear', this)">Workout Gear</button>
+            <button class="rewards-cat-btn" onclick="filterRewards('nutrition', this)">Nutrition</button>
+            <button class="rewards-cat-btn" onclick="filterRewards('shape', this)">Shape Perks</button>
+          </div>
+
+          <!-- Rewards Grid -->
+          <div class="reward-grid" id="rewardGrid"></div>
+
+          <!-- Redeemed Coupons -->
+          <div id="redeemedSection" style="display:none;margin-bottom:40px;">
+            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;">Your Unlocked Coupons</div>
+            <div class="redeemed-list" id="redeemedList"></div>
           </div>
 
           <!-- Leaderboard -->
@@ -356,6 +378,123 @@
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
+  <script>
+    // ===== Shape Score Rewards Shop =====
+    const _ssBalance = 2450;
+    const _ssRewards = [
+      // Workout Gear
+      { id: 'gear1', cat: 'gear', brand: 'Nike', name: '$10 off Training Shoes', desc: 'Valid on any Nike training or cross-training shoe at nike.com.', value: '$10 OFF', cost: 500, badge: 'popular' },
+      { id: 'gear2', cat: 'gear', brand: 'Under Armour', name: '$15 off Workout Apparel', desc: 'Applies to tops, shorts, leggings, or sports bras at underarmour.com.', value: '$15 OFF', cost: 750, badge: null },
+      { id: 'gear3', cat: 'gear', brand: 'Gymshark', name: '20% off Any Order', desc: 'Site-wide discount on all Gymshark apparel and accessories.', value: '20% OFF', cost: 1000, badge: 'popular' },
+      { id: 'gear4', cat: 'gear', brand: 'Lululemon', name: '$25 off $100+', desc: 'Valid on orders $100+ at lululemon.com. Excludes sale items.', value: '$25 OFF', cost: 1500, badge: 'premium' },
+      { id: 'gear5', cat: 'gear', brand: 'Rogue Fitness', name: '$20 off Equipment', desc: 'Dumbbells, kettlebells, bands, or any equipment at roguefitness.com.', value: '$20 OFF', cost: 1200, badge: null },
+      { id: 'gear6', cat: 'gear', brand: 'Theragun', name: '$30 off Recovery Tools', desc: 'Any massage gun or recovery device at therabody.com.', value: '$30 OFF', cost: 2000, badge: 'new' },
+      // Nutrition
+      { id: 'nutr1', cat: 'nutrition', brand: 'Optimum Nutrition', name: '$10 off Protein Powder', desc: 'Gold Standard Whey, Plant Protein, or any ON protein at optimumnutrition.com.', value: '$10 OFF', cost: 500, badge: 'popular' },
+      { id: 'nutr2', cat: 'nutrition', brand: 'RXBAR', name: 'Free 12-Pack Box', desc: 'Choose any flavor variety. Redeemable at rxbar.com.', value: 'FREE BOX', cost: 800, badge: null },
+      { id: 'nutr3', cat: 'nutrition', brand: 'Athletic Greens', name: '$20 off AG1 Subscription', desc: 'First month discount on AG1 daily greens supplement.', value: '$20 OFF', cost: 1000, badge: 'new' },
+      { id: 'nutr4', cat: 'nutrition', brand: 'Vital Proteins', name: '25% off Collagen', desc: 'Any collagen peptides or supplement at vitalproteins.com.', value: '25% OFF', cost: 900, badge: null },
+      { id: 'nutr5', cat: 'nutrition', brand: 'Whole Foods', name: '$15 Gift Card', desc: 'Digital gift card for Whole Foods Market. No minimum purchase.', value: '$15 CARD', cost: 1200, badge: 'popular' },
+      { id: 'nutr6', cat: 'nutrition', brand: 'Factor Meals', name: '$40 off First 2 Weeks', desc: 'Chef-prepared, macro-balanced meals delivered to your door.', value: '$40 OFF', cost: 2000, badge: 'premium' },
+      // Shape Perks
+      { id: 'shape1', cat: 'shape', brand: 'Shape', name: '10% off Any Program', desc: 'Works on any trainer or nutritionist program subscription.', value: '10% OFF', cost: 500, badge: null },
+      { id: 'shape2', cat: 'shape', brand: 'Shape', name: 'Free Session Unlock', desc: 'Unlock any single session from any trainer on Shape.', value: 'FREE', cost: 1000, badge: 'popular' },
+      { id: 'shape3', cat: 'shape', brand: 'Shape', name: '25% off Next Month', desc: 'Save on your next monthly subscription renewal.', value: '25% OFF', cost: 2000, badge: null },
+      { id: 'shape4', cat: 'shape', brand: 'Shape', name: '1 Month Free', desc: 'A full month of any Shape subscription — on us.', value: 'FREE', cost: 5000, badge: 'premium' },
+    ];
+
+    function getRedeemedRewards() {
+      return JSON.parse(localStorage.getItem('shapeRedeemedRewards') || '[]');
+    }
+    function saveRedeemedRewards(list) {
+      localStorage.setItem('shapeRedeemedRewards', JSON.stringify(list));
+    }
+    function generateCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = 'SHAPE-';
+      for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+      return code;
+    }
+
+    let _activeCat = 'all';
+
+    function filterRewards(cat, btn) {
+      _activeCat = cat;
+      document.querySelectorAll('.rewards-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderRewards();
+    }
+
+    function renderRewards() {
+      const redeemed = getRedeemedRewards();
+      const redeemedIds = redeemed.map(r => r.id);
+      const filtered = _activeCat === 'all' ? _ssRewards : _ssRewards.filter(r => r.cat === _activeCat);
+
+      let html = '';
+      filtered.forEach(function(r) {
+        const alreadyRedeemed = redeemedIds.includes(r.id);
+        const canAfford = _ssBalance >= r.cost;
+        const badgeHtml = r.badge ? '<div class="reward-badge ' + r.badge + '">' + r.badge + '</div>' : '';
+        const btnText = alreadyRedeemed ? 'Redeemed' : (canAfford ? 'Unlock Coupon' : 'Not Enough Pts');
+        const btnDisabled = alreadyRedeemed || !canAfford ? ' disabled' : '';
+        const lockedClass = !canAfford && !alreadyRedeemed ? ' locked' : '';
+
+        html += '<div class="reward-item' + lockedClass + '">'
+          + badgeHtml
+          + '<div class="reward-brand">' + r.brand + '</div>'
+          + '<div class="reward-name">' + r.name + '</div>'
+          + '<div class="reward-desc">' + r.desc + '</div>'
+          + '<div class="reward-val">' + r.value + '</div>'
+          + '<div class="reward-cost">' + r.cost.toLocaleString() + ' pts</div>'
+          + '<button class="reward-btn"' + btnDisabled + ' onclick="redeemReward(\'' + r.id + '\')">' + btnText + '</button>'
+          + '</div>';
+      });
+      document.getElementById('rewardGrid').innerHTML = html;
+
+      // Render redeemed coupons
+      if (redeemed.length > 0) {
+        document.getElementById('redeemedSection').style.display = '';
+        let rhtml = '';
+        redeemed.forEach(function(rd) {
+          rhtml += '<div class="redeemed-item">'
+            + '<div>'
+            + '<div style="font-size:0.82rem;font-weight:500;">' + rd.name + '</div>'
+            + '<div style="font-size:0.68rem;color:var(--text-muted);margin-top:2px;">' + rd.brand + ' — redeemed ' + rd.date + '</div>'
+            + '</div>'
+            + '<div class="redeemed-code">' + rd.code + '</div>'
+            + '</div>';
+        });
+        document.getElementById('redeemedList').innerHTML = rhtml;
+      } else {
+        document.getElementById('redeemedSection').style.display = 'none';
+      }
+    }
+
+    function redeemReward(id) {
+      const reward = _ssRewards.find(r => r.id === id);
+      if (!reward) return;
+      const redeemed = getRedeemedRewards();
+      if (redeemed.find(r => r.id === id)) return;
+
+      const code = generateCode();
+      const today = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      redeemed.push({ id: reward.id, name: reward.name, brand: reward.brand, value: reward.value, code: code, date: today });
+      saveRedeemedRewards(redeemed);
+
+      // Show toast
+      const toast = document.getElementById('toast');
+      if (toast) {
+        toast.textContent = 'Coupon unlocked! Code: ' + code;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+      }
+
+      renderRewards();
+    }
+
+    // Initial render
+    renderRewards();
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
