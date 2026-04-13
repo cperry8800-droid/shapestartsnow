@@ -655,6 +655,12 @@
     .widget-expand-btn { display: none; }
     .widget-drag-handle { display: none; }
     .widget-body { padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Widget inner content — force 1-col on mobile */
+    .td-client-stats-mini { flex-wrap: wrap; gap: 8px; }
+    .td-mini-stat { flex: 1 1 40%; min-width: 0; }
+    .pb-row { grid-template-columns: 1fr; }
+    .pb-exercise-row { grid-template-columns: 1fr 50px 50px 50px 1fr 32px; gap: 4px; }
+    .pb-assign-bar { flex-direction: column; align-items: stretch; }
   }
 </style>
 </head>

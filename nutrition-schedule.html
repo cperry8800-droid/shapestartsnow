@@ -745,6 +745,11 @@
     .widget-expand-btn { display: none; }
     .widget-drag-handle { display: none; }
     .widget-body { padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Widget inner content — force 1-col on mobile */
+    .nd-meal-row { flex-direction: column; gap: 6px; }
+    .mpb-form-grid { grid-template-columns: 1fr; }
+    .mpb-macro-row { flex-direction: column; gap: 8px; }
+    .mpb-assign-row { flex-direction: column; gap: 12px; }
   }
 </style>
 </head>

@@ -769,6 +769,12 @@
     .widget-expand-btn { display: none; }
     .widget-drag-handle { display: none; }
     .widget-body { padding: 12px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* Widget inner content — force 1-col on mobile */
+    .macro-row { grid-template-columns: 1fr 1fr; }
+    .water-tracker { flex-direction: column; gap: 8px; text-align: center; }
+    .progress-week { gap: 4px; }
+    .td-client-stats-mini { flex-wrap: wrap; gap: 8px; }
+    .td-mini-stat { flex: 1 1 40%; min-width: 0; }
   }
 
   </style>
