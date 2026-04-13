@@ -979,7 +979,7 @@
                   <h2>Workout Log</h2>
                   <button class="btn btn-sm btn-primary" onclick="openLogWorkoutModal()">+ Log Workout</button>
                 </div>
-                <div class="workout-log-list" id="workoutLog">
+                <div class="workout-log-list" id="workoutLog" style="max-height:320px;overflow-y:auto;">
                   <!-- Populated by JS -->
                 </div>
               </div>
@@ -1289,6 +1289,17 @@
 
         <div class="widget-grid" id="clNutritionWidgetGrid">
 
+          <!-- Widget: Active Meal Plan -->
+          <div class="widget widget-full" data-widget-id="cl-nu-activeplan" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Active Meal Plan</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body" id="activeMealPlanWidget">
+              <div style="color:var(--text-muted);font-size:0.82rem;">No meal plan assigned yet.</div>
+            </div>
+          </div>
+
           <!-- Widget: Macro Summary -->
           <div class="widget" data-widget-id="cl-nu-macros" draggable="true">
             <div class="widget-header">
@@ -1398,7 +1409,7 @@
                   <h2>Meal Log</h2>
                   <button class="btn btn-sm btn-primary" onclick="openLogMealModal()">+ Log Meal</button>
                 </div>
-                <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;" id="mealLogList"></div>
+                <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;max-height:320px;overflow-y:auto;" id="mealLogList"></div>
               </div>
             </div>
           </div>
@@ -3418,14 +3429,98 @@
       el.innerHTML = html;
     }
 
+    // ===== Active Meal Plan Widget =====
+    function _mpEsc(s){var d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+
+    function renderActiveMealPlan() {
+      var el = document.getElementById('activeMealPlanWidget');
+      if (!el) return;
+
+      var assigned = JSON.parse(localStorage.getItem('shapeClientAssignedMealPlans') || '[]');
+      // Find the most recently published template plan
+      var plan = null;
+      for (var i = assigned.length - 1; i >= 0; i--) {
+        if (assigned[i].status === 'Published' && assigned[i].type === 'template') { plan = assigned[i]; break; }
+      }
+
+      if (!plan) {
+        el.innerHTML = '<div style="color:var(--text-muted);font-size:0.82rem;">No meal plan assigned yet. Your nutritionist will send one to you.</div>';
+        return;
+      }
+
+      // Update macroGoals so the schedule widget uses the plan's calorie target
+      if (typeof macroGoals !== 'undefined' && plan.calories) {
+        macroGoals.calories = parseInt(plan.calories) || macroGoals.calories;
+      }
+
+      // Today's meals from shapeMealSchedule
+      var today = new Date().toISOString().split('T')[0];
+      var schedule = JSON.parse(localStorage.getItem('shapeMealSchedule') || '{}');
+      var todayMeals = schedule[today] || [];
+
+      // Macro % pills
+      var macroHtml = '';
+      if (plan.macros) {
+        macroHtml = '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">'
+          + '<div style="flex:1;min-width:60px;background:var(--bg-alt);padding:7px 10px;text-align:center;border-radius:4px;">'
+          + '<div style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;">Protein</div>'
+          + '<div style="font-size:1.05rem;font-weight:700;color:#6C3AED;">' + plan.macros.protein + '%</div></div>'
+          + '<div style="flex:1;min-width:60px;background:var(--bg-alt);padding:7px 10px;text-align:center;border-radius:4px;">'
+          + '<div style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;">Carbs</div>'
+          + '<div style="font-size:1.05rem;font-weight:700;color:#F59E0B;">' + plan.macros.carbs + '%</div></div>'
+          + '<div style="flex:1;min-width:60px;background:var(--bg-alt);padding:7px 10px;text-align:center;border-radius:4px;">'
+          + '<div style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em;">Fat</div>'
+          + '<div style="font-size:1.05rem;font-weight:700;color:#EC4899;">' + plan.macros.fat + '%</div></div>'
+          + '</div>';
+      }
+
+      // Today's meal list
+      var todayHtml = '<div style="margin-top:14px;">'
+        + '<div style="font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Today\'s Planned Meals</div>';
+      if (todayMeals.length) {
+        todayMeals.forEach(function(m) {
+          todayHtml += '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">'
+            + '<div><div style="font-size:0.82rem;font-weight:500;">' + _mpEsc(m.name) + '</div>'
+            + '<div style="font-size:0.68rem;color:var(--text-muted);">' + _mpEsc(m.type) + (m.protein ? ' · ' + m.protein + 'g P' : '') + (m.carbs ? ' · ' + m.carbs + 'g C' : '') + (m.fat ? ' · ' + m.fat + 'g F' : '') + '</div></div>'
+            + '<div style="font-size:0.78rem;color:var(--accent);font-weight:600;">' + (m.calories || 0) + ' cal</div>'
+            + '</div>';
+        });
+        var dayTotal = todayMeals.reduce(function(s,m){return s+(m.calories||0);}, 0);
+        todayHtml += '<div style="display:flex;justify-content:space-between;padding-top:8px;font-size:0.78rem;font-weight:600;">'
+          + '<span style="color:var(--text-muted);">Daily Total</span>'
+          + '<span style="color:var(--accent);">' + dayTotal.toLocaleString() + (plan.calories ? ' / ' + parseInt(plan.calories).toLocaleString() : '') + ' cal</span>'
+          + '</div>';
+      } else {
+        todayHtml += '<div style="font-size:0.78rem;color:var(--text-muted);">No meals scheduled for today.</div>';
+      }
+      todayHtml += '</div>';
+
+      // Meta tags (goal, diet type, duration)
+      var tags = [plan.goal, plan.dietType, plan.duration].filter(Boolean);
+      var tagsHtml = tags.length ? '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">'
+        + tags.map(function(t){ return '<span style="font-size:0.65rem;padding:3px 8px;background:var(--bg-alt);color:var(--text-muted);border-radius:2px;letter-spacing:.04em;">' + _mpEsc(t) + '</span>'; }).join('')
+        + '</div>' : '';
+
+      el.innerHTML = '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">'
+        + '<div><div style="font-size:1.05rem;font-weight:700;">' + _mpEsc(plan.name) + '</div>'
+        + (plan.calories ? '<div style="font-size:0.78rem;color:var(--text-muted);margin-top:2px;">Daily target: <strong>' + parseInt(plan.calories).toLocaleString() + ' cal</strong></div>' : '')
+        + tagsHtml + '</div>'
+        + '<span style="background:rgba(45,212,191,0.12);color:var(--accent);font-size:0.65rem;font-weight:600;padding:3px 9px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;flex-shrink:0;">Active</span>'
+        + '</div>'
+        + macroHtml
+        + todayHtml;
+    }
+
     // ===== renderAll — called when Nutrition tab activates =====
     function renderAll() {
       renderWeeklyCalChart();
+      renderActiveMealPlan();
     }
 
     // Initialize charts on page load
     renderProgressChart();
     renderWeeklyCalChart();
+    renderActiveMealPlan();
   </script>
 
   <!-- Calendar Day Popup Modal -->
