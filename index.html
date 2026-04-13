@@ -63,9 +63,20 @@
     }
 
     .loader-logo {
-      height: 140px; width: auto;
-      filter: brightness(0) invert(1);
+      height: 100px; width: auto;
       opacity: 0.4;
+    }
+    .loader-triangles {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .loader-triangles svg {
+      height: 100px; width: auto;
+      filter: brightness(0) invert(1);
+      animation: trianglePulse 2s ease-in-out infinite;
+    }
+    @keyframes trianglePulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.7; }
     }
 
     .loader-track {
@@ -256,7 +267,14 @@
   <!-- Loading Screen -->
   <div class="loader-overlay" id="loaderOverlay">
     <div class="loader-box">
-      <img src="logo.png" alt="Shape" class="loader-logo">
+      <div class="loader-triangles">
+        <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+          <!-- Teal triangle pointing right -->
+          <polygon points="20,75 20,25 65,50" fill="#2DD4BF"/>
+          <!-- Dark triangle pointing left -->
+          <polygon points="100,15 100,60 58,38" fill="#333"/>
+        </svg>
+      </div>
       <div class="loader-track">
         <div class="loader-fill" id="loaderFill"></div>
       </div>
