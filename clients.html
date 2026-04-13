@@ -680,6 +680,7 @@
   <div class="dash-tab-bar" id="dashTabBar">
     <div class="dash-tab-bar-inner">
       <button class="dash-tab active" data-tab="home" onclick="switchDashTab('home', this)">Home</button>
+      <button class="dash-tab" data-tab="training" onclick="switchDashTab('training', this)">Training</button>
       <button class="dash-tab" data-tab="nutrition" onclick="switchDashTab('nutrition', this)">Nutrition</button>
       <button class="dash-tab" data-tab="myteam" onclick="switchDashTab('myteam', this)">My Team</button>
       <button class="dash-tab" data-tab="community" onclick="switchDashTab('community', this)">Community</button>
@@ -831,6 +832,154 @@
         </div>
 
       </div>
+      </div>
+
+      <!-- TRAINING TAB -->
+      <div class="dash-tab-content" id="tabTraining">
+        <div class="section" style="padding-top:40px;">
+          <div class="container">
+
+            <!-- Current Program -->
+            <span class="tag">Current Program</span>
+            <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:24px;">Your active training plan</h2>
+
+            <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:32px;">
+              <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:16px;">
+                <div>
+                  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);font-weight:500;margin-bottom:6px;">Active Program</div>
+                  <div style="font-size:1.3rem;font-weight:400;letter-spacing:-0.02em;">12-Week Strength Builder</div>
+                  <div style="font-size:0.85rem;color:var(--text-muted);font-weight:300;margin-top:4px;">By Coach Marcus Rivera</div>
+                </div>
+                <div style="text-align:right;">
+                  <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Progress</div>
+                  <div style="font-size:1.5rem;font-weight:300;">Week 6 <span style="font-size:0.85rem;color:var(--text-muted);">/ 12</span></div>
+                </div>
+              </div>
+              <div style="margin-top:20px;height:4px;background:var(--border);position:relative;">
+                <div style="height:100%;width:50%;background:var(--accent);"></div>
+              </div>
+            </div>
+
+            <!-- This Week's Schedule -->
+            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">This Week</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:40px;">
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Monday</span>
+                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(16,185,129,0.15);color:#10B981;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Completed</span>
+                </div>
+                <div style="font-weight:500;margin-bottom:4px;">Upper Body Push</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Bench Press, OHP, Incline DB, Tricep Dips</div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Tuesday</span>
+                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(16,185,129,0.15);color:#10B981;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Completed</span>
+                </div>
+                <div style="font-weight:500;margin-bottom:4px;">Lower Body</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Squats, RDL, Leg Press, Calf Raises</div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--accent);padding:20px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);">Wednesday — Today</span>
+                  <span style="font-size:0.65rem;padding:3px 8px;background:rgba(45,212,191,0.15);color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;">Up Next</span>
+                </div>
+                <div style="font-weight:500;margin-bottom:4px;">Upper Body Pull</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Pull-ups, Barbell Rows, Face Pulls, Curls</div>
+                <button class="btn btn-primary btn-sm" style="margin-top:12px;">Start Workout</button>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;opacity:0.5;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Thursday</span>
+                  <span style="font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;">Rest Day</span>
+                </div>
+                <div style="font-weight:500;margin-bottom:4px;">Active Recovery</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Light stretching, mobility work</div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;opacity:0.5;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                  <span style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);">Friday</span>
+                </div>
+                <div style="font-weight:500;margin-bottom:4px;">Full Body Power</div>
+                <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Deadlifts, Clean & Press, Box Jumps, Planks</div>
+              </div>
+
+            </div>
+
+            <!-- Recent Activity -->
+            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">Recent Activity</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:40px;">
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-weight:500;">Upper Body Push</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Monday, Apr 14</div>
+                </div>
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                  <span><strong style="color:var(--text);">52 min</strong> duration</span>
+                  <span><strong style="color:var(--text);">18,400 lbs</strong> volume</span>
+                  <span style="color:#10B981;font-weight:500;">+25 Shape Score</span>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-weight:500;">Lower Body</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Tuesday, Apr 15</div>
+                </div>
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                  <span><strong style="color:var(--text);">48 min</strong> duration</span>
+                  <span><strong style="color:var(--text);">22,100 lbs</strong> volume</span>
+                  <span style="color:#10B981;font-weight:500;">+30 Shape Score</span>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="font-weight:500;">Full Body Power</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Friday, Apr 11</div>
+                </div>
+                <div style="display:flex;gap:24px;font-size:0.82rem;color:var(--text-muted);">
+                  <span><strong style="color:var(--text);">55 min</strong> duration</span>
+                  <span><strong style="color:var(--text);">24,600 lbs</strong> volume</span>
+                  <span style="color:#10B981;font-weight:500;">+35 Shape Score</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Personal Records -->
+            <h3 style="font-size:1rem;font-weight:500;letter-spacing:0.02em;margin-bottom:16px;">Personal Records</h3>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
+                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Bench Press</div>
+                <div style="font-size:1.5rem;font-weight:300;">225 lbs</div>
+                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 7</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
+                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Squat</div>
+                <div style="font-size:1.5rem;font-weight:300;">315 lbs</div>
+                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Mar 28</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
+                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Deadlift</div>
+                <div style="font-size:1.5rem;font-weight:300;">365 lbs</div>
+                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 11</div>
+              </div>
+              <div style="background:var(--bg-card);border:1px solid var(--border);padding:20px;text-align:center;">
+                <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Pull-ups</div>
+                <div style="font-size:1.5rem;font-weight:300;">18 reps</div>
+                <div style="font-size:0.75rem;color:var(--accent-dark);margin-top:4px;">PR set Apr 1</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
 
       <!-- NUTRITION TAB -->
