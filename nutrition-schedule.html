@@ -448,6 +448,7 @@
         }
         .mpb-badge-draft { background: var(--border); color: var(--text-muted); }
         .mpb-badge-published { background: rgba(16,185,129,0.15); color: #10B981; }
+        .mpb-badge-profile { background: rgba(99,102,241,0.15); color: #818CF8; }
         .mpb-plan-client { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; min-width: 120px; }
         .mpb-plan-actions { display: flex; gap: 8px; }
         .mpb-plan-actions button {
@@ -558,7 +559,7 @@
               <textarea class="mpb-textarea" id="mpbTplShoppingList" placeholder="Add ingredients for the week..." style="min-height:100px;"></textarea>
             </div>
 
-            <!-- Assign & Publish -->
+            <!-- Assign & Actions -->
             <div class="mpb-assign-row">
               <div>
                 <label class="mpb-label">Assign to Client</label>
@@ -569,15 +570,10 @@
                   <option>Marcus Thompson</option>
                 </select>
               </div>
-              <div>
-                <label class="mpb-label">Status</label>
-                <div class="mpb-status-toggle" id="mpbTplStatus">
-                  <button class="mpb-status-opt mpb-active" data-val="Draft" onclick="mpbSetStatus(this)">Draft</button>
-                  <button class="mpb-status-opt" data-val="Published" onclick="mpbSetStatus(this)">Published</button>
-                </div>
-              </div>
-              <div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="mpbSaveDraft('template')" style="border-color:var(--accent);color:var(--accent-dark);font-size:0.78rem;padding:8px 16px;">Save Draft</button>
                 <button class="mpb-publish-btn" onclick="mpbSavePlan('template')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="mpbPublishToProfile('template')" style="font-size:0.78rem;padding:8px 16px;">Publish to Profile</button>
               </div>
             </div>
           </div>
@@ -612,7 +608,7 @@
               <div id="mpbFileList"></div>
             </div>
 
-            <!-- Assign & Publish -->
+            <!-- Assign & Actions -->
             <div class="mpb-assign-row">
               <div>
                 <label class="mpb-label">Assign to Client</label>
@@ -623,15 +619,10 @@
                   <option>Marcus Thompson</option>
                 </select>
               </div>
-              <div>
-                <label class="mpb-label">Status</label>
-                <div class="mpb-status-toggle" id="mpbCustStatus">
-                  <button class="mpb-status-opt mpb-active" data-val="Draft" onclick="mpbSetStatus(this)">Draft</button>
-                  <button class="mpb-status-opt" data-val="Published" onclick="mpbSetStatus(this)">Published</button>
-                </div>
-              </div>
-              <div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:end;">
+                <button class="btn btn-outline" onclick="mpbSaveDraft('custom')" style="border-color:var(--accent);color:var(--accent-dark);font-size:0.78rem;padding:8px 16px;">Save Draft</button>
                 <button class="mpb-publish-btn" onclick="mpbSavePlan('custom')">Publish &amp; Send to Client</button>
+                <button class="btn btn-primary" onclick="mpbPublishToProfile('custom')" style="font-size:0.78rem;padding:8px 16px;">Publish to Profile</button>
               </div>
             </div>
           </div>
@@ -792,12 +783,12 @@
       return days;
     }
 
-    // Save plan
-    window.mpbSavePlan=function(type){
-      var plan={id:mpbEditId||Date.now(),type:type,createdAt:new Date().toISOString()};
+    // Collect plan data helper
+    function mpbCollectPlan(type){
+      var plan={id:mpbEditId||Date.now(),type:type,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()};
       if(type==='template'){
         plan.name=document.getElementById('mpbTplName').value.trim();
-        if(!plan.name){mpbToast('Please enter a plan name');return;}
+        if(!plan.name) return null;
         plan.goal=document.getElementById('mpbTplGoal').value;
         plan.dietType=document.getElementById('mpbTplDiet').value;
         plan.duration=document.getElementById('mpbTplDuration').value;
@@ -811,35 +802,80 @@
         plan.days=mpbCollectDays();
         plan.shoppingList=document.getElementById('mpbTplShoppingList').value;
         plan.client=document.getElementById('mpbTplClient').value;
-        var statusEl=document.querySelector('#mpbTplStatus .mpb-status-opt.mpb-active');
-        plan.status=statusEl?statusEl.dataset.val:'Draft';
       } else {
         plan.name=document.getElementById('mpbCustName').value.trim();
-        if(!plan.name){mpbToast('Please enter a plan name');return;}
+        if(!plan.name) return null;
         plan.description=document.getElementById('mpbCustDesc').value;
         plan.files=mpbUploadedFiles.map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
         plan.client=document.getElementById('mpbCustClient').value;
-        var statusEl=document.querySelector('#mpbCustStatus .mpb-status-opt.mpb-active');
-        plan.status=statusEl?statusEl.dataset.val:'Draft';
       }
+      return plan;
+    }
 
-      // Always set published when using publish button
-      plan.status='Published';
-
+    // Core save helper
+    function mpbCoreSave(plan){
       var plans=mpbGetPlans();
       var idx=plans.findIndex(function(p){return p.id===plan.id;});
       if(idx>-1) plans[idx]=plan; else plans.push(plan);
       mpbSavePlans(plans);
+    }
 
-      // If published and assigned, save to client-assigned store
-      if(plan.status==='Published'&&plan.client){
-        var assigned=mpbGetAssigned();
-        var ai=assigned.findIndex(function(a){return a.id===plan.id;});
-        if(ai>-1) assigned[ai]=plan; else assigned.push(plan);
-        mpbSaveAssigned(assigned);
-      }
+    // Save Draft
+    window.mpbSaveDraft=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      plan.status='Draft';
+      mpbCoreSave(plan);
+      mpbToast('Draft saved! You can continue editing anytime.');
+      mpbResetBuilder();
+      document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
+      mpbRenderList();
+    };
 
-      mpbToast('Meal plan "'+plan.name+'" published'+(plan.client?' & sent to '+plan.client:''));
+    // Publish & Send to Client
+    window.mpbSavePlan=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      if(!plan.client){mpbToast('Please assign a client first.');return;}
+      plan.status='Published';
+      mpbCoreSave(plan);
+      // Save to client assigned plans
+      var assigned=mpbGetAssigned();
+      var ai=assigned.findIndex(function(a){return a.id===plan.id;});
+      if(ai>-1) assigned[ai]=plan; else assigned.push(plan);
+      mpbSaveAssigned(assigned);
+      mpbToast('Meal plan published and sent to '+plan.client+'!');
+      mpbResetBuilder();
+      document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
+      mpbRenderList();
+    };
+
+    // Publish to Profile
+    window.mpbPublishToProfile=function(type){
+      var plan=mpbCollectPlan(type);
+      if(!plan){mpbToast('Please enter a plan name');return;}
+      plan.status='On Profile';
+      mpbCoreSave(plan);
+      // Add to nutritionist profile meal plans
+      try {
+        var profileRaw=localStorage.getItem('shapeNutritionistProfile');
+        var profile=profileRaw?JSON.parse(profileRaw):{};
+        if(!profile.mealPlans) profile.mealPlans=[];
+        var existing=profile.mealPlans.findIndex(function(p){return p.mpbId===plan.id;});
+        var profilePlan={
+          mpbId:plan.id,
+          name:plan.name,
+          goal:plan.goal||'',
+          duration:plan.duration?plan.duration+' weeks':'',
+          dietType:plan.dietType||'Custom',
+          desc:plan.description||'',
+          price:'$--'
+        };
+        if(existing>=0) profile.mealPlans[existing]=profilePlan;
+        else profile.mealPlans.push(profilePlan);
+        localStorage.setItem('shapeNutritionistProfile',JSON.stringify(profile));
+      } catch(e){}
+      mpbToast('Meal plan published to your profile!');
       mpbResetBuilder();
       document.getElementById('mpbBuilderArea').classList.remove('mpb-open');
       mpbRenderList();
@@ -853,7 +889,7 @@
       el.innerHTML='';
       plans.forEach(function(p){
         var item=document.createElement('div');item.className='mpb-plan-item';
-        var badgeCls=p.status==='Published'?'mpb-badge-published':'mpb-badge-draft';
+        var badgeCls=p.status==='Published'?'mpb-badge-published':p.status==='On Profile'?'mpb-badge-profile':'mpb-badge-draft';
         item.innerHTML='<h4>'+mpbEsc(p.name)+'</h4>'+
           '<span class="mpb-badge '+badgeCls+'">'+p.status+'</span>'+
           '<span class="mpb-plan-client">'+(p.client||'Unassigned')+'</span>'+
@@ -911,10 +947,6 @@
         mpbBuildDays(dayData);
         document.getElementById('mpbTplShoppingList').value=plan.shoppingList||'';
         document.getElementById('mpbTplClient').value=plan.client||'';
-        // Set status
-        document.querySelectorAll('#mpbTplStatus .mpb-status-opt').forEach(function(b){
-          b.classList.toggle('mpb-active',b.dataset.val===plan.status);
-        });
       } else {
         mpbChoosePathDirect('custom');
         document.getElementById('mpbCustName').value=plan.name||'';
@@ -923,9 +955,6 @@
         mpbUploadedFiles=(plan.files||[]).map(function(f){return {name:f.name,type:f.type,size:f.size,data:f.data};});
         mpbRenderFileList();
         document.getElementById('mpbCustClient').value=plan.client||'';
-        document.querySelectorAll('#mpbCustStatus .mpb-status-opt').forEach(function(b){
-          b.classList.toggle('mpb-active',b.dataset.val===plan.status);
-        });
       }
       window.scrollTo({top:document.getElementById('mpbSection').offsetTop-80,behavior:'smooth'});
     };
@@ -957,14 +986,12 @@
       mpbUpdateMacros();
       document.getElementById('mpbDaysContainer').innerHTML='';
       document.getElementById('mpbTplClient').selectedIndex=0;
-      document.querySelectorAll('#mpbTplStatus .mpb-status-opt').forEach(function(b,i){b.classList.toggle('mpb-active',i===0);});
       ['mpbCustName','mpbCustDesc'].forEach(function(id){
         var el=document.getElementById(id);if(el)el.value='';
       });
       mpbUploadedFiles=[];
       mpbRenderFileList();
       document.getElementById('mpbCustClient').selectedIndex=0;
-      document.querySelectorAll('#mpbCustStatus .mpb-status-opt').forEach(function(b,i){b.classList.toggle('mpb-active',i===0);});
     }
 
     // Init
