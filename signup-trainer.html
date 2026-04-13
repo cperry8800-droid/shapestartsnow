@@ -88,7 +88,7 @@
           </div>
           <div class="form-group">
             <label>Years of experience</label>
-            <select>
+            <select required>
               <option>1-2 years</option>
               <option>3-5 years</option>
               <option>5-10 years</option>
@@ -118,7 +118,7 @@
           <div class="form-group terms">
             <label class="checkbox-option">
               <input type="checkbox" required>
-              <span>I agree to the <a href="#">Trainer Agreement</a> and <a href="terms.html">Terms of Service</a></span>
+              <span>I agree to the <a href="terms.html">Trainer Agreement</a> and <a href="terms.html">Terms of Service</a></span>
             </label>
           </div>
           <button type="submit" class="btn-submit">Submit Application</button>
@@ -145,7 +145,17 @@
       document.querySelector('.signup-subtitle').textContent = titles[step - 1];
     }
     function completeSignup() {
-      window.location.href = 'home.html';
+      var step1 = document.getElementById('step1');
+      var inputs = step1.querySelectorAll('input');
+      var step2 = document.getElementById('step2');
+      var specialty = step2.querySelector('select').value;
+      localStorage.setItem('shapeLoggedIn', 'true');
+      localStorage.setItem('shapeUserType', 'trainer');
+      localStorage.setItem('shapeFirstName', inputs[0].value);
+      localStorage.setItem('shapeLastName', inputs[1].value);
+      localStorage.setItem('shapeEmail', inputs[2].value);
+      localStorage.setItem('shapeSpecialty', specialty);
+      window.location.href = 'trainer-dashboard.html';
     }
   </script>
 

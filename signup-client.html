@@ -92,7 +92,7 @@
           </div>
           <div class="form-group">
             <label>How often do you work out?</label>
-            <select>
+            <select required>
               <option>1-2 times per week</option>
               <option>3-4 times per week</option>
               <option>5-6 times per week</option>
@@ -151,7 +151,14 @@
       document.querySelector('.signup-subtitle').textContent = titles[step - 1];
     }
     function completeSignup() {
-      window.location.href = 'home.html';
+      var step1 = document.getElementById('step1');
+      var inputs = step1.querySelectorAll('input');
+      localStorage.setItem('shapeLoggedIn', 'true');
+      localStorage.setItem('shapeUserType', 'client');
+      localStorage.setItem('shapeFirstName', inputs[0].value);
+      localStorage.setItem('shapeLastName', inputs[1].value);
+      localStorage.setItem('shapeEmail', inputs[2].value);
+      window.location.href = 'clients.html';
     }
   </script>
 
