@@ -136,79 +136,114 @@
     /* ===== My Team Messaging ===== */
     .team-section { margin-bottom: 40px; }
     .team-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-    .team-card {
-      background: var(--bg-card); border: 1px solid var(--border); padding: 24px;
-      display: flex; align-items: center; gap: 16px;
+    .team-chat-container {
+      display: flex; flex-direction: column; border: 1px solid var(--border);
+      background: var(--bg); min-height: 420px;
     }
-    .team-card-avatar {
-      width: 48px; height: 48px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; font-weight: 600;
-      color: #fff; font-size: 0.85rem; flex-shrink: 0;
+    .team-chat-tabs {
+      display: flex; gap: 8px; padding: 12px 24px;
+      border-bottom: 1px solid var(--border); background: var(--bg-card);
     }
-    .team-card-info { flex: 1; }
-    .team-card-info h4 { font-size: 0.95rem; font-weight: 500; margin-bottom: 2px; }
-    .team-card-info span { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
-    .team-msg-panel {
-      display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--border);
-      min-height: 380px; background: var(--bg-card);
+    .team-chat-tab {
+      padding: 6px 16px; font-size: 0.75rem; font-weight: 500;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); cursor: pointer; transition: all 0.3s;
+      font-family: inherit;
     }
-    .team-msg-contact {
-      display: flex; align-items: center; gap: 10px; padding: 16px;
-      cursor: pointer; transition: background 0.2s; border-bottom: 1px solid var(--border);
+    .team-chat-tab.active {
+      background: var(--primary); color: #fff; border-color: var(--primary);
     }
-    .team-msg-contact:hover, .team-msg-contact.active { background: var(--bg-alt); }
-    .team-msg-contact-avatar {
-      width: 36px; height: 36px; border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; font-weight: 600;
-      color: #fff; font-size: 0.65rem; flex-shrink: 0;
+    .team-chat-tab:hover:not(.active) { border-color: var(--text); color: var(--text); }
+    .team-chat-messages {
+      flex: 1; overflow-y: auto; padding: 24px;
+      display: flex; flex-direction: column; gap: 16px;
+      max-height: 340px;
+      scrollbar-width: none; -ms-overflow-style: none;
     }
-    .team-msg-contact-info h4 { font-size: 0.82rem; font-weight: 500; }
-    .team-msg-contact-info span { font-size: 0.68rem; color: var(--text-muted); }
-    .team-msg-chat { display: flex; flex-direction: column; border-left: 1px solid var(--border); }
-    .team-msg-chat-header {
-      display: flex; align-items: center; gap: 12px; padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
+    .team-chat-messages::-webkit-scrollbar { display: none; }
+    .team-chat-msg {
+      display: flex; gap: 12px; max-width: 85%;
     }
-    .team-msg-chat-header h4 { font-size: 0.92rem; font-weight: 500; }
-    .team-msg-chat-header span { font-size: 0.75rem; color: var(--text-muted); }
-    .team-msg-body {
-      flex: 1; overflow-y: auto; padding: 20px; display: flex;
-      flex-direction: column; gap: 12px; max-height: 260px;
+    .team-chat-msg.own {
+      margin-left: auto; flex-direction: row-reverse;
     }
-    .team-msg-bubble {
-      max-width: 70%; padding: 10px 16px; font-size: 0.85rem; line-height: 1.5;
+    .team-chat-msg-avatar {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.6rem; color: #fff;
     }
-    .team-msg-bubble.sent {
-      align-self: flex-end; background: var(--accent); color: #fff;
-      border-radius: 16px 16px 4px 16px;
+    .team-chat-msg-body {
+      background: var(--bg-card); border: 1px solid var(--border);
+      padding: 12px 16px; border-radius: 12px; border-top-left-radius: 4px;
     }
-    .team-msg-bubble.received {
-      align-self: flex-start; background: var(--bg-alt); color: var(--text);
-      border-radius: 16px 16px 16px 4px;
+    .team-chat-msg.own .team-chat-msg-body {
+      background: var(--primary); color: #fff; border-color: var(--primary);
+      border-top-left-radius: 12px; border-top-right-radius: 4px;
     }
-    .team-msg-bubble-time { font-size: 0.65rem; opacity: 0.7; margin-top: 4px; }
-    .team-msg-input-area {
-      display: flex; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--border);
+    .team-chat-msg-name {
+      font-size: 0.72rem; font-weight: 600; margin-bottom: 4px;
     }
-    .team-msg-input-area input {
-      flex: 1; padding: 10px 16px; background: var(--bg); border: 1px solid var(--border);
-      color: var(--text); font-family: inherit; font-size: 0.85rem; outline: none;
+    .team-chat-msg.own .team-chat-msg-name { color: rgba(255,255,255,0.7); }
+    .team-chat-msg-text { font-size: 0.85rem; line-height: 1.5; font-weight: 300; }
+    .team-chat-msg-time {
+      font-size: 0.65rem; color: var(--text-muted); margin-top: 6px;
     }
-    .team-msg-input-area input:focus { border-color: var(--accent); }
-    .team-msg-input-area button {
-      padding: 10px 20px; background: var(--accent); color: #fff; border: none;
+    .team-chat-msg.own .team-chat-msg-time { color: rgba(255,255,255,0.5); }
+    .team-chat-input-area {
+      padding: 16px 24px; border-top: 1px solid var(--border);
+      background: var(--bg-card); display: flex; gap: 12px;
+    }
+    .team-chat-input-area input {
+      flex: 1; padding: 12px 16px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: inherit;
+      font-size: 0.85rem; outline: none; transition: border-color 0.3s;
+    }
+    .team-chat-input-area input:focus { border-color: var(--accent); }
+    .team-chat-input-area button {
+      padding: 10px 24px; background: var(--accent); color: #fff; border: none;
       font-family: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      text-transform: uppercase; letter-spacing: 0.05em;
     }
-    .team-msg-empty {
+    .team-chat-empty {
       flex: 1; display: flex; align-items: center; justify-content: center;
       color: var(--text-muted); font-size: 0.88rem; font-weight: 300;
     }
     @media (max-width: 768px) {
-      .team-grid { grid-template-columns: 1fr; }
-      .team-msg-panel { grid-template-columns: 1fr; }
-      .team-msg-chat { border-left: none; border-top: 1px solid var(--border); }
-      .team-msg-body { max-height: 200px; }
+      .team-chat-tabs {
+        display: flex; gap: 0; padding: 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-card);
+        flex-shrink: 0; overflow-x: auto;
+      }
+      .team-chat-tab {
+        flex: 1; min-width: 0;
+        padding: 12px 6px; font-size: 0.72rem; font-weight: 600;
+        border: none; border-radius: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent; color: var(--text-muted);
+        text-align: center; white-space: nowrap;
+      }
+      .team-chat-tab.active {
+        background: transparent; color: var(--accent);
+        border-bottom-color: var(--accent);
+      }
+      .team-chat-tab:hover:not(.active) {
+        border-color: transparent; color: var(--text);
+      }
+      .team-chat-messages {
+        max-height: 300px; padding: 12px 12px; gap: 10px;
+      }
+      .team-chat-msg { max-width: 85%; }
+      .team-chat-msg-avatar { width: 24px; height: 24px; font-size: 0.45rem; margin-top: 2px; }
+      .team-chat-msg-body {
+        border-radius: 18px; border-top-left-radius: 4px; padding: 10px 14px;
+      }
+      .team-chat-msg.own .team-chat-msg-body {
+        border-radius: 18px; border-top-right-radius: 4px;
+      }
+      .team-chat-input-area { padding: 12px; gap: 8px; }
+      .team-chat-input-area input { padding: 10px 12px; font-size: 0.82rem; }
+      .team-chat-input-area button { padding: 10px 16px; font-size: 0.75rem; }
     }
   </style>
   <link rel="manifest" href="manifest.json">
@@ -417,43 +452,17 @@
         <!-- My Team -->
         <div class="team-section">
           <h2>My Team</h2>
-          <div class="team-grid">
-            <div class="team-card">
-              <div class="team-card-avatar" style="background:#6C3AED;">MJ</div>
-              <div class="team-card-info">
-                <h4>Marcus Johnson</h4>
-                <span>Personal Trainer</span>
-              </div>
-              <button class="btn btn-sm btn-primary" onclick="openTeamChat('trainer')">Message</button>
+          <div class="team-chat-container">
+            <div class="team-chat-tabs" id="teamChatTabs">
+              <button class="team-chat-tab active" onclick="switchTeamChat('trainer', this)">Trainer Chat</button>
+              <button class="team-chat-tab" onclick="switchTeamChat('nutritionist', this)">Nutritionist Chat</button>
             </div>
-            <div class="team-card">
-              <div class="team-card-avatar" style="background:#10B981;">SM</div>
-              <div class="team-card-info">
-                <h4>Dr. Sarah Mitchell</h4>
-                <span>Nutritionist</span>
-              </div>
-              <button class="btn btn-sm btn-primary" onclick="openTeamChat('nutritionist')">Message</button>
+            <div class="team-chat-messages" id="teamChatMessages">
+              <!-- Populated by JS -->
             </div>
-          </div>
-          <div class="team-msg-panel" id="teamMsgPanel">
-            <div id="teamMsgSidebar">
-              <div class="team-msg-contact active" onclick="openTeamChat('trainer')">
-                <div class="team-msg-contact-avatar" style="background:#6C3AED;">MJ</div>
-                <div class="team-msg-contact-info">
-                  <h4>Marcus Johnson</h4>
-                  <span>Trainer</span>
-                </div>
-              </div>
-              <div class="team-msg-contact" onclick="openTeamChat('nutritionist')">
-                <div class="team-msg-contact-avatar" style="background:#10B981;">SM</div>
-                <div class="team-msg-contact-info">
-                  <h4>Dr. Sarah Mitchell</h4>
-                  <span>Nutritionist</span>
-                </div>
-              </div>
-            </div>
-            <div class="team-msg-chat" id="teamMsgChat">
-              <div class="team-msg-empty">Select a team member to start messaging</div>
+            <div class="team-chat-input-area">
+              <input type="text" placeholder="Type a message..." id="teamMsgInput" onkeydown="if(event.key==='Enter')sendTeamMessage()">
+              <button onclick="sendTeamMessage()">Send</button>
             </div>
           </div>
         </div>
@@ -765,47 +774,42 @@
       saveTeamMessages(demo);
     })();
 
-    let activeTeamChat = null;
+    let activeTeamChat = 'trainer';
 
-    function openTeamChat(type) {
+    function switchTeamChat(type, btn) {
       activeTeamChat = type;
-      const contact = teamContacts[type];
+      document.querySelectorAll('.team-chat-tab').forEach(t => t.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      renderTeamChat();
+    }
+
+    function renderTeamChat() {
+      const contact = teamContacts[activeTeamChat];
       const msgs = getTeamMessages();
-      const convo = msgs[type] || [];
+      const convo = msgs[activeTeamChat] || [];
+      const container = document.getElementById('teamChatMessages');
 
-      // Update sidebar active state
-      document.querySelectorAll('.team-msg-contact').forEach((el, i) => {
-        el.classList.toggle('active', (i === 0 && type === 'trainer') || (i === 1 && type === 'nutritionist'));
-      });
+      if (convo.length === 0) {
+        container.innerHTML = '<div class="team-chat-empty">Start a conversation with ' + contact.name + '</div>';
+        return;
+      }
 
-      const chatDiv = document.getElementById('teamMsgChat');
-      chatDiv.innerHTML = `
-        <div class="team-msg-chat-header">
-          <div class="team-msg-contact-avatar" style="background:${contact.color};">${contact.initials}</div>
-          <div>
-            <h4>${contact.name}</h4>
-            <span>${contact.role}</span>
-          </div>
-        </div>
-        <div class="team-msg-body" id="teamMsgBody">
-          ${convo.length === 0 ? '<div class="team-msg-empty">Start a conversation with ' + contact.name + '</div>' :
-            convo.map(m => `
-              <div class="team-msg-bubble ${m.from === 'me' ? 'sent' : 'received'}">
-                <div>${m.text}</div>
-                <div class="team-msg-bubble-time">${m.time}</div>
-              </div>
-            `).join('')
-          }
-        </div>
-        <div class="team-msg-input-area">
-          <input type="text" id="teamMsgInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendTeamMessage()">
-          <button onclick="sendTeamMessage()">Send</button>
-        </div>
-      `;
+      container.innerHTML = convo.map(m => {
+        const isOwn = m.from === 'me';
+        const avatar = isOwn
+          ? '<div class="team-chat-msg-avatar" style="background:#2DD4BF;">You</div>'
+          : '<div class="team-chat-msg-avatar" style="background:' + contact.color + ';">' + contact.initials + '</div>';
+        const name = isOwn ? 'You' : contact.name;
+        return '<div class="team-chat-msg' + (isOwn ? ' own' : '') + '">'
+          + avatar
+          + '<div class="team-chat-msg-body">'
+          + '<div class="team-chat-msg-name">' + name + '</div>'
+          + '<div class="team-chat-msg-text">' + m.text + '</div>'
+          + '<div class="team-chat-msg-time">' + m.time + '</div>'
+          + '</div></div>';
+      }).join('');
 
-      const body = document.getElementById('teamMsgBody');
-      body.scrollTop = body.scrollHeight;
-      document.getElementById('teamMsgInput').focus();
+      container.scrollTop = container.scrollHeight;
     }
 
     function sendTeamMessage() {
@@ -829,16 +833,12 @@
       saveTeamMessages(msgs);
 
       input.value = '';
-      openTeamChat(activeTeamChat);
+      renderTeamChat();
       if (typeof showToast === 'function') showToast('Message sent!');
     }
 
-    // Pre-select trainer chat without scrolling page
-    (function() {
-      const origScroll = window.scrollY;
-      openTeamChat('trainer');
-      window.scrollTo(0, 0);
-    })();
+    // Load initial chat without scrolling page
+    renderTeamChat();
   </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
