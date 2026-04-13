@@ -1786,18 +1786,12 @@
         html += '</div>';
         html += '<div class="wk-exercise-body" id="wkExBody' + ei + '">';
         html += '<table class="wk-set-table">';
-        html += '<thead><tr><th>Set</th><th>Reps</th><th>Weight (lbs)</th><th>Difficulty</th><th>Done</th></tr></thead><tbody>';
+        html += '<thead><tr><th>Set</th><th>Reps</th><th>Weight (lbs)</th><th>Done</th></tr></thead><tbody>';
         ex.sets.forEach(function(s, si) {
           html += '<tr>';
           html += '<td>' + (si + 1) + '</td>';
           html += '<td><input type="number" value="' + s.reps + '" min="0" onchange="updateSet(' + ei + ',' + si + ',\'reps\',this.value)"></td>';
           html += '<td><input type="number" value="' + s.weight + '" min="0" step="5" onchange="updateSet(' + ei + ',' + si + ',\'weight\',this.value)"></td>';
-          html += '<td><select onchange="updateSet(' + ei + ',' + si + ',\'difficulty\',this.value)">';
-          html += '<option value=""' + (s.difficulty===''?' selected':'') + '>--</option>';
-          html += '<option value="easy"' + (s.difficulty==='easy'?' selected':'') + '>Easy</option>';
-          html += '<option value="moderate"' + (s.difficulty==='moderate'?' selected':'') + '>Moderate</option>';
-          html += '<option value="hard"' + (s.difficulty==='hard'?' selected':'') + '>Hard</option>';
-          html += '</select></td>';
           html += '<td><button class="wk-set-done' + (s.done?' checked':'') + '" onclick="toggleSetDone(' + ei + ',' + si + ',this)">' + (s.done?'&#10003;':'') + '</button></td>';
           html += '</tr>';
         });
