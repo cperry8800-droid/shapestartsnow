@@ -38,7 +38,7 @@ a { color: inherit; text-decoration: none; }
 img { max-width: 100%; display: block; }
 ul { list-style: none; }
 
-.container { max-width: 1280px; margin: 0 auto; padding: 0 48px; }
+.container { max-width: 1440px; margin: 0 auto; padding: 0 24px; }
 
 .gradient-text {
   background: var(--gradient-text);
@@ -579,7 +579,7 @@ img.card-avatar-inline { background: var(--border); }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .container { padding: 0 24px; }
+  .container { padding: 0 16px; }
   .ai-trainer-layout { grid-template-columns: 1fr; gap: 40px; }
   .ai-chat-container { height: 480px; }
   .steps, .pricing-grid, .testimonials, .footer-grid {
@@ -627,7 +627,7 @@ img.card-avatar-inline { background: var(--border); }
   .nav-dropdown-menu a {
     padding: 6px 0; font-size: 0.75rem; opacity: 0.5;
   }
-  .container { padding: 0 24px; }
+  .container { padding: 0 16px; }
   .hero h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); }
   .hero { padding: 120px 0 48px; }
   .section { padding: 36px 0; }
