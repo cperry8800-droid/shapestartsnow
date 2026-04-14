@@ -47,8 +47,11 @@
         <a href="pricing.html">Pricing</a>
       </div>
       <div class="nav-actions">
-        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
-        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+        <a href="login.html" class="btn btn-sm btn-outline shape-auth-logged-out">Log In</a>
+        <span class="shape-auth-logged-in shape-nav-user-name" style="display:none;font-size:0.82rem;color:var(--text-muted);margin-right:4px;"></span>
+        <a href="clients.html" class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" data-shape-dashboard-link>Dashboard</a>
+        <button class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" onclick="shapeSignOut()">Sign Out</button>
+        <a href="landing.html" class="btn btn-sm btn-primary shape-auth-logged-out">Get Started</a>
         <a href="radio.html" class="btn btn-sm btn-radio"><span class="btn-shape-text"><img src="logo.png" alt="Shape"></span> Radio</a>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -179,6 +182,8 @@
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

@@ -144,7 +144,7 @@
 
         <div class="form-options">
           <label><input type="checkbox" checked> Remember me</label>
-          <a href="#">Forgot password?</a>
+          <a href="#" onclick="event.preventDefault(); shapeForgotPassword();">Forgot password?</a>
         </div>
 
         <button class="btn btn-primary btn-block" onclick="demoLogin('client')">Log In</button>
@@ -170,7 +170,7 @@
 
         <div class="form-options">
           <label><input type="checkbox" checked> Remember me</label>
-          <a href="#">Forgot password?</a>
+          <a href="#" onclick="event.preventDefault(); shapeForgotPassword();">Forgot password?</a>
         </div>
 
         <button class="btn btn-primary btn-block" onclick="demoLogin('trainer')">Log In</button>
@@ -196,7 +196,7 @@
 
         <div class="form-options">
           <label><input type="checkbox" checked> Remember me</label>
-          <a href="#">Forgot password?</a>
+          <a href="#" onclick="event.preventDefault(); shapeForgotPassword();">Forgot password?</a>
         </div>
 
         <button class="btn btn-primary btn-block" onclick="demoLogin('nutritionist')">Log In</button>
@@ -265,6 +265,27 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
+  <script>
+    async function shapeForgotPassword() {
+      // Find the email from whichever login panel is active.
+      var active = document.querySelector('.login-panel.active');
+      var emailInput = active && active.querySelector('input[type="email"]');
+      var email = emailInput ? emailInput.value.trim() : '';
+      if (!email) {
+        alert('Enter your email above first, then click "Forgot password?" again.');
+        if (emailInput) emailInput.focus();
+        return;
+      }
+      if (!window.shapeDb) { alert('Auth client not loaded. Please refresh.'); return; }
+      var redirectTo = window.location.origin + '/reset-password.html';
+      var res = await window.shapeDb.client.auth.resetPasswordForEmail(email, { redirectTo: redirectTo });
+      if (res.error) {
+        alert(res.error.message || 'Could not send reset email.');
+        return;
+      }
+      alert('Password reset link sent to ' + email + '. Check your inbox.');
+    }
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

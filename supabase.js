@@ -126,8 +126,49 @@
       if (role === 'trainer') return 'trainer-dashboard.html';
       if (role === 'nutritionist') return 'nutrition-schedule.html';
       return 'clients.html';
+    },
+
+    // Swap any element with .shape-auth-logged-out / .shape-auth-logged-in
+    // classes based on the current session. Safe to call on any page.
+    async applyNavAuthState() {
+      var session = await shapeDb.getSession();
+      var loggedIn = !!session;
+      document.querySelectorAll('.shape-auth-logged-out').forEach(function (el) {
+        el.style.display = loggedIn ? 'none' : '';
+      });
+      document.querySelectorAll('.shape-auth-logged-in').forEach(function (el) {
+        el.style.display = loggedIn ? '' : 'none';
+      });
+      if (loggedIn) {
+        var profile = await shapeDb.getProfile(session.user.id);
+        document.querySelectorAll('#shapeNavUserName, .shape-nav-user-name').forEach(function (el) {
+          if (profile && profile.full_name) el.textContent = profile.full_name;
+          else el.textContent = session.user.email || '';
+        });
+        // Rewrite any dashboard-link anchors with data-shape-dashboard-link
+        // to point at the user's own dashboard.
+        if (profile) {
+          var dash = shapeDb.dashboardFor(profile.role);
+          document.querySelectorAll('[data-shape-dashboard-link]').forEach(function (el) {
+            el.setAttribute('href', dash);
+          });
+        }
+      }
     }
   };
 
   window.shapeDb = shapeDb;
+
+  // Global sign-out helper (used by navbar buttons site-wide).
+  window.shapeSignOut = async function () {
+    if (window.shapeDb) await window.shapeDb.signOut();
+    window.location.href = 'home.html';
+  };
+
+  // Auto-apply nav auth state on every page that loads this script.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { shapeDb.applyNavAuthState(); });
+  } else {
+    shapeDb.applyNavAuthState();
+  }
 })();
