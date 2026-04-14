@@ -103,23 +103,45 @@
       return res.data;
     },
 
-    // Guard a dashboard page. If no session or wrong role → bounce to login.
+    // Guard a dashboard page.
+    // - No session → return { demo: true } so the page can render a sample view.
+    // - Logged in with wrong role → bounce to their own dashboard.
+    // - Logged in with right role → return { session, profile }.
     async requireRole(expectedRole) {
       var session = await shapeDb.getSession();
       if (!session) {
-        window.location.href = 'login.html';
-        return null;
+        return { demo: true };
       }
       var profile = await shapeDb.getProfile(session.user.id);
       if (!profile) {
-        window.location.href = 'login.html';
-        return null;
+        return { demo: true };
       }
       if (expectedRole && profile.role !== expectedRole) {
         window.location.href = shapeDb.dashboardFor(profile.role);
         return null;
       }
       return { session: session, profile: profile };
+    },
+
+    // Inject a top-of-page "sample dashboard" banner for logged-out visitors.
+    showDemoBanner(role) {
+      if (document.getElementById('shapeDemoBanner')) return;
+      var signupHref = role === 'trainer' ? 'signup-trainer.html'
+        : role === 'nutritionist' ? 'signup-nutritionist.html'
+        : 'signup-client.html';
+      var label = role === 'trainer' ? 'trainer' : role === 'nutritionist' ? 'nutritionist' : 'client';
+      var bar = document.createElement('div');
+      bar.id = 'shapeDemoBanner';
+      bar.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;' +
+        'padding:10px 16px;background:#1A1A1A;color:#fff;font-size:0.82rem;font-weight:500;' +
+        'letter-spacing:0.02em;border-bottom:1px solid rgba(255,255,255,0.1);' +
+        'position:sticky;top:0;z-index:9999;text-align:center;">' +
+        '<span style="opacity:0.85;">Sample ' + label + ' dashboard — sign up to get your own.</span>' +
+        '<a href="' + signupHref + '" style="color:#fff;text-decoration:underline;font-weight:600;">Sign up</a>' +
+        '<a href="login.html" style="color:#fff;opacity:0.7;">Log in</a>' +
+        '</div>';
+      document.body.insertBefore(bar, document.body.firstChild);
     },
 
     dashboardFor(role) {

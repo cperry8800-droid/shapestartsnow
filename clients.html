@@ -4722,6 +4722,7 @@
       if (!window.shapeDb) return;
       var ctx = await window.shapeDb.requireRole('client');
       if (!ctx) return;
+      if (ctx.demo) { window.shapeDb.showDemoBanner('client'); return; }
       window.shapeCurrentUser = ctx;
       try {
         // Swap navbar: hide logged-out CTAs, show logged-in name + sign out.

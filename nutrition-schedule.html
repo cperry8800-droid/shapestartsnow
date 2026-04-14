@@ -3182,6 +3182,7 @@
       if (!window.shapeDb) return;
       var ctx = await window.shapeDb.requireRole('nutritionist');
       if (!ctx) return;
+      if (ctx.demo) { window.shapeDb.showDemoBanner('nutritionist'); return; }
       window.shapeCurrentUser = ctx;
       try {
         document.querySelectorAll('.shape-auth-logged-out').forEach(function (el) { el.style.display = 'none'; });
