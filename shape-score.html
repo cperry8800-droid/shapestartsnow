@@ -134,6 +134,7 @@
           </div>
         </div>
         <a href="shape-score.html">Shape Score</a>
+        <a href="shape-store.html">Shape Store</a>
         <a href="community.html">Community</a>
         <a href="pricing.html">Pricing</a>
       </div>
@@ -155,8 +156,8 @@
   <section class="page-hero">
     <div class="container">
       <span class="tag">Shape Score</span>
-      <h1>Earn rewards for every <span class="gradient-text">session</span></h1>
-      <p class="page-hero-sub">Every workout you finish earns you Shape Score. Stack them up and redeem for real rewards — discounts, free months, exclusive gear, and nutrition.</p>
+      <h1>Earn points for every <span class="gradient-text">session</span></h1>
+      <p class="page-hero-sub">Every workout you finish earns you Shape Score. Climb the tiers, top the leaderboard, and spend what you earn in the <a href="shape-store.html" style="color:var(--accent-dark);text-decoration:underline;">Shape Store</a>.</p>
     </div>
   </section>
 
@@ -251,31 +252,15 @@
           </div>
         </div>
 
-        <!-- Right: Redeem & Leaderboard -->
+        <!-- Right: Leaderboard & Friends -->
         <div>
-          <!-- Rewards Shop -->
-          <div style="text-align:center;margin-bottom:10px;">
-            <span class="tag">Rewards</span>
-            <h2 style="font-size:clamp(1rem,1.8vw,1.3rem);font-weight:300;letter-spacing:-0.03em;margin-top:6px;margin-bottom:10px;">Spend your points</h2>
-          </div>
-
-          <!-- Category Tabs -->
-          <div class="rewards-cat-tabs">
-            <button class="rewards-cat-btn active" onclick="filterRewards('all', this)">All</button>
-            <button class="rewards-cat-btn" onclick="filterRewards('gear', this)">Workout Gear</button>
-            <button class="rewards-cat-btn" onclick="filterRewards('nutrition', this)">Nutrition</button>
-            <button class="rewards-cat-btn" onclick="filterRewards('shape', this)">Shape Perks</button>
-          </div>
-
-          <!-- Rewards Grid -->
-          <div class="reward-grid-wrap">
-            <div class="reward-grid" id="rewardGrid"></div>
-          </div>
-
-          <!-- Redeemed Coupons -->
-          <div id="redeemedSection" style="display:none;margin-bottom:40px;">
-            <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;">Your Unlocked Coupons</div>
-            <div class="redeemed-list" id="redeemedList"></div>
+          <!-- Spend CTA -->
+          <div style="background:var(--bg-card);border:1px solid var(--border);padding:24px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;">
+            <div>
+              <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:4px;">Ready to redeem?</div>
+              <div style="font-size:1rem;font-weight:500;">Spend your Shape Score in the Shape Store</div>
+            </div>
+            <a href="shape-store.html" class="btn btn-sm btn-primary">Shop Rewards &rarr;</a>
           </div>
 
           <!-- Leaderboard -->
@@ -422,7 +407,8 @@
 
   <script src="app.js"></script>
   <script>
-    // ===== Shape Score Rewards Shop =====
+    // ===== Shape Score (rewards moved to shape-store.html) =====
+    /*
     const _ssBalance = 2450;
     const _ssRewards = [
       // Workout Gear
@@ -537,6 +523,7 @@
 
     // Initial render
     renderRewards();
+    */
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase.js"></script>
