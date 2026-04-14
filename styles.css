@@ -347,17 +347,21 @@ img.card-avatar-inline { background: var(--border); }
 
 /* ===== Footer ===== */
 .footer { padding: 80px 0 40px; border-top: 1px solid var(--border); }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; align-items: start; justify-items: center; text-align: center; }
-.footer-grid > .footer-col:first-child { justify-self: start; text-align: left; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; align-items: start; }
+.footer-col { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.footer-grid > .footer-col:first-child { align-items: flex-start; text-align: left; }
 .footer-desc { color: var(--text-muted); font-size: 0.88rem; margin-top: -2px; line-height: 1.7; font-weight: 300; }
 .footer-col h4 {
   font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
   letter-spacing: 0.12em; margin-bottom: 24px; color: var(--text-muted);
+  text-align: center;
 }
+.footer-grid > .footer-col:first-child h4 { text-align: left; }
 .footer-col a {
   display: block; color: var(--text); font-size: 0.88rem; padding: 6px 0;
-  transition: opacity 0.3s; font-weight: 400;
+  transition: opacity 0.3s; font-weight: 400; text-align: center;
 }
+.footer-grid > .footer-col:first-child a { text-align: left; }
 .footer-col a:hover { opacity: 0.5; }
 .footer-bottom { text-align: center; padding-top: 40px; border-top: 1px solid var(--border); }
 .footer-bottom p { font-size: 0.78rem; color: var(--text-muted); font-weight: 300; }
