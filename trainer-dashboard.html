@@ -879,8 +879,10 @@
         <a href="pricing.html">Pricing</a>
       </div>
       <div class="nav-actions">
-        <a href="login.html" class="btn btn-sm btn-outline">Log In</a>
-        <a href="landing.html" class="btn btn-sm btn-primary">Get Started</a>
+        <a href="login.html" class="btn btn-sm btn-outline shape-auth-logged-out">Log In</a>
+        <a href="landing.html" class="btn btn-sm btn-primary shape-auth-logged-out">Get Started</a>
+        <span class="shape-auth-logged-in" style="display:none;font-size:0.82rem;color:var(--text-muted);margin-right:4px;" id="shapeNavUserName"></span>
+        <button class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" onclick="shapeSignOut()">Sign Out</button>
         <a href="radio.html" class="btn btn-sm btn-radio"><span class="btn-shape-text"><img src="logo.png" alt="Shape"></span> Radio</a>
       </div>
       <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -4551,6 +4553,8 @@
       if (!ctx) return;
       window.shapeCurrentUser = ctx;
       try {
+        document.querySelectorAll('.shape-auth-logged-out').forEach(function (el) { el.style.display = 'none'; });
+        document.querySelectorAll('.shape-auth-logged-in').forEach(function (el) { el.style.display = ''; });
         var nameSlot = document.getElementById('shapeNavUserName');
         if (nameSlot && ctx.profile && ctx.profile.full_name) {
           nameSlot.textContent = ctx.profile.full_name;
