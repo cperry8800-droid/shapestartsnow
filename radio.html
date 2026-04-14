@@ -304,11 +304,32 @@
 
     document.getElementById('visualizer').classList.add('paused');
 
-    // Check if already logged in
-    if (localStorage.getItem('shapeRadioLoggedIn')) {
+    function openRadio(autoPlay) {
       document.getElementById('radioGate').style.display = 'none';
       document.getElementById('radioContent').classList.add('active');
+      if (autoPlay && !isPlaying) togglePlay();
     }
+
+    // Check if already logged in (legacy localStorage fallback)
+    if (localStorage.getItem('shapeRadioLoggedIn')) {
+      openRadio(true);
+    }
+
+    // Any Shape account (client / trainer / nutritionist) unlocks radio.
+    (async function () {
+      try {
+        // Wait a tick for supabase.js to initialize window.shapeDb.
+        for (var i = 0; i < 20 && !window.shapeDb; i++) {
+          await new Promise(function (r) { setTimeout(r, 50); });
+        }
+        if (!window.shapeDb) return;
+        var session = await window.shapeDb.getSession();
+        if (session) {
+          localStorage.setItem('shapeRadioLoggedIn', 'true');
+          openRadio(true);
+        }
+      } catch (e) {}
+    })();
 
     function radioLogin() {
       const email = document.getElementById('radioEmail').value;
@@ -326,6 +347,8 @@
       window.location.href = 'signup-radio.html';
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
