@@ -772,7 +772,9 @@
       body.shape-logged-in #tabMyteam.dash-tab-content.active,
       body.shape-logged-in #tabCommunity.dash-tab-content.active {
         position: fixed;
-        top: 64px; left: 0; right: 0;
+        top: 96px;
+        left: env(safe-area-inset-left, 0px);
+        right: env(safe-area-inset-right, 0px);
         bottom: calc(62px + env(safe-area-inset-bottom, 0px));
         margin: 0; padding: 0 !important;
         background: var(--bg);
@@ -780,6 +782,8 @@
         display: flex !important;
         flex-direction: column;
         overflow: hidden;
+        width: auto !important;
+        max-width: none !important;
       }
       /* Hide non-chat content inside My Team so the chat is the whole
          screen. Sessions widget still works on desktop. */
@@ -790,9 +794,16 @@
       body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-container,
       body.shape-logged-in #tabCommunity.dash-tab-content.active .community-layout,
       body.shape-logged-in #tabCommunity.dash-tab-content.active .community-chat {
-        flex: 1 1 auto; min-height: 0; height: auto;
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        height: auto !important;
+        max-height: none !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
         display: flex; flex-direction: column;
         border: none; border-radius: 0;
+        box-sizing: border-box;
       }
       body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-messages,
       body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-messages,
@@ -807,6 +818,22 @@
         padding: 10px 12px;
         background: var(--bg-alt);
         border-top: 1px solid var(--border);
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 100%;
+        gap: 8px;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-input-area input,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-input-area input {
+        flex: 1 1 auto;
+        min-width: 0;
+        width: auto;
+      }
+      body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-input-area button,
+      body.shape-logged-in #tabCommunity.dash-tab-content.active .chat-input-area button {
+        flex: 0 0 auto;
+        padding: 10px 16px;
+        font-size: 0.72rem;
       }
       /* Polished iMessage bubbles */
       body.shape-logged-in #tabMyteam.dash-tab-content.active .team-chat-msg-body,

@@ -722,7 +722,9 @@
     body.shape-logged-in #tab-messages.td-tab-content.active,
     body.shape-logged-in #tab-community.td-tab-content.active {
       position: fixed;
-      top: 64px; left: 0; right: 0;
+      top: 96px;
+      left: env(safe-area-inset-left, 0px);
+      right: env(safe-area-inset-right, 0px);
       bottom: calc(62px + env(safe-area-inset-bottom, 0px));
       margin: 0; padding: 0 !important;
       background: var(--bg);
@@ -730,6 +732,8 @@
       display: flex !important;
       flex-direction: column;
       overflow: hidden;
+      width: auto !important;
+      max-width: none !important;
     }
     body.shape-logged-in #tab-messages .td-section,
     body.shape-logged-in #tab-community .td-section,
@@ -737,10 +741,17 @@
     body.shape-logged-in #tab-community .td-community-layout,
     body.shape-logged-in #tab-community .td-community-chat,
     body.shape-logged-in #tab-messages .td-msg-chat {
-      flex: 1 1 auto; min-height: 0; height: auto;
+      flex: 1 1 auto !important;
+      min-height: 0 !important;
+      height: auto !important;
+      max-height: none !important;
+      width: 100% !important;
+      max-width: none !important;
+      margin: 0 !important;
       display: flex; flex-direction: column;
       border: none; border-radius: 0;
       grid-template-columns: 1fr !important;
+      box-sizing: border-box;
     }
     body.shape-logged-in #tab-messages .td-section-header,
     body.shape-logged-in #tab-community .td-community-sidebar,
@@ -758,6 +769,24 @@
     body.shape-logged-in #tab-messages .td-msg-chat .td-msg-input {
       flex-shrink: 0; padding: 10px 12px;
       background: var(--bg-alt); border-top: 1px solid var(--border);
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 100%;
+      gap: 8px;
+      display: flex;
+      align-items: center;
+    }
+    body.shape-logged-in #tab-community .td-community-input-area input,
+    body.shape-logged-in #tab-messages .td-msg-chat .td-msg-input input {
+      flex: 1 1 auto;
+      min-width: 0;
+      width: auto;
+    }
+    body.shape-logged-in #tab-community .td-community-input-area button,
+    body.shape-logged-in #tab-messages .td-msg-chat .td-msg-input button {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      font-size: 0.72rem;
     }
     /* iMessage bubble polish */
     body.shape-logged-in #tab-messages .td-msg-bubble,
