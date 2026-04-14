@@ -1211,7 +1211,7 @@
             <span>&#9878; 6 exercises</span>
             <span>&#9889; +50 pts</span>
           </div>
-          <button class="today-hero-cta" onclick="switchDashTab('training', document.querySelector('[data-tab=training]'))">Start Workout &rarr;</button>
+          <button class="today-hero-cta" onclick="startLiveWorkout(2)">Start Workout &rarr;</button>
         </div>
 
         <div class="widget-grid" id="clWidgetGrid">
@@ -1379,21 +1379,21 @@
                       <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">5x5 Strength Foundation</div>
                       <div style="font-size: 0.78rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
                     </div>
-                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
                   </div>
                   <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                       <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Tabata Inferno</div>
                       <div style="font-size: 0.78rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
                     </div>
-                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
                   </div>
                   <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                       <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Living Room HIIT</div>
                       <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
                     </div>
-                    <button class="btn btn-sm btn-outline">Start Workout</button>
+                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
                   </div>
                 </div>
               </div>
@@ -1614,7 +1614,7 @@
                   </div>
                   <div style="font-weight:500;margin-bottom:4px;">Upper Body Pull</div>
                   <div style="font-size:0.82rem;color:var(--text-muted);font-weight:300;">Pull-ups, Barbell Rows, Face Pulls, Curls</div>
-                  <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation();openWorkoutDetail(2)">Start Workout</button>
+                  <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout(2)">Start Workout</button>
                 </div>
 
                 <div class="wk-day-card rest" onclick="openWorkoutDetail(3)">
@@ -2508,6 +2508,26 @@
 
     var currentWorkoutIdx = null;
     var selectedRating = null;
+
+    // Launch the dedicated live-workout page with this workout's data.
+    function startLiveWorkout(idx) {
+      if (idx == null) {
+        // Default: first not-completed workout, else the "today" one.
+        idx = workoutData.findIndex(function(w){ return !w.completed; });
+        if (idx < 0) idx = 2;
+      }
+      var w = workoutData[idx];
+      if (!w) { window.location.href = 'live-workout.html'; return; }
+      try {
+        sessionStorage.setItem('shapeLiveWorkout', JSON.stringify({
+          idx: idx,
+          title: w.title,
+          day: w.day,
+          exercises: w.exercises
+        }));
+      } catch (e) {}
+      window.location.href = 'live-workout.html';
+    }
 
     function openWorkoutDetail(idx) {
       currentWorkoutIdx = idx;
