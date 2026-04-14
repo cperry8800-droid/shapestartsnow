@@ -34,7 +34,6 @@
     var missing = allRoles.filter(function (r) { return current.indexOf(r) === -1; });
 
     var labels = { client: 'Client', trainer: 'Trainer', nutritionist: 'Nutritionist' };
-    var icons = { client: '👤', trainer: '🏋️', nutritionist: '🥗' };
     var descs = {
       client: 'Train with coaches and track your own workouts.',
       trainer: 'Offer programs and coach clients on Shape.',
@@ -52,7 +51,7 @@
       html += '<div class="sar-btns">';
       missing.forEach(function (r) {
         html += '<button class="sar-btn primary" data-add="' + r + '" title="' + descs[r] + '">' +
-          '<span>' + icons[r] + '</span>Become a ' + labels[r].toLowerCase() + '</button>';
+          'Become a ' + labels[r].toLowerCase() + '</button>';
       });
       html += '</div>';
     }

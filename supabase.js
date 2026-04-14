@@ -273,7 +273,6 @@
       if (!anchor) return;
 
       var labels = { client: 'Client', trainer: 'Trainer', nutritionist: 'Nutritionist' };
-      var icons = { client: '👤', trainer: '🏋️', nutritionist: '🥗' };
 
       // Best-guess current role from pathname.
       var path = window.location.pathname.toLowerCase();
@@ -302,17 +301,16 @@
       var menuHtml = '';
       roles.forEach(function (r) {
         var active = r === current ? ' active' : '';
-        var check = r === current ? '<span class="srs-check">✓</span>' : '';
+        var check = r === current ? '<span class="srs-check">Active</span>' : '';
         menuHtml +=
           '<a href="' + shapeDb.dashboardFor(r) + '" class="' + active.trim() + '">' +
-            '<span>' + (icons[r] || '•') + '</span><span>' + (labels[r] || r) + '</span>' + check +
+            '<span>' + (labels[r] || r) + '</span>' + check +
           '</a>';
       });
       wrap.innerHTML =
         '<button class="srs-btn" type="button">' +
-          '<span>' + (icons[current] || '•') + '</span>' +
           '<span>' + (labels[current] || current) + '</span>' +
-          '<span class="srs-caret">▼</span>' +
+          '<span class="srs-caret">&#9662;</span>' +
         '</button>' +
         '<div class="srs-menu">' + menuHtml + '</div>';
 
