@@ -4706,6 +4706,28 @@
   })();
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script>
+    // Session guard — Phase 1. If not logged in as a client, bounce.
+    (async function () {
+      if (!window.shapeDb) return;
+      var ctx = await window.shapeDb.requireRole('client');
+      if (!ctx) return;
+      // Expose to page code + show the name in the navbar if there's a slot.
+      window.shapeCurrentUser = ctx;
+      try {
+        var nameSlot = document.getElementById('shapeNavUserName');
+        if (nameSlot && ctx.profile && ctx.profile.full_name) {
+          nameSlot.textContent = ctx.profile.full_name;
+        }
+      } catch (e) {}
+    })();
+    async function shapeSignOut() {
+      if (window.shapeDb) await window.shapeDb.signOut();
+      window.location.href = 'home.html';
+    }
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

@@ -150,18 +150,44 @@
       const titles = ['Step 1 of 3 — Personal information', 'Step 2 of 3 — Fitness profile', 'Step 3 of 3 — Preferences'];
       document.querySelector('.signup-subtitle').textContent = titles[step - 1];
     }
-    function completeSignup() {
+    async function completeSignup() {
       var step1 = document.getElementById('step1');
       var inputs = step1.querySelectorAll('input');
-      localStorage.setItem('shapeLoggedIn', 'true');
-      localStorage.setItem('shapeUserType', 'client');
-      localStorage.setItem('shapeFirstName', inputs[0].value);
-      localStorage.setItem('shapeLastName', inputs[1].value);
-      localStorage.setItem('shapeEmail', inputs[2].value);
+      var firstName = inputs[0].value.trim();
+      var lastName = inputs[1].value.trim();
+      var email = inputs[2].value.trim();
+      var password = inputs[3].value;
+
+      if (!email || !password) { alert('Email and password are required.'); return; }
+      if (!window.shapeDb) { alert('Auth client not loaded. Please refresh.'); return; }
+
+      var btn = document.querySelector('#step3 .btn-submit');
+      if (btn) { btn.disabled = true; btn.textContent = 'Creating account...'; }
+
+      var res = await window.shapeDb.signUp({
+        email: email,
+        password: password,
+        role: 'client',
+        fullName: (firstName + ' ' + lastName).trim()
+      });
+      if (res.error) {
+        alert(res.error.message || 'Sign up failed.');
+        if (btn) { btn.disabled = false; btn.textContent = 'Create Profile'; }
+        return;
+      }
+      // If email confirmation is required there's no session yet — send them to login.
+      var session = await window.shapeDb.getSession();
+      if (!session) {
+        alert('Check your email to confirm your account, then log in.');
+        window.location.href = 'login.html';
+        return;
+      }
       window.location.href = 'clients.html';
     }
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

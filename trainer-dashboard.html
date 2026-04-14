@@ -4542,6 +4542,26 @@
     wlibApply();
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
+  <script>
+    (async function () {
+      if (!window.shapeDb) return;
+      var ctx = await window.shapeDb.requireRole('trainer');
+      if (!ctx) return;
+      window.shapeCurrentUser = ctx;
+      try {
+        var nameSlot = document.getElementById('shapeNavUserName');
+        if (nameSlot && ctx.profile && ctx.profile.full_name) {
+          nameSlot.textContent = ctx.profile.full_name;
+        }
+      } catch (e) {}
+    })();
+    async function shapeSignOut() {
+      if (window.shapeDb) await window.shapeDb.signOut();
+      window.location.href = 'home.html';
+    }
+  </script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>

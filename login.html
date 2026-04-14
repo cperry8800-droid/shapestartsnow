@@ -227,7 +227,7 @@
       }
     }
 
-    function demoLogin(type) {
+    async function demoLogin(type) {
       var emailId = type + 'Email';
       var passwordId = type + 'Password';
       var email = document.getElementById(emailId).value.trim();
@@ -237,20 +237,34 @@
         alert('Please enter both email and password.');
         return;
       }
-
-      localStorage.setItem('shapeLoggedIn', 'true');
-      localStorage.setItem('shapeUserType', type);
-
-      if (type === 'trainer') {
-        window.location.href = 'trainer-dashboard.html';
-      } else if (type === 'nutritionist') {
-        window.location.href = 'nutrition-schedule.html';
-      } else {
-        window.location.href = 'clients.html';
+      if (!window.shapeDb) {
+        alert('Auth client not loaded. Please refresh.');
+        return;
       }
+
+      var btn = event && event.target;
+      if (btn) { btn.disabled = true; btn.textContent = 'Logging in...'; }
+
+      var res = await window.shapeDb.signIn(email, password);
+      if (res.error) {
+        alert(res.error.message || 'Login failed.');
+        if (btn) { btn.disabled = false; btn.textContent = 'Log In'; }
+        return;
+      }
+      if (!res.profile) {
+        alert('No profile found for this account. Please sign up.');
+        if (btn) { btn.disabled = false; btn.textContent = 'Log In'; }
+        return;
+      }
+      if (res.profile.role !== type) {
+        alert("This account is registered as a " + res.profile.role + ". Redirecting to the correct dashboard.");
+      }
+      window.location.href = window.shapeDb.dashboardFor(res.profile.role);
     }
   </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase.js"></script>
   <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
