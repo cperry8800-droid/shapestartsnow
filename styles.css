@@ -92,7 +92,12 @@ ul { list-style: none; }
   border-bottom: 1px solid var(--border);
   padding: 12px 0;
 }
-.nav-container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 16px; position: relative; }
+/* Nav layout: minmax(0,1fr) on both edge columns so they stay EQUAL
+   even when one side's content (actions) is wider than the other
+   (logo). The middle auto column is therefore always centered at the
+   viewport midpoint regardless of logo or button size changes. Do NOT
+   change to plain 1fr — that lets the wider side push the center off. */
+.nav-container { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: center; gap: 16px; position: relative; }
 .nav-container > .logo { justify-self: start; }
 .nav-container > .nav-actions { justify-self: end; }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.4rem; flex-shrink: 0; }
