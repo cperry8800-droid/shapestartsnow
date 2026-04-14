@@ -347,9 +347,9 @@ img.card-avatar-inline { background: var(--border); }
 
 /* ===== Footer ===== */
 .footer { padding: 80px 0 40px; border-top: 1px solid var(--border); }
-.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 64px; margin-bottom: 64px; align-items: start; }
-.footer-col { display: flex; flex-direction: column; align-items: center; text-align: center; }
-.footer-grid > .footer-col:first-child { align-items: flex-start; text-align: left; }
+.footer-grid { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 64px 80px; margin-bottom: 64px; }
+.footer-col { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 0 0 auto; min-width: 160px; }
+.footer-grid > .footer-col:first-child { align-items: flex-start; text-align: left; flex: 1 1 260px; max-width: 320px; }
 .footer-desc { color: var(--text-muted); font-size: 0.88rem; margin-top: -2px; line-height: 1.7; font-weight: 300; }
 .footer-col h4 {
   font-size: 0.72rem; font-weight: 500; text-transform: uppercase;
