@@ -369,6 +369,7 @@ img.card-avatar-inline { background: var(--border); }
   .footer-grid { flex-wrap: wrap; gap: 32px; min-height: 0; }
   .footer-grid > .footer-col { min-width: 40%; }
   .footer-grid > .footer-col:first-child { position: static; order: -1; width: 100%; max-width: none; align-items: center; text-align: center; margin-bottom: 16px; }
+  .footer-grid > .footer-col:first-child .logo { width: 100%; justify-content: center; }
 }
 .footer-desc { color: var(--text-muted); font-size: 0.78rem; margin-top: 6px; line-height: 1.5; font-weight: 300; }
 .footer-col h4 {
