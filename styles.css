@@ -591,6 +591,14 @@ img.card-avatar-inline { background: var(--border); }
   .card-grid { grid-template-columns: 1fr; }
 }
 
+/* Once logged in, hide the sub-page hero block on mobile so content
+   starts closer to the top. */
+@media (max-width: 768px) {
+  body.shape-logged-in .page-hero {
+    display: none !important;
+  }
+}
+
 @media (max-width: 768px) {
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 280px; height: 100vh;

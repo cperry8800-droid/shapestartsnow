@@ -244,6 +244,9 @@
     async applyNavAuthState() {
       var session = await shapeDb.getSession();
       var loggedIn = !!session;
+      if (document.body) {
+        document.body.classList.toggle('shape-logged-in', loggedIn);
+      }
       document.querySelectorAll('.shape-auth-logged-out').forEach(function (el) {
         el.style.display = loggedIn ? 'none' : '';
       });
