@@ -747,8 +747,9 @@
       .dash-tab {
         flex: 1; min-width: 0;
         display: flex; flex-direction: column; align-items: center; gap: 3px;
-        padding: 8px 2px; font-size: 0.58rem; font-weight: 600;
-        letter-spacing: 0.04em; opacity: 0.55;
+        padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
+        letter-spacing: 0.02em; opacity: 0.55;
+        white-space: nowrap; overflow: hidden;
         border-bottom: none; position: relative;
       }
       .dash-tab::before {
@@ -765,7 +766,7 @@
       .page-hero { padding-top: 88px !important; }
     }
     @media (max-width: 480px) {
-      .dash-tab { padding: 8px 10px; font-size: 0.65rem; letter-spacing: 0.06em; }
+      .dash-tab { padding: 8px 1px; font-size: 0.52rem; letter-spacing: 0.02em; }
     }
 
     /* Profile Snapshot Modal */
