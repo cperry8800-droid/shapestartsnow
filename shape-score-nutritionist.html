@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shape — Shape Score</title>
+  <title>Shape — Shape Score — Nutritionists</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
@@ -148,7 +148,7 @@
       <div class="nav-actions">
         <a href="login.html" class="btn btn-sm btn-outline shape-auth-logged-out">Log In</a>
         <span class="shape-auth-logged-in shape-nav-user-name" style="display:none;font-size:0.82rem;color:var(--text-muted);margin-right:4px;"></span>
-        <a href="clients.html" class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" data-shape-dashboard-link>Dashboard</a>
+        <a href="nutrition-schedule.html" class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" data-shape-dashboard-link>Dashboard</a>
         <button class="btn btn-sm btn-outline shape-auth-logged-in" style="display:none;" onclick="shapeSignOut()">Sign Out</button>
         <a href="landing.html" class="btn btn-sm btn-primary shape-auth-logged-out">Get Started</a>
         <a href="radio.html" class="btn btn-sm btn-radio"><span class="btn-shape-text"><img src="logo.png" alt="Shape"></span> Radio</a>
@@ -162,9 +162,9 @@
   <!-- Page Hero -->
   <section class="page-hero">
     <div class="container">
-      <span class="tag">Shape Score</span>
-      <h1>Earn points for every <span class="gradient-text">session</span></h1>
-      <p class="page-hero-sub">Every workout you finish earns you Shape Score. Climb the tiers, top the leaderboard, and spend what you earn in the <a href="shape-store.html" style="color:var(--accent-dark);text-decoration:underline;">Shape Store</a>.</p>
+      <span class="tag">Nutritionist Shape Score</span>
+      <h1>Earn points for every <span class="gradient-text">client you nourish</span></h1>
+      <p class="page-hero-sub">Every meal plan, recipe pack, and client win earns Shape Score. Climb the nutritionist leaderboard and spend what you earn in the <a href="shape-store.html" style="color:var(--accent-dark);text-decoration:underline;">Shape Store</a>.</p>
     </div>
   </section>
 
@@ -176,13 +176,13 @@
         <!-- Left: Points Overview -->
         <div>
           <div style="text-align:center;"><span class="tag">Your Score</span>
-          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:24px;">Track your progress and climb the ranks.</h2></div>
+          <h2 style="font-size:clamp(1.2rem,2vw,1.5rem);font-weight:300;letter-spacing:-0.03em;margin-top:8px;margin-bottom:24px;">Grow your practice and climb the nutritionist ranks.</h2></div>
 
           <!-- Points Balance -->
           <div style="background:var(--bg-card);border:1px solid var(--border);padding:28px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
             <div>
               <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:6px;">Your Balance</div>
-              <div style="font-size:1.8rem;font-weight:300;letter-spacing:-0.03em;">2,450</div>
+              <div style="font-size:1.8rem;font-weight:300;letter-spacing:-0.03em;">5,940</div>
             </div>
             <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent-dark);font-weight:500;">Shape Score</div>
           </div>
@@ -208,7 +208,7 @@
           </div>
           <div style="background:rgba(205,127,50,0.08);border:1px solid rgba(205,127,50,0.2);padding:12px 16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-size:0.82rem;font-weight:400;">Your status</span>
-            <span style="font-size:0.82rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze — 50 pts to Silver</span>
+            <span style="font-size:0.82rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Gold — 4,060 pts to Platinum</span>
           </div>
           <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
             <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">You're in the top 15% this week</span>
@@ -221,40 +221,40 @@
           </div>
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Complete a session</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+50 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Publish a meal plan</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+150 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">7-day streak</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+200 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Onboard a new client</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+250 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">30-day streak</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+1,000 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">5-star client review</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+150 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Refer a friend</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+500 pts</span>
-            </div>
-            <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Leave a trainer review</span>
+              <span style="font-size:0.88rem;font-weight:400;">Client meal compliance ≥ 80%</span>
               <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+100 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Purchase a workout</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+75 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Publish a recipe pack</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+200 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Subscribe to a trainer</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+300 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Client subscription renewal</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+200 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Purchase a meal plan</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+75 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Host a nutrition workshop</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+250 pts</span>
             </div>
             <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.88rem;font-weight:400;">Subscribe to a nutritionist</span>
-              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+300 pts</span>
+              <span style="font-size:0.88rem;font-weight:400;">Monthly check-in completed</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+100 pts</span>
+            </div>
+            <div style="background:var(--bg-card);border:1px solid var(--border);padding:16px 20px;display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.88rem;font-weight:400;">Refer another nutritionist</span>
+              <span style="font-size:0.88rem;font-weight:500;color:var(--accent-dark);">+500 pts</span>
             </div>
           </div>
         </div>
@@ -279,44 +279,44 @@
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">1</span>
-                <span style="font-size:0.88rem;font-weight:500;">Jake R.</span>
+                <span style="font-size:0.88rem;font-weight:500;">Dr. Sarah M.</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">8,420 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">11,620 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">2</span>
-                <span style="font-size:0.88rem;font-weight:500;">Aisha L.</span>
+                <span style="font-size:0.88rem;font-weight:500;">Priya V.</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">7,150 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">10,180 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">3</span>
-                <span style="font-size:0.88rem;font-weight:500;">Marcus T.</span>
+                <span style="font-size:0.88rem;font-weight:500;">Dana L.</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">6,800 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">8,740 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">4</span>
-                <span style="font-size:0.88rem;font-weight:500;">Nina K.</span>
+                <span style="font-size:0.88rem;font-weight:500;">Elena R.</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">5,320 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">7,810 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">5</span>
-                <span style="font-size:0.88rem;font-weight:500;">Devon J.</span>
+                <span style="font-size:0.88rem;font-weight:500;">Ben K.</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">4,910 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">6,450 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(45,212,191,0.04);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);width:24px;">12</span>
                 <span style="font-size:0.88rem;font-weight:500;">You</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">2,450 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">5,940 pts</span>
             </div>
           </div>
 
@@ -328,38 +328,38 @@
           <div style="background:var(--bg-card);border:1px solid var(--border);">
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
-                <span style="font-size:0.88rem;font-weight:500;">Jake R.</span>
-                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
+                <span style="font-size:0.88rem;font-weight:500;">Dr. Sarah M.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#E5E4E2;text-transform:uppercase;letter-spacing:0.06em;">Platinum</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">8,420 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">11,620 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
-                <span style="font-size:0.88rem;font-weight:500;">Aisha L.</span>
-                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
+                <span style="font-size:0.88rem;font-weight:500;">Priya V.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#E5E4E2;text-transform:uppercase;letter-spacing:0.06em;">Platinum</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">7,150 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">10,180 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
-                <span style="font-size:0.88rem;font-weight:500;">Carlos M.</span>
-                <span style="font-size:0.68rem;font-weight:500;color:#C0C0C0;text-transform:uppercase;letter-spacing:0.06em;">Silver</span>
+                <span style="font-size:0.88rem;font-weight:500;">Dana L.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">4,200 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">8,740 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:rgba(45,212,191,0.04);">
               <div style="display:flex;align-items:center;gap:14px;">
                 <span style="font-size:0.88rem;font-weight:600;">You</span>
-                <span style="font-size:0.68rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#FFD700;text-transform:uppercase;letter-spacing:0.06em;">Gold</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">2,450 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;color:var(--accent-dark);">5,940 pts</span>
             </div>
             <div style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);">
               <div style="display:flex;align-items:center;gap:14px;">
-                <span style="font-size:0.88rem;font-weight:500;">Priya S.</span>
-                <span style="font-size:0.68rem;font-weight:500;color:#CD7F32;text-transform:uppercase;letter-spacing:0.06em;">Bronze</span>
+                <span style="font-size:0.88rem;font-weight:500;">Maya T.</span>
+                <span style="font-size:0.68rem;font-weight:500;color:#C0C0C0;text-transform:uppercase;letter-spacing:0.06em;">Silver</span>
               </div>
-              <span style="font-size:0.82rem;font-weight:500;">1,850 pts</span>
+              <span style="font-size:0.82rem;font-weight:500;">3,480 pts</span>
             </div>
           </div>
         </div>
