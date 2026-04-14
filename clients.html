@@ -1998,25 +1998,118 @@
           </div>
 
           <!-- Grocery list generator -->
-          <div class="widget widget-full" id="groceryWidget" style="margin-top:24px;">
-            <div class="widget-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-              <h2 style="margin:0;">Grocery list</h2>
-              <button class="btn btn-sm btn-outline" onclick="generateGroceryList()" style="font-size:0.75rem;">Reload from meal plan</button>
-            </div>
-            <p style="font-size:0.8rem;color:var(--text-muted);margin:8px 0 16px;">Pulled from this week's meal plan. Add your own items below, check them off as you shop — saved on this device.</p>
+          <style>
+            .grocery-widget { display: flex; flex-direction: column; gap: 14px; }
+            .grocery-widget .widget-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 2px; }
+            .grocery-widget .widget-header h2 { margin: 0; font-size: 1rem; }
+            .grocery-intro { font-size: 0.8rem; color: var(--text-muted); font-weight: 300; margin: 0; line-height: 1.5; }
+            .grocery-progress { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 10px; background: rgba(255,255,255,0.015); }
+            .grocery-progress-track { height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+            .grocery-progress-bar { height: 100%; background: var(--accent, #2DD4BF); width: 0; transition: width .3s; border-radius: 3px; }
+            .grocery-progress-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.74rem; color: var(--text-muted); font-weight: 400; }
+            .grocery-progress-row strong { color: var(--text); font-weight: 500; }
+            .grocery-add-form {
+              display: grid; grid-template-columns: minmax(0, 2.2fr) minmax(0, 0.9fr) minmax(0, 1.1fr) auto;
+              gap: 8px; align-items: stretch;
+              padding: 12px; border: 1px solid var(--border); border-radius: 10px;
+              background: rgba(255,255,255,0.015);
+            }
+            .grocery-add-form .gl-input, .grocery-add-form .gl-select {
+              padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border);
+              background: var(--bg); color: var(--text); font-size: 0.82rem; font-family: inherit;
+              min-width: 0; box-sizing: border-box; width: 100%;
+            }
+            .grocery-add-form .gl-input:focus, .grocery-add-form .gl-select:focus { outline: none; border-color: var(--accent, #2DD4BF); }
+            .grocery-add-form .gl-add-btn {
+              padding: 10px 16px; border-radius: 8px; border: none;
+              background: var(--accent, #2DD4BF); color: #000; font-weight: 600;
+              font-size: 0.78rem; cursor: pointer; font-family: inherit; white-space: nowrap;
+              transition: opacity .15s;
+            }
+            .grocery-add-form .gl-add-btn:hover { opacity: 0.9; }
+            @media (max-width: 600px) {
+              .grocery-add-form { grid-template-columns: 1fr 1fr; }
+              .grocery-add-form .gl-input[data-role="name"] { grid-column: 1 / -1; }
+              .grocery-add-form .gl-add-btn { grid-column: 1 / -1; padding: 11px; }
+            }
+            .grocery-cat { margin-bottom: 18px; }
+            .grocery-cat:last-child { margin-bottom: 0; }
+            .grocery-cat-head {
+              display: flex; align-items: baseline; justify-content: space-between;
+              font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+              color: var(--text-muted); margin: 0 0 10px; padding-bottom: 6px;
+              border-bottom: 1px solid var(--border);
+            }
+            .grocery-cat-count { font-size: 0.68rem; font-weight: 400; color: var(--text-muted); letter-spacing: 0.04em; }
+            .grocery-row {
+              display: flex; align-items: center; gap: 12px;
+              padding: 11px 12px; border-radius: 9px;
+              border: 1px solid rgba(255,255,255,0.05);
+              background: rgba(255,255,255,0.015);
+              cursor: pointer; margin-bottom: 6px;
+              transition: background .15s, border-color .15s, opacity .15s;
+            }
+            .grocery-row:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); }
+            .grocery-row.checked { opacity: 0.5; }
+            .grocery-row.checked .grocery-name { text-decoration: line-through; }
+            .grocery-check {
+              width: 22px; height: 22px; border-radius: 6px;
+              border: 1.5px solid rgba(255,255,255,0.22);
+              display: flex; align-items: center; justify-content: center;
+              font-size: 0.78rem; color: #000; background: transparent;
+              flex-shrink: 0; transition: background .15s, border-color .15s;
+            }
+            .grocery-row.checked .grocery-check {
+              background: var(--accent, #2DD4BF); border-color: var(--accent, #2DD4BF);
+            }
+            .grocery-row-body { flex: 1; min-width: 0; }
+            .grocery-name-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+            .grocery-name { font-size: 0.88rem; font-weight: 400; }
+            .grocery-qty { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
+            .grocery-badge {
+              font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em;
+              color: var(--accent, #2DD4BF); background: rgba(45,212,191,0.12);
+              padding: 2px 7px; border-radius: 3px; font-weight: 600;
+            }
+            .grocery-remove {
+              background: none; border: none; color: var(--text-muted);
+              cursor: pointer; font-size: 1.2rem; padding: 4px 8px; line-height: 1;
+              border-radius: 4px; transition: color .15s, background .15s;
+            }
+            .grocery-remove:hover { color: #EF4444; background: rgba(239,68,68,0.08); }
+            .grocery-empty {
+              padding: 28px 16px; text-align: center; font-size: 0.85rem;
+              color: var(--text-muted); border: 1px dashed var(--border);
+              border-radius: 10px;
+            }
+          </style>
 
-            <!-- Add custom item form -->
-            <form onsubmit="event.preventDefault(); addCustomGroceryItem();" style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:18px;align-items:stretch;">
-              <input type="text" id="groceryItemName" placeholder="Item (e.g. Avocados)" required style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
-              <input type="text" id="groceryItemQty" placeholder="Qty" style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
-              <select id="groceryItemCat" style="padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:0.82rem;font-family:inherit;">
+          <div class="widget widget-full grocery-widget" id="groceryWidget" data-widget-id="cl-nu-grocery" style="margin-top:24px;">
+            <div class="widget-header">
+              <h2>Grocery list</h2>
+              <button class="btn btn-sm btn-outline" onclick="generateGroceryList()" style="font-size:0.72rem;">Reload from meal plan</button>
+            </div>
+            <p class="grocery-intro">Pulled from this week's meal plan. Add your own items below, check them off as you shop &mdash; saved on this device.</p>
+
+            <div class="grocery-progress">
+              <div class="grocery-progress-row">
+                <span>Shopping progress</span>
+                <strong id="groceryProgressText">0 of 0 items</strong>
+              </div>
+              <div class="grocery-progress-track"><div class="grocery-progress-bar" id="groceryProgressBar"></div></div>
+            </div>
+
+            <form class="grocery-add-form" onsubmit="event.preventDefault(); addCustomGroceryItem();">
+              <input type="text" class="gl-input" data-role="name" id="groceryItemName" placeholder="Add an item (e.g. Avocados)" required>
+              <input type="text" class="gl-input" id="groceryItemQty" placeholder="Qty">
+              <select class="gl-select" id="groceryItemCat">
                 <option value="Produce">Produce</option>
                 <option value="Protein">Protein</option>
                 <option value="Dairy &amp; Eggs">Dairy &amp; Eggs</option>
                 <option value="Pantry">Pantry</option>
                 <option value="Other">Other</option>
               </select>
-              <button type="submit" class="btn btn-sm btn-primary" style="font-size:0.75rem;white-space:nowrap;">+ Add</button>
+              <button type="submit" class="gl-add-btn">+ Add item</button>
             </form>
 
             <div id="groceryListContainer"></div>
@@ -4989,10 +5082,7 @@
       saveChecked(checked);
       el.classList.toggle('checked', checked[key]);
       var box = el.querySelector('.grocery-check');
-      if (box) {
-        box.innerHTML = checked[key] ? '&#10003;' : '';
-        box.style.background = checked[key] ? 'var(--accent, #2DD4BF)' : 'transparent';
-      }
+      if (box) box.innerHTML = checked[key] ? '&#10003;' : '';
       updateGroceryProgress();
     };
 
@@ -5014,11 +5104,9 @@
     window.generateGroceryList = function() {
       var checked = loadChecked();
       var custom = loadCustom();
-      // byCat: { category: [ {name, qty, key, customId?} ] }
       var byCat = {};
       function pushItem(cat, name, qty, customId) {
         if (!byCat[cat]) byCat[cat] = [];
-        // Dedupe by name within a category — plan items keep first qty.
         for (var i = 0; i < byCat[cat].length; i++) {
           if (byCat[cat][i].name.toLowerCase() === name.toLowerCase() && !customId) return;
         }
@@ -5029,40 +5117,43 @@
       custom.forEach(function(it){ pushItem(it.cat || 'Other', it.name, it.qty || '', it.id); });
 
       var order = ['Produce', 'Protein', 'Dairy & Eggs', 'Pantry', 'Other'];
-      var html = '<div style="margin-bottom:16px;">' +
-                 '<div style="height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;"><div id="groceryProgressBar" style="height:100%;background:var(--accent,#2DD4BF);width:0;transition:width .3s;"></div></div>' +
-                 '<div id="groceryProgressText" style="font-size:0.75rem;color:var(--text-muted);margin-top:6px;">0 of 0 items</div>' +
-                 '</div>';
+      var container = document.getElementById('groceryListContainer');
+      if (!container) return;
+
+      var totalItems = 0;
+      order.forEach(function(c){ if (byCat[c]) totalItems += byCat[c].length; });
+      if (!totalItems) {
+        container.innerHTML = '<div class="grocery-empty">No items yet. Add your own above, or reload from your meal plan.</div>';
+        updateGroceryProgress();
+        return;
+      }
+
+      var html = '';
       order.forEach(function(cat){
         if (!byCat[cat] || !byCat[cat].length) return;
-        html += '<div style="margin-bottom:20px;">';
-        html += '<h3 style="font-size:0.78rem;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-muted);margin:0 0 10px;">' + cat + '</h3>';
+        html += '<div class="grocery-cat">';
+        html += '<div class="grocery-cat-head"><span>' + cat + '</span><span class="grocery-cat-count">' + byCat[cat].length + ' ' + (byCat[cat].length === 1 ? 'item' : 'items') + '</span></div>';
         byCat[cat].forEach(function(item){
           var isChecked = !!checked[item.key];
           var safeKey = item.key.replace(/'/g, "\\'");
-          html += '<div class="grocery-row' + (isChecked ? ' checked' : '') + '" onclick="toggleGroceryItem(\'' + safeKey + '\', this)" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;cursor:pointer;border:1px solid rgba(255,255,255,0.05);margin-bottom:6px;">';
-          html += '<div class="grocery-check" style="width:20px;height:20px;border-radius:4px;border:1.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:0.75rem;color:#000;background:' + (isChecked ? 'var(--accent,#2DD4BF)' : 'transparent') + ';flex-shrink:0;">' + (isChecked ? '&#10003;' : '') + '</div>';
-          html += '<div style="flex:1;min-width:0;">';
-          html += '<div style="font-size:0.88rem;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">' + escapeHtml(item.name);
-          if (item.customId) html += '<span style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent,#2DD4BF);background:rgba(45,212,191,0.1);padding:2px 6px;border-radius:3px;">Custom</span>';
+          html += '<div class="grocery-row' + (isChecked ? ' checked' : '') + '" onclick="toggleGroceryItem(\'' + safeKey + '\', this)">';
+          html += '<div class="grocery-check">' + (isChecked ? '&#10003;' : '') + '</div>';
+          html += '<div class="grocery-row-body">';
+          html += '<div class="grocery-name-line"><span class="grocery-name">' + escapeHtml(item.name) + '</span>';
+          if (item.customId) html += '<span class="grocery-badge">Custom</span>';
           html += '</div>';
-          if (item.qty) html += '<div style="font-size:0.72rem;color:var(--text-muted);">' + escapeHtml(item.qty) + '</div>';
+          if (item.qty) html += '<div class="grocery-qty">' + escapeHtml(item.qty) + '</div>';
           html += '</div>';
           if (item.customId) {
-            html += '<button type="button" onclick="event.stopPropagation();removeCustomGroceryItem(\'' + item.customId + '\');" title="Remove" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;line-height:1;">&times;</button>';
+            html += '<button type="button" class="grocery-remove" onclick="event.stopPropagation();removeCustomGroceryItem(\'' + item.customId + '\');" title="Remove">&times;</button>';
           }
           html += '</div>';
         });
         html += '</div>';
       });
-      var container = document.getElementById('groceryListContainer');
-      if (container) container.innerHTML = html;
+      container.innerHTML = html;
       updateGroceryProgress();
     };
-
-    var style = document.createElement('style');
-    style.textContent = '.grocery-row:hover { background: rgba(255,255,255,0.03); } .grocery-row.checked { opacity: 0.5; } .grocery-row.checked > div:last-child > div:first-child { text-decoration: line-through; }';
-    document.head.appendChild(style);
 
     document.addEventListener('DOMContentLoaded', function(){
       if (document.getElementById('groceryListContainer')) generateGroceryList();
