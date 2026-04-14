@@ -124,16 +124,6 @@
               </select>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Height</label>
-              <input type="text" name="height" placeholder="5'10&quot; or 178 cm" required>
-            </div>
-            <div class="form-group">
-              <label>Weight</label>
-              <input type="text" name="weight" placeholder="175 lbs or 80 kg" required>
-            </div>
-          </div>
           <div class="form-group">
             <label>Injuries or physical limitations</label>
             <textarea name="injuries" rows="2" placeholder="e.g. lower back pain, prior ACL repair, none"></textarea>
@@ -256,8 +246,6 @@
       payload.append('Email', data.email || '');
       payload.append('Date of Birth', data.dob || '');
       payload.append('Sex', data.sex || '');
-      payload.append('Height', data.height || '');
-      payload.append('Weight', data.weight || '');
       payload.append('Primary Goal', data.goal || '');
       payload.append('Experience Level', data.level || '');
       payload.append('Workout Frequency', data.frequency || '');
