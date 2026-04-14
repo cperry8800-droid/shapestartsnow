@@ -592,10 +592,17 @@ img.card-avatar-inline { background: var(--border); }
 }
 
 /* Once logged in, hide the sub-page hero block on mobile so content
-   starts closer to the top. */
+   starts closer to the top. Add top padding so the first section
+   below it clears the fixed navbar. */
 @media (max-width: 768px) {
   body.shape-logged-in .page-hero {
     display: none !important;
+  }
+  body.shape-logged-in .page-hero + .section,
+  body.shape-logged-in .page-hero + section,
+  body.shape-logged-in .page-hero + main,
+  body.shape-logged-in .page-hero + div {
+    padding-top: 96px;
   }
 }
 
