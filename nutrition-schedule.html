@@ -90,6 +90,11 @@
   }
   @media (min-width: 769px) {
     .nd-today-hero, .nd-checkin-banner { display: none; }
+    .nd-recent-meals-widget { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .nd-mealsched-grid { grid-template-columns: 1fr !important; gap: 0 !important; }
+    .nd-recent-meals-col { display: none !important; }
   }
 
   /* ===== Messages Panel ===== */
@@ -1051,7 +1056,7 @@
                     <button class="nd-view-btn" onclick="ndSwitchDashView('monthly', this)">Monthly</button>
                   </div>
                 </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
+                <div class="nd-mealsched-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:36px;">
                   <div>
                     <div id="ndDashWeeklyView">
                       <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Client Adherence This Week</h3>
@@ -1061,11 +1066,24 @@
                       <div id="ndDashCalContainer"></div>
                     </div>
                   </div>
-                  <div>
+                  <div class="nd-recent-meals-col">
                     <h3 style="font-size:0.78rem;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:16px;">Recent Client Meals</h3>
                     <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;max-height:320px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;" id="ndDashMealLog"></div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget: Recent Client Meals (mobile-only) -->
+          <div class="widget nd-recent-meals-widget" data-widget-id="nd-recentmeals" draggable="true">
+            <div class="widget-header">
+              <span class="widget-title">Recent Client Meals</span>
+              <span class="widget-drag-handle">&#10783;</span>
+            </div>
+            <div class="widget-body">
+              <div class="td-section" style="margin-bottom:0;">
+                <div style="background:var(--bg-alt);border-radius:6px;overflow:hidden;max-height:320px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;" id="ndDashMealLogMobile"></div>
               </div>
             </div>
           </div>
