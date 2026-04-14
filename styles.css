@@ -598,13 +598,21 @@ img.card-avatar-inline { background: var(--border); }
   body.shape-dashboard.shape-logged-in .page-hero {
     display: none !important;
   }
-  body.shape-dashboard.shape-logged-in .page-hero + .section,
-  body.shape-dashboard.shape-logged-in .page-hero + section {
-    padding-top: 88px !important;
+  /* Pad the first content section following the bottom tab bar so
+     it clears the fixed navbar at the top. The tab bar itself is
+     position:fixed (bottom:0) on mobile so it takes no flow space. */
+  body.shape-dashboard.shape-logged-in .dash-tab-bar + section.section,
+  body.shape-dashboard.shape-logged-in .dash-tab-bar + .section,
+  body.shape-dashboard.shape-logged-in .td-tab-bar + section.section,
+  body.shape-dashboard.shape-logged-in .td-tab-bar + .section,
+  body.shape-dashboard.shape-logged-in .td-tab-bar ~ section.section:first-of-type {
+    padding-top: 96px !important;
   }
-  body.shape-dashboard.shape-logged-in .td-tab-content.active,
-  body.shape-dashboard.shape-logged-in .nd-tab-content.active {
-    padding-top: 88px !important;
+  /* Nutritionist dashboard wraps each tab in its own .nd-tab-content
+     sibling of .nd-tab-bar; pad the active one's inner first section. */
+  body.shape-dashboard.shape-logged-in .nd-tab-content.active > section:first-child,
+  body.shape-dashboard.shape-logged-in .nd-tab-content.active > .section:first-child {
+    padding-top: 96px !important;
   }
 }
 
