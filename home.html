@@ -59,9 +59,24 @@
     .split-hero-mark polygon {
       animation: splitHeroTrianglePulse 2s ease-in-out infinite;
     }
+    .split-hero-mark .s-beam-path {
+      stroke: #2DD4BF; stroke-width: 1.5; fill: none;
+      stroke-linecap: round; stroke-linejoin: round;
+      filter: drop-shadow(0 0 2px #2DD4BF) drop-shadow(0 0 5px #2DD4BF);
+      stroke-dasharray: 40 82; stroke-dashoffset: 122;
+      animation: splitHeroBeamTrace 2.5s linear infinite;
+    }
+    .split-hero-mark .s-beam-lower {
+      stroke: #fff;
+      filter: drop-shadow(0 0 2px #fff) drop-shadow(0 0 5px #fff);
+    }
     @keyframes splitHeroTrianglePulse {
       0%, 100% { opacity: 0.15; }
       50%      { opacity: 0.85; }
+    }
+    @keyframes splitHeroBeamTrace {
+      0%   { stroke-dashoffset: 122; }
+      100% { stroke-dashoffset: 0; }
     }
     .split-hero-sub {
       font-size: clamp(1rem, 1.2vw, 1.15rem); color: var(--text-muted);
@@ -191,6 +206,8 @@
       <svg class="split-hero-mark" viewBox="0 0 95 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <polygon points="5,113 5,43 55,78" fill="#2DD4BF"/>
         <polygon points="90,-3 90,67 40,32" fill="#fff"/>
+        <path d="M90,-3 L40,32 L90,67" class="s-beam-path s-beam-upper" />
+        <path d="M5,43 L55,78 L5,113" class="s-beam-path s-beam-lower" />
       </svg>
       <h1>Welcome to <span class="hero-shape-logo"><img src="logo-text-trimmed.png" alt="Shape"></span></h1>
       <p class="split-hero-sub">Real trainers. Real nutritionists. One platform.</p>
