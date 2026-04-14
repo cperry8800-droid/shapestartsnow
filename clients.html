@@ -2572,6 +2572,7 @@
 
   <script src="app.js"></script>
   <script src="exercise-videos.js"></script>
+  <script src="widget-drag.js"></script>
   <script src="progress.js"></script>
   <script src="nutrition-schedule.js"></script>
   <script>
@@ -4433,9 +4434,16 @@
     }
 
     function initDrag() {
-      if ('ontouchstart' in window) return;
+      // Legacy HTML5 drag handler — superseded by widget-drag.js which
+      // handles pointer/touch uniformly. Still run injectExpandButtons
+      // and restoreSizes below so the expand toggle keeps working.
       var grid = document.getElementById(gridId);
       if (!grid) return;
+      if (window.shapeWidgetDrag) {
+        injectExpandButtons();
+        restoreSizes();
+        return;
+      }
 
       grid.addEventListener('mousedown', function(e) {
         _dragFromHandle = !!e.target.closest('.widget-drag-handle');
@@ -4620,9 +4628,16 @@
     }
 
     function initDrag() {
-      if ('ontouchstart' in window) return;
+      // Legacy HTML5 drag handler — superseded by widget-drag.js which
+      // handles pointer/touch uniformly. Still run injectExpandButtons
+      // and restoreSizes below so the expand toggle keeps working.
       var grid = document.getElementById(gridId);
       if (!grid) return;
+      if (window.shapeWidgetDrag) {
+        injectExpandButtons();
+        restoreSizes();
+        return;
+      }
 
       grid.addEventListener('mousedown', function(e) {
         _dragFromHandle = !!e.target.closest('.widget-drag-handle');
@@ -4807,9 +4822,16 @@
     }
 
     function initDrag() {
-      if ('ontouchstart' in window) return;
+      // Legacy HTML5 drag handler — superseded by widget-drag.js which
+      // handles pointer/touch uniformly. Still run injectExpandButtons
+      // and restoreSizes below so the expand toggle keeps working.
       var grid = document.getElementById(gridId);
       if (!grid) return;
+      if (window.shapeWidgetDrag) {
+        injectExpandButtons();
+        restoreSizes();
+        return;
+      }
 
       grid.addEventListener('mousedown', function(e) {
         _dragFromHandle = !!e.target.closest('.widget-drag-handle');

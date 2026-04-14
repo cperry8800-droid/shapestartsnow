@@ -2211,6 +2211,7 @@
   <script src="app.js"></script>
   <script src="trainer-dashboard.js"></script>
   <script src="trainer-exercise-videos.js"></script>
+  <script src="widget-drag.js"></script>
 
   <script>
   // ===== Tab Switching with Lazy Init =====
@@ -4553,9 +4554,14 @@
     }
 
     function initDrag() {
-      if ('ontouchstart' in window) return;
       var grid = document.getElementById(gridId);
       if (!grid) return;
+      if (window.shapeWidgetDrag) {
+        injectExpandButtons();
+        restoreSizes();
+        return;
+      }
+      if ('ontouchstart' in window) return;
 
       grid.addEventListener('mousedown', function(e) {
         _dragFromHandle = !!e.target.closest('.widget-drag-handle');
