@@ -94,6 +94,57 @@
       letter-spacing: 0.08em; color: var(--accent-dark); background: rgba(45,212,191,0.08);
       padding: 4px 10px; border: 1px solid rgba(45,212,191,0.2);
     }
+    /* ===== Dashboard back-nav tab bar (mirrors trainer dashboard) ===== */
+    .td-tab-bar {
+      display: flex; align-items: center; gap: 0; justify-content: center;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-alt);
+      padding: 0 24px;
+      position: sticky; top: 88px; z-index: 100;
+      overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .td-tab-bar::-webkit-scrollbar { display: none; }
+    .td-tab-btn {
+      padding: 10px 16px; border: none; background: none;
+      font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text); cursor: pointer; text-decoration: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      flex-shrink: 0; opacity: 0.5;
+    }
+    .td-tab-btn:hover { opacity: 0.75; }
+    .td-tab-btn.active { opacity: 1; border-bottom: 2px solid var(--accent); }
+    @media (max-width: 768px) {
+      .td-tab-bar {
+        position: fixed; top: auto; bottom: 0; left: 0; right: 0;
+        z-index: 1100;
+        background: rgba(10,10,10,0.92);
+        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border); border-bottom: none;
+        padding: 6px 4px env(safe-area-inset-bottom,0);
+        gap: 0; justify-content: space-around; overflow-x: visible;
+      }
+      .td-tab-btn {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
+        letter-spacing: 0.02em; opacity: 0.55;
+        white-space: nowrap; overflow: hidden;
+        border-bottom: none; position: relative;
+      }
+      .td-tab-btn::before {
+        content: attr(data-icon); font-size: 1.1rem; font-weight: 400;
+        letter-spacing: 0; line-height: 1; text-transform: none;
+      }
+      .td-tab-btn.active { opacity: 1; color: var(--accent); border-bottom: none; }
+      .td-tab-btn.active::after {
+        content: ''; position: absolute; top: 0; left: 30%; right: 30%;
+        height: 2px; background: var(--accent);
+      }
+      body { padding-bottom: 72px; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -158,6 +209,19 @@
       </button>
     </div>
   </nav>
+
+  <!-- Trainer dashboard back-nav tab bar -->
+  <div class="td-tab-bar" id="tdTabBar">
+    <a class="td-tab-btn" data-icon="☉" href="trainer-dashboard.html#home">Home</a>
+    <a class="td-tab-btn" data-icon="◉" href="trainer-dashboard.html#clients">Clients</a>
+    <a class="td-tab-btn" data-icon="▤" href="trainer-dashboard.html#programs">Programs</a>
+    <a class="td-tab-btn" data-icon="✉" href="trainer-dashboard.html#messages">Messages</a>
+    <a class="td-tab-btn" data-icon="◈" href="trainer-dashboard.html#community">Community</a>
+    <a class="td-tab-btn" data-icon="◐" href="trainer-dashboard.html#profile">Profile</a>
+    <a class="td-tab-btn" data-icon="∑" href="trainer-dashboard.html#goalcalc">Calc</a>
+    <a class="td-tab-btn active" data-icon="♚" href="shape-score-trainer.html">Score</a>
+    <a class="td-tab-btn" data-icon="⚐" href="shape-store.html" onclick="sessionStorage.setItem('shapeStoreContext','trainer')">Store</a>
+  </div>
 
   <!-- Page Hero -->
   <section class="page-hero">

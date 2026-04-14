@@ -1093,7 +1093,7 @@
     <button class="nd-tab-btn" data-tab="profile" data-icon="◐" onclick="ndSwitchTab('profile', this)">Profile</button>
     <button class="nd-tab-btn" data-tab="goalcalc" data-icon="∑" onclick="ndSwitchTab('goalcalc', this)">Calc</button>
     <a class="nd-tab-btn" data-icon="♚" href="shape-score-nutritionist.html" style="text-decoration:none;">Score</a>
-    <a class="nd-tab-btn" data-icon="⚐" href="shape-store.html" style="text-decoration:none;">Store</a>
+    <a class="nd-tab-btn" data-icon="⚐" href="shape-store.html" style="text-decoration:none;" onclick="sessionStorage.setItem('shapeStoreContext','nutritionist')">Store</a>
   </div>
 
   <!-- ===================== TAB 1: HOME ===================== -->
@@ -1774,6 +1774,7 @@
 
           <!-- Goal Type Toggle -->
           <div style="display:flex;gap:8px;margin-bottom:28px;">
+            <button class="nd-gc-type-btn" id="ndGcTypeWeekly" onclick="ndGcSetType('weekly',this)" style="padding:10px 24px;background:none;color:var(--text-muted);border:1px solid var(--border);font-family:inherit;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Weekly</button>
             <button class="nd-gc-type-btn active" id="ndGcTypeMonthly" onclick="ndGcSetType('monthly',this)" style="padding:10px 24px;background:var(--accent);color:#fff;border:none;font-family:inherit;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Monthly</button>
             <button class="nd-gc-type-btn" id="ndGcTypeAnnual" onclick="ndGcSetType('annual',this)" style="padding:10px 24px;background:none;color:var(--text-muted);border:1px solid var(--border);font-family:inherit;font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;">Annual</button>
           </div>
@@ -1966,6 +1967,20 @@
   _ndTabsInitialized['home'] = true;
   _ndTabsInitialized['clients'] = true;
   _ndTabsInitialized['messages'] = true;
+
+  // Hash-based tab routing (lets back-nav from Score/Store pages land on a specific tab)
+  (function() {
+    var valid = ['home','clients','mealplans','messages','community','profile','goalcalc'];
+    function applyHashTab() {
+      var h = (location.hash || '').replace('#','');
+      if (h && valid.indexOf(h) !== -1) {
+        var btn = document.querySelector('.nd-tab-btn[data-tab="' + h + '"]');
+        if (btn) ndSwitchTab(h, btn);
+      }
+    }
+    window.addEventListener('hashchange', applyHashTab);
+    applyHashTab();
+  })();
 
   // ===== Meal Plans Tab Init =====
   function ndInitMealPlans() {
@@ -2926,7 +2941,7 @@
     btn.style.background = 'var(--accent)';
     btn.style.color = '#fff';
     btn.style.border = 'none';
-    document.getElementById('ndGcPeriodLabel').textContent = type === 'monthly' ? '/ month' : '/ year';
+    document.getElementById('ndGcPeriodLabel').textContent = type === 'weekly' ? '/ week' : (type === 'monthly' ? '/ month' : '/ year');
     ndGcCalculate();
   }
 
@@ -2938,7 +2953,7 @@
       document.getElementById('ndGcResults').style.display = 'none';
       return;
     }
-    var monthlyGoal = _ndGcType === 'monthly' ? goal : goal / 12;
+    var monthlyGoal = _ndGcType === 'monthly' ? goal : (_ndGcType === 'weekly' ? goal * 4.345 : goal / 12);
     var monthlyRevenue = currentClients * planPrice;
     var currentMonthly = monthlyRevenue * 0.85;
     var needed = Math.ceil(monthlyGoal / (planPrice * 0.85));
@@ -2948,10 +2963,11 @@
     var html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:24px;">'
       + _ndGcStat('Clients Needed', needed, 'total')
       + _ndGcStat('New Clients to Add', newClientsNeeded, '')
+      + _ndGcStat('Weekly at Goal', '$' + Math.round(monthlyGoal / 4.345).toLocaleString(), '')
       + _ndGcStat('Monthly at Goal', '$' + Math.round(monthlyGoal).toLocaleString(), '')
       + _ndGcStat('Annual at Goal', '$' + Math.round(monthlyGoal * 12).toLocaleString(), '')
       + '</div>'
-      + '<div style="margin-bottom:8px;font-size:0.78rem;color:var(--text-muted);">Current progress toward ' + (_ndGcType === 'monthly' ? 'monthly' : 'annual') + ' goal</div>'
+      + '<div style="margin-bottom:8px;font-size:0.78rem;color:var(--text-muted);">Current progress toward ' + _ndGcType + ' goal</div>'
       + '<div style="height:8px;background:var(--bg-alt);border-radius:4px;overflow:hidden;margin-bottom:6px;">'
       + '<div style="height:100%;width:' + pct + '%;background:' + (pct >= 100 ? '#10B981' : 'var(--accent)') + ';border-radius:4px;transition:width 0.6s;"></div>'
       + '</div>'
@@ -2973,7 +2989,9 @@
   function ndGcSaveGoal() {
     var goal = parseFloat(document.getElementById('ndGcGoalInput').value) || 0;
     if (!goal) return;
-    if (_ndGcType === 'monthly') {
+    if (_ndGcType === 'weekly') {
+      localStorage.setItem('nutritionistSalesGoalWeekly', goal);
+    } else if (_ndGcType === 'monthly') {
       localStorage.setItem('nutritionistSalesGoalMonthly', goal);
     } else {
       localStorage.setItem('nutritionistSalesGoalAnnual', goal);

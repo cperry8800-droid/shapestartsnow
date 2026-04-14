@@ -516,6 +516,44 @@
     /* ===== Upcoming Check-Ins ===== */
     .checkin-section { margin-bottom: 40px; }
     .checkin-section h2 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 20px; }
+    /* ===== Library filter buttons ===== */
+    .lib-filter-btn {
+      padding: 6px 14px; font-size: 0.72rem; font-weight: 500; border: 1px solid var(--border);
+      background: transparent; color: var(--text-muted); cursor: pointer; font-family: inherit;
+      transition: all 0.2s; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .lib-filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .lib-filter-btn:hover:not(.active) { border-color: var(--text); color: var(--text); }
+
+    /* ===== Library workout preview ===== */
+    .lib-workout-item { cursor: pointer; transition: background 0.15s; }
+    .lib-workout-item:hover { background: rgba(255,255,255,0.03); }
+    .lib-workout-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
+    .lib-chevron {
+      font-size: 1.2rem; color: var(--text-muted); transition: transform 0.25s;
+      line-height: 1; flex-shrink: 0; margin-left: 8px;
+    }
+    .lib-chevron.open { transform: rotate(90deg); color: var(--accent); }
+    .lib-workout-preview {
+      display: none; padding: 0 20px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .lib-workout-preview.open { display: block; }
+    .lib-prev-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; padding-top: 14px; }
+    .lib-tag {
+      font-size: 0.68rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 3px 10px; border: 1px solid var(--border); color: var(--text-muted);
+    }
+    .lib-prev-exercises { display: flex; flex-direction: column; gap: 0; }
+    .lib-prev-ex {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.82rem;
+    }
+    .lib-prev-ex:last-child { border-bottom: none; }
+    .lib-prev-ex span:first-child { color: var(--text); font-weight: 400; }
+    .lib-prev-ex span:last-child { color: var(--text-muted); font-size: 0.76rem; }
+
     .checkin-list { display: flex; flex-direction: column; gap: 10px; }
     .checkin-card {
       background: var(--bg-card); border: 1px solid var(--border); padding: 20px 24px;
@@ -1266,7 +1304,8 @@
       <button class="dash-tab" data-tab="training" data-icon="&#9878;" onclick="switchDashTab('training', this)">Train</button>
       <button class="dash-tab" data-tab="nutrition" data-icon="&#9733;" onclick="switchDashTab('nutrition', this)">Nutri</button>
       <button class="dash-tab" data-tab="shapescore" data-icon="&#9812;" onclick="switchDashTab('shapescore', this)">Score</button>
-      <a class="dash-tab" data-icon="&#9873;" href="shape-store.html" style="text-decoration:none;display:inline-flex;align-items:center;">Store</a>
+      <a class="dash-tab" data-icon="&#9873;" href="shape-store.html" style="text-decoration:none;display:inline-flex;align-items:center;" onclick="sessionStorage.setItem('shapeStoreContext','client')">Store</a>
+      <button class="dash-tab" data-tab="library" data-icon="&#9741;" onclick="switchDashTab('library', this)">Library</button>
       <button class="dash-tab" data-tab="myteam" data-icon="&#9825;" onclick="switchDashTab('myteam', this)">Team</button>
       <button class="dash-tab" data-tab="community" data-icon="&#128172;" onclick="switchDashTab('community', this)">Chat</button>
       <button class="dash-tab" data-tab="profile" data-icon="&#9679;" onclick="switchDashTab('profile', this)">Me</button>
@@ -1463,27 +1502,76 @@
                   <h2>My Library</h2>
                 </div>
                 <p style="color: var(--text-muted); font-size: 0.92rem; font-weight: 300; margin-bottom: 24px;">Save any purchased workout to your personal library. Access your saved workouts anytime.</p>
-                <div class="library-grid" id="libraryGrid" style="display: grid; grid-template-columns: 1fr; gap: 12px;">
-                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">5x5 Strength Foundation</div>
-                      <div style="font-size: 0.78rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
+                <div class="library-grid" id="libraryGrid" style="display: grid; grid-template-columns: 1fr; gap: 0; border: 1px solid var(--border);">
+                  <!-- Workout 1 -->
+                  <div class="lib-workout-item" onclick="toggleLibPreview('lib-prev-1', this)">
+                    <div class="lib-workout-row">
+                      <div>
+                        <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 3px;">5×5 Strength Foundation</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Marcus Johnson &middot; Strength &middot; Saved Apr 2</div>
+                      </div>
+                      <span class="lib-chevron">&#8250;</span>
                     </div>
-                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
+                    <div class="lib-workout-preview" id="lib-prev-1">
+                      <div class="lib-prev-tags">
+                        <span class="lib-tag">45 min</span><span class="lib-tag">Strength</span><span class="lib-tag">Intermediate</span><span class="lib-tag">5 exercises</span>
+                      </div>
+                      <div class="lib-prev-exercises">
+                        <div class="lib-prev-ex"><span>Barbell Squat</span><span>5 × 5</span></div>
+                        <div class="lib-prev-ex"><span>Bench Press</span><span>5 × 5</span></div>
+                        <div class="lib-prev-ex"><span>Barbell Row</span><span>5 × 5</span></div>
+                        <div class="lib-prev-ex"><span>Overhead Press</span><span>5 × 5</span></div>
+                        <div class="lib-prev-ex"><span>Deadlift</span><span>1 × 5</span></div>
+                      </div>
+                      <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+                    </div>
                   </div>
-                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Tabata Inferno</div>
-                      <div style="font-size: 0.78rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
+                  <!-- Workout 2 -->
+                  <div class="lib-workout-item" onclick="toggleLibPreview('lib-prev-2', this)" style="border-top:1px solid var(--border);">
+                    <div class="lib-workout-row">
+                      <div>
+                        <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 3px;">Tabata Inferno</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Aisha Patel &middot; HIIT &middot; Saved Mar 28</div>
+                      </div>
+                      <span class="lib-chevron">&#8250;</span>
                     </div>
-                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
+                    <div class="lib-workout-preview" id="lib-prev-2">
+                      <div class="lib-prev-tags">
+                        <span class="lib-tag">28 min</span><span class="lib-tag">HIIT</span><span class="lib-tag">Advanced</span><span class="lib-tag">6 rounds</span>
+                      </div>
+                      <div class="lib-prev-exercises">
+                        <div class="lib-prev-ex"><span>Jump Squats</span><span>20s on / 10s off</span></div>
+                        <div class="lib-prev-ex"><span>Burpees</span><span>20s on / 10s off</span></div>
+                        <div class="lib-prev-ex"><span>Mountain Climbers</span><span>20s on / 10s off</span></div>
+                        <div class="lib-prev-ex"><span>High Knees</span><span>20s on / 10s off</span></div>
+                        <div class="lib-prev-ex"><span>Push-Up Jacks</span><span>20s on / 10s off</span></div>
+                        <div class="lib-prev-ex"><span>Plank to Downdog</span><span>20s on / 10s off</span></div>
+                      </div>
+                      <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+                    </div>
                   </div>
-                  <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 20px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                      <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 4px;">Living Room HIIT</div>
-                      <div style="font-size: 0.78rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
+                  <!-- Workout 3 -->
+                  <div class="lib-workout-item" onclick="toggleLibPreview('lib-prev-3', this)" style="border-top:1px solid var(--border);">
+                    <div class="lib-workout-row">
+                      <div>
+                        <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 3px;">Living Room HIIT</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Nina Brooks &middot; At Home &middot; Saved Mar 15</div>
+                      </div>
+                      <span class="lib-chevron">&#8250;</span>
                     </div>
-                    <button class="btn btn-sm btn-outline" onclick="startLiveWorkout()">Start Workout</button>
+                    <div class="lib-workout-preview" id="lib-prev-3">
+                      <div class="lib-prev-tags">
+                        <span class="lib-tag">30 min</span><span class="lib-tag">At Home</span><span class="lib-tag">Beginner</span><span class="lib-tag">No Equipment</span>
+                      </div>
+                      <div class="lib-prev-exercises">
+                        <div class="lib-prev-ex"><span>Bodyweight Squat</span><span>3 × 15</span></div>
+                        <div class="lib-prev-ex"><span>Push-Ups</span><span>3 × 12</span></div>
+                        <div class="lib-prev-ex"><span>Reverse Lunge</span><span>3 × 10 each</span></div>
+                        <div class="lib-prev-ex"><span>Glute Bridge</span><span>3 × 15</span></div>
+                        <div class="lib-prev-ex"><span>Plank Hold</span><span>3 × 30s</span></div>
+                      </div>
+                      <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2488,6 +2576,83 @@
         </div>
       </div>
 
+      <!-- Library Tab -->
+      <div class="dash-tab-content" id="tabLibrary">
+        <div style="max-width:760px;margin:0 auto;">
+          <div style="margin-bottom:24px;">
+            <h2 style="font-size:clamp(1.1rem,2vw,1.4rem);font-weight:300;letter-spacing:-0.03em;margin-bottom:6px;">My Library</h2>
+            <p style="font-size:0.85rem;color:var(--text-muted);font-weight:300;">Your saved workouts, ready to go whenever you are.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+            <input type="text" id="libSearchInput" placeholder="Search workouts…" oninput="libFilter()"
+              style="flex:1;min-width:180px;padding:9px 14px;background:var(--bg-card);border:1px solid var(--border);color:var(--text);font-family:inherit;font-size:0.85rem;outline:none;"
+              onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <button class="lib-filter-btn active" data-cat="all" onclick="libSetCat('all',this)">All</button>
+              <button class="lib-filter-btn" data-cat="Strength" onclick="libSetCat('Strength',this)">Strength</button>
+              <button class="lib-filter-btn" data-cat="HIIT" onclick="libSetCat('HIIT',this)">HIIT</button>
+              <button class="lib-filter-btn" data-cat="At Home" onclick="libSetCat('At Home',this)">At Home</button>
+            </div>
+          </div>
+          <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:10px;" id="libCount">3 workouts saved</div>
+          <div id="libTabGrid" style="border:1px solid var(--border);">
+            <div class="lib-workout-item lib-tab-item" data-name="5x5 strength foundation" data-cat="Strength" onclick="toggleLibTabPreview('ltp-1',this)">
+              <div class="lib-workout-row">
+                <div><div style="font-weight:600;font-size:0.92rem;margin-bottom:3px;">5×5 Strength Foundation</div><div style="font-size:0.75rem;color:var(--text-muted);">Marcus Johnson &middot; Strength &middot; 45 min &middot; Saved Apr 2</div></div>
+                <span class="lib-chevron">&#8250;</span>
+              </div>
+              <div class="lib-workout-preview" id="ltp-1">
+                <div class="lib-prev-tags"><span class="lib-tag">45 min</span><span class="lib-tag">Strength</span><span class="lib-tag">Intermediate</span><span class="lib-tag">5 exercises</span></div>
+                <div class="lib-prev-exercises">
+                  <div class="lib-prev-ex"><span>Barbell Squat</span><span>5 × 5</span></div>
+                  <div class="lib-prev-ex"><span>Bench Press</span><span>5 × 5</span></div>
+                  <div class="lib-prev-ex"><span>Barbell Row</span><span>5 × 5</span></div>
+                  <div class="lib-prev-ex"><span>Overhead Press</span><span>5 × 5</span></div>
+                  <div class="lib-prev-ex"><span>Deadlift</span><span>1 × 5</span></div>
+                </div>
+                <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+              </div>
+            </div>
+            <div class="lib-workout-item lib-tab-item" data-name="tabata inferno" data-cat="HIIT" onclick="toggleLibTabPreview('ltp-2',this)" style="border-top:1px solid var(--border);">
+              <div class="lib-workout-row">
+                <div><div style="font-weight:600;font-size:0.92rem;margin-bottom:3px;">Tabata Inferno</div><div style="font-size:0.75rem;color:var(--text-muted);">Aisha Patel &middot; HIIT &middot; 28 min &middot; Saved Mar 28</div></div>
+                <span class="lib-chevron">&#8250;</span>
+              </div>
+              <div class="lib-workout-preview" id="ltp-2">
+                <div class="lib-prev-tags"><span class="lib-tag">28 min</span><span class="lib-tag">HIIT</span><span class="lib-tag">Advanced</span><span class="lib-tag">6 rounds</span></div>
+                <div class="lib-prev-exercises">
+                  <div class="lib-prev-ex"><span>Jump Squats</span><span>20s on / 10s off</span></div>
+                  <div class="lib-prev-ex"><span>Burpees</span><span>20s on / 10s off</span></div>
+                  <div class="lib-prev-ex"><span>Mountain Climbers</span><span>20s on / 10s off</span></div>
+                  <div class="lib-prev-ex"><span>High Knees</span><span>20s on / 10s off</span></div>
+                  <div class="lib-prev-ex"><span>Push-Up Jacks</span><span>20s on / 10s off</span></div>
+                  <div class="lib-prev-ex"><span>Plank to Downdog</span><span>20s on / 10s off</span></div>
+                </div>
+                <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+              </div>
+            </div>
+            <div class="lib-workout-item lib-tab-item" data-name="living room hiit" data-cat="At Home" onclick="toggleLibTabPreview('ltp-3',this)" style="border-top:1px solid var(--border);">
+              <div class="lib-workout-row">
+                <div><div style="font-weight:600;font-size:0.92rem;margin-bottom:3px;">Living Room HIIT</div><div style="font-size:0.75rem;color:var(--text-muted);">Nina Brooks &middot; At Home &middot; 30 min &middot; Saved Mar 15</div></div>
+                <span class="lib-chevron">&#8250;</span>
+              </div>
+              <div class="lib-workout-preview" id="ltp-3">
+                <div class="lib-prev-tags"><span class="lib-tag">30 min</span><span class="lib-tag">At Home</span><span class="lib-tag">Beginner</span><span class="lib-tag">No Equipment</span></div>
+                <div class="lib-prev-exercises">
+                  <div class="lib-prev-ex"><span>Bodyweight Squat</span><span>3 × 15</span></div>
+                  <div class="lib-prev-ex"><span>Push-Ups</span><span>3 × 12</span></div>
+                  <div class="lib-prev-ex"><span>Reverse Lunge</span><span>3 × 10 each</span></div>
+                  <div class="lib-prev-ex"><span>Glute Bridge</span><span>3 × 15</span></div>
+                  <div class="lib-prev-ex"><span>Plank Hold</span><span>3 × 30s</span></div>
+                </div>
+                <button class="btn btn-sm btn-primary" style="width:100%;margin-top:12px;" onclick="event.stopPropagation();startLiveWorkout()">Start Workout</button>
+              </div>
+            </div>
+          </div>
+          <div id="libEmptyState" style="display:none;text-align:center;padding:48px 16px;color:var(--text-muted);font-size:0.88rem;">No workouts match your search.</div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -2693,6 +2858,7 @@
       home: 'tabHome',
       training: 'tabTraining',
       nutrition: 'tabNutrition',
+      library: 'tabLibrary',
       myteam: 'tabMyteam',
       community: 'tabCommunity',
       profile: 'tabProfile',
@@ -2781,6 +2947,62 @@
 
     var currentWorkoutIdx = null;
     var selectedRating = null;
+
+    // Library tab — filter/search/preview
+    var _libCat = 'all';
+    function libSetCat(cat, btn) {
+      _libCat = cat;
+      document.querySelectorAll('.lib-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      libFilter();
+    }
+    function libFilter() {
+      var q = (document.getElementById('libSearchInput') || {}).value || '';
+      q = q.toLowerCase().trim();
+      var items = document.querySelectorAll('#libTabGrid .lib-tab-item');
+      var visible = 0;
+      items.forEach(function(item) {
+        var name = item.dataset.name || '';
+        var cat = item.dataset.cat || '';
+        var matchQ = !q || name.includes(q);
+        var matchCat = _libCat === 'all' || cat === _libCat;
+        var show = matchQ && matchCat;
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      var countEl = document.getElementById('libCount');
+      if (countEl) countEl.textContent = visible + ' workout' + (visible !== 1 ? 's' : '') + ' saved';
+      var empty = document.getElementById('libEmptyState');
+      var grid = document.getElementById('libTabGrid');
+      if (empty) empty.style.display = visible === 0 ? '' : 'none';
+      if (grid) grid.style.display = visible === 0 ? 'none' : '';
+    }
+    function toggleLibTabPreview(id, row) {
+      var preview = document.getElementById(id);
+      var chevron = row.querySelector('.lib-chevron');
+      var isOpen = preview.classList.contains('open');
+      document.querySelectorAll('#libTabGrid .lib-workout-preview.open').forEach(function(p){ p.classList.remove('open'); });
+      document.querySelectorAll('#libTabGrid .lib-chevron.open').forEach(function(c){ c.classList.remove('open'); });
+      if (!isOpen) { preview.classList.add('open'); if (chevron) chevron.classList.add('open'); }
+    }
+
+    // Library workout preview toggle
+    function toggleLibPreview(id, row) {
+      var preview = document.getElementById(id);
+      var chevron = row.querySelector('.lib-chevron');
+      var isOpen = preview.classList.contains('open');
+      // Close all others
+      document.querySelectorAll('.lib-workout-preview.open').forEach(function(p) {
+        p.classList.remove('open');
+      });
+      document.querySelectorAll('.lib-chevron.open').forEach(function(c) {
+        c.classList.remove('open');
+      });
+      if (!isOpen) {
+        preview.classList.add('open');
+        if (chevron) chevron.classList.add('open');
+      }
+    }
 
     // Launch the dedicated live-workout page with this workout's data.
     function startLiveWorkout(idx) {

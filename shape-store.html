@@ -67,6 +67,56 @@
       letter-spacing: 0.08em; color: var(--accent-dark); background: rgba(45,212,191,0.08);
       padding: 4px 10px; border: 1px solid rgba(45,212,191,0.2);
     }
+    /* ===== Dashboard back-nav tab bar ===== */
+    .sstore-back-tab-bar {
+      display: flex; align-items: center; gap: 0; justify-content: center;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-alt);
+      padding: 0 24px;
+      position: sticky; top: 88px; z-index: 100;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .sstore-back-tab-bar::-webkit-scrollbar { display: none; }
+    .sstore-back-tab-bar a {
+      padding: 10px 16px; border: none; background: none; text-decoration: none;
+      font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--text); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap; transition: all 0.2s;
+      flex-shrink: 0; opacity: 0.5;
+    }
+    .sstore-back-tab-bar a:hover { opacity: 0.75; }
+    .sstore-back-tab-bar a.active { opacity: 1; border-bottom: 2px solid var(--accent); }
+    @media (max-width: 768px) {
+      .sstore-back-tab-bar {
+        position: fixed; top: auto; bottom: 0; left: 0; right: 0;
+        z-index: 1100;
+        background: rgba(10,10,10,0.92);
+        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border); border-bottom: none;
+        padding: 6px 4px env(safe-area-inset-bottom,0);
+        gap: 0; justify-content: space-around; overflow-x: visible;
+      }
+      .sstore-back-tab-bar a {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
+        letter-spacing: 0.02em; opacity: 0.55;
+        white-space: nowrap; overflow: hidden;
+        border-bottom: none; position: relative;
+      }
+      .sstore-back-tab-bar a::before {
+        content: attr(data-icon); font-size: 1.1rem; font-weight: 400;
+        letter-spacing: 0; line-height: 1; text-transform: none;
+      }
+      .sstore-back-tab-bar a.active { opacity: 1; color: var(--accent); border-bottom: none; }
+      .sstore-back-tab-bar a.active::after {
+        content: ''; position: absolute; top: 0; left: 30%; right: 30%;
+        height: 2px; background: var(--accent);
+      }
+      body { padding-bottom: 72px; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -131,6 +181,59 @@
       </button>
     </div>
   </nav>
+
+  <!-- Dashboard back-nav tab bar (contextual based on source dashboard) -->
+  <div class="sstore-back-tab-bar" id="sstoreBackTabBar"></div>
+  <script>
+  (function() {
+    var ctx = sessionStorage.getItem('shapeStoreContext');
+    if (!ctx) {
+      var ref = (document.referrer || '').toLowerCase();
+      if (ref.indexOf('trainer-dashboard') !== -1) ctx = 'trainer';
+      else if (ref.indexOf('nutrition-schedule') !== -1) ctx = 'nutritionist';
+      else ctx = 'client';
+    }
+    var bars = {
+      client: [
+        { icon: '☉', label: 'Home', href: 'clients.html#home' },
+        { icon: '♆', label: 'Train', href: 'clients.html#training' },
+        { icon: '★', label: 'Nutri', href: 'clients.html#nutrition' },
+        { icon: '♚', label: 'Score', href: 'clients.html#shapescore' },
+        { icon: '⚐', label: 'Store', href: 'shape-store.html', active: true },
+        { icon: '♡', label: 'Team', href: 'clients.html#myteam' },
+        { icon: '💬', label: 'Chat', href: 'clients.html#community' },
+        { icon: '●', label: 'Me', href: 'clients.html#profile' }
+      ],
+      trainer: [
+        { icon: '☉', label: 'Home', href: 'trainer-dashboard.html#home' },
+        { icon: '◉', label: 'Clients', href: 'trainer-dashboard.html#clients' },
+        { icon: '▤', label: 'Programs', href: 'trainer-dashboard.html#programs' },
+        { icon: '✉', label: 'Messages', href: 'trainer-dashboard.html#messages' },
+        { icon: '◈', label: 'Community', href: 'trainer-dashboard.html#community' },
+        { icon: '◐', label: 'Profile', href: 'trainer-dashboard.html#profile' },
+        { icon: '∑', label: 'Calc', href: 'trainer-dashboard.html#goalcalc' },
+        { icon: '♚', label: 'Score', href: 'shape-score-trainer.html' },
+        { icon: '⚐', label: 'Store', href: 'shape-store.html', active: true }
+      ],
+      nutritionist: [
+        { icon: '☉', label: 'Home', href: 'nutrition-schedule.html#home' },
+        { icon: '◉', label: 'Clients', href: 'nutrition-schedule.html#clients' },
+        { icon: '▤', label: 'Meals', href: 'nutrition-schedule.html#mealplans' },
+        { icon: '✉', label: 'Messages', href: 'nutrition-schedule.html#messages' },
+        { icon: '◈', label: 'Community', href: 'nutrition-schedule.html#community' },
+        { icon: '◐', label: 'Profile', href: 'nutrition-schedule.html#profile' },
+        { icon: '∑', label: 'Calc', href: 'nutrition-schedule.html#goalcalc' },
+        { icon: '♚', label: 'Score', href: 'shape-score-nutritionist.html' },
+        { icon: '⚐', label: 'Store', href: 'shape-store.html', active: true }
+      ]
+    };
+    var items = bars[ctx] || bars.client;
+    var bar = document.getElementById('sstoreBackTabBar');
+    bar.innerHTML = items.map(function(it) {
+      return '<a class="' + (it.active ? 'active' : '') + '" data-icon="' + it.icon + '" href="' + it.href + '">' + it.label + '</a>';
+    }).join('');
+  })();
+  </script>
 
   <!-- Page Hero -->
   <section class="page-hero">

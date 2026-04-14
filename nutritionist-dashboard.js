@@ -149,48 +149,87 @@ const ndRecentSales = [
 ];
 
 // ===== Render Client List =====
+let _ndSelectedClientId = null;
+let _ndCurrentFilter = 'all';
+
+function _ndBuildClientRowHtml(c) {
+  const initials = c.name.split(' ').map(n => n[0]).join('');
+  const isLow = c.status === 'inactive' || c.adherence < 70;
+  const lastDate = new Date(c.lastCheckin + 'T00:00:00');
+  const daysAgo = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
+  const lastStr = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
+  return `
+    <div class="td-client-row ${isLow ? 'needs-attention' : ''}" data-name="${c.name.toLowerCase()}" onclick="showNdClientDetail(${c.id})">
+      <div class="td-client-avatar">
+        <div class="avatar">${initials}</div>
+      </div>
+      <div class="td-client-info">
+        <h4>${c.name}</h4>
+        <span>${c.plan}</span>
+      </div>
+      <div class="td-client-stats-mini">
+        <div class="td-mini-stat">
+          <strong>${c.mealsLogged}</strong>
+          <span>meals logged</span>
+        </div>
+        <div class="td-mini-stat">
+          <strong>${c.adherence}%</strong>
+          <span>adherence</span>
+        </div>
+        <div class="td-mini-stat">
+          <strong>${lastStr}</strong>
+          <span>last check-in</span>
+        </div>
+      </div>
+      <div class="td-client-status">
+        ${isLow ? '<span class="status-badge status-warning">Needs Attention</span>' : '<span class="status-badge status-good">On Track</span>'}
+      </div>
+    </div>
+  `;
+}
+
 function renderNdClients(filter) {
-  const filtered = filter === 'all' ? ndClients :
-    filter === 'active' ? ndClients.filter(c => c.status === 'active' && c.adherence >= 70) :
+  _ndCurrentFilter = filter || _ndCurrentFilter || 'all';
+  const f = _ndCurrentFilter;
+  const filtered = f === 'all' ? ndClients :
+    f === 'active' ? ndClients.filter(c => c.status === 'active' && c.adherence >= 70) :
     ndClients.filter(c => c.status === 'inactive' || c.adherence < 70);
 
   const list = document.getElementById('ndClientList');
-  list.innerHTML = filtered.map(c => {
-    const initials = c.name.split(' ').map(n => n[0]).join('');
-    const isLow = c.status === 'inactive' || c.adherence < 70;
-    const lastDate = new Date(c.lastCheckin + 'T00:00:00');
-    const daysAgo = Math.floor((new Date() - lastDate) / (1000 * 60 * 60 * 24));
-    const lastStr = daysAgo === 0 ? 'Today' : daysAgo === 1 ? 'Yesterday' : `${daysAgo} days ago`;
+  if (!list) return;
 
-    return `
-      <div class="td-client-row ${isLow ? 'needs-attention' : ''}" data-name="${c.name.toLowerCase()}" onclick="showNdClientDetail(${c.id})">
-        <div class="td-client-avatar">
-          <div class="avatar">${initials}</div>
-        </div>
-        <div class="td-client-info">
-          <h4>${c.name}</h4>
-          <span>${c.plan}</span>
-        </div>
-        <div class="td-client-stats-mini">
-          <div class="td-mini-stat">
-            <strong>${c.mealsLogged}</strong>
-            <span>meals logged</span>
-          </div>
-          <div class="td-mini-stat">
-            <strong>${c.adherence}%</strong>
-            <span>adherence</span>
-          </div>
-          <div class="td-mini-stat">
-            <strong>${lastStr}</strong>
-            <span>last check-in</span>
-          </div>
-        </div>
-        <div class="td-client-status">
-          ${isLow ? '<span class="status-badge status-warning">Needs Attention</span>' : '<span class="status-badge status-good">On Track</span>'}
-        </div>
-      </div>
-    `;
+  // Preserve selection if still in filtered list, else pick first
+  if (!filtered.find(c => c.id === _ndSelectedClientId)) {
+    _ndSelectedClientId = filtered.length ? filtered[0].id : null;
+  }
+
+  if (!filtered.length) {
+    list.innerHTML = '<div style="text-align:center;padding:40px 16px;color:var(--text-muted);font-size:0.85rem;">No clients match this filter.</div>';
+    return;
+  }
+
+  const options = filtered.map(c => {
+    const badge = (c.status === 'inactive' || c.adherence < 70) ? ' — Needs Attention' : '';
+    const sel = c.id === _ndSelectedClientId ? ' selected' : '';
+    return `<option value="${c.id}"${sel}>${c.name} · ${c.plan}${badge}</option>`;
   }).join('');
+
+  const selected = filtered.find(c => c.id === _ndSelectedClientId) || filtered[0];
+
+  list.innerHTML = `
+    <div style="margin-bottom:18px;">
+      <label style="display:block;font-size:0.7rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:8px;">Select client (${filtered.length})</label>
+      <select id="ndClientSelect" onchange="selectNdClient(this.value)" style="width:100%;padding:12px 14px;font-size:0.9rem;background:var(--bg-card);border:1px solid var(--border);color:var(--text);border-radius:8px;cursor:pointer;">
+        ${options}
+      </select>
+    </div>
+    ${_ndBuildClientRowHtml(selected)}
+  `;
+}
+
+function selectNdClient(id) {
+  _ndSelectedClientId = Number(id);
+  renderNdClients(_ndCurrentFilter);
 }
 
 function filterNdClients(filter, btn) {
@@ -203,29 +242,23 @@ function filterNdClients(filter, btn) {
 }
 
 function searchNdClients(q) {
-  const term = q.toLowerCase().trim();
-  document.querySelectorAll('#ndClientList .td-client-row').forEach(row => {
-    const name = row.dataset.name || '';
-    row.style.display = (!term || name.includes(term)) ? '' : 'none';
+  const term = (q || '').toLowerCase().trim();
+  const select = document.getElementById('ndClientSelect');
+  if (!select) return;
+  let firstVisible = null;
+  Array.from(select.options).forEach(opt => {
+    const match = !term || opt.textContent.toLowerCase().includes(term);
+    opt.hidden = !match;
+    opt.disabled = !match;
+    if (match && firstVisible === null) firstVisible = Number(opt.value);
   });
-  // Show empty state if no results
-  const list = document.getElementById('ndClientList');
-  if (list) {
-    let empty = list.querySelector('.client-search-empty');
-    const visible = list.querySelectorAll('.td-client-row:not([style*="none"])').length;
-    if (term && visible === 0) {
-      if (!empty) {
-        empty = document.createElement('div');
-        empty.className = 'client-search-empty';
-        empty.style.cssText = 'text-align:center;padding:40px 16px;color:var(--text-muted);font-size:0.85rem;';
-        empty.textContent = 'No clients match "' + q + '"';
-        list.appendChild(empty);
-      } else {
-        empty.textContent = 'No clients match "' + q + '"';
-      }
-    } else if (empty) {
-      empty.remove();
-    }
+  // If current selection is hidden, jump to first visible
+  const currentOpt = select.querySelector('option[value="' + _ndSelectedClientId + '"]');
+  if (term && currentOpt && currentOpt.hidden && firstVisible !== null) {
+    _ndSelectedClientId = firstVisible;
+    renderNdClients(_ndCurrentFilter);
+    // Re-apply search after re-render
+    searchNdClients(q);
   }
 }
 

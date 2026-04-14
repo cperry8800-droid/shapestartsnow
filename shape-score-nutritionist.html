@@ -94,6 +94,53 @@
       letter-spacing: 0.08em; color: var(--accent-dark); background: rgba(45,212,191,0.08);
       padding: 4px 10px; border: 1px solid rgba(45,212,191,0.2);
     }
+    /* ===== Dashboard back-nav tab bar (mirrors nutritionist dashboard) ===== */
+    .nd-tab-bar {
+      display: flex; gap: 0; justify-content: center; border-bottom: 1px solid var(--border);
+      background: var(--bg-card); position: sticky; top: 88px; z-index: 100;
+      overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+    }
+    .nd-tab-bar::-webkit-scrollbar { display: none; }
+    .nd-tab-btn {
+      padding: 10px 16px; font-size: 0.72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--text-muted); background: none; border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer; font-family: inherit; white-space: nowrap;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nd-tab-btn:hover { color: var(--text); }
+    .nd-tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    @media (max-width: 768px) {
+      .nd-tab-bar {
+        position: fixed; top: auto; bottom: 0; left: 0; right: 0;
+        z-index: 1100;
+        background: rgba(10,10,10,0.92);
+        -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+        border-top: 1px solid var(--border); border-bottom: none;
+        padding: 6px 4px env(safe-area-inset-bottom,0);
+        gap: 0; justify-content: space-around; overflow-x: visible;
+      }
+      .nd-tab-btn {
+        flex: 1; min-width: 0;
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        padding: 8px 1px; font-size: 0.52rem; font-weight: 600;
+        letter-spacing: 0.02em; opacity: 0.55;
+        border-bottom: none; position: relative;
+        white-space: nowrap; overflow: hidden;
+      }
+      .nd-tab-btn::before {
+        content: attr(data-icon); font-size: 1.1rem; font-weight: 400;
+        letter-spacing: 0; line-height: 1; text-transform: none;
+      }
+      .nd-tab-btn.active { opacity: 1; color: var(--accent); border-bottom: none; }
+      .nd-tab-btn.active::after {
+        content: ''; position: absolute; top: 0; left: 30%; right: 30%;
+        height: 2px; background: var(--accent);
+      }
+      body { padding-bottom: 72px; }
+    }
   </style>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1A1A1A">
@@ -158,6 +205,19 @@
       </button>
     </div>
   </nav>
+
+  <!-- Nutritionist dashboard back-nav tab bar -->
+  <div class="nd-tab-bar" id="ndTabBar">
+    <a class="nd-tab-btn" data-icon="☉" href="nutrition-schedule.html#home">Home</a>
+    <a class="nd-tab-btn" data-icon="◉" href="nutrition-schedule.html#clients">Clients</a>
+    <a class="nd-tab-btn" data-icon="▤" href="nutrition-schedule.html#mealplans">Meals</a>
+    <a class="nd-tab-btn" data-icon="✉" href="nutrition-schedule.html#messages">Messages</a>
+    <a class="nd-tab-btn" data-icon="◈" href="nutrition-schedule.html#community">Community</a>
+    <a class="nd-tab-btn" data-icon="◐" href="nutrition-schedule.html#profile">Profile</a>
+    <a class="nd-tab-btn" data-icon="∑" href="nutrition-schedule.html#goalcalc">Calc</a>
+    <a class="nd-tab-btn active" data-icon="♚" href="shape-score-nutritionist.html">Score</a>
+    <a class="nd-tab-btn" data-icon="⚐" href="shape-store.html" onclick="sessionStorage.setItem('shapeStoreContext','nutritionist')">Store</a>
+  </div>
 
   <!-- Page Hero -->
   <section class="page-hero">
