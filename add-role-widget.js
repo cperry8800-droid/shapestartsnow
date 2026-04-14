@@ -62,16 +62,35 @@
       b.addEventListener('click', async function () {
         var newRole = b.getAttribute('data-add');
         if (!confirm('Add the ' + newRole + ' role to your account? You\'ll be able to switch between roles from the navbar.')) return;
+        var originalText = b.textContent;
         b.disabled = true;
         b.textContent = 'Adding...';
-        var res = await window.shapeDb.addRole(newRole);
-        if (res && res.error) {
-          alert(res.error.message || 'Could not add role.');
+        // Hard timeout so the button never gets stuck.
+        var timedOut = false;
+        var timer = setTimeout(function () {
+          timedOut = true;
+          alert('Adding role is taking longer than expected. Check the browser console for errors and try again.');
           b.disabled = false;
-          return;
+          b.textContent = originalText;
+        }, 8000);
+        try {
+          var res = await window.shapeDb.addRole(newRole);
+          if (timedOut) return;
+          clearTimeout(timer);
+          if (res && res.error) {
+            alert(res.error.message || 'Could not add role.');
+            b.disabled = false;
+            b.textContent = originalText;
+            return;
+          }
+          window.location.href = window.shapeDb.dashboardFor(newRole);
+        } catch (e) {
+          clearTimeout(timer);
+          console.error('[shape] addRole failed', e);
+          alert((e && e.message) || 'Could not add role.');
+          b.disabled = false;
+          b.textContent = originalText;
         }
-        alert('Added. Redirecting to your new ' + newRole + ' dashboard.');
-        window.location.href = window.shapeDb.dashboardFor(newRole);
       });
     });
   }

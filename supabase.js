@@ -62,23 +62,32 @@
     // Add an additional role to the logged-in user's profile.
     // Used by the "Become a trainer / nutritionist" flow on existing accounts.
     async addRole(newRole) {
-      if (!['client','trainer','nutritionist'].includes(newRole)) {
-        return { error: { message: 'Invalid role' } };
+      try {
+        if (['client','trainer','nutritionist'].indexOf(newRole) === -1) {
+          return { error: { message: 'Invalid role' } };
+        }
+        var session = await shapeDb.getSession();
+        if (!session) return { error: { message: 'Not logged in' } };
+        var profile = await shapeDb.getProfile(session.user.id);
+        if (!profile) return { error: { message: 'Profile not found' } };
+        var roles = Array.isArray(profile.roles) && profile.roles.length
+          ? profile.roles.slice()
+          : (profile.role ? [profile.role] : []);
+        if (roles.indexOf(newRole) === -1) roles.push(newRole);
+        // Bare .update() — no .select().single() so RLS return-read issues
+        // don't hang the call when everything actually succeeded.
+        var res = await client.from('profiles')
+          .update({ roles: roles })
+          .eq('id', session.user.id);
+        if (res && res.error) {
+          console.error('[shape] addRole update error', res.error);
+          return { error: res.error };
+        }
+        return { data: { roles: roles } };
+      } catch (e) {
+        console.error('[shape] addRole threw', e);
+        return { error: { message: (e && e.message) || 'Unknown error' } };
       }
-      var session = await shapeDb.getSession();
-      if (!session) return { error: { message: 'Not logged in' } };
-      var profile = await shapeDb.getProfile(session.user.id);
-      if (!profile) return { error: { message: 'Profile not found' } };
-      var roles = Array.isArray(profile.roles) && profile.roles.length
-        ? profile.roles.slice()
-        : (profile.role ? [profile.role] : []);
-      if (roles.indexOf(newRole) === -1) roles.push(newRole);
-      var res = await client.from('profiles')
-        .update({ roles: roles })
-        .eq('id', session.user.id)
-        .select()
-        .single();
-      return res;
     },
 
     // True if the current profile has this role (array-aware, legacy-safe).
