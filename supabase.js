@@ -276,9 +276,13 @@
       if (roles.length < 2) return;
       if (document.getElementById('shapeRoleSwitcher')) return;
 
-      // Pick a sane anchor: first .shape-auth-logged-in element (usually the
-      // user-name span in the navbar). Falls back to body.
-      var anchor = document.querySelector('.shape-auth-logged-in');
+      // Prefer the user-name span inside the nav-actions container. Fall back
+      // to any other logged-in element if that's not present.
+      var anchor =
+        document.querySelector('.nav-actions .shape-nav-user-name') ||
+        document.querySelector('.nav-actions .shape-auth-logged-in') ||
+        document.querySelector('.shape-nav-user-name') ||
+        document.querySelector('.shape-auth-logged-in');
       if (!anchor) return;
 
       var labels = { client: 'Client', trainer: 'Trainer', nutritionist: 'Nutritionist' };
