@@ -706,6 +706,58 @@
     .td-cal-day-info { font-size: 0.48rem; }
     .td-cal-day-dot { width: 5px; height: 5px; }
     .td-cal-header h3 { font-size: 0.85rem; }
+
+    /* ===== Full-screen iMessage-style chat on mobile ===== */
+    body.shape-logged-in #tab-messages.td-tab-content.active,
+    body.shape-logged-in #tab-community.td-tab-content.active {
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+      margin: 0; padding: 0 !important;
+      background: var(--bg);
+      z-index: 500;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    body.shape-logged-in #tab-messages .td-section,
+    body.shape-logged-in #tab-community .td-section,
+    body.shape-logged-in #tab-messages .td-messages-panel,
+    body.shape-logged-in #tab-community .td-community-layout,
+    body.shape-logged-in #tab-community .td-community-chat,
+    body.shape-logged-in #tab-messages .td-msg-chat {
+      flex: 1 1 auto; min-height: 0; height: auto;
+      display: flex; flex-direction: column;
+      border: none; border-radius: 0;
+      grid-template-columns: 1fr !important;
+    }
+    body.shape-logged-in #tab-messages .td-section-header,
+    body.shape-logged-in #tab-community .td-community-sidebar,
+    body.shape-logged-in #tab-community .td-community-activity,
+    body.shape-logged-in #tab-messages .td-msg-sidebar {
+      display: none !important;
+    }
+    body.shape-logged-in #tab-community .td-community-messages,
+    body.shape-logged-in #tab-messages .td-msg-chat .td-msg-thread {
+      flex: 1 1 auto; min-height: 0;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding: 14px 12px;
+    }
+    body.shape-logged-in #tab-community .td-community-input-area,
+    body.shape-logged-in #tab-messages .td-msg-chat .td-msg-input {
+      flex-shrink: 0; padding: 10px 12px;
+      background: var(--bg-alt); border-top: 1px solid var(--border);
+    }
+    /* iMessage bubble polish */
+    body.shape-logged-in #tab-messages .td-msg-bubble,
+    body.shape-logged-in #tab-community .td-community-msg-body {
+      border-radius: 20px; padding: 9px 14px; max-width: 75vw;
+      word-wrap: break-word;
+    }
+    body.shape-logged-in #tab-messages .td-msg-bubble.own,
+    body.shape-logged-in #tab-community .td-community-msg.own .td-community-msg-body {
+      background: #2DD4BF; color: #0a0a0a;
+    }
   }
 
   /* ===== Plan Sales Section (td-sales-) ===== */
@@ -4557,6 +4609,7 @@
   <script src="add-role-widget.js"></script>
   <script src="sessions-widget.js"></script>
   <script src="empty-state.js"></script>
+  <script src="chat-mobile.js"></script>
   <script>
     (async function () {
       if (!window.shapeDb) return;

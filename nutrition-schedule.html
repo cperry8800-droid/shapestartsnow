@@ -791,6 +791,61 @@
     .nd-home-cal-day { min-height: 40px; }
     .nd-home-cal-day-num { font-size: 0.66rem; }
     .nd-home-cal-dot { width: 5px; height: 5px; }
+
+    /* ===== Full-screen iMessage-style chat on mobile ===== */
+    body.shape-logged-in #ndTabMessages.nd-tab-content.active,
+    body.shape-logged-in #ndTabCommunity.nd-tab-content.active {
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+      margin: 0; padding: 0 !important;
+      background: var(--bg);
+      z-index: 500;
+      display: flex !important;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    body.shape-logged-in #ndTabMessages > section,
+    body.shape-logged-in #ndTabCommunity > section,
+    body.shape-logged-in #ndTabMessages .container,
+    body.shape-logged-in #ndTabCommunity .container,
+    body.shape-logged-in #ndTabMessages .td-section,
+    body.shape-logged-in #ndTabMessages .td-messages-panel,
+    body.shape-logged-in #ndTabMessages .td-msg-chat,
+    body.shape-logged-in #ndTabCommunity .nd-community-layout,
+    body.shape-logged-in #ndTabCommunity .nd-community-chat {
+      flex: 1 1 auto; min-height: 0; height: auto; max-width: none;
+      display: flex; flex-direction: column;
+      padding: 0; margin: 0;
+      border: none; border-radius: 0;
+      grid-template-columns: 1fr !important;
+    }
+    body.shape-logged-in #ndTabMessages .td-section-header,
+    body.shape-logged-in #ndTabMessages .td-msg-sidebar,
+    body.shape-logged-in #ndTabCommunity .nd-community-sidebar,
+    body.shape-logged-in #ndTabCommunity .nd-community-activity {
+      display: none !important;
+    }
+    body.shape-logged-in #ndTabCommunity .nd-community-messages,
+    body.shape-logged-in #ndTabMessages .td-msg-chat .td-msg-thread {
+      flex: 1 1 auto; min-height: 0;
+      overflow-y: auto; -webkit-overflow-scrolling: touch;
+      padding: 14px 12px;
+    }
+    body.shape-logged-in #ndTabCommunity .nd-community-input,
+    body.shape-logged-in #ndTabMessages .td-msg-chat .td-msg-input {
+      flex-shrink: 0; padding: 10px 12px;
+      background: var(--bg-alt); border-top: 1px solid var(--border);
+    }
+    body.shape-logged-in #ndTabCommunity .nd-community-msg-body,
+    body.shape-logged-in #ndTabMessages .td-msg-bubble {
+      border-radius: 20px; padding: 9px 14px; max-width: 75vw;
+      word-wrap: break-word;
+    }
+    body.shape-logged-in #ndTabCommunity .nd-community-msg.own .nd-community-msg-body,
+    body.shape-logged-in #ndTabMessages .td-msg-bubble.own {
+      background: #2DD4BF; color: #0a0a0a;
+    }
   }
 
   /* ===== Plan Sales Section (nd-sales-) ===== */
@@ -3182,6 +3237,7 @@
   <script src="add-role-widget.js"></script>
   <script src="sessions-widget.js"></script>
   <script src="empty-state.js"></script>
+  <script src="chat-mobile.js"></script>
   <script>
     (async function () {
       if (!window.shapeDb) return;
